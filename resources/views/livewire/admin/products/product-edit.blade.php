@@ -12,7 +12,8 @@
             </div>
 
             <img class="aspect-[16/9] object-cover w-full  object-center"
-                src="{{ $image ? $image->temporaryUrl() : Storage::url($productEdit['image_path']) }}" alt="Imagen de Productos">
+                src="{{ $image ? $image->temporaryUrl() : Storage::url($productEdit['image_path']) }}"
+                alt="Imagen de Productos">
             <figcaption class="font-semibold text-center text-gray-600">Iamgen de Producto</figcaption>
 
         </figure>
@@ -38,8 +39,8 @@
             </div>
             <div class="mb-4">
                 <x-label class="mb-2" value="{{ __('Descripción') }}" />
-                <x-textarea class="w-full" wire:model.defer="productEdit.description" placeholder="Descripción del Producto"
-                    rows="5" />
+                <x-textarea class="w-full" wire:model.defer="productEdit.description"
+                    placeholder="Descripción del Producto" rows="5" />
             </div>
             <div class="mb-4">
                 <x-label class="mb-2" value="{{ __('Precio') }}" />
@@ -85,14 +86,49 @@
                     @endforeach
                 </x-select>
             </div>
-        </div>
-        {{-- Buttons --}}
 
-        <div class="flex justify-end ">
-            <x-danger-button class="mr-2" name="Cancelar" />
-            <x-button name="Actualizar Producto" />
+            {{-- Buttons --}}
 
+            <div class="flex justify-end ">
+                <x-danger-button class="mr-2" onclick="confirmDelete()" name="Eliminar" />
+                <x-button name="Actualizar Producto" />
+
+            </div>
         </div>
+
     </form>
+
+    {{-- formulario para eliminar  --}}
+    <form action="{{ route('admin.products.destroy', $product) }}" method="POST" id="delete-form">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    @push('js')
+        <script>
+            let confirmDelete = () => {
+                // Sweet Alert 2
+                Swal.fire({
+                    title: "Estás Seguro?",
+                    text: "No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, Bórralo!",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Swal.fire({
+                        //     title: "Eliminado!",
+                        //     text: "Su archivo ha sido eliminado.",
+                        //     icon: "success"
+                        // });
+                        document.getElementById('delete-form').submit();
+                    }
+                });
+            }
+        </script>
+    @endpush
 
 </div>

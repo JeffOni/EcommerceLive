@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -68,5 +69,23 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+        Storage::delete($product->image_path); //elimina la imagen del producto
+
+        $product->delete();
+        //el session swal se pasa directo al return en lugar de una variable de sseion es mas directo y ligeramente mas eficiente
+
+        //ejemplo con session flash
+        // session()->flash('swal', [
+        //     'icon' => 'success',
+        //     'title' => '¡Éxito!',
+        //     'text' => 'El producto se ha eliminado correctamente.',
+        //     'timeout' => 3000
+        // ]);
+        return redirect()->route('admin.products.index')->with('swal', [ //redirecciona a la vista de productos y le pasa un mensaje de exito
+            'icon' => 'success',
+            'title' => '¡Éxito!',
+            'text' => 'El producto se ha eliminado correctamente.',
+            'timeout' => 3000
+        ]);
     }
 }
