@@ -87,6 +87,13 @@ class ProductCreate extends Component
             'product.description' => 'nullable', //el campo description puede ser nulo
             'product.price' => 'required|numeric|min:0', //el campo price es requerido y debe ser numerico
             'product.subcategory_id' => 'required|exists:subcategories,id', //el campo subcategory_id es requerido
+        ],[], [ //se definen los nombres de los campos para mostrar en el mensaje de error
+            'product.sku' => 'SKU',
+            'product.name' => 'Nombre',
+            'product.description' => 'Descripción',
+            'product.price' => 'Precio',
+            'product.subcategory_id' => 'Subcategoría',
+            'image' => 'Imagen',
         ]);
 
         $this->product['image_path'] = $this->image->store('products', 'public'); //se almacena la imagen en la carpeta products dentro de la carpeta public
