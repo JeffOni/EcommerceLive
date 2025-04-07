@@ -16,7 +16,7 @@ class ProductCreate extends Component
 
     use WithFileUploads; //se utiliza el trait WithFileUploads para poder subir archivos
 
-    public $families; //variable publica families para almacenar los datos de la tabla families
+    public $families; //variable publica families para almacenar y extraer los datos de la tabla families
 
     public $family_id = ''; //variable publica family_id para almacenar el id de la familia seleccionada
 

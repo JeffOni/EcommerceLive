@@ -12,5 +12,5 @@
     ],
 ]">
 
-    @livewire('admin.products.edit', ['product' => $product,])
+    @livewire('admin.products.product-edit', ['product' => $product,])
 </x-admin-layout>
