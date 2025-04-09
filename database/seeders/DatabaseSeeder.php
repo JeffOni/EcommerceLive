@@ -22,12 +22,13 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Jefferson Alexis',
-            'email' => 'jeffpbohorquez@outlook.com',
+            'email' => 'Admin@example.com',
             'password' => bcrypt('secreto123'),
         ]);
 
         $this->call([
-            FamilySeeder::class
+            FamilySeeder::class,
+            OptionSeeder::class,
         ]);
 
         Product::factory(50)->create();
