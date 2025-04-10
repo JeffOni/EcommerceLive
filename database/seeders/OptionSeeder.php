@@ -40,18 +40,18 @@ class OptionSeeder extends Seeder
                 'type' => 2,
                 'features' => [
                     [
-                        'value' => 'Con pelado',
+                        'value' => '#FFFFFF',
                         'description' => 'Con pelado',
                     ],
                     [
-                        'value' => 'Sin pelado',
+                        'value' => '#000000',
                         'description' => 'Sin pelado',
                     ],
                 ],
             ],
             [
                 'name' => 'Cortado',
-                'type' => 3,
+                'type' => 1,
                 'features' => [
                     [
                         'value' => 'Cortado',

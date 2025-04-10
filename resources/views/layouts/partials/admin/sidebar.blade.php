@@ -7,6 +7,12 @@
             'active' => request()->routeIs('admin.dashboard'),
         ],
         [
+            'name' => 'Opciones',
+            'icon' => 'fa-solid fa-cog',
+            'route' => route('admin.options.index'),
+            'active' => request()->routeIs('admin.options.*'),
+        ],
+        [
             //Familias de productos
             'name' => 'Familias',
             'icon' => 'fa-solid fa-box-open',
@@ -33,6 +39,12 @@
             'route' => route('admin.products.index'),
             'active' => request()->routeIs('admin.products.*'),
         ],
+        // [
+        //     'name' => 'Configuración',
+        //     'icon' => 'fa-solid fa-gear',
+        //     'route' => route('admin.settings.index'),
+        //     'active' => request()->routeIs('admin.settings.*'),
+        // ],
         // [
         //     'name' => 'Usuarios',
         //     'icon' => 'fa-solid fa-users',
