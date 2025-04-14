@@ -78,7 +78,7 @@
 
                 <div>
                     <x-label class="mb-1" value="{{ __('Tipo') }}" />
-                    <x-select wire:model.defer="newOption.type" class="w-full">
+                    <x-select wire:model.live="newOption.type" class="w-full">
                         <option value="" disabled>Seleccione un tipo</option>
                         {{-- 1 = Texto, 2 = Color --}}
                         <option value="1">Texto</option>
@@ -104,14 +104,42 @@
             <div class="mb-4 space-y-4">
 
                 @foreach ($newOption['features'] as $index => $feature)
-                    <div class="p-6 border border-gray-200 rounded-lg">
+                    <div class="relative p-6 border border-gray-200 rounded-lg" wire:key="feature-{{ $index }}">
+                        <div class="absolute px-4 bg-white -top-3.5">
+                            {{-- elimina el feature que se esta seleccionando de acuerdo a su index --}}
+                            <button type="button" wire:click="removeFeature({{ $index }})">
+                                <i class="text-red-500 fa-solid fa-trash-can hover:text-red-600"></i>
+                            </button>
+
+                        </div>
 
                         <div class="grid grid-cols-2 gap-6 mb-4">
 
                             <div>
                                 <x-label class="mb-1" value="{{ __('Valor') }}" />
-                                <x-input class="w-full" placeholder="Ingrese el valor de la opcion"
-                                    wire:model.defer="newOption.features.{{ $index }}.value" />
+
+
+                                @switch($newOption['type'])
+                                    @case(1)
+                                        <x-input class="w-full" placeholder="Ingrese el valor de la opcion"
+                                            wire:model.defer="newOption.features.{{ $index }}.value" />
+                                    @break
+
+                                    @case(2)
+                                        {{-- para obtener colores se obtiene el color guardado en value --}}
+                                        {{-- el valor ternario ?: verifica si el valor extiste y si no esta null sino manda el mensaje si el valor es null --}}
+
+                                        <div
+                                            class="border border-gray-300 h-[42px] px-3 rounded-md flex items-center justify-between">
+                                            {{ $newOption['features'][$index]['value'] ?: 'Seleccione Un Color' }}
+                                            <x-input type="color"
+                                                wire:model.live="newOption.features.{{ $index }}.value" />
+
+                                        </div>
+                                    @break
+
+                                    @default
+                                @endswitch
                             </div>
 
                             <div>
@@ -122,21 +150,24 @@
 
                         </div>
 
-                        <div class="flex justify-end">
-                            <x-button wire:click="addFeature" name="Agregar Valor" />
-                        </div>
                     </div>
                 @endforeach
 
-            </div>
+                <div class="flex justify-end">
+                    <x-button wire:click="addFeature" name="Agregar Valor" />
+                </div>
 
-            {{-- Button feature --}}
-            <div class="flex justify-end">
-                <x-button wire:click="addFeature" name="Agregar Valor" />
             </div>
 
         </x-slot>
-        <x-slot name="footer"></x-slot>
+
+        <x-slot name="footer">
+
+            <div class="flex justify-end gap-x-3">
+                <x-danger-button wire:click="$set('openModal', false)" name="Cancelar" negative />
+                <x-button wire:click="addOption" name="Guardar" positive />
+            </div>
+        </x-slot>
     </x-dialog-modal>
 
     {{-- Fin Modal Section --}}
