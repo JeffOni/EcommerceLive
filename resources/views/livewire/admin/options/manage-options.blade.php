@@ -67,6 +67,7 @@
     <x-dialog-modal wire:model="openModal" title="Crear Nueva Opcion">
         <x-slot name="content">
 
+            <x-validation-errors class="mb-4"/>
             {{-- Nombres --}}
             <div class="grid grid-cols-2 gap-6 mb-4">
 
