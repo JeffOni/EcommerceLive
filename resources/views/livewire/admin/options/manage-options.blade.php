@@ -5,7 +5,7 @@
         <header class="px-6 py-2 border-b border-gray-200">
             <div class="flex justify-between">
                 <h1 class="text-lg font-semibold text-gray-700">Opciones</h1>
-                <x-button wire:click="$set('openModal', true)" name="Nuevo" />
+                <x-button wire:click="$set('newOption.openModal', true)" name="Nuevo" />
             </div>
 
 
@@ -64,7 +64,7 @@
 
     {{-- Modal Section --}}
 
-    <x-dialog-modal wire:model="openModal" title="Crear Nueva Opcion">
+    <x-dialog-modal wire:model="newOption.openModal" title="Crear Nueva Opcion">
         <x-slot name="content">
 
             <x-validation-errors class="mb-4"/>
@@ -104,7 +104,7 @@
             {{-- input de valores --}}
             <div class="mb-4 space-y-4">
 
-                @foreach ($newOption['features'] as $index => $feature)
+                @foreach ($newOption->features as $index => $feature)
                     <div class="relative p-6 border border-gray-200 rounded-lg" wire:key="feature-{{ $index }}">
                         <div class="absolute px-4 bg-white -top-3.5">
                             {{-- elimina el feature que se esta seleccionando de acuerdo a su index --}}
@@ -120,7 +120,7 @@
                                 <x-label class="mb-1" value="{{ __('Valor') }}" />
 
 
-                                @switch($newOption['type'])
+                                @switch($newOption->type)
                                     @case(1)
                                         <x-input class="w-full" placeholder="Ingrese el valor de la opcion"
                                             wire:model.defer="newOption.features.{{ $index }}.value" />
@@ -132,7 +132,7 @@
 
                                         <div
                                             class="border border-gray-300 h-[42px] px-3 rounded-md flex items-center justify-between">
-                                            {{ $newOption['features'][$index]['value'] ?: 'Seleccione Un Color' }}
+                                            {{ $newOption->features[$index]['value'] ?: 'Seleccione Un Color' }}
                                             <x-input type="color"
                                                 wire:model.live="newOption.features.{{ $index }}.value" />
 
@@ -165,7 +165,7 @@
         <x-slot name="footer">
 
             <div class="flex justify-end gap-x-3">
-                <x-danger-button wire:click="$set('openModal', false)" name="Cancelar" negative />
+                <x-danger-button wire:click="$set('newOption.openModal', false)" name="Cancelar" negative />
                 <x-button wire:click="addOption" name="Guardar" positive />
             </div>
         </x-slot>
