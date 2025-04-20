@@ -15,9 +15,18 @@
 
             <div class="space-y-6">
 
+                {{--
+                    wire:key="option-{{ $option->id }}"
+                    Este atributo le da una "llave" única a cada tarjeta de opción.
+                    Sirve para que Livewire pueda identificar cada elemento de la lista de forma individual.
+                    Así, si cambias, agregas o eliminas una opción, Livewire sabe exactamente cuál actualizar en la interfaz,
+                    evitando errores o confusiones al mostrar los datos.
+                    Es como ponerle una etiqueta única a cada tarjeta para que Livewire no se confunda.
+                --}}
                 @foreach ($options as $option)
                     {{-- Tarjeta de Opcion --}}
-                    <div class="relative p-6 border border-gray-200 rounded-lg">
+                    <div class="relative p-6 border border-gray-200 rounded-lg" wire:key="option-{{ $option->id }}">
+
                         {{-- Nombre de Opciones --}}
                         <div class="absolute px-4 bg-white -top-3.5">
 
@@ -28,7 +37,7 @@
                         </div>
                         {{-- Valores --}}
 
-                        <div class="flex flex-wrap">
+                        <div class="flex flex-wrap mb-4">
 
                             @foreach ($option->features as $feature)
                                 @switch($option->type)
@@ -52,6 +61,21 @@
 
                         </div>
 
+                        {{-- Fin Valores --}}
+
+                        {{-- componente livewire de feature --}}
+                        <div>
+                            {{--
+                            key('add-new-feature-' . $option->id)
+                            Aquí usamos una "key" única para el componente Livewire hijo.
+                            Esto le ayuda a Livewire a distinguir cada componente "add-new-feature" según la opción a la que pertenece.
+                            Así, si tienes varios componentes iguales en la página, cada uno mantiene su propio estado y datos,
+                            y Livewire no mezcla la información entre ellos.
+                            Es como darle un nombre único a cada formulario para que no se mezclen.
+                            --}}
+                            @livewire('admin.options.add-new-feature', ['option' => $option], key('add-new-feature-' . $option->id))
+                        </div>
+
                     </div>
                     {{-- Fin Tarjeta de Opcion --}}
                 @endforeach
@@ -67,7 +91,7 @@
     <x-dialog-modal wire:model="newOption.openModal" title="Crear Nueva Opcion">
         <x-slot name="content">
 
-            <x-validation-errors class="mb-4"/>
+            <x-validation-errors class="mb-4" />
             {{-- Nombres --}}
             <div class="grid grid-cols-2 gap-6 mb-4">
 
