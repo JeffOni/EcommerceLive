@@ -30,6 +30,11 @@
                         {{-- Nombre de Opciones --}}
                         <div class="absolute px-4 bg-white -top-3.5">
 
+                            <button class="mr-1" type="button" onclick="confirmDelete({{ $option->id }}, 'option')"
+                                {{-- wire:click="deleteOption({{ $option->id }})" --}}>
+                                {{-- icono de eliminar --}}
+                                <i class="text-red-500 fa-solid fa-trash-can hover:text-red-600"></i>
+
                             <span>
                                 {{ $option->name }}
                             </span>
@@ -43,16 +48,37 @@
                                 @switch($option->type)
                                     @case(1)
                                         <span
-                                            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
+                                            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 pl-2.5 pr-1.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
                                             {{ $feature->description }}
+
+                                            <button class="ml-0.5" onclick="confirmDelete({{ $feature->id }}, 'feature')"
+                                                {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
+                                                {{-- icono de eliminar --}}
+
+                                                <i class="fa-solid fa-xmark hover:text-red-500"></i>
+
+                                            </button>
                                         </span>
                                     @break
 
                                     @case(2)
-                                        {{-- para obtener colores se obtiene el color guardado en value --}}
-                                        <span class="inline-block w-6 h-6 mr-4 border-2 border-gray-300 rounded-full shadow-lg"
-                                            style="background-color: {{ $feature->value }};">
-                                        </span>
+                                        <div class="relative">
+                                            {{-- para obtener colores se obtiene el color guardado en value --}}
+                                            <span
+                                                class="inline-block w-6 h-6 mr-4 border-2 border-gray-300 rounded-full shadow-lg"
+                                                style="background-color: {{ $feature->value }};">
+                                            </span>
+
+                                            <button
+                                                class="absolute z-10 flex items-center justify-center w-4 h-4 bg-gray-500 rounded-full hover:bg-red-500 -top-2 left-3"
+                                                onclick="confirmDelete({{ $feature->id }}, 'feature')"
+                                                {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
+                                                {{-- icono de eliminar --}}
+                                                <i class="text-xs text-white fa-solid fa-xmark"></i>
+
+                                            </button>
+
+                                        </div>
                                     @break
 
                                     @default
@@ -196,5 +222,43 @@
     </x-dialog-modal>
 
     {{-- Fin Modal Section --}}
+
+    @push('js')
+        <script>
+            let confirmDelete = (id , type) => {
+                // Sweet Alert 2
+                Swal.fire({
+                    title: "Estás Seguro?",
+                    text: "No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, Bórralo!",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Swal.fire({
+                        //     title: "Eliminado!",
+                        //     text: "Su archivo ha sido eliminado.",
+                        //     icon: "success"
+                        // });
+                        // @this.call('deleteFeature', featureId);
+                        switch (type) {
+                            case 'feature':
+                                @this.call('deleteFeature', id);
+                                break;
+                            case 'option':
+                                @this.call('deleteOption', id);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+
+            }
+        </script>
+    @endpush
 
 </div>
