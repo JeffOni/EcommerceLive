@@ -41,15 +41,6 @@
 
         </div>
 
-
-{{-- linea de prueba de commits  --}}
-        {{-- <div class="flex items-end md:flex-none">
-
-            <x-button name="Cancelar" negative wire:click="$set('showAddFeature', false)" />
-
-        </div>   --}}
-
-
     </form>
 
 </div>
