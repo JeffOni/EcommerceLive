@@ -85,14 +85,17 @@
                     @endforeach
                 </x-select>
             </div>
-        </div>
-        {{-- Buttons --}}
 
-        <div class="flex justify-end ">
-            <x-danger-button class="mr-2" name="Cancelar" />
-            <x-button name="Crear Producto" />
+            {{-- Buttons --}}
+
+            <div class="flex justify-end ">
+                <x-danger-button class="mr-2" name="Cancelar" />
+                <x-button name="Crear Producto" />
+
+            </div>
 
         </div>
+
     </form>
 
 </div>

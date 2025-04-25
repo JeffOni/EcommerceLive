@@ -17,7 +17,8 @@ return new class extends Migration
                 ->constrained();
             $table->foreignId('product_id')
                 ->constrained();
-            $table->string('value');
+            $table->json('features')
+                ->comment('Almacena las características de la opción seleccionada en formato JSON');
             $table->timestamps();
         });
     }
