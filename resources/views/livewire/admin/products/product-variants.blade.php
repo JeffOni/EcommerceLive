@@ -13,6 +13,98 @@
 
         <div class="p-6">
 
+            @if ($product->options->count())
+                <div class="space-y-6">
+
+                    @foreach ($product->options as $option)
+                        <div wire:key="product-option-{{ $option->id }}"
+                            class="relative p-6 mb-4 border border-gray-200 rounded-lg">
+
+                            <div class="absolute px-4 bg-white -top-3">
+
+                                <button>
+                                    <i class="text-red-500 fas fa-trash-can hover:text-red-600"
+                                        onclick="confirmDeleteOption({{ $option->id }})">
+                                    </i>
+                                </button>
+
+                                <span class="ml-2 text-sm font-semibold text-gray-500">
+                                    {{ $option->name }}
+                                </span>
+
+                            </div>
+
+
+                            {{-- Valores --}}
+
+                            <div class="flex flex-wrap">
+
+                                @foreach ($option->pivot->features as $feature)
+                                    @switch($option->type)
+                                        @case(1)
+                                            <span
+                                                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 pl-2.5 pr-1.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
+                                                {{ $feature['description'] }}
+
+                                                <button class="ml-0.5"
+                                                    onclick="confirmDeleteFeature({{ $option->id }},{{ $feature['id'] }})"
+                                                    {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
+                                                    {{-- icono de eliminar --}}
+
+                                                    <i class="fa-solid fa-xmark hover:text-red-500"></i>
+
+                                                </button>
+                                            </span>
+                                        @break
+
+                                        @case(2)
+                                            <div class="relative">
+                                                {{-- para obtener colores se obtiene el color guardado en value --}}
+                                                <span
+                                                    class="inline-block w-6 h-6 mr-4 border-2 border-gray-300 rounded-full shadow-lg"
+                                                    style="background-color: {{ $feature['value'] }};">
+                                                </span>
+
+                                                <button
+                                                    class="absolute z-10 flex items-center justify-center w-4 h-4 bg-gray-500 rounded-full hover:bg-red-500 -top-2 left-3"
+                                                    onclick="confirmDeleteFeature({{ $option->id }}, {{ $feature['id'] }})"
+                                                    {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
+                                                    {{-- icono de eliminar --}}
+                                                    <i class="text-xs text-white fa-solid fa-xmark"></i>
+
+                                                </button>
+
+                                            </div>
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                @endforeach
+
+                            </div>
+
+                            {{-- Fin Valores --}}
+                        </div>
+                    @endforeach
+
+                </div>
+            @else
+                <div class="flex items-center p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                    role="alert">
+                    <svg class="inline w-4 h-4 shrink-0 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">Alerta Informativa!</span> No hay opciones disponibles para este
+                        producto.
+                    </div>
+                </div>
+
+            @endif
+
         </div>
 
     </section>
@@ -61,7 +153,7 @@
                                 id="variants.features.{{ $index }}.id"
                                 wire:change="feature_change({{ $index }})">
                                 {{-- wire:model.live el .live sirve para que se vaya acutalizando el estdo del option_id conforme se vaya escribiendo --}}
-                                <option value="" >Seleccione un valor</option>
+                                <option value="">Seleccione un valor</option>
                                 @foreach ($this->features as $feature)
                                     <option value="{{ $feature->id }}">{{ $feature->description }}</option>)
                                 @endforeach
@@ -87,4 +179,42 @@
             </div>
         </x-slot>
     </x-dialog-modal>
+
+    @push('js')
+        <script>
+            function confirmDeleteFeature(option_id, feature_id) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminarlo!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        @this.call('deleteFeature', option_id, feature_id);
+                    }
+                })
+            }
+
+            function confirmDeleteOption(option_id) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminarlo!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        @this.call('deleteOption', option_id);
+                    }
+                })
+            }
+        </script>
+    @endpush
 </div>

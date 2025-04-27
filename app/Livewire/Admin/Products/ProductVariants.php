@@ -138,6 +138,25 @@ class ProductVariants extends Component
         }
     }
 
+    public function deleteFeature($option_id, $feature_id)
+    {
+        // Actualiza la relación existente en la tabla pivote para eliminar solo la característica específica
+        $this->product->options()->updateExistingPivot($option_id, [
+            'features' => array_filter($this->product->options->find($option_id)->pivot->features, function ($feature) use ($feature_id) {
+                return $feature['id'] != $feature_id;
+            }),
+        ]);
+
+        $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
+    }
+
+    public function deleteOption($option_id)
+    {
+        // Elimina la opción del producto
+        $this->product->options()->detach($option_id);
+        $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
+    }
+
     public function save()
     {
         $this->validate([
@@ -150,9 +169,21 @@ class ProductVariants extends Component
             'variants.features.*.id' => 'Valor de característica',
         ]);
 
+        // Verificar si el producto ya tiene esta opción
+        if ($this->product->options->contains('id', $this->variants['option_id'])) {
+            $option = Option::find($this->variants['option_id']);
+            $this->addError('variants.option_id', "Este producto ya tiene la opción '{$option->name}'. No se permiten opciones duplicadas.");
+            return;
+        }
+
         $this->product->options()->attach($this->variants['option_id'], [
             'features' => $this->variants['features'],
         ]);
+
+        $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
+
+        // Reinicia el array de variantes y cierra el modal
+
         $this->reset([
             'openModal',
             'variants',
