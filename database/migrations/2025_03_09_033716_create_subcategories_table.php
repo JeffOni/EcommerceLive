@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('category_id')
-                ->constrained();
+                ->constrained()
+                ->onDelete('cascade'); // Elimina las subcategorías asociadas si se elimina la categoría
             $table->timestamps();
         });
     }

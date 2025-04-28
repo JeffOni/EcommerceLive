@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('image_path');
             $table->float('price');
             $table->foreignId('subcategory_id')
-                ->constrained();
+                ->constrained()
+                ->onDelete('cascade'); // Elimina los productos asociados si se elimina la subcategoría
             $table->timestamps();
         });
     }

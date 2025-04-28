@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Products;
 
 use App\Models\Feature;
 use App\Models\Option;
+use App\Models\Variant;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -148,6 +149,8 @@ class ProductVariants extends Component
         ]);
 
         $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
+
+        $this->generateVariants(); // Genera las variantes del producto
     }
 
     public function deleteOption($option_id)
@@ -155,6 +158,7 @@ class ProductVariants extends Component
         // Elimina la opción del producto
         $this->product->options()->detach($option_id);
         $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
+        $this->generateVariants(); // Genera las variantes del producto
     }
 
     public function save()
@@ -182,6 +186,8 @@ class ProductVariants extends Component
 
         $this->product = $this->product->fresh(); // Refresca el modelo para obtener los cambios
 
+        $this->generateVariants(); // Genera las variantes del producto
+
         // Reinicia el array de variantes y cierra el modal
 
         $this->reset([
@@ -189,6 +195,63 @@ class ProductVariants extends Component
             'variants',
         ]);
     }
+
+    public function generateVariants()
+    {
+        // Verifica si el producto tiene opciones
+        if ($this->product->options->isEmpty()) {
+            $this->addError('variants.option_id', 'El producto no tiene opciones. Agrega opciones antes de generar variantes.');
+            return;
+        }
+
+        // Obtiene las características de cada opción
+        $features = $this->product->options->pluck('pivot.features')->toArray();
+
+        // Genera todas las combinaciones posibles de características
+        $combinations = $this->generateCombinations($features);
+
+        // Elimina las variantes existentes antes de crear nuevas
+        $this->product->variants()->delete();
+
+        // Crea nuevas variantes con las combinaciones generadas
+        foreach ($combinations as $combination) {
+            $variant = Variant::create([
+                'product_id' => $this->product->id,
+            ]);
+            $variant->features()->attach($combination);
+        }
+
+        // Refresca el modelo para obtener los cambios
+        $this->product = $this->product->fresh();
+    }
+    /**
+     * Genera todas las combinaciones posibles de características
+     * @param array $arrays Arreglo de arreglos de características
+     * @param int $index Índice actual en el arreglo
+     * @param array $combination Combinación actual
+     * @return array Arreglo de combinaciones generadas
+     */
+
+    public function generateCombinations($arrays, $index = 0, $combination = [])
+    {
+        if ($index === count($arrays)) {
+
+            return [$combination];
+        }
+
+        $result = [];
+        foreach ($arrays[$index] as $item) {
+
+            $temporalCombination = $combination;
+
+            $temporalCombination[] = $item['id'];
+
+            $result = array_merge($result, $this->generateCombinations($arrays, $index + 1, $temporalCombination));
+        }
+
+        return $result;
+    }
+
 
     /**
      * Renderiza la vista del componente

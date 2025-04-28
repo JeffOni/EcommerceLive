@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('option_product', function (Blueprint $table) {
             $table->id();
             $table->foreignId('option_id')
-                ->constrained();
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('product_id')
-                ->constrained();
+                ->constrained()
+                ->onDelete('cascade');
             $table->json('features')
                 ->comment('Almacena las características de la opción seleccionada en formato JSON');
             $table->timestamps();
