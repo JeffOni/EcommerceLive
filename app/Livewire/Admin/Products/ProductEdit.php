@@ -8,6 +8,7 @@ use App\Models\Family;
 use App\Models\Subcategory;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 
 class ProductEdit extends Component
@@ -39,9 +40,15 @@ class ProductEdit extends Component
         $this->productEdit['subcategory_id'] = ''; //se inicializa la variable subcategory_id dentro de la variable product como vacia
     }
 
+    #[On('variantGenerated')]
+    public function updateProduct()
+    {
+        $this->product = $this->product->fresh(); //se refresca el producto para obtener los datos actualizados
+    }
+
     public function mount($product)
     {
-        $this->productEdit =  $product->only('sku', 'name', 'description', 'image_path', 'price', 'subcategory_id'); //solo se obtienen los campos necesarios del producto con only
+        $this->productEdit =  $product->only('sku', 'name', 'description', 'image_path', 'price', 'stock', 'subcategory_id'); //solo se obtienen los campos necesarios del producto con only
 
         $this->families = Family::all(); //cargar todos los datos de la tabla families
 
@@ -86,12 +93,14 @@ class ProductEdit extends Component
             'productEdit.name' => 'required|max:255', //el campo name es requerido
             'productEdit.description' => 'nullable', //el campo description puede ser nulo
             'productEdit.price' => 'required|numeric|min:0', //el campo price es requerido y debe ser numerico
+            'productEdit.stock' => 'required|numeric|min:0', //el campo stock es requerido y debe ser entero
             'productEdit.subcategory_id' => 'required|exists:subcategories,id', //el campo subcategory_id es requerido
         ], [], [
             'productEdit.sku' => 'SKU',
             'productEdit.name' => 'Nombre',
             'productEdit.description' => 'Descripción',
             'productEdit.price' => 'Precio',
+            'productEdit.stock' => 'Stock',
             'productEdit.subcategory_id' => 'Subcategoría',
         ]);
 

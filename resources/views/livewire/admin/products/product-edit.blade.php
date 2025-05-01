@@ -47,6 +47,15 @@
                 <x-input class="w-full" type="number" step="0.01" wire:model.defer="productEdit.price"
                     placeholder="Precio del Producto" />
             </div>
+
+            @empty($product->variants->count() > 0)
+                <div class="mb-4">
+                    <x-label class="mb-2" value="{{ __('Stock') }}" />
+                    <x-input class="w-full" type="number" wire:model.defer="productEdit.stock"
+                        placeholder="Stock del Producto" />
+                </div>
+            @endempty
+
             {{-- familias --}}
 
             <div class="mb-4">

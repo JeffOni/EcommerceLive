@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Variant extends Model
 {
@@ -10,9 +12,21 @@ class Variant extends Model
     protected $fillable = [
         'sku',
         'image_path',
+        'stock',
         'product_id'
     ];
     //Relacion uno a muchos inversa con Product
+
+    protected function image():Attribute
+    {
+        //se usa el metodo get para obtener el valor de la propiedad image_path
+        //un accesor es un metodo que se usa para transformar el valor de un atributo
+        //en este caso se usa el metodo url de Storage para obtener la url de la imagen
+        //si no hay imagen se devuelve la imagen por defecto
+        return Attribute::make(
+            get: fn ($value) => $this->image_path ? Storage::url($this->image_path) : asset('img/no-image.png'),
+        );
+    }
 
     public function product()
     {

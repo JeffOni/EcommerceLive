@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,5 +88,15 @@ class ProductController extends Controller
             'text' => 'El producto se ha eliminado correctamente.',
             'timeout' => 3000
         ]);
+    }
+
+    public function variants(Product $product, Variant $variant)
+    {
+        //muestra la vista de variantes de un producto
+        //se pasa el producto para que se pueda usar en la vista
+        //se pasa la variante para que se pueda usar en la vista
+        //se puede usar el metodo load para cargar las relaciones de la variante
+
+        return view('admin.products.variants', compact('product', 'variant')); //retorna la vista de variantes y le pasa el producto y la variante
     }
 }

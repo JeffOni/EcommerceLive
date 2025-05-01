@@ -345,6 +345,11 @@ class ProductVariants extends Component
 
         // Refresca el modelo para obtener los cambios
         $this->product = $this->product->fresh();
+
+        // Despliega un mensaje de éxito al usuario
+        $this->dispatch('variantGenerated', [
+            'message' => 'Las variantes han sido generadas exitosamente.',
+        ]);
     }
 
     /**

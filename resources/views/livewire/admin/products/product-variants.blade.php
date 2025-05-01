@@ -1,6 +1,6 @@
 <div>
     {{-- Sección principal que contiene toda la gestión de opciones y características de producto --}}
-    <section class="bg-white border border-gray-100 rounded-lg shadow-lg ">
+    <section class="mb-12 bg-white border border-gray-100 rounded-lg shadow-lg">
 
         <header class="px-6 py-2 border-b border-gray-200">
             <div class="flex justify-between">
@@ -33,13 +33,14 @@
                                 {{-- ÁREA CRÍTICA DE RENDIMIENTO: Componente que muestra el botón + para agregar características --}}
                                 {{-- Este componente renderiza un botón que al hacer clic emite un evento al componente padre --}}
                                 {{-- La demora ocurre entre el clic en este botón y la apertura del menú de características --}}
-                                <livewire:admin.products.add-feature-to-option :option="$option" :product="$product" :key="'add-feature-button-'.$option->id" />
+                                <livewire:admin.products.add-feature-to-option :option="$option" :product="$product"
+                                    :key="'add-feature-button-' . $option->id" />
                             </div>
 
                             {{-- Visualización de las características existentes en la opción --}}
                             <div class="flex flex-wrap">
                                 @foreach ($option->pivot->features as $feature)
-                                    <div wire:key="option-{{$option->id}}-feature-{{ $feature['id'] }}">
+                                    <div wire:key="option-{{ $option->id }}-feature-{{ $feature['id'] }}">
                                         @switch($option->type)
                                             @case(1)
                                                 {{-- Para características de tipo texto (type=1) --}}
@@ -79,36 +80,40 @@
                             {{-- SECCIÓN CRÍTICA: Área donde se muestra el formulario para agregar características --}}
                             {{-- Esta es la sección que se muestra/oculta al hacer clic en el botón + --}}
                             {{-- La demora ocurre principalmente al mostrar este contenedor con las características disponibles --}}
-                            <div wire:key="feature-form-container-{{ $option->id }}" id="feature-form-{{ $option->id }}"
-                                 class="feature-form-container mt-3"
-                                 wire:loading.class="opacity-50"
-                                 wire:target="toggleAddFeature">
-                                @if($showAddFeature === $option->id)
-                                <div class="border-t pt-3">
-                                    <form wire:submit.prevent="addFeaturesToOption({{ $option->id }})">
-                                        <div class="mb-2 font-semibold text-gray-700">Selecciona las características a agregar:</div>
+                            <div wire:key="feature-form-container-{{ $option->id }}"
+                                id="feature-form-{{ $option->id }}" class="mt-3 feature-form-container"
+                                wire:loading.class="opacity-50" wire:target="toggleAddFeature">
+                                @if ($showAddFeature === $option->id)
+                                    <div class="pt-3 border-t">
+                                        <form wire:submit.prevent="addFeaturesToOption({{ $option->id }})">
+                                            <div class="mb-2 font-semibold text-gray-700">Selecciona las características
+                                                a agregar:</div>
 
-                                        {{-- OPTIMIZACIÓN: Reemplazamos la consulta directa por la propiedad computada --}}
-                                        {{-- Ya no necesitamos ejecutar código PHP en la vista --}}
-                                        @forelse($this->getAvailableFeaturesForOption($option->id) as $feature)
-                                            <label class="flex items-center space-x-2 mb-2">
-                                                <input type="checkbox" wire:model.defer="featuresToAdd.{{ $option->id }}.{{ $feature->id }}" value="1" class="form-checkbox">
-                                                <span>{{ $feature->description }}</span>
-                                            </label>
-                                        @empty
-                                            <div class="text-gray-400 text-sm">No hay características disponibles para agregar.</div>
-                                        @endforelse
+                                            {{-- OPTIMIZACIÓN: Reemplazamos la consulta directa por la propiedad computada --}}
+                                            {{-- Ya no necesitamos ejecutar código PHP en la vista --}}
+                                            @forelse($this->getAvailableFeaturesForOption($option->id) as $feature)
+                                                <label class="flex items-center mb-2 space-x-2">
+                                                    <input type="checkbox"
+                                                        wire:model.defer="featuresToAdd.{{ $option->id }}.{{ $feature->id }}"
+                                                        value="1" class="form-checkbox">
+                                                    <span>{{ $feature->description }}</span>
+                                                </label>
+                                            @empty
+                                                <div class="text-sm text-gray-400">No hay características disponibles
+                                                    para agregar.</div>
+                                            @endforelse
 
-                                        @error('featuresToAdd.'.$option->id)
-                                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
-                                        @enderror
+                                            @error('featuresToAdd.' . $option->id)
+                                                <div class="mt-1 text-xs text-red-500">{{ $message }}</div>
+                                            @enderror
 
-                                        <div class="mt-3 flex gap-2">
-                                            <x-button type="submit" name="Agregar seleccionados" positive />
-                                            <x-danger-button type="button" name="Cancelar" flat wire:click="toggleAddFeature(null)" />
-                                        </div>
-                                    </form>
-                                </div>
+                                            <div class="flex gap-2 mt-3">
+                                                <x-button type="submit" name="Agregar seleccionados" positive />
+                                                <x-danger-button type="button" name="Cancelar" flat
+                                                    wire:click="toggleAddFeature(null)" />
+                                            </div>
+                                        </form>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -132,6 +137,72 @@
             @endif
         </div>
     </section>
+
+    {{-- end section --}}
+
+    {{-- second section --}}
+    <section class="bg-white border border-gray-100 rounded-lg shadow-lg">
+
+        <header class="px-6 py-2 border-b border-gray-200">
+            <div class="flex justify-between">
+                <h1 class="text-lg font-semibold text-gray-700">Variantes</h1>
+            </div>
+        </header>
+
+        <div class="p-6">
+            @if ($product->variants->count())
+                {{-- Sección de variantes del producto --}}
+                <ul class="-my-4 divide-y divide-gray-200">
+                    {{-- Iteramos sobre cada variante del producto --}}
+
+                    @foreach ($product->variants as $item)
+                        <li class="flex items-center py-4">
+
+                            <img src="{{ $item->image }}" alt="Imagen de la variante"
+                                class="object-cover object-center w-16 h-16 border border-gray-200 rounded-lg">
+
+                            <p class="flex-1 py-2 divide-x-2">
+
+                                @foreach ($item->features as $feature)
+                                    <span class="px-3">
+                                        {{ $feature->description }}
+                                    </span>
+                                @endforeach
+
+                            </p>
+
+                            <x-link name="Editar" href="{{ route('admin.products.variants', [$product, $item]) }}"
+                                target="_blank" class="ml-auto" />
+
+                        </li>
+                    @endforeach
+
+                </ul>
+
+            @else
+                {{-- Mensaje cuando el producto no tiene variantes configuradas --}}
+                <div class="flex items-center p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                role="alert">
+                <svg class="inline w-4 h-4 shrink-0 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Alerta Informativa!</span> No hay variantes disponibles para este producto.
+                </div>
+            </div>
+
+
+
+            @endif
+        </div>
+
+    </section>
+
+
+
 
     {{-- Modal para agregar una nueva opción al producto --}}
     <x-dialog-modal title="nueva Variante" wire:model.defer="openModal">

@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('sku')->nullable();
             $table->string('image_path')->nullable();
+            $table->integer('stock')
+            ->unsigned() //no permite valores negativos
+            ->default(0);
             $table->foreignId('product_id')
                 ->constrained()
                 ->onDelete('cascade'); // Elimina las variantes asociadas si se elimina el producto
