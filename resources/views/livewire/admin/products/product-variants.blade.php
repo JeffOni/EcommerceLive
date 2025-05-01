@@ -31,13 +31,14 @@
                                 <span class="ml-2 text-sm font-semibold text-gray-500">
                                     {{ $option->name }}
                                 </span>
-
+                                {{-- Colocamos nuevamente el botón junto al nombre de la opción --}}
+                                <livewire:admin.products.add-feature-to-option :option="$option" :product="$product" :key="'add-feature-button-'.$option->id" />
                             </div>
-
 
                             {{-- Valores --}}
 
                             <div class="flex flex-wrap">
+                                {{-- Elimino la referencia anterior del componente que ahora está junto al nombre --}}
 
                                 @foreach ($option->pivot->features as $feature)
                                     <div wire:key="option-{{$option->id}}-feature-{{ $feature['id'] }}">
@@ -84,10 +85,46 @@
 
                                     </div>
                                 @endforeach
+                            </div>
 
+                            {{-- Área para el formulario de agregar features --}}
+                            <div id="feature-form-{{ $option->id }}" class="feature-form-container mt-3">
+                                @if($showAddFeature === $option->id)
+                                <div class="border-t pt-3">
+                                    <form wire:submit.prevent="addFeaturesToOption({{ $option->id }})">
+                                        <div class="mb-2 font-semibold text-gray-700">Selecciona las características a agregar:</div>
+                                        
+                                        @php
+                                            $addedIds = collect($option->pivot->features)->pluck('id')->toArray();
+                                            $availableFeatures = \App\Models\Feature::where('option_id', $option->id)
+                                                ->whereNotIn('id', $addedIds)
+                                                ->get();
+                                        @endphp
+                                        
+                                        @forelse($availableFeatures as $feature)
+                                            <label class="flex items-center space-x-2 mb-2">
+                                                <input type="checkbox" wire:model.defer="featuresToAdd.{{ $option->id }}.{{ $feature->id }}" value="1" class="form-checkbox">
+                                                <span>{{ $feature->description }}</span>
+                                            </label>
+                                        @empty
+                                            <div class="text-gray-400 text-sm">No hay características disponibles para agregar.</div>
+                                        @endforelse
+                                        
+                                        @error('featuresToAdd.'.$option->id)
+                                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                        @enderror
+                                        
+                                        <div class="mt-3 flex gap-2">
+                                            <x-button type="submit" name="Agregar seleccionados" positive />
+                                            <x-danger-button type="button" name="Cancelar" flat wire:click="toggleAddFeature(null)" />
+                                        </div>
+                                    </form>
+                                </div>
+                                @endif
                             </div>
 
                             {{-- Fin Valores --}}
+
                         </div>
                     @endforeach
 

@@ -7,6 +7,7 @@ use App\Models\Option;
 use App\Models\Variant;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 /**
  * Componente Livewire que maneja las variantes de productos en el panel de administración
@@ -44,6 +45,18 @@ class ProductVariants extends Component
             ],
         ],
     ];
+
+    /**
+     * PASO 1: Añadido $showAddFeature para controlar la visibilidad del bloque de agregar features debajo de cada opción.
+     * PASO 2: Añadido $featuresToAdd para almacenar los features seleccionados temporalmente por opción.
+     */
+    public $featuresToAdd = [];
+    public $showAddFeature = null;
+
+    /**
+     * Define los eventos que este componente escucha
+     */
+    protected $listeners = ['featureAdded' => 'handleFeatureAdded'];
 
     /**
      * Método que se ejecuta al montar el componente
@@ -267,6 +280,110 @@ class ProductVariants extends Component
         return $result;
     }
 
+    /**
+     * PASO 3: Método para mostrar/ocultar el bloque de agregar features para una opción específica.
+     */
+    public function toggleAddFeature($optionId)
+    {
+        $this->showAddFeature = $this->showAddFeature === $optionId ? null : $optionId;
+    }
+
+    /**
+     * PASO 4: Método para agregar los features seleccionados a la opción del producto.
+     * - Obtiene los features seleccionados en $featuresToAdd[$optionId].
+     * - Los agrega a la relación pivot del producto para esa opción.
+     * - Limpia la selección y oculta el formulario.
+     */
+    public function addFeaturesToOption($optionId)
+    {
+        // Obtener los IDs de features seleccionados
+        $selected = collect($this->featuresToAdd[$optionId] ?? [])->filter()->keys()->toArray();
+        if (empty($selected)) {
+            $this->addError('featuresToAdd.' . $optionId, 'Selecciona al menos una característica.');
+            return;
+        }
+        // Obtener los features actuales de la opción
+        $optionPivot = $this->product->options->find($optionId)?->pivot;
+        $currentFeatures = $optionPivot ? ($optionPivot->features ?? []) : [];
+        $currentIds = collect($currentFeatures)->pluck('id')->toArray();
+        // Obtener los nuevos features a agregar
+        $newFeatures = \App\Models\Feature::whereIn('id', $selected)->get()->map(function($f) {
+            return [
+                'id' => $f->id,
+                'value' => $f->value,
+                'description' => $f->description,
+            ];
+        })->toArray();
+        // Unir los actuales con los nuevos (sin duplicados)
+        $allFeatures = array_merge($currentFeatures, array_filter($newFeatures, function($f) use ($currentIds) {
+            return !in_array($f['id'], $currentIds);
+        }));
+        // Actualizar la relación pivot
+        $this->product->options()->updateExistingPivot($optionId, [
+            'features' => $allFeatures
+        ]);
+        $this->product = $this->product->fresh();
+        $this->generateVariants();
+        // Limpiar selección y ocultar formulario
+        unset($this->featuresToAdd[$optionId]);
+        $this->showAddFeature = null;
+    }
+
+    /**
+     * Maneja el evento featureAdded que emite el componente AddFeatureToOption
+     * Agrega los features seleccionados a la opción del producto
+     * @param int $optionId ID de la opción
+     * @param array $selectedFeatures IDs de los features seleccionados
+     */
+    #[On('featureAdded')]
+    public function handleFeatureAdded($optionId, $selectedFeatures)
+    {
+        if (empty($selectedFeatures)) {
+            return;
+        }
+
+        // Obtener los features actuales de la opción
+        $optionPivot = $this->product->options->find($optionId)?->pivot;
+        $currentFeatures = $optionPivot ? ($optionPivot->features ?? []) : [];
+        $currentIds = collect($currentFeatures)->pluck('id')->toArray();
+
+        // Obtener los nuevos features a agregar
+        $newFeatures = Feature::whereIn('id', $selectedFeatures)->get()->map(function($f) {
+            return [
+                'id' => $f->id,
+                'value' => $f->value,
+                'description' => $f->description,
+            ];
+        })->toArray();
+
+        // Unir los actuales con los nuevos (sin duplicados)
+        $allFeatures = array_merge($currentFeatures, array_filter($newFeatures, function($f) use ($currentIds) {
+            return !in_array($f['id'], $currentIds);
+        }));
+
+        // Actualizar la relación pivot
+        $this->product->options()->updateExistingPivot($optionId, [
+            'features' => $allFeatures
+        ]);
+
+        // Refrescar el producto y regenerar variantes
+        $this->product = $this->product->fresh();
+        $this->generateVariants();
+
+        // Enviar evento para que otros componentes AddFeatureToOption se actualicen
+        $this->dispatch('hideAddFeatureBlock');
+    }
+
+    /**
+     * Escucha el evento toggle-feature-form emitido por el botón + en el componente AddFeatureToOption
+     * y llama al método toggleAddFeature con el ID de la opción
+     */
+    #[On('toggle-feature-form')]
+    public function handleToggleFeatures($optionId)
+    {
+        // Simplemente llamamos al método toggleAddFeature con el optionId recibido
+        $this->toggleAddFeature($optionId);
+    }
 
     /**
      * Renderiza la vista del componente
