@@ -16,14 +16,22 @@
     ],
 ]">
 
-    <form action="" method="POST">
+    <form action="{{ route('admin.products.variantsUpdate', [$product, $variant]) }}" method="POST"
+        enctype="multipart/form-data">
+
+        {{-- Sección de encabezado --}}
 
         @csrf
+        @method('PUT')
+
+        {{-- Sección de encabezado --}}
+
+        {{-- Muestra el error de validación --}}
+        <x-validation-errors class="mb-4" />
+
 
         <div class="relative mb-6">
 
-            {{-- Muestra el error de validación --}}
-            <x-validation-errors class="mb-4" />
 
             {{-- Input de Nombre --}}
 
@@ -56,6 +64,22 @@
                 <x-label class="mb-2" value="{{ __('Codigo (SKU)') }}" />
                 <x-input class="w-full" placeholder="ingrese el código SKU" name="sku"
                     value="{{ old('sku', $variant->sku) }}" />
+
+            </div>
+
+            <div class="mb-4">
+
+                {{-- Input de Nombre --}}
+                <x-label class="mb-2" value="{{ __('Stock') }}" />
+                <x-input class="w-full" placeholder="ingrese el Stock" type="number" name="stock"
+                    value="{{ old('stock', $variant->stock) }}" />
+
+            </div>
+
+            <div class="flex justify-end">
+
+                {{-- Botón de Guardar --}}
+                <x-button type="submit" name="Actualizar" positive />
 
             </div>
 

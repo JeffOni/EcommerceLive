@@ -238,6 +238,7 @@ class ProductVariants extends Component
 
     /**
      * Elimina completamente una opción del producto
+     * y sus variantes asociadas
      *
      * @param int $option_id ID de la opción a eliminar
      */
@@ -249,8 +250,18 @@ class ProductVariants extends Component
         // Refresca el modelo para obtener los cambios
         $this->product = $this->product->fresh();
 
-        // Regenera las variantes del producto para reflejar el cambio
-        $this->generateVariants();
+        // Si quedan opciones, regenera las variantes del producto
+        if (!$this->product->options->isEmpty()) {
+            $this->generateVariants();
+        } else {
+            // Si no quedan opciones, elimina todas las variantes directamente
+            $this->product->variants()->delete();
+
+            // Envía una notificación al usuario
+            $this->dispatch('variantGenerated', [
+                'message' => 'Se han eliminado todas las variantes ya que el producto no tiene opciones.',
+            ]);
+        }
     }
 
     /**
@@ -322,7 +333,13 @@ class ProductVariants extends Component
     {
         // Verifica si el producto tiene opciones
         if ($this->product->options->isEmpty()) {
-            $this->addError('variants.option_id', 'El producto no tiene opciones. Agrega opciones antes de generar variantes.');
+            // Elimina las variantes existentes si no hay opciones
+            $this->product->variants()->delete();
+
+            // Notifica al usuario con un mensaje más descriptivo
+            $this->dispatch('variantGenerated', [
+                'message' => 'El producto no tiene opciones. Se han eliminado todas las variantes existentes.',
+            ]);
             return;
         }
 

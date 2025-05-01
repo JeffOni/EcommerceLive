@@ -99,4 +99,43 @@ class ProductController extends Controller
 
         return view('admin.products.variants', compact('product', 'variant')); //retorna la vista de variantes y le pasa el producto y la variante
     }
+
+    public function variantsUpdate(Request $request, Product $product, Variant $variant)
+    {
+        //actualiza la variante de un producto
+        //se pasa el producto para que se pueda usar en la vista
+        //se pasa la variante para que se pueda usar en la vista
+        //se puede usar el metodo load para cargar las relaciones de la variante
+        $request->validate([
+            'image' => 'nullable|image|max:2048',
+            'sku' => 'required|string|max:255',
+            'stock' => 'required|integer|min:0',
+        ]); //valida los datos del request
+
+        // Inicializar el array $data con los campos del formulario
+        $data = [
+            'sku' => $request->sku,
+            'stock' => $request->stock,
+            // Agrega aquí otros campos que necesites actualizar
+        ];
+
+        // Si hay una imagen nueva, procesarla y agregarla a $data
+        if ($request->image) {
+            if ($variant->image_path) { //si la variante ya tenía una imagen
+                Storage::delete($variant->image_path); //elimina la imagen anterior
+            }
+            $data['image_path'] = $request->image->store('products/variants'); //almacena la nueva imagen y guarda la ruta
+        }
+
+        $variant->update($data); //actualiza la variante con los datos
+
+        session()->flash('swal', [ //se utiliza el metodo session para mostrar una alerta de SweetAlert
+            'icon' => 'success',
+            'title' => '¡Éxito!',
+            'text' => 'La variante se ha actualizado correctamente.',
+            'timeout' => 3000
+        ]);
+
+        return redirect()->route('admin.products.variants', [$product, $variant]); //redirecciona a la vista de variantes
+    }
 }

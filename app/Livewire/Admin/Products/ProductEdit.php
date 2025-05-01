@@ -93,7 +93,7 @@ class ProductEdit extends Component
             'productEdit.name' => 'required|max:255', //el campo name es requerido
             'productEdit.description' => 'nullable', //el campo description puede ser nulo
             'productEdit.price' => 'required|numeric|min:0', //el campo price es requerido y debe ser numerico
-            'productEdit.stock' => 'required|numeric|min:0', //el campo stock es requerido y debe ser entero
+            'productEdit.stock' => 'required|integer|min:0', //el campo stock es requerido y debe ser entero
             'productEdit.subcategory_id' => 'required|exists:subcategories,id', //el campo subcategory_id es requerido
         ], [], [
             'productEdit.sku' => 'SKU',
