@@ -163,6 +163,13 @@ class ProductVariants extends Component
 
     public function save()
     {
+        // Validación para evitar features duplicados
+        $featureIds = array_column($this->variants['features'], 'id');
+        if (count($featureIds) !== count(array_unique($featureIds))) {
+            $this->addError('variants.features', 'No se permiten características duplicadas.');
+            return;
+        }
+
         $this->validate([
             'variants.option_id' => 'required|exists:options,id',
             'variants.features' => 'required|array|min:1',
@@ -188,12 +195,20 @@ class ProductVariants extends Component
 
         $this->generateVariants(); // Genera las variantes del producto
 
-        // Reinicia el array de variantes y cierra el modal
-
+        // Reinicia el array de variantes, cierra el modal y limpia errores
         $this->reset([
             'openModal',
             'variants',
         ]);
+        $this->resetErrorBag();
+    }
+
+    // Limpia errores al abrir/cerrar el modal
+    public function updatedOpenModal($value)
+    {
+        if (!$value) {
+            $this->resetErrorBag();
+        }
     }
 
     public function generateVariants()
