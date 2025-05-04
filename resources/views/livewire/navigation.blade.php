@@ -113,7 +113,7 @@
 
         <div class="flex">
 
-            <div class="h-screen bg-white shadow-lg w-72">
+            <div class="w-screen h-screen transition-all duration-300 bg-white shadow-lg md:w-80">
 
                 <div class="px-4 py-3 font-semibold text-white bg-blue-400">
 
@@ -137,7 +137,7 @@
                     <ul>
 
                         @foreach ($families as $family)
-                            <li
+                            <li wire:mouseover="$set('familyId', {{ $family->id }})"
                                 class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
                                 <a href="/"
                                     class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
@@ -156,8 +156,56 @@
 
 
             </div>
+            {{-- second part of sidebar --}}
 
-            <div>
+            <div class="w-80 xl:w-[57rem] pt-[3.25rem] hidden md:block">
+
+                <div class="h-[calc(100vh-3.25rem)] overflow-y-auto bg-white shadow-lg px-6 py-8">
+                    {{-- eheader de families --}}
+                    <div class="flex items-center justify-between mb-8">
+                        <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
+                            {{-- Icono de la familia --}}
+                            {{ $this->familyName }}
+                        </p>
+
+                        <x-link name="Ver Todo"/>
+                    </div>
+
+                    <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
+
+                        {{-- categories --}}
+
+                        @foreach ($this->categories as $category)
+                            <li wire:mouseover="">
+                                <a href="/"
+                                    class="flex items-center justify-between text-blue-600 ">
+
+                                    {{-- Icono de la categoria --}}
+                                    {{ $category->name }}
+                                </a>
+
+                                {{-- subcategories --}}
+
+                                <ul class="mt-4 space-y-2">
+
+                                    @foreach ($category->subcategories as $subcategory)
+                                        <li>
+                                            <a href="/"
+                                                class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+
+                                                {{-- Icono de la subcategoria --}}
+                                                {{ $subcategory->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </li>
+                        @endforeach
+
+                    </ul>
+
+                </div>
 
             </div>
 
