@@ -72,8 +72,8 @@ return [
     | and the user is authenticated. You are free to change this value.
     |
     */
-
-    'home' => '/dashboard',
+    //variable modificada originalmente era 'home' => '/dashboard',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------

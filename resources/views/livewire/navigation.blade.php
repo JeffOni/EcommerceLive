@@ -1,4 +1,12 @@
-<div>
+<div x-data="{ sidebarOpen: false }" x-on:click.away="sidebarOpen = false" x-on:keydown.escape.window="sidebarOpen = false"
+    x-bind:class="{ 'overflow-hidden': sidebarOpen }">
+
+    {{-- Este componente representa un contenedor que puede ser utilizado para agrupar otros elementos --}}
+    {{-- Se utiliza para mantener la consistencia de diseño y facilitar el uso de clases comunes --}}
+    {{-- Este componente representa un campo de entrada de texto --}}
+    {{-- Se utiliza para buscar productos en la tienda --}}
+    {{-- El modelo está enlazado a la propiedad search del componente Livewire --}}
+    {{-- Se utilizan eventos para manejar el comportamiento del campo de búsqueda --}}
     {{-- Because she competes with no one, no one can compete with her. --}}
     {{-- header --}}
 
@@ -63,13 +71,77 @@
 
                 <div class="flex items-center space-x-4">
 
+                    <x-dropdown>
+                        <x-slot name="trigger">
+
+                            @auth
+                                <button
+                                    class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
+                                    <img class="object-cover rounded-full size-8"
+                                        src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                </button>
+                            @else
+                                <button
+                                    class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
+                                    <i class="text-white fas fa-user"></i>
+                                </button>
+                            @endauth
+
+                        </x-slot>
+                        <x-slot name="content">
+
+                            @guest
+                                <div class="px-4 py-2">
+
+                                    <div class="flex justify-center">
+
+                                        <x-link href="{{ route('login') }}" name="Iniciar Sesión" />
+
+                                    </div>
+
+                                    <p class="mt-4 text-sm text-center text-gray-500">
+                                        ¿No tienes cuenta? <a href="{{ route('register') }}"
+                                            class="font-semibold text-blue-600 hover:text-blue-500 hover:underline">Regístrate</a>
+
+                                    </p>
+
+                                </div>
+                            @else
+                                <!-- Account Management -->
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Manage Account') }}
+                                </div>
+
+                                <x-dropdown-link href="{{ route('profile.show') }}">
+                                    {{ __('Profile') }}
+                                </x-dropdown-link>
+
+                                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                        {{ __('API Tokens') }}
+                                    </x-dropdown-link>
+                                @endif
+
+                                <div class="border-t border-gray-200 dark:border-gray-600"></div>
+
+                                <!-- Authentication -->
+                                <form method="POST" action="{{ route('logout') }}" x-data>
+                                    @csrf
+
+                                    <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                        {{ __('Log Out') }}
+                                    </x-dropdown-link>
+                                </form>
+
+                            @endguest
+
+                        </x-slot>
+
+                    </x-dropdown>
                     {{-- Este componente representa un botón --}}
                     {{-- Se utiliza para mostrar el icono de usuario --}}
                     {{-- El icono es un icono de Font Awesome --}}
-                    <button
-                        class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
-                        <i class="text-white fas fa-user"></i>
-                    </button>
+
 
                     <button
                         class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
@@ -104,115 +176,79 @@
 
     </header>
 
-    {{-- Sidebar  --}}
-    <div class="fixed inset-0 left-0 z-10 flex items-start justify-end w-full h-full bg-gray-900/50"></div>
-
-    {{-- sidebar content --}}
-
-    <div class="fixed inset-0 top-0 left-0 z-20">
-
-        <div class="flex">
-
-            <div class="w-screen h-screen transition-all duration-300 bg-white shadow-lg md:w-80">
-
-                <div class="px-4 py-3 font-semibold text-white bg-blue-400">
-
-                    <div class="flex items-center justify-between px-2">
-
-                        {{-- Logo de la tienda --}}
-
-                        <h1 class="text-2xl font-bold">Hola Peresona</h1>
-
-                        <button>
-                            <i class="p-2 text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times"
-                                x-on:click="sidebarOpen = !sidebarOpen"></i>
-                        </button>
-
+    {{-- Sidebar y fondo oscuro juntos para capturar el click correctamente --}}
+    {{--
+        Cambios realizados para solucionar el cierre del sidebar al hacer clic en el fondo oscuro:
+        - Se reestructuró el contenedor del sidebar y el fondo oscuro para que ambos estén dentro de un mismo div fixed.
+        - El fondo oscuro (div con bg-gray-900/50) tiene z-index:40 para permitir que reciba clics en toda su área.
+        - Se usa pointer-events-none en el contenedor flex y pointer-events-auto solo en los elementos interactivos.
+        - El evento x-on:click="sidebarOpen = false" en el fondo oscuro permite cerrar el sidebar al hacer clic fuera de él.
+    --}}
+    <template x-if="sidebarOpen">
+        <div class="fixed inset-0 z-40 flex">
+            <!-- Fondo oscuro: cubre toda la pantalla y cierra el sidebar al hacer clic -->
+            <div class="absolute inset-0 bg-gray-900/50" x-on:click="sidebarOpen = false"></div>
+            <!-- Contenedor flex para sidebar y panel derecho -->
+            <div class="relative z-50 flex w-full h-full pointer-events-none">
+                <!-- Sidebar principal: pointer-events-auto para permitir interacción -->
+                <div
+                    class="w-screen h-screen transition-all duration-300 bg-white shadow-lg pointer-events-auto md:w-80">
+                    <div class="px-4 py-3 font-semibold text-white bg-blue-400">
+                        <div class="flex items-center justify-between px-2">
+                            <h1 class="text-2xl font-bold">Hola Peresona</h1>
+                            <button x-on:click="sidebarOpen = !sidebarOpen">
+                                <i
+                                    class="p-2 text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
-
-                </div>
-
-                <div class="h-[calc(100vh-3.25rem)] overflow-y-auto">
-
-                    <ul>
-
-                        @foreach ($families as $family)
-                            <li wire:mouseover="$set('familyId', {{ $family->id }})"
-                                class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
-                                <a href="/"
-                                    class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
-
-                                    {{-- Icono de la familia --}}
-                                    <span>{{ $family->name }}</span>
-                                    <i class="fa-solid fa-angle-right"></i>
-
-                                </a>
-                            </li>
-                        @endforeach
-
-                    </ul>
-
-                </div>
-
-
-            </div>
-            {{-- second part of sidebar --}}
-
-            <div class="w-80 xl:w-[57rem] pt-[3.25rem] hidden md:block">
-
-                <div class="h-[calc(100vh-3.25rem)] overflow-y-auto bg-white shadow-lg px-6 py-8">
-                    {{-- eheader de families --}}
-                    <div class="flex items-center justify-between mb-8">
-                        <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
-                            {{-- Icono de la familia --}}
-                            {{ $this->familyName }}
-                        </p>
-
-                        <x-link name="Ver Todo"/>
+                    <div class="h-[calc(100vh-3.25rem)] overflow-y-auto">
+                        <ul>
+                            @foreach ($families as $family)
+                                <li wire:mouseover="$set('familyId', {{ $family->id }})"
+                                    class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
+                                    <a href="/"
+                                        class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+                                        <span>{{ $family->name }}</span>
+                                        <i class="fa-solid fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-
-                    <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
-
-                        {{-- categories --}}
-
-                        @foreach ($this->categories as $category)
-                            <li wire:mouseover="">
-                                <a href="/"
-                                    class="flex items-center justify-between text-blue-600 ">
-
-                                    {{-- Icono de la categoria --}}
-                                    {{ $category->name }}
-                                </a>
-
-                                {{-- subcategories --}}
-
-                                <ul class="mt-4 space-y-2">
-
-                                    @foreach ($category->subcategories as $subcategory)
-                                        <li>
-                                            <a href="/"
-                                                class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
-
-                                                {{-- Icono de la subcategoria --}}
-                                                {{ $subcategory->name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-
-                                </ul>
-                            </li>
-                        @endforeach
-
-                    </ul>
-
                 </div>
-
+                <!-- Panel derecho de categorías y subcategorías: pointer-events-auto para permitir interacción -->
+                <div class="w-80 xl:w-[57rem] pt-[3.25rem] hidden md:block z-30 pointer-events-auto">
+                    <div class="h-[calc(100vh-3.25rem)] overflow-y-auto bg-white shadow-lg px-6 py-8">
+                        <div class="flex items-center justify-between mb-8">
+                            <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
+                                {{ $this->familyName }}
+                            </p>
+                            <x-link name="Ver Todo" />
+                        </div>
+                        <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
+                            @foreach ($this->categories as $category)
+                                <li wire:mouseover="">
+                                    <a href="/" class="flex items-center justify-between text-blue-600 ">
+                                        {{ $category->name }}
+                                    </a>
+                                    <ul class="mt-4 space-y-2">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <li>
+                                                <a href="/"
+                                                    class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+                                                    {{ $subcategory->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
-
         </div>
-
-    </div>
-
-
+    </template>
 
 </div>
