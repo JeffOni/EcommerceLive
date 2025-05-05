@@ -39,6 +39,12 @@
             'route' => route('admin.products.index'),
             'active' => request()->routeIs('admin.products.*'),
         ],
+        [
+            'Portadas',
+            'icon' => 'fa-solid fa-image',
+            'route' => route('admin.covers.index'),
+            'active' => request()->routeIs('admin.covers.*'),
+        ]
         // [
         //     'name' => 'Configuración',
         //     'icon' => 'fa-solid fa-gear',
