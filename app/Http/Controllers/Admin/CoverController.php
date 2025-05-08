@@ -14,6 +14,7 @@ class CoverController extends Controller
     public function index()
     {
         //
+        return view ('admin.covers.index');
     }
 
     /**
@@ -22,6 +23,7 @@ class CoverController extends Controller
     public function create()
     {
         //
+        return view ('admin.covers.create');
     }
 
     /**
@@ -46,6 +48,7 @@ class CoverController extends Controller
     public function edit(Cover $cover)
     {
         //
+        return view ('admin.covers.edit', compact('cover'));
     }
 
     /**
