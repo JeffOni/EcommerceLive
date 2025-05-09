@@ -15,7 +15,7 @@ class CoverController extends Controller
     public function index()
     {
         //
-        return view ('admin.covers.index');
+        return view('admin.covers.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class CoverController extends Controller
     public function create()
     {
         //
-        return view ('admin.covers.create');
+        return view('admin.covers.create');
     }
 
     /**
@@ -33,7 +33,7 @@ class CoverController extends Controller
     public function store(Request $request)
     {
         //
-       $data = $request->validate([
+        $data = $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
             // Título: regla de validación para el título de la portada
@@ -50,17 +50,17 @@ class CoverController extends Controller
             // Fecha de fin: cuando la portada dejará de mostrarse
             // - required: campo obligatorio
             // - date: debe ser un formato de fecha válido
-            // - after_or_equal:star_at: debe ser igual o posterior a la fecha de inicio
-            'end_at' => 'nullable|date|after_or_equal:star_at',
+            // - after_or_equal:start_at: debe ser igual o posterior a la fecha de inicio
+            'end_at' => 'nullable|date|after_or_equal:start_at',
 
             // Estado de la portada (activa o inactiva)
             // - required: campo obligatorio
             // - boolean: debe ser un valor booleano (true/false, 1/0)
             'is_active' => 'required|boolean',
-        ],[
+        ], [
             // Array de mensajes de error personalizados (vacío en este caso)
             // Laravel usará los mensajes de error predeterminados
-        ],[
+        ], [
             // Array de nombres personalizados para los campos
             // Esto mejora la legibilidad de los mensajes de error
             'image' => 'Imagen',
@@ -70,11 +70,9 @@ class CoverController extends Controller
             'is_active' => 'Estado',
         ]);
 
-        // Almacena la imagen en el sistema de archivos
-        // - 'covers': es la carpeta donde se guardará la imagen dentro del almacenamiento
-        // - $data['image']: contiene el archivo de imagen enviado por el usuario
-        // - El resultado es la ruta relativa donde se guardó la imagen
-        $data['image_path'] = Storage::put('covers', $data['image']);
+        // Asegura que la carpeta covers exista antes de guardar la imagen
+        Storage::disk('public')->makeDirectory('covers');
+        $data['image_path'] = $request->file('image')->store('covers', 'public');
 
         // Crea el registro de la portada en la base de datos con los datos validados
         // El método create inserta los datos y devuelve el modelo creado
@@ -108,7 +106,7 @@ class CoverController extends Controller
     public function edit(Cover $cover)
     {
         //
-        return view ('admin.covers.edit', compact('cover'));
+        return view('admin.covers.edit', compact('cover'));
     }
 
     /**
@@ -126,9 +124,9 @@ class CoverController extends Controller
             'start_at' => 'required|date',
             'end_at' => 'nullable|date|after_or_equal:start_at',
             'is_active' => 'required|boolean',
-        ],[
+        ], [
             // Mensajes de error personalizados (vacío)
-        ],[
+        ], [
             // Alias para los nombres de campos en los mensajes de error
             'image' => 'Imagen',
             'title' => 'Título',
@@ -139,13 +137,14 @@ class CoverController extends Controller
 
         // Verificar si se ha enviado una nueva imagen
         if ($request->hasFile('image')) {
+            Storage::disk('public')->makeDirectory('covers');
             // Eliminar la imagen anterior del sistema de archivos
             // Esto evita acumular archivos no utilizados y libera espacio de almacenamiento
             Storage::delete($cover->image_path);
 
             // Almacenar la nueva imagen en el sistema de archivos
             // Se guarda en la carpeta 'covers' y se obtiene la ruta relativa
-            $data['image_path'] = Storage::put('covers', $data['image']);
+            $data['image_path'] = $request->file('image')->store('covers', 'public');
         }
 
         // Actualizar el modelo con los datos validados

@@ -121,10 +121,12 @@ class ProductController extends Controller
 
         // Si hay una imagen nueva, procesarla y agregarla a $data
         if ($request->image) {
+            // Asegura que la carpeta exista antes de guardar la imagen
+            Storage::disk('public')->makeDirectory('products/variants');
             if ($variant->image_path) { //si la variante ya tenía una imagen
                 Storage::delete($variant->image_path); //elimina la imagen anterior
             }
-            $data['image_path'] = $request->image->store('products/variants'); //almacena la nueva imagen y guarda la ruta
+            $data['image_path'] = $request->image->store('products/variants', 'public'); //almacena la nueva imagen y guarda la ruta
         }
 
         $variant->update($data); //actualiza la variante con los datos
