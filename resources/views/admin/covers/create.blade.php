@@ -70,7 +70,7 @@
             {{-- Este campo define cuándo la portada comenzará a mostrarse en el sitio --}}
             {{-- Valor predeterminado: fecha actual --}}
             <div class="mb-4">
-                <x-label class="mb-2" value="{{ __('Fecha de Inicio (Opcional)') }}" />
+                <x-label class="mb-2" value="{{ __('Fecha de Inicio ') }}" />
                 <x-input class="w-full" type="date" name="start_at"
                     value="{{ old('start_at', now()->format('Y-m-d')) }}" />
             </div>
@@ -79,7 +79,7 @@
             {{-- Este campo define cuándo la portada dejará de mostrarse en el sitio --}}
             {{-- Valor predeterminado: un mes después de la fecha actual --}}
             <div class="mb-4">
-                <x-label class="mb-2" value="{{ __('Fecha de Fin') }}" />
+                <x-label class="mb-2" value="{{ __('Fecha de Fin (Opcional)') }}" />
                 <x-input class="w-full" type="date" name="end_at" value="{{ old('end_at') }}" />
             </div>
 
@@ -93,6 +93,7 @@
                 <label>
                     <x-input type="radio" name="is_active" value="0" />
                     <span class="ml-2">Desactivar Portada</span>
+                </label>
             </div>
 
             {{-- Botón de envío del formulario --}}

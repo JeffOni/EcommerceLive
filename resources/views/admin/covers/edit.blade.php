@@ -75,35 +75,36 @@
             {{-- Este campo define cuándo la portada comenzará a mostrarse en el sitio --}}
             {{-- Valor predeterminado: fecha actual --}}
             <div class="mb-4">
-                <x-label class="mb-2" value="{{ __('Fecha de Inicio (Opcional)') }}" />
+                <x-label class="mb-2" value="{{ __('Fecha de Inicio ') }}" />
                 <x-input class="w-full" type="date" name="start_at"
-                    value="{{ old('start_at', $cover->start_at) }}" />
+                    value="{{ old('start_at', $cover->start_at->format('Y-m-d')) }}" />
             </div>
 
             {{-- Input de Fecha de Fin --}}
             {{-- Este campo define cuándo la portada dejará de mostrarse en el sitio --}}
             {{-- Valor predeterminado: un mes después de la fecha actual --}}
             <div class="mb-4">
-                <x-label class="mb-2" value="{{ __('Fecha de Fin') }}" />
-                <x-input class="w-full" type="date" name="end_at" value="{{ old('end_at') , $cover->end_at }}" />
+                <x-label class="mb-2" value="{{ __('Fecha de Fin (Opcional)') }}" />
+                <x-input class="w-full" type="date" name="end_at" value="{{ old('end_at', $cover->end_at ? $cover->end_at->format('Y-m-d') : '' )   }}" />
             </div>
 
             <div class="flex mb-4 space-x-2">
                 {{-- Input de URL de la Portada --}}
                 {{-- Este campo permite al usuario introducir una URL a la que se redirigirá al hacer clic en la portada --}}
-                <label>
-                    <x-input type="radio" name="is_active" value="1" checked />
+                <label class="flex items-center">
+                    <input type="radio" name="is_active" value="1" class="form-radio" {{ $cover->is_active == 1 ? 'checked' : '' }} />
                     <span class="ml-2">Activar Portada</span>
                 </label>
-                <label>
-                    <x-input type="radio" name="is_active" value="0" />
+                <label class="flex items-center">
+                    <input type="radio" name="is_active" value="0" class="form-radio" {{ $cover->is_active == 0 ? 'checked' : '' }} />
                     <span class="ml-2">Desactivar Portada</span>
+                </label>
             </div>
 
             {{-- Botón de envío del formulario --}}
             {{-- Alineado a la derecha mediante Flexbox --}}
             <div class="flex justify-end">
-                <x-button type="submit" name="Crear Portada" />
+                <x-button type="submit" name="Actualizar Portada" />
             </div>
         </div>
     </form>
