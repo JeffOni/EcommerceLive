@@ -19,11 +19,9 @@
         {{-- Cada portada se representa como un elemento de lista --}}
         {{-- Se utiliza el componente "cover-card" para mostrar la información de la portada --}}
         @foreach ($covers as $cover)
-            <li class="overflow-hidden bg-white rounded-lg shadow-md lg:flex"
-            data-id="{{ $cover->id }}"
-            >
+            <li class="overflow-hidden bg-white rounded-lg shadow-md cursor-move lg:flex" data-id="{{ $cover->id }}">
 
-                <img src="{{ $cover->image }}" class="lg:w-52 w-full aspect-[3/1] object-cover object-center "
+                <img src="{{ $cover->image }}" class="lg:w-52 w-full aspect-[3/1]  object-center "
                     alt="Imagen de Portada">
 
                 <div class="p-4 space-y-3 lg:space-y-0 lg:flex lg:items-center lg:justify-between lg:flex-1">
@@ -68,18 +66,29 @@
         {{-- script de funcion sortable --}}
         <script>
             new Sortable(document.getElementById('covers-list'), {
-                animation: 150,
-                ghostClass: 'bg-blue-200',
+                animation: 150, // Duración de la animación al mover elementos
+                ghostClass: 'bg-blue-200', // Clase para el elemento fantasma mientras se arrastra
                 store: {
-                    // Guardar el orden de los elementos en el almacenamiento local
+                    // Guardar el orden de los elementos en el almacenamiento local y enviar al backend
                     set: function(sortable) {
-                        const order = sortable.toArray();
-                        localStorage.setItem('covers-order', order.join(','));
+                        // Genera un array de objetos {id, order} según el nuevo orden
+                        const sorts = sortable.toArray().map((id, index) => ({ id: id, order: index + 1 }));
+                        // Guarda el orden en localStorage para persistencia en el frontend
+                        localStorage.setItem('covers-order', JSON.stringify(sorts));
+                        // Envía el nuevo orden al backend mediante una petición POST
+                        axios.post("{{ route('api.covers-list') }}", {
+                            sorts: sorts
+                        }).catch((error) => {
+                            // Muestra un error en consola si la petición falla
+                            console.error('Error al guardar el orden:', error);
+                        });
                     },
                     // Recuperar el orden de los elementos del almacenamiento local
                     get: function(sortable) {
-                        const order = localStorage.getItem('covers-order');
-                        return order ? order.split(',') : [];
+                        // Obtiene el array de objetos guardado en localStorage
+                        const sorts = localStorage.getItem('covers-order');
+                        // Devuelve solo los IDs para que Sortable pueda reconstruir el orden
+                        return sorts ? JSON.parse(sorts).map(obj => obj.id) : [];
                     }
                 },
             });
