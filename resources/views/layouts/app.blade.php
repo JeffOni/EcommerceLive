@@ -45,6 +45,10 @@
         <main>
             {{ $slot }}
         </main>
+        {{-- footer --}}
+        <div class="mt-12">
+            @include('layouts.partials.app.footer')
+        </div>
     </div>
 
     @stack('modals')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cover;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
@@ -22,8 +23,13 @@ class WelcomeController extends Controller
             })
             ->orderBy('order')
             ->get();
+
+            $lastProducts = Product::orderBy('created_at', 'desc')
+            ->with('subcategory.category.family')
+            ->take(12)
+            ->get();
         // Aquí puedes agregar la lógica para mostrar la vista de bienvenida
         // Por ejemplo, podrías cargar productos destacados o cualquier otra información que desees mostrar.
-        return view('welcome', compact('covers'));
+        return view('welcome', compact('covers', 'lastProducts'));
     }
 }

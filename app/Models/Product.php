@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Modelo Product: Representa los productos disponibles en el ecommerce
@@ -30,6 +32,13 @@ class Product extends Model
         'stock',        // Cantidad disponible en inventario
         'subcategory_id' // ID de la subcategoría a la que pertenece
     ];
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Storage::url($this->image_path),
+        );
+    }
 
 
     /**
@@ -76,7 +85,7 @@ class Product extends Model
         return $this->belongsToMany(Option::class)
             ->using(OptionProduct::class) // Usa la tabla pivote OptionProduct para manejar la relación
             ->withPivot('features')       // Incluye el campo 'features' de la tabla pivote en los resultados
-                                         // 'features' contiene las características específicas disponibles
+            // 'features' contiene las características específicas disponibles
             ->withTimestamps();           // Incluye los campos created_at y updated_at en la tabla pivote
     }
 }
