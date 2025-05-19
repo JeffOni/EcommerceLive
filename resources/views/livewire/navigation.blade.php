@@ -207,7 +207,7 @@
                             @foreach ($families as $family)
                                 <li wire:mouseover="$set('familyId', {{ $family->id }})"
                                     class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
-                                    <a href="/"
+                                    <a href="{{ route('families.show', $family) }}"
                                         class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
                                         <span>{{ $family->name }}</span>
                                         <i class="fa-solid fa-angle-right"></i>
@@ -224,7 +224,7 @@
                             <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
                                 {{ $this->familyName }}
                             </p>
-                            <x-link name="Ver Todo" />
+                            <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
                         </div>
                         <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
                             @foreach ($this->categories as $category)
