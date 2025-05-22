@@ -44,23 +44,13 @@
                 {{-- searcher --}}
 
                 <div class="flex-1 hidden md:block">
-
-                    {{-- Este componente representa un contenedor que puede ser utilizado para agrupar otros elementos --}}
-                    {{-- Se utiliza para mantener la consistencia de diseño y facilitar el uso de clases comunes --}}
-                    {{-- Este componente representa un campo de entrada de texto --}}
-                    {{-- Se utiliza para buscar productos en la tienda --}}
-                    {{-- El modelo está enlazado a la propiedad search del componente Livewire --}}
-                    {{-- Se utilizan eventos para manejar el comportamiento del campo de búsqueda --}}
                     <div class="relative">
-                        <x-input
+                        <input
                             class="w-full pl-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                            type="text" placeholder="Buscar productos" wire:model.debounce.500ms="search"
-                            wire:keydown.enter="search" wire:keydown.escape="clearSearch"
-                            wire:keydown.backspace="clearSearch" wire:keydown.delete="clearSearch"
-                            wire:keydown.tab="clearSearch" wire:keydown.shift.tab="clearSearch"
-                            wire:keydown.arrowup="clearSearch" wire:keydown.arrowdown="clearSearch"
-                            wire:keydown.home="clearSearch" wire:keydown.end="clearSearch"
-                            wire:keydown.pageup="clearSearch" wire:keydown.pagedown="clearSearch" />
+                            type="text" placeholder="Buscar productos"
+                            oninput="search(this.value)"
+                            onkeydown="if(event.key==='Escape'){this.value='';search('');}"
+                        />
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="text-gray-500 fas fa-search"></i>
                         </div>
@@ -159,13 +149,9 @@
                 <div class="relative">
                     <x-input
                         class="w-full pl-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                        type="text" placeholder="Buscar productos" wire:model.debounce.500ms="search"
-                        wire:keydown.enter="search" wire:keydown.escape="clearSearch"
-                        wire:keydown.backspace="clearSearch" wire:keydown.delete="clearSearch"
-                        wire:keydown.tab="clearSearch" wire:keydown.shift.tab="clearSearch"
-                        wire:keydown.arrowup="clearSearch" wire:keydown.arrowdown="clearSearch"
-                        wire:keydown.home="clearSearch" wire:keydown.end="clearSearch" wire:keydown.pageup="clearSearch"
-                        wire:keydown.pagedown="clearSearch" />
+                        type="text" placeholder="Buscar productos"
+                        wire:model.debounce.500ms="search"
+                        wire:keydown.escape="clearSearch" />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <i class="text-gray-500 fas fa-search"></i>
                     </div>
@@ -229,13 +215,13 @@
                         <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
                             @foreach ($this->categories as $category)
                                 <li wire:mouseover="">
-                                    <a href="/" class="flex items-center justify-between text-blue-600 ">
+                                    <a href="{{ route('categories.show', $category) }}" class="flex items-center justify-between text-blue-600 ">
                                         {{ $category->name }}
                                     </a>
                                     <ul class="mt-4 space-y-2">
                                         @foreach ($category->subcategories as $subcategory)
                                             <li>
-                                                <a href="/"
+                                                <a href="{{ route('subcategories.show', $subcategory) }}"
                                                     class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
                                                     {{ $subcategory->name }}
                                                 </a>
@@ -251,4 +237,17 @@
         </div>
     </template>
 
+    <div>
+
+    </div>
+    {{-- evento js por si se quiere usar un buscador con javascript y no con livewire --}}
+    @push('js')
+        <script>
+            function search(value) {
+                Livewire.dispatch('search', {
+                    search: value
+                });
+            }
+        </script>
+    @endpush
 </div>

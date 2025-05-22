@@ -66,34 +66,41 @@
             </div>
 
             <hr class="my-4 border-gray-300">
+            @if (count($products))
 
-            <div
-                class="grid grid-cols-1 gap-6 transition-all duration-300 ease-out sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                @foreach ($products as $product)
-                    <article class="flex flex-col h-full overflow-hidden bg-white rounded-md shadow-md">
-                        <div class="relative">
-                            <img src="{{ asset($product->image) }}" alt="Product Image"
-                                class="object-center w-full h-48">
-                            <div class="absolute top-0 left-0 px-2 py-1 text-white bg-blue-500 rounded-br-md">
-                                {{ $product->name }}
+                <div
+                    class="grid grid-cols-1 gap-6 transition-all duration-300 ease-out sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    @foreach ($products as $product)
+                        <article class="flex flex-col h-full overflow-hidden bg-white rounded-md shadow-md">
+                            <div class="relative">
+                                <img src="{{ asset($product->image) }}" alt="Product Image"
+                                    class="object-center w-full h-48">
+                                <div class="absolute top-0 left-0 px-2 py-1 text-white bg-blue-500 rounded-br-md">
+                                    {{ $product->name }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex flex-col flex-1 p-4">
-                            <h2 class="text-lg font-semibold line-clamp-2 min-h-[56px] text-gray-800">
-                                {{ $product->name }}</h2>
-                            {{-- <p class="mt-2 text-gray-600">{{ $product->description }}</p> --}}
-                            <p class="mt-4 text-xl font-bold text-gray-800">${{ $product->price }}</p>
-                            <x-link class="block w-full mt-auto text-center" name="Ver Mas"></x-link>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
+                            <div class="flex flex-col flex-1 p-4">
+                                <h2 class="text-lg font-semibold line-clamp-2 min-h-[56px] text-gray-800">
+                                    {{ $product->name }}</h2>
+                                {{-- <p class="mt-2 text-gray-600">{{ $product->description }}</p> --}}
+                                <p class="mt-4 text-xl font-bold text-gray-800">${{ $product->price }}</p>
+                                <x-link class="block w-full mt-auto text-center" name="Ver Mas"></x-link>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
 
-            {{-- Paginación --}}
+                {{-- Paginación --}}
 
-            <div class="mt-8">
-                {{ $products->links() }} {{-- Renderiza los enlaces de paginación --}}
-            </div>
+                <div class="mt-8">
+                    {{ $products->links() }} {{-- Renderiza los enlaces de paginación --}}
+                </div>
+            @else
+                <div class="flex items-center justify-center h-64">
+                    <p class="text-lg font-semibold text-gray-500">No hay productos disponibles.</p>
+                </div>
+            @endif
+
         </div>
     </x-container>
 </div>

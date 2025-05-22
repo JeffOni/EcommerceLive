@@ -1,7 +1,8 @@
 <?php
 
-
-use App\Http\Controllers\FamilyController as ControllersFamilyController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\Product;
 use App\Models\Variant;
@@ -24,6 +25,14 @@ Route::middleware([
 // Por ejemplo, si tienes una ruta como /families/{family}/products/{product},
 // scopeBindings() asegura que el modelo {product} se busque solo entre los productos de la familia {family},
 // evitando acceder a productos que no pertenezcan a esa familia.
-Route::get('/families/{family}',[ControllersFamilyController::class,'show'])
+Route::get('/families/{family}',[FamilyController::class,'show'])
     ->name('families.show')
+    ->scopeBindings();
+
+Route::get('/categories/{category}',[CategoryController::class,'show'])
+    ->name('categories.show')
+    ->scopeBindings();
+
+Route::get('/subcategories/{subcategory}',[SubcategoryController::class,'show'])
+    ->name('subcategories.show')
     ->scopeBindings();
