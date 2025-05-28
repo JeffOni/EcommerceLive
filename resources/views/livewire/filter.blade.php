@@ -48,21 +48,37 @@
         {{-- Contenido principal --}}
         <div class="md:flex-1">
 
-            <div>
-                <span class="mr-2 text-sm font-semibold text-gray-700">
-                    Ordenar por:
-                </span>
-                <x-select wire:model.live="orderBy">
-                    <option value="1">
-                        Sellecionar
-                    </option>
-                    <option value="2">
-                        Precio : Mayor a Menor
-                    </option>
-                    <option value="3">
-                        Precio : Menor a Mayor
-                    </option>
-                </x-select>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="mr-2 text-sm font-semibold text-gray-700">
+                        Ordenar por:
+                    </span>
+                    <x-select wire:model.live="orderBy">
+                        <option value="1">
+                            Sellecionar
+                        </option>
+                        <option value="2">
+                            Precio : Mayor a Menor
+                        </option>
+                        <option value="3">
+                            Precio : Menor a Mayor
+                        </option>
+                    </x-select>
+                </div>
+
+                {{-- Mostrar filtro de búsqueda activo y botón para limpiar --}}
+                @if ($search)
+                    <div
+                        class="flex items-center px-3 py-2 text-sm text-blue-800 bg-blue-100 border border-blue-200 rounded-lg">
+                        <i class="mr-2 fas fa-search"></i>
+                        <span class="mr-2">Buscando: "<strong>{{ $search }}</strong>"</span>
+                        <button wire:click="clearSearch"
+                            class="flex items-center justify-center w-5 h-5 text-blue-600 hover:text-blue-800 hover:bg-blue-200 rounded-full transition-colors duration-200"
+                            title="Limpiar búsqueda">
+                            <i class="text-xs fas fa-times"></i>
+                        </button>
+                    </div>
+                @endif
             </div>
 
             <hr class="my-4 border-gray-300">
@@ -96,8 +112,24 @@
                     {{ $products->links() }} {{-- Renderiza los enlaces de paginación --}}
                 </div>
             @else
-                <div class="flex items-center justify-center h-64">
-                    <p class="text-lg font-semibold text-gray-500">No hay productos disponibles.</p>
+                <div class="flex flex-col items-center justify-center h-64 text-center">
+                    @if ($search)
+                        <i class="mb-4 text-4xl text-gray-400 fas fa-search"></i>
+                        <p class="mb-2 text-lg font-semibold text-gray-600">No se encontraron productos</p>
+                        <p class="mb-4 text-gray-500">No hay productos que coincidan con tu búsqueda
+                            "<strong>{{ $search }}</strong>"</p>
+                        <div class="space-y-2">
+                            <button wire:click="clearSearch"
+                                class="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
+                                <i class="mr-1 fas fa-times"></i>
+                                Limpiar búsqueda
+                            </button>
+                            <p class="text-sm text-gray-500">O intenta con otros términos de búsqueda</p>
+                        </div>
+                    @else
+                        <i class="mb-4 text-4xl text-gray-400 fas fa-box-open"></i>
+                        <p class="text-lg font-semibold text-gray-500">No hay productos disponibles.</p>
+                    @endif
                 </div>
             @endif
 

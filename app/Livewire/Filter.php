@@ -32,44 +32,10 @@ class Filter extends Component
     // Método que se ejecuta al montar el componente
     public function mount()
     {
-        $this->options = Option::when($this->family_id, function ($query) {
-            $query->whereHas('products.subcategory.category', function ($query) {
-                $query->where('family_id', $this->family_id);
-            })
-                // Carga las características (features) de cada opción, filtrando solo aquellas que tengan variantes
-                // cuyos productos también pertenezcan a la familia seleccionada
-                ->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product.subcategory.category', function ($query) {
-                            $query->where('family_id', $this->family_id);
-                        });
-                    },
-                ]);
-        })
+        $this->options = Option::verifyFamily($this->family_id)
 
-            ->when($this->category_id, function ($query) {
-                $query->whereHas('products.subcategory', function ($query) {
-                    $query->where('category_id', $this->category_id);
-                })->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product.subcategory', function ($query) {
-                            $query->where('category_id', $this->category_id);
-                        });
-                    },
-                ]);
-            })
-
-            ->when($this->subcategory_id, function ($query) {
-                $query->whereHas('products', function ($query) {
-                    $query->where('subcategory_id', $this->subcategory_id);
-                })->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product', function ($query) {
-                            $query->where('subcategory_id', $this->subcategory_id);
-                        });
-                    },
-                ]);
-            })
+            ->verifyCategory($this->category_id)
+            ->verifySubcategory($this->subcategory_id)
             ->get()->toArray();
     }
 
@@ -80,45 +46,21 @@ class Filter extends Component
         $this->resetPage();
     }
 
+    // Método para limpiar la búsqueda
+    public function clearSearch()
+    {
+        $this->search = '';
+        $this->resetPage();
+        $this->dispatch('clear-search-inputs'); // Emitir evento para limpiar inputs en JS
+    }
+
     // Método que se ejecuta al cambiar la familia seleccionada
     public function updatedFamilyId()
     {
         // Actualiza las opciones filtradas según la nueva familia seleccionada, usando when igual que en mount
-        $this->options = Option::when($this->family_id, function ($query) {
-            $query->whereHas('products.subcategory.category', function ($query) {
-                $query->where('family_id', $this->family_id);
-            })
-                ->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product.subcategory.category', function ($query) {
-                            $query->where('family_id', $this->family_id);
-                        });
-                    },
-                ]);
-        })
-            ->when($this->category_id, function ($query) {
-                $query->whereHas('products.subcategory', function ($query) {
-                    $query->where('category_id', $this->category_id);
-                })->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product.subcategory', function ($query) {
-                            $query->where('category_id', $this->category_id);
-                        });
-                    },
-                ]);
-            })
-
-            ->when($this->subcategory_id, function ($query) {
-                $query->whereHas('products', function ($query) {
-                    $query->where('subcategory_id', $this->subcategory_id);
-                })->with([
-                    'features' => function ($query) {
-                        $query->whereHas('variants.product', function ($query) {
-                            $query->where('subcategory_id', $this->subcategory_id);
-                        });
-                    },
-                ]);
-            })
+        $this->options = Option::verifyFamily($this->family_id)
+            ->verifyCategory($this->category_id)
+            ->verifySubcategory($this->subcategory_id)
             // Carga las características (features) de cada opción, filtrando solo aquellas que tengan variantes
             // cuyos productos también pertenezcan a la familia seleccionada
             // y las subcategorías relacionadas
@@ -128,36 +70,12 @@ class Filter extends Component
     // Renderiza la vista asociada al componente Livewire
     public function render()
     {
-        $products = Product::when($this->family_id, function ($query) {
-            $query->whereHas('subcategory.category', function ($query) {
-                $query->where('family_id', $this->family_id);
-            });
-        })
-            ->when($this->subcategory_id, function ($query) {
-                $query->where('subcategory_id', $this->subcategory_id);
-            })
-            ->when($this->category_id, function ($query) {
-                $query->whereHas('subcategory', function ($query) {
-                    $query->where('category_id', $this->category_id);
-                });
-            })
-            ->when($this->orderBy == 1, function ($query) {
-                $query->orderBy('created_at', 'desc');
-            })
-            ->when($this->orderBy == 2, function ($query) {
-                $query->orderBy('price', 'desc');
-            })
-            ->when($this->orderBy == 3, function ($query) {
-                $query->orderBy('price', 'asc');
-            })
-            ->when($this->selected_features, function ($query) {
-                $query->whereHas('variants.features', function ($query) {
-                    $query->whereIn('features.id', $this->selected_features);
-                });
-            })
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
-            })
+        $products = Product::VerifyFamily($this->family_id)
+            ->VerifyCategory($this->category_id)
+            ->VerifySubcategory($this->subcategory_id)
+            ->CustomOrder($this->orderBy)
+            ->SelectFeatures($this->selected_features)
+            ->Search($this->search)
             ->paginate(12);
         // Devuelve la vista 'livewire.filter' y pasa las opciones filtradas
 

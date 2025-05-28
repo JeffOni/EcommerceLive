@@ -45,15 +45,18 @@
 
                 <div class="flex-1 hidden md:block">
                     <div class="relative">
-                        <input
-                            class="w-full pl-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                            type="text" placeholder="Buscar productos"
-                            oninput="search(this.value)"
-                            onkeydown="if(event.key==='Escape'){this.value='';search('');}"
-                        />
+                        <x-input id="search-desktop"
+                            class="w-full pl-10 pr-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                            type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'desktop')"
+                            onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'desktop');}" />
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="text-gray-500 fas fa-search"></i>
                         </div>
+                        <!-- Botón de limpiar búsqueda -->
+                        <button type="button" id="clear-search-desktop" onclick="clearSearch()"
+                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -147,14 +150,18 @@
             {{-- Buscador en móvil (debajo de todo) --}}
             <div class="mt-4 md:hidden">
                 <div class="relative">
-                    <x-input
-                        class="w-full pl-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                        type="text" placeholder="Buscar productos"
-                        wire:model.debounce.500ms="search"
-                        wire:keydown.escape="clearSearch" />
+                    <x-input id="search-mobile"
+                        class="w-full pl-10 pr-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                        type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'mobile')"
+                        onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'mobile');}" />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <i class="text-gray-500 fas fa-search"></i>
                     </div>
+                    <!-- Botón de limpiar búsqueda móvil -->
+                    <button type="button" id="clear-search-mobile" onclick="clearSearch()"
+                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
 
@@ -215,7 +222,8 @@
                         <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
                             @foreach ($this->categories as $category)
                                 <li wire:mouseover="">
-                                    <a href="{{ route('categories.show', $category) }}" class="flex items-center justify-between text-blue-600 ">
+                                    <a href="{{ route('categories.show', $category) }}"
+                                        class="flex items-center justify-between text-blue-600 ">
                                         {{ $category->name }}
                                     </a>
                                     <ul class="mt-4 space-y-2">
@@ -246,6 +254,114 @@
             function search(value) {
                 Livewire.dispatch('search', {
                     search: value
+                });
+            }
+
+            function searchSync(value, source) {
+                // Sincronizar los campos de búsqueda
+                const desktopInput = document.getElementById('search-desktop');
+                const mobileInput = document.getElementById('search-mobile');
+
+                if (source === 'desktop' && mobileInput) {
+                    mobileInput.value = value;
+                } else if (source === 'mobile' && desktopInput) {
+                    desktopInput.value = value;
+                }
+
+                // Mostrar/ocultar botones de limpiar
+                toggleClearButtons(value);
+
+                // Ejecutar la búsqueda
+                search(value);
+            }
+
+            function clearSearch() {
+                // Intentar múltiples formas de obtener los inputs
+                let desktopInput = document.getElementById('search-desktop');
+                let mobileInput = document.getElementById('search-mobile');
+
+                // Si no funciona con ID, intentar con querySelector
+                if (!desktopInput) {
+                    desktopInput = document.querySelector('input[id="search-desktop"]');
+                }
+                if (!mobileInput) {
+                    mobileInput = document.querySelector('input[id="search-mobile"]');
+                }
+
+                // Método alternativo: buscar todos los inputs con esos placeholders
+                if (!desktopInput || !mobileInput) {
+                    const allInputs = document.querySelectorAll('input[placeholder="Buscar productos"]');
+                    allInputs.forEach(input => {
+                        input.value = '';
+                        input.dispatchEvent(new Event('input', {
+                            bubbles: true
+                        }));
+                    });
+                }
+
+                console.log('Desktop input:', desktopInput);
+                console.log('Mobile input:', mobileInput);
+
+                if (desktopInput) {
+                    desktopInput.value = '';
+                    // Disparar evento de input para asegurar que se actualice
+                    desktopInput.dispatchEvent(new Event('input', {
+                        bubbles: true
+                    }));
+                    console.log('Desktop input cleared');
+                }
+                if (mobileInput) {
+                    mobileInput.value = '';
+                    // Disparar evento de input para asegurar que se actualice
+                    mobileInput.dispatchEvent(new Event('input', {
+                        bubbles: true
+                    }));
+                    console.log('Mobile input cleared');
+                }
+
+                // Ocultar botones de limpiar
+                toggleClearButtons('');
+
+                // Ejecutar búsqueda vacía
+                search('');
+
+                // También limpiar en el componente Filter si existe
+                if (typeof Livewire !== 'undefined') {
+                    Livewire.dispatch('search', {
+                        search: ''
+                    });
+                }
+            }
+
+            function toggleClearButtons(value) {
+                const clearDesktop = document.getElementById('clear-search-desktop');
+                const clearMobile = document.getElementById('clear-search-mobile');
+
+                if (value && value.trim() !== '') {
+                    // Mostrar botones si hay texto
+                    if (clearDesktop) clearDesktop.classList.remove('hidden');
+                    if (clearMobile) clearMobile.classList.remove('hidden');
+                } else {
+                    // Ocultar botones si no hay texto
+                    if (clearDesktop) clearDesktop.classList.add('hidden');
+                    if (clearMobile) clearMobile.classList.add('hidden');
+                }
+            }
+
+            // Inicializar el estado de los botones al cargar la página
+            document.addEventListener('DOMContentLoaded', function() {
+                const desktopInput = document.getElementById('search-desktop');
+                const mobileInput = document.getElementById('search-mobile');
+
+                // Verificar si hay contenido inicial en los campos
+                const initialValue = (desktopInput && desktopInput.value) || (mobileInput && mobileInput.value) || '';
+                toggleClearButtons(initialValue);
+            });
+
+            // Escuchar evento Livewire para limpiar los inputs desde el filtro
+            if (window.Livewire) {
+                window.Livewire.on('clear-search-inputs', function() {
+                    clearSearch();
                 });
             }
         </script>
