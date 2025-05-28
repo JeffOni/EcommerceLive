@@ -45,6 +45,13 @@
 
                 <div class="flex-1 hidden md:block">
                     <div class="relative">
+                        {{--
+                            CAMBIO: Campo de búsqueda para escritorio con sincronización
+                            - Agregado ID único "search-desktop" para identificación en JavaScript
+                            - Agregado pr-10 para espacio del botón de limpiar a la derecha
+                            - Cambiado oninput a searchSync() para sincronizar con campo móvil
+                            - Agregado parámetro 'desktop' para identificar origen de la búsqueda
+                        --}}
                         <x-input id="search-desktop"
                             class="w-full pl-10 pr-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                             type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'desktop')"
@@ -52,7 +59,13 @@
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="text-gray-500 fas fa-search"></i>
                         </div>
-                        <!-- Botón de limpiar búsqueda -->
+                        {{--
+                            CAMBIO: Botón de limpiar búsqueda para escritorio
+                            - Posicionado absolutamente a la derecha del input
+                            - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
+                            - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
+                            - Hover effect para mejor UX
+                        --}}
                         <button type="button" id="clear-search-desktop" onclick="clearSearch()"
                             class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
                             <i class="fas fa-times"></i>
@@ -147,7 +160,14 @@
 
             </div>
 
-            {{-- Buscador en móvil (debajo de todo) --}}
+            {{--
+                CAMBIO: Buscador en móvil (debajo de todo) con sincronización
+                - Agregado ID único "search-mobile" para identificación en JavaScript
+                - Agregado pr-10 para espacio del botón de limpiar a la derecha
+                - Cambiado oninput a searchSync() para sincronizar con campo desktop
+                - Agregado parámetro 'mobile' para identificar origen de la búsqueda
+                - Agregado manejo de tecla Escape para limpiar búsqueda
+            --}}
             <div class="mt-4 md:hidden">
                 <div class="relative">
                     <x-input id="search-mobile"
@@ -157,7 +177,13 @@
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <i class="text-gray-500 fas fa-search"></i>
                     </div>
-                    <!-- Botón de limpiar búsqueda móvil -->
+                    {{--
+                        CAMBIO: Botón de limpiar búsqueda para móvil
+                        - Posicionado absolutamente a la derecha del input
+                        - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
+                        - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
+                        - Mismo comportamiento que el botón desktop para consistencia
+                    --}}
                     <button type="button" id="clear-search-mobile" onclick="clearSearch()"
                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
                         <i class="fas fa-times"></i>
@@ -248,39 +274,66 @@
     <div>
 
     </div>
-    {{-- evento js por si se quiere usar un buscador con javascript y no con livewire --}}
+    {{--
+        SECCIÓN: Scripts JavaScript para funcionalidad de búsqueda sincronizada
+        Esta sección contiene todas las funciones JavaScript necesarias para:
+        - Sincronizar campos de búsqueda entre desktop y móvil
+        - Manejar botones de limpiar búsqueda
+        - Comunicación con componentes Livewire
+    --}}
     @push('js')
         <script>
+            {{--
+                FUNCIÓN: search(value)
+                Función original que envía el evento de búsqueda a Livewire
+                @param {string} value - Término de búsqueda
+            --}}
+
             function search(value) {
                 Livewire.dispatch('search', {
                     search: value
                 });
             }
 
+            {{--
+                FUNCIÓN: searchSync(value, source)
+                Nueva función principal para sincronización de búsqueda
+                Mantiene ambos campos (desktop y móvil) sincronizados y ejecuta la búsqueda
+                @param {string} value - Término de búsqueda
+                @param {string} source - Origen del evento ('desktop' o 'mobile')
+            --}}
+
             function searchSync(value, source) {
-                // Sincronizar los campos de búsqueda
+                // Obtener referencias a ambos campos de búsqueda
                 const desktopInput = document.getElementById('search-desktop');
                 const mobileInput = document.getElementById('search-mobile');
 
+                // Sincronizar el campo que no fue el origen del evento
                 if (source === 'desktop' && mobileInput) {
                     mobileInput.value = value;
                 } else if (source === 'mobile' && desktopInput) {
                     desktopInput.value = value;
                 }
 
-                // Mostrar/ocultar botones de limpiar
+                // Mostrar/ocultar botones de limpiar según si hay contenido
                 toggleClearButtons(value);
 
-                // Ejecutar la búsqueda
+                // Ejecutar la búsqueda usando la función original
                 search(value);
             }
 
+            {{--
+                FUNCIÓN: clearSearch()
+                Limpia ambos campos de búsqueda y oculta los botones de limpiar
+                Incluye múltiples métodos de selección para mayor compatibilidad
+            --}}
+
             function clearSearch() {
-                // Intentar múltiples formas de obtener los inputs
+                // Método principal: obtener inputs por ID
                 let desktopInput = document.getElementById('search-desktop');
                 let mobileInput = document.getElementById('search-mobile');
 
-                // Si no funciona con ID, intentar con querySelector
+                // Método alternativo: usar querySelector si getElementById falla
                 if (!desktopInput) {
                     desktopInput = document.querySelector('input[id="search-desktop"]');
                 }
@@ -288,7 +341,7 @@
                     mobileInput = document.querySelector('input[id="search-mobile"]');
                 }
 
-                // Método alternativo: buscar todos los inputs con esos placeholders
+                // Método de respaldo: buscar por placeholder si los anteriores fallan
                 if (!desktopInput || !mobileInput) {
                     const allInputs = document.querySelectorAll('input[placeholder="Buscar productos"]');
                     allInputs.forEach(input => {
@@ -299,33 +352,37 @@
                     });
                 }
 
+                // Logging para debugging (útil durante desarrollo)
                 console.log('Desktop input:', desktopInput);
                 console.log('Mobile input:', mobileInput);
 
+                // Limpiar campo desktop si existe
                 if (desktopInput) {
                     desktopInput.value = '';
-                    // Disparar evento de input para asegurar que se actualice
+                    // Disparar evento de input para asegurar que Livewire detecte el cambio
                     desktopInput.dispatchEvent(new Event('input', {
                         bubbles: true
                     }));
                     console.log('Desktop input cleared');
                 }
+
+                // Limpiar campo móvil si existe
                 if (mobileInput) {
                     mobileInput.value = '';
-                    // Disparar evento de input para asegurar que se actualice
+                    // Disparar evento de input para asegurar que Livewire detecte el cambio
                     mobileInput.dispatchEvent(new Event('input', {
                         bubbles: true
                     }));
                     console.log('Mobile input cleared');
                 }
 
-                // Ocultar botones de limpiar
+                // Ocultar ambos botones de limpiar
                 toggleClearButtons('');
 
-                // Ejecutar búsqueda vacía
+                // Ejecutar búsqueda vacía para resetear resultados
                 search('');
 
-                // También limpiar en el componente Filter si existe
+                // Enviar evento adicional a Livewire por si otros componentes lo necesitan
                 if (typeof Livewire !== 'undefined') {
                     Livewire.dispatch('search', {
                         search: ''
@@ -333,32 +390,46 @@
                 }
             }
 
+            {{--
+                FUNCIÓN: toggleClearButtons(value)
+                Muestra u oculta los botones de limpiar según si hay contenido en los campos
+                @param {string} value - Valor actual de los campos de búsqueda
+            --}}
+
             function toggleClearButtons(value) {
                 const clearDesktop = document.getElementById('clear-search-desktop');
                 const clearMobile = document.getElementById('clear-search-mobile');
 
                 if (value && value.trim() !== '') {
-                    // Mostrar botones si hay texto
+                    // Mostrar botones si hay texto (remover clase 'hidden')
                     if (clearDesktop) clearDesktop.classList.remove('hidden');
                     if (clearMobile) clearMobile.classList.remove('hidden');
                 } else {
-                    // Ocultar botones si no hay texto
+                    // Ocultar botones si no hay texto (agregar clase 'hidden')
                     if (clearDesktop) clearDesktop.classList.add('hidden');
                     if (clearMobile) clearMobile.classList.add('hidden');
                 }
             }
 
-            // Inicializar el estado de los botones al cargar la página
+            {{--
+                EVENTO: DOMContentLoaded
+                Inicializa el estado de los botones de limpiar al cargar la página
+                Verifica si hay contenido inicial en los campos y ajusta la visibilidad de los botones
+            --}}
             document.addEventListener('DOMContentLoaded', function() {
                 const desktopInput = document.getElementById('search-desktop');
                 const mobileInput = document.getElementById('search-mobile');
 
-                // Verificar si hay contenido inicial en los campos
+                // Verificar si hay contenido inicial en cualquiera de los campos
                 const initialValue = (desktopInput && desktopInput.value) || (mobileInput && mobileInput.value) || '';
                 toggleClearButtons(initialValue);
             });
 
-            // Escuchar evento Livewire para limpiar los inputs desde el filtro
+            {{--
+                EVENTO: Livewire 'clear-search-inputs'
+                Escucha eventos desde el componente Filter de Livewire para limpiar búsquedas
+                Permite que otros componentes (como Filter) limpien los campos de búsqueda
+            --}}
             if (window.Livewire) {
                 window.Livewire.on('clear-search-inputs', function() {
                     clearSearch();

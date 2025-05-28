@@ -66,7 +66,19 @@
                     </x-select>
                 </div>
 
-                {{-- Mostrar filtro de búsqueda activo y botón para limpiar --}}
+                {{--
+                    SECCIÓN: Indicador visual de búsqueda activa
+
+                    Esta sección se muestra solo cuando hay una búsqueda activa ($search tiene valor)
+                    Proporciona feedback visual al usuario sobre el término de búsqueda actual
+                    Incluye un botón para limpiar la búsqueda que ejecuta el método clearSearch() del componente
+
+                    Funcionalidades:
+                    - Muestra el término de búsqueda actual destacado en negrita
+                    - Botón de limpiar que resetea tanto el componente como los campos de navegación
+                    - Estilos azules para consistencia con el diseño de la aplicación
+                    - Iconos para mejor experiencia visual
+                --}}
                 @if ($search)
                     <div
                         class="flex items-center px-3 py-2 text-sm text-blue-800 bg-blue-100 border border-blue-200 rounded-lg">
@@ -112,8 +124,26 @@
                     {{ $products->links() }} {{-- Renderiza los enlaces de paginación --}}
                 </div>
             @else
+                {{--
+                    SECCIÓN: Estados de "sin resultados"
+
+                    Maneja dos casos diferentes cuando no hay productos para mostrar:
+
+                    1. CON BÚSQUEDA ACTIVA ($search tiene valor):
+                       - Muestra mensaje específico de "no se encontraron productos"
+                       - Incluye el término de búsqueda para contexto
+                       - Botón para limpiar búsqueda y ver todos los productos
+                       - Sugerencia para probar otros términos
+                       - Icono de búsqueda para consistencia visual
+
+                    2. SIN BÚSQUEDA (sin filtros aplicados):
+                       - Mensaje genérico de "no hay productos disponibles"
+                       - Icono de caja vacía para indicar inventario vacío
+                       - Estilo más neutral sin opciones de acción
+                --}}
                 <div class="flex flex-col items-center justify-center h-64 text-center">
                     @if ($search)
+                        {{-- Estado: Búsqueda sin resultados --}}
                         <i class="mb-4 text-4xl text-gray-400 fas fa-search"></i>
                         <p class="mb-2 text-lg font-semibold text-gray-600">No se encontraron productos</p>
                         <p class="mb-4 text-gray-500">No hay productos que coincidan con tu búsqueda
@@ -127,6 +157,7 @@
                             <p class="text-sm text-gray-500">O intenta con otros términos de búsqueda</p>
                         </div>
                     @else
+                        {{-- Estado: No hay productos en general --}}
                         <i class="mb-4 text-4xl text-gray-400 fas fa-box-open"></i>
                         <p class="text-lg font-semibold text-gray-500">No hay productos disponibles.</p>
                     @endif

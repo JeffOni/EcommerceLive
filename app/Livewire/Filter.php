@@ -27,6 +27,15 @@ class Filter extends Component
 
     public $orderBy = 1;
 
+    /**
+     * PROPIEDAD: $search
+     *
+     * Almacena el término de búsqueda actual ingresado por el usuario
+     * Esta propiedad es pública para permitir binding con Livewire
+     * Se utiliza en el scope Search del modelo Product para filtrar resultados
+     *
+     * @var string
+     */
     public $search;
 
     // Método que se ejecuta al montar el componente
@@ -39,6 +48,15 @@ class Filter extends Component
             ->get()->toArray();
     }
 
+    /**
+     * LISTENER: search
+     *
+     * Escucha el evento 'search' enviado desde JavaScript (componente navigation)
+     * Actualiza la propiedad $search y resetea la paginación para mostrar nuevos resultados
+     *
+     * @param string $search - Término de búsqueda recibido del frontend
+     * @return void
+     */
     #[On('search')]
     public function search($search)
     {
@@ -46,12 +64,25 @@ class Filter extends Component
         $this->resetPage();
     }
 
-    // Método para limpiar la búsqueda
+    /**
+     * MÉTODO: clearSearch()
+     *
+     * Limpia la búsqueda activa y resetea la paginación
+     * Emite un evento JavaScript para sincronizar con los campos de búsqueda del navegador
+     *
+     * Funcionalidad:
+     * - Resetea la propiedad $search a cadena vacía
+     * - Vuelve a la primera página de resultados
+     * - Emite evento 'clear-search-inputs' para limpiar campos de búsqueda en JavaScript
+     *
+     * @return void
+     */
     public function clearSearch()
     {
         $this->search = '';
         $this->resetPage();
-        $this->dispatch('clear-search-inputs'); // Emitir evento para limpiar inputs en JS
+        // Emitir evento para limpiar inputs en JavaScript del componente navigation
+        $this->dispatch('clear-search-inputs');
     }
 
     // Método que se ejecuta al cambiar la familia seleccionada
