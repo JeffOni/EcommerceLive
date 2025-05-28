@@ -65,9 +65,10 @@
                             - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
                             - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
                             - Hover effect para mejor UX
+                            - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                         --}}
                         <button type="button" id="clear-search-desktop" onclick="clearSearch()"
-                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                            class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -183,9 +184,10 @@
                         - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
                         - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
                         - Mismo comportamiento que el botón desktop para consistencia
+                        - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                     --}}
                     <button type="button" id="clear-search-mobile" onclick="clearSearch()"
-                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                        class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -393,6 +395,7 @@
             {{--
                 FUNCIÓN: toggleClearButtons(value)
                 Muestra u oculta los botones de limpiar según si hay contenido en los campos
+                CORRECCIÓN: Maneja correctamente display:flex cuando se muestran los botones
                 @param {string} value - Valor actual de los campos de búsqueda
             --}}
 
@@ -401,13 +404,25 @@
                 const clearMobile = document.getElementById('clear-search-mobile');
 
                 if (value && value.trim() !== '') {
-                    // Mostrar botones si hay texto (remover clase 'hidden')
-                    if (clearDesktop) clearDesktop.classList.remove('hidden');
-                    if (clearMobile) clearMobile.classList.remove('hidden');
+                    // Mostrar botones: remover 'hidden' y agregar 'flex' para layout correcto
+                    if (clearDesktop) {
+                        clearDesktop.classList.remove('hidden');
+                        clearDesktop.classList.add('flex');
+                    }
+                    if (clearMobile) {
+                        clearMobile.classList.remove('hidden');
+                        clearMobile.classList.add('flex');
+                    }
                 } else {
-                    // Ocultar botones si no hay texto (agregar clase 'hidden')
-                    if (clearDesktop) clearDesktop.classList.add('hidden');
-                    if (clearMobile) clearMobile.classList.add('hidden');
+                    // Ocultar botones: agregar 'hidden' y remover 'flex'
+                    if (clearDesktop) {
+                        clearDesktop.classList.add('hidden');
+                        clearDesktop.classList.remove('flex');
+                    }
+                    if (clearMobile) {
+                        clearMobile.classList.add('hidden');
+                        clearMobile.classList.remove('flex');
+                    }
                 }
             }
 

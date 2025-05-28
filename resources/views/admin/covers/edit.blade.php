@@ -8,8 +8,8 @@
         'route' => route('admin.covers.index'),
     ],
     [
-        'name' => 'Editar '. $cover->title,
-    ]
+        'name' => 'Editar ' . $cover->title,
+    ],
 ]">
 
     <x-slot name="action">
@@ -57,7 +57,7 @@
 
         {{-- Contenedor principal del formulario --}}
         {{-- Diseñado con estilos Tailwind para una apariencia moderna y consistente --}}
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
 
             {{-- Muestra el error de validación --}}
             {{-- Este componente muestra mensajes de error de validación si existen --}}
@@ -85,18 +85,21 @@
             {{-- Valor predeterminado: un mes después de la fecha actual --}}
             <div class="mb-4">
                 <x-label class="mb-2" value="{{ __('Fecha de Fin (Opcional)') }}" />
-                <x-input class="w-full" type="date" name="end_at" value="{{ old('end_at', $cover->end_at ? $cover->end_at->format('Y-m-d') : '' )   }}" />
+                <x-input class="w-full" type="date" name="end_at"
+                    value="{{ old('end_at', $cover->end_at ? $cover->end_at->format('Y-m-d') : '') }}" />
             </div>
 
             <div class="flex mb-4 space-x-2">
                 {{-- Input de URL de la Portada --}}
                 {{-- Este campo permite al usuario introducir una URL a la que se redirigirá al hacer clic en la portada --}}
                 <label class="flex items-center">
-                    <input type="radio" name="is_active" value="1" class="form-radio" {{ $cover->is_active == 1 ? 'checked' : '' }} />
+                    <input type="radio" name="is_active" value="1" class="form-radio"
+                        {{ $cover->is_active == 1 ? 'checked' : '' }} />
                     <span class="ml-2">Activar Portada</span>
                 </label>
                 <label class="flex items-center">
-                    <input type="radio" name="is_active" value="0" class="form-radio" {{ $cover->is_active == 0 ? 'checked' : '' }} />
+                    <input type="radio" name="is_active" value="0" class="form-radio"
+                        {{ $cover->is_active == 0 ? 'checked' : '' }} />
                     <span class="ml-2">Desactivar Portada</span>
                 </label>
             </div>

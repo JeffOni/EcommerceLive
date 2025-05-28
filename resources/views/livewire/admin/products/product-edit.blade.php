@@ -24,7 +24,7 @@
 
         {{-- Lista de Familias --}}
 
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
             {{-- In work, do what you enjoy. --}}
 
             <div class="mb-4">

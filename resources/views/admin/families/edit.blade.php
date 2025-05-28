@@ -18,7 +18,7 @@
 
     <form action="{{ route('admin.families.update', $family) }}" method="POST">
         @csrf
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
             @method('PUT')
             <div class="mb-4">
                 <x-label class="mb-2" value="{{ __('Nombre') }}" />

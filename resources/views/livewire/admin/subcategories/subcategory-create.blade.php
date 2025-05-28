@@ -2,7 +2,7 @@
 
     <form wire:submit.prevent="save">
 
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
 
             {{-- muestra el error de validación --}}
 
@@ -28,10 +28,10 @@
                 <x-select name="category_id" id="category_id" class="w-full" wire:model.live="subcategory.category_id">
                     <option value="" disabled>Seleccione una categoría</option>
                     @foreach ($this->categories as $category)
-                    <option value="{{ $category->id }}">
-                        {{-- @selected(old('category_id') == $category->id) recupera el campo anterior si el valor es igual al de category_id --}}
-                        {{ $category->name }}
-                    </option>
+                        <option value="{{ $category->id }}">
+                            {{-- @selected(old('category_id') == $category->id) recupera el campo anterior si el valor es igual al de category_id --}}
+                            {{ $category->name }}
+                        </option>
                     @endforeach
                 </x-select>
             </div>

@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Componentes personalizados */
+@layer components {
+    .card {
+        @apply p-6 bg-white rounded-lg shadow-lg;
+    }
+}
+
 [x-cloak] {
     display: none;
 }

@@ -22,7 +22,7 @@
         @csrf
 
         {{-- div con clase card para todos --}}
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
 
             {{-- Muestra el error de validación --}}
 

@@ -85,7 +85,7 @@
                         <i class="mr-2 fas fa-search"></i>
                         <span class="mr-2">Buscando: "<strong>{{ $search }}</strong>"</span>
                         <button wire:click="clearSearch"
-                            class="flex items-center justify-center w-5 h-5 text-blue-600 hover:text-blue-800 hover:bg-blue-200 rounded-full transition-colors duration-200"
+                            class="flex items-center justify-center w-5 h-5 text-blue-600 transition-colors duration-200 rounded-full hover:text-blue-800 hover:bg-blue-200"
                             title="Limpiar búsqueda">
                             <i class="text-xs fas fa-times"></i>
                         </button>
@@ -112,7 +112,8 @@
                                     {{ $product->name }}</h2>
                                 {{-- <p class="mt-2 text-gray-600">{{ $product->description }}</p> --}}
                                 <p class="mt-4 text-xl font-bold text-gray-800">${{ $product->price }}</p>
-                                <x-link class="block w-full mt-auto text-center" name="Ver Mas"></x-link>
+                                <x-link href="{{ route('products.show', $product) }}"
+                                    class="block w-full mt-auto text-center" name="Ver Mas"></x-link>
                             </div>
                         </article>
                     @endforeach

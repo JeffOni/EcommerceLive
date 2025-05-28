@@ -22,7 +22,7 @@
 
         @method('PUT')
 
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
 
             {{-- muestra el error de validación --}}
 

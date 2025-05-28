@@ -43,10 +43,12 @@
                         </div>
                     </div>
                     <div class="flex flex-col flex-1 p-4">
-                        <h2 class="text-lg font-semibold line-clamp-2 min-h-[56px] text-gray-800">{{ $product->name }}</h2>
+                        <h2 class="text-lg font-semibold line-clamp-2 min-h-[56px] text-gray-800">{{ $product->name }}
+                        </h2>
                         {{-- <p class="mt-2 text-gray-600">{{ $product->description }}</p> --}}
                         <p class="mt-4 text-xl font-bold text-gray-800">${{ $product->price }}</p>
-                        <x-link class="block w-full mt-auto text-center" name="Ver Mas"></x-link>
+                        <x-link href="{{ route('products.show', $product) }}" class="block w-full mt-auto text-center"
+                            name="Ver Mas"></x-link>
                     </div>
                 </article>
             @endforeach

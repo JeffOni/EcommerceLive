@@ -52,7 +52,7 @@
 
         {{-- Contenedor principal del formulario --}}
         {{-- Diseñado con estilos Tailwind para una apariencia moderna y consistente --}}
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="card">
 
             {{-- Muestra el error de validación --}}
             {{-- Este componente muestra mensajes de error de validación si existen --}}
