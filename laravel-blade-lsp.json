@@ -1,0 +1,23 @@
+{
+    "php": {
+        "executable": "C:\\xampp\\php\\php.exe",
+        "version": "8.2"
+    },
+    "laravel": {
+        "rootPath": ".",
+        "artisanPath": "./artisan",
+        "configPath": "./config",
+        "viewsPath": "./resources/views"
+    },
+    "livewire": {
+        "enable": true,
+        "componentsPath": "./app/Livewire"
+    },
+    "blade": {
+        "enable": true,
+        "formatting": {
+            "enable": true,
+            "indentSize": 4
+        }
+    }
+}

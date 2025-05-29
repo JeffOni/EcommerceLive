@@ -53,10 +53,29 @@
 
     @stack('modals')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @livewireScripts
 
     {{-- new stack in welcome view --}}
     @stack('js')
+
+    {{-- script para mostrar el mensaje de alerta cuando se usa redirect route --}}
+    @if (session('swal'))
+        <script>
+            //json enconde sirve par mejorar la seguridad de la aplicacion
+            Swal.fire({!! json_encode(session('swal')) !!}); //json_enconde sirve para convertir un array en un objeto tipo json
+        </script>
+    @endif
+
+    {{-- script para mostrar el mensaje de alerta cuando se usa emits o eventos de livewire debe estar por debajo de la importacion de srcipt de livewire --}}
+
+    <script>
+        Livewire.on('swal', (message) => { //tambien en lugar de message puede ser cualquier nombre
+            Swal.fire(message[0]); //message[0] es el mensaje es importante que el mensaje este en la posicion 0
+        });
+    </script>
+
 </body>
 
 </html>
