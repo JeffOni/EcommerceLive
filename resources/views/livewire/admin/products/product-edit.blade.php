@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-white">
-    <form wire:submit.prvent="store" class="h-full p-8 relative overflow-hidden">
+    <form wire:submit.prevent="store" class="h-full p-8 relative overflow-hidden">
         <!-- Decorative background elements -->
         <div
             class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full -translate-y-16 translate-x-16">

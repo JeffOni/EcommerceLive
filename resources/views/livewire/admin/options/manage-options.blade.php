@@ -1,249 +1,353 @@
-<div>
-    {{-- Close your eyes. Count to one. That is how long forever feels. --}}
-    <section class="bg-white rounded-lg shadow-lg ">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <!-- Decorative background elements -->
+    <div
+        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full -translate-y-16 translate-x-16">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/20 to-cyan-200/20 rounded-full translate-y-12 -translate-x-12">
+    </div>
 
-        <header class="px-6 py-2 border-b border-gray-200">
-            <div class="flex justify-between">
-                <h1 class="text-lg font-semibold text-gray-700">Opciones</h1>
-                <x-button wire:click="$set('newOption.openModal', true)" name="Nuevo" />
+    <!-- Header -->
+    <div class="text-center mb-8 pt-8">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            Gestión de Opciones
+        </h1>
+        <p class="text-gray-600 text-lg">Administra las opciones y características de tus productos</p>
+    </div>
+
+    <section
+        class="max-w-6xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 relative overflow-hidden">
+        <!-- Decorative gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
+
+        <header class="relative mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-cogs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Opciones Disponibles</h2>
+                        <p class="text-gray-600">Configura las opciones para tus productos</p>
+                    </div>
+                </div>
+                <button wire:click="$set('newOption.openModal', true)" type="button"
+                    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                    <i class="fas fa-plus mr-2 text-white"></i>
+                    <span class="text-white">Nueva Opción</span>
+                </button>
             </div>
-
-
         </header>
 
-        <div class="p-6">
+        <div class="relative">
 
-            <div class="space-y-6">
-
-                {{--
-                    wire:key="option-{{ $option->id }}"
-                    Este atributo le da una "llave" única a cada tarjeta de opción.
-                    Sirve para que Livewire pueda identificar cada elemento de la lista de forma individual.
-                    Así, si cambias, agregas o eliminas una opción, Livewire sabe exactamente cuál actualizar en la interfaz,
-                    evitando errores o confusiones al mostrar los datos.
-                    Es como ponerle una etiqueta única a cada tarjeta para que Livewire no se confunda.
-                --}}
+            <div class="grid gap-6">
                 @foreach ($options as $option)
-                    {{-- Tarjeta de Opcion --}}
-                    <div class="relative p-6 border border-gray-200 rounded-lg" wire:key="option-{{ $option->id }}">
-
-                        {{-- Nombre de Opciones --}}
-                        <div class="absolute px-4 bg-white -top-3.5">
-
-                            <button class="mr-1" type="button" onclick="confirmDelete({{ $option->id }}, 'option')"
-                                {{-- wire:click="deleteOption({{ $option->id }})" --}}>
-                                {{-- icono de eliminar --}}
-                                <i class="text-red-500 fa-solid fa-trash-can hover:text-red-600"></i>
-
-                            <span>
-                                {{ $option->name }}
-                            </span>
-
+                    {{-- Tarjeta de Opcion Mejorada --}}
+                    <div class="relative group bg-gradient-to-r from-white to-gray-50/50 border border-gray-200/60 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 overflow-hidden"
+                        wire:key="option-{{ $option->id }}">
+                        <!-- Borde decorativo superior -->
+                        <div
+                            class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                         </div>
-                        {{-- Valores --}}
 
-                        <div class="flex flex-wrap mb-4">
+                        <!-- Efecto de hover -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-indigo-50/0 to-purple-50/0 group-hover:from-indigo-50/30 group-hover:to-purple-50/30 transition-all duration-500">
+                        </div>
 
-                            @foreach ($option->features as $feature)
-                                @switch($option->type)
-                                    @case(1)
+                        <div class="relative p-8">
+                            {{-- Header de la Opción --}}
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center space-x-4">
+                                    <div
+                                        class="w-14 h-14 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                        @if ($option->type == 1)
+                                            <i class="fas fa-font text-white text-lg"></i>
+                                        @else
+                                            <i class="fas fa-palette text-white text-lg"></i>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <h3
+                                            class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">
+                                            {{ $option->name }}
+                                        </h3>
                                         <span
-                                            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 pl-2.5 pr-1.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-gray-300">
-                                            {{ $feature->description }}
-
-                                            <button class="ml-0.5" onclick="confirmDelete({{ $feature->id }}, 'feature')"
-                                                {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
-                                                {{-- icono de eliminar --}}
-
-                                                <i class="fa-solid fa-xmark hover:text-red-500"></i>
-
-                                            </button>
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r 
+                                            @if ($option->type == 1) from-blue-100 to-indigo-100 text-indigo-700 @else from-purple-100 to-pink-100 text-purple-700 @endif">
+                                            <i
+                                                class="mr-1 @if ($option->type == 1) fas fa-text-width @else fas fa-palette @endif"></i>
+                                            {{ $option->type == 1 ? 'Texto' : 'Color' }}
                                         </span>
-                                    @break
+                                    </div>
+                                </div>
 
-                                    @case(2)
-                                        <div class="relative">
-                                            {{-- para obtener colores se obtiene el color guardado en value --}}
-                                            <span
-                                                class="inline-block w-6 h-6 mr-4 border-2 border-gray-300 rounded-full shadow-lg"
-                                                style="background-color: {{ $feature->value }};">
-                                            </span>
+                                <button type="button" onclick="confirmDelete({{ $option->id }}, 'option')"
+                                    class="group/btn p-3 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 shadow-md hover:shadow-lg"
+                                    title="Eliminar opción">
+                                    <i
+                                        class="fas fa-trash-can text-red-500 group-hover/btn:text-red-600 transition-colors duration-300"></i>
+                                </button>
+                            </div>
 
-                                            <button
-                                                class="absolute z-10 flex items-center justify-center w-4 h-4 bg-gray-500 rounded-full hover:bg-red-500 -top-2 left-3"
-                                                onclick="confirmDelete({{ $feature->id }}, 'feature')"
-                                                {{-- wire:click="deleteFeature({{ $feature->id }})" --}}>
-                                                {{-- icono de eliminar --}}
-                                                <i class="text-xs text-white fa-solid fa-xmark"></i>
+                            {{-- Valores/Características --}}
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-2 mb-4">
+                                    <div
+                                        class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent flex-1">
+                                    </div>
+                                    <span
+                                        class="text-sm font-semibold text-gray-600 bg-white px-3 py-1 rounded-full shadow-sm">
+                                        <i class="fas fa-list mr-1"></i>Características Disponibles
+                                    </span>
+                                    <div
+                                        class="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent flex-1">
+                                    </div>
+                                </div>
 
-                                            </button>
+                                <div class="flex flex-wrap gap-3">
+                                    @foreach ($option->features as $feature)
+                                        @switch($option->type)
+                                            @case(1)
+                                                <div
+                                                    class="group/feature relative inline-flex items-center bg-gradient-to-r from-slate-100 to-gray-100 hover:from-indigo-100 hover:to-purple-100 border border-gray-200 rounded-xl px-4 py-2 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
+                                                    <span
+                                                        class="text-sm font-medium text-gray-700 group-hover/feature:text-indigo-700 mr-2">
+                                                        {{ $feature->description }}
+                                                    </span>
+                                                    <button onclick="confirmDelete({{ $feature->id }}, 'feature')"
+                                                        class="p-1 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-200 transform hover:scale-110 opacity-70 group-hover/feature:opacity-100">
+                                                        <i class="fas fa-xmark text-red-500 text-xs"></i>
+                                                    </button>
+                                                </div>
+                                            @break
 
-                                        </div>
-                                    @break
+                                            @case(2)
+                                                <div class="group/feature relative">
+                                                    <div
+                                                        class="flex items-center space-x-2 bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-xl px-3 py-2 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
+                                                        <div class="w-8 h-8 rounded-lg shadow-lg border-2 border-white ring-2 ring-gray-200 group-hover/feature:ring-indigo-300 transition-all duration-300"
+                                                            style="background-color: {{ $feature->value }};"
+                                                            title="{{ $feature->description }}"></div>
+                                                        <span
+                                                            class="text-sm font-medium text-gray-700">{{ $feature->description }}</span>
+                                                        <button onclick="confirmDelete({{ $feature->id }}, 'feature')"
+                                                            class="p-1 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-200 transform hover:scale-110 opacity-70 group-hover/feature:opacity-100">
+                                                            <i class="fas fa-xmark text-red-500 text-xs"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @break
 
-                                    @default
-                                @endswitch
-                            @endforeach
+                                            @default
+                                        @endswitch
+                                    @endforeach
+                                </div>
 
+                                {{-- Componente de agregar nueva característica --}}
+                                <div class="mt-6 pt-4 border-t border-gray-200">
+                                    @livewire('admin.options.add-new-feature', ['option' => $option], key('add-new-feature-' . $option->id))
+                                </div>
+                            </div>
                         </div>
-
-                        {{-- Fin Valores --}}
-
-                        {{-- componente livewire de feature --}}
-                        <div>
-                            {{--
-                            key('add-new-feature-' . $option->id)
-                            Aquí usamos una "key" única para el componente Livewire hijo.
-                            Esto le ayuda a Livewire a distinguir cada componente "add-new-feature" según la opción a la que pertenece.
-                            Así, si tienes varios componentes iguales en la página, cada uno mantiene su propio estado y datos,
-                            y Livewire no mezcla la información entre ellos.
-                            Es como darle un nombre único a cada formulario para que no se mezclen.
-                            --}}
-                            @livewire('admin.options.add-new-feature', ['option' => $option], key('add-new-feature-' . $option->id))
-                        </div>
-
                     </div>
                     {{-- Fin Tarjeta de Opcion --}}
                 @endforeach
-
             </div>
 
         </div>
-
     </section>
 
-    {{-- Modal Section --}}
-
-    <x-dialog-modal wire:model="newOption.openModal" title="Crear Nueva Opcion">
+    {{-- Modal Section Mejorado --}}
+    <x-dialog-modal wire:model="newOption.openModal" title="">
         <x-slot name="content">
-
-            <x-validation-errors class="mb-4" />
-            {{-- Nombres --}}
-            <div class="grid grid-cols-2 gap-6 mb-4">
-
-                <div>
-
-                    <x-label class="mb-1" value="{{ __('Nombre') }}" />
-                    <x-input class="w-full" wire:model.defer="newOption.name" placeholder="Tamano , color" />
+            <!-- Header del Modal -->
+            <div class="text-center mb-8 pt-4">
+                <div
+                    class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-plus text-white text-2xl"></i>
                 </div>
-
-                <div>
-                    <x-label class="mb-1" value="{{ __('Tipo') }}" />
-                    <x-select wire:model.live="newOption.type" class="w-full">
-                        <option value="" disabled>Seleccione un tipo</option>
-                        {{-- 1 = Texto, 2 = Color --}}
-                        <option value="1">Texto</option>
-                        <option value="2">Color</option>
-                    </x-select>
-                </div>
-
-            </div>
-            {{-- Fin Nombres --}}
-
-            {{-- Valores --}}
-            <div class="flex items-center mb-4">
-
-                <hr class="flex-1 border-gray-300">
-
-                <span class="mx-4">Valores</span>
-
-                <hr class="flex-1 border-gray-300">
-
+                <h2
+                    class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    Nueva Opción
+                </h2>
+                <p class="text-gray-600">Configura una nueva opción para tus productos</p>
             </div>
 
-            {{-- input de valores --}}
-            <div class="mb-4 space-y-4">
+            <x-validation-errors class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl" />
 
-                @foreach ($newOption->features as $index => $feature)
-                    <div class="relative p-6 border border-gray-200 rounded-lg" wire:key="feature-{{ $index }}">
-                        <div class="absolute px-4 bg-white -top-3.5">
-                            {{-- elimina el feature que se esta seleccionando de acuerdo a su index --}}
-                            <button type="button" wire:click="removeFeature({{ $index }})">
-                                <i class="text-red-500 fa-solid fa-trash-can hover:text-red-600"></i>
+            {{-- Información Básica --}}
+            <div class="bg-gray-50 rounded-2xl p-6 mb-6 border border-gray-200">
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fas fa-info-circle text-indigo-500"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Información Básica</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <x-label class="text-slate-700 font-semibold flex items-center"
+                            value="{{ __('Nombre de la Opción') }}">
+                            <i class="fas fa-tag mr-2 text-indigo-500"></i>
+                        </x-label>
+                        <x-input
+                            class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3"
+                            wire:model.defer="newOption.name" placeholder="Ej: Tamaño, Color, Material" />
+                    </div>
+
+                    <div class="space-y-3">
+                        <x-label class="text-slate-700 font-semibold flex items-center"
+                            value="{{ __('Tipo de Opción') }}">
+                            <i class="fas fa-list mr-2 text-purple-500"></i>
+                        </x-label>
+                        <x-select wire:model.live="newOption.type"
+                            class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3">
+                            <option value="" disabled>Seleccione un tipo</option>
+                            <option value="1">📝 Texto</option>
+                            <option value="2">🎨 Color</option>
+                        </x-select>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Valores/Características --}}
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="flex items-center space-x-2">
+                        <div class="h-px bg-gradient-to-r from-transparent via-indigo-300 to-transparent flex-1 w-16">
+                        </div>
+                        <div
+                            class="flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-sm border border-indigo-200">
+                            <i class="fas fa-list-ul text-indigo-500"></i>
+                            <span class="font-semibold text-indigo-700">Valores de la Opción</span>
+                        </div>
+                        <div class="h-px bg-gradient-to-r from-transparent via-indigo-300 to-transparent flex-1 w-16">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 max-h-96 overflow-y-auto custom-scrollbar">
+                    @foreach ($newOption->features as $index => $feature)
+                        <div class="relative bg-white rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 group"
+                            wire:key="feature-{{ $index }}">
+                            <!-- Badge de número -->
+                            <div
+                                class="absolute -top-0 -left-0 w-6 h-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                                <span class="text-white font-bold text-sm">{{ $index + 1 }}</span>
+                            </div>
+
+                            <!-- Botón eliminar -->
+                            <button type="button" wire:click="removeFeature({{ $index }})"
+                                class="absolute -top-0 -right-0 w-6 h-6 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110 opacity-0 group-hover:opacity-100">
+                                <i class="fas fa-trash text-white text-sm"></i>
                             </button>
 
-                        </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                                <div class="space-y-3">
+                                    <x-label class="text-slate-700 font-semibold flex items-center"
+                                        value="{{ __('Valor') }}">
+                                        @if ($newOption->type == 1)
+                                            <i class="fas fa-font mr-2 text-blue-500"></i>
+                                        @else
+                                            <i class="fas fa-palette mr-2 text-purple-500"></i>
+                                        @endif
+                                    </x-label>
 
-                        <div class="grid grid-cols-2 gap-6 mb-4">
+                                    @switch($newOption->type)
+                                        @case(1)
+                                            <x-input
+                                                class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3"
+                                                placeholder="Ej: Grande, Mediano, Pequeño"
+                                                wire:model.defer="newOption.features.{{ $index }}.value" />
+                                        @break
 
-                            <div>
-                                <x-label class="mb-1" value="{{ __('Valor') }}" />
+                                        @case(2)
+                                            <div class="relative">
+                                                <div
+                                                    class="border border-gray-300 rounded-xl h-12 px-4 flex items-center justify-between bg-white hover:shadow-md transition-all duration-300 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-200">
+                                                    <div class="flex items-center space-x-3">
+                                                        <div class="w-8 h-8 rounded-lg border-2 border-gray-200 shadow-sm"
+                                                            style="background-color: {{ $newOption->features[$index]['value'] ?? '#ffffff' }};">
+                                                        </div>
+                                                        <span class="text-gray-700">
+                                                            {{ $newOption->features[$index]['value'] ?: 'Seleccione un color' }}
+                                                        </span>
+                                                    </div>
+                                                    <x-input type="color"
+                                                        wire:model.live="newOption.features.{{ $index }}.value"
+                                                        class="w-8 h-8 border-none rounded-lg cursor-pointer" />
+                                                </div>
+                                            </div>
+                                        @break
 
+                                        @default
+                                    @endswitch
+                                </div>
 
-                                @switch($newOption->type)
-                                    @case(1)
-                                        <x-input class="w-full" placeholder="Ingrese el valor de la opcion"
-                                            wire:model.defer="newOption.features.{{ $index }}.value" />
-                                    @break
-
-                                    @case(2)
-                                        {{-- para obtener colores se obtiene el color guardado en value --}}
-                                        {{-- el valor ternario ?: verifica si el valor extiste y si no esta null sino manda el mensaje si el valor es null --}}
-
-                                        <div
-                                            class="border border-gray-300 h-[42px] px-3 rounded-md flex items-center justify-between">
-                                            {{ $newOption->features[$index]['value'] ?: 'Seleccione Un Color' }}
-                                            <x-input type="color"
-                                                wire:model.live="newOption.features.{{ $index }}.value" />
-
-                                        </div>
-                                    @break
-
-                                    @default
-                                @endswitch
+                                <div class="space-y-3">
+                                    <x-label class="text-slate-700 font-semibold flex items-center"
+                                        value="{{ __('Descripción') }}">
+                                        <i class="fas fa-align-left mr-2 text-green-500"></i>
+                                    </x-label>
+                                    <x-input
+                                        class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3"
+                                        placeholder="Descripción del valor"
+                                        wire:model.defer="newOption.features.{{ $index }}.description" />
+                                </div>
                             </div>
-
-                            <div>
-                                <x-label class="mb-1" value="{{ __('Descripción') }}" />
-                                <x-input class="w-full" placeholder="Ingrese una descripcion"
-                                    wire:model.defer="newOption.features.{{ $index }}.description" />
-                            </div>
-
                         </div>
-
-                    </div>
-                @endforeach
-
-                <div class="flex justify-end">
-                    <x-button wire:click="addFeature" name="Agregar Valor" />
+                    @endforeach
                 </div>
 
+                <div class="flex justify-center mt-6">
+                    <button wire:click="addFeature" type="button"
+                        class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                        <i class="fas fa-plus mr-2 text-white"></i>
+                        <span class="text-white">Agregar Valor</span>
+                    </button>
+                </div>
             </div>
-
         </x-slot>
 
         <x-slot name="footer">
-
-            <div class="flex justify-end gap-x-3">
-                <x-danger-button wire:click="$set('newOption.openModal', false)" name="Cancelar" negative />
-                <x-button wire:click="addOption" name="Guardar" positive />
+            <div class="flex justify-end gap-4 pt-6 border-t border-gray-200">
+                <button wire:click="$set('newOption.openModal', false)" type="button"
+                    class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold transform hover:scale-105 flex items-center space-x-2">
+                    <i class="fas fa-times mr-2 text-white"></i>
+                    <span class="text-white">Cancelar</span>
+                </button>
+                <button wire:click="addOption" type="button"
+                    class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                    <i class="fas fa-plus mr-2 text-white"></i>
+                    <span class="text-white">Crear Opción</span>
+                </button>
             </div>
         </x-slot>
     </x-dialog-modal>
 
-    {{-- Fin Modal Section --}}
-
     @push('js')
         <script>
-            let confirmDelete = (id , type) => {
-                // Sweet Alert 2
+            let confirmDelete = (id, type) => {
+                // Sweet Alert 2 con diseño mejorado
                 Swal.fire({
-                    title: "Estás Seguro?",
-                    text: "No podrás revertir esto!",
+                    title: "¿Estás Seguro?",
+                    text: "Esta acción no se puede deshacer",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Sí, Bórralo!",
+                    confirmButtonColor: "#dc2626",
+                    cancelButtonColor: "#6b7280",
+                    confirmButtonText: "Sí, Eliminar",
                     cancelButtonText: "Cancelar",
+                    customClass: {
+                        popup: 'rounded-2xl shadow-2xl',
+                        title: 'text-gray-800 font-bold',
+                        confirmButton: 'rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300',
+                        cancelButton: 'rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
+                    },
+                    buttonsStyling: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Swal.fire({
-                        //     title: "Eliminado!",
-                        //     text: "Su archivo ha sido eliminado.",
-                        //     icon: "success"
-                        // });
-                        // @this.call('deleteFeature', featureId);
                         switch (type) {
                             case 'feature':
                                 @this.call('deleteFeature', id);
@@ -254,11 +358,41 @@
                             default:
                                 break;
                         }
+
+                        Swal.fire({
+                            title: '¡Eliminado!',
+                            text: 'El elemento ha sido eliminado exitosamente.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            customClass: {
+                                popup: 'rounded-2xl shadow-2xl'
+                            }
+                        });
                     }
                 });
-
             }
         </script>
     @endpush
 
+    <!-- Estilos personalizados para el scrollbar -->
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #4f46e5, #7c3aed);
+        }
+    </style>
 </div>

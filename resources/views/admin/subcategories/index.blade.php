@@ -8,80 +8,326 @@
     ],
 ]">
 
-    {{-- slot de boton de accion --}}
-
-    <x-slot name="action">
-        <x-link href="{{ route('admin.subcategories.create') }}" type="primary" name="Nueva Subcategoría" />
-    </x-slot>
-
-    {{-- tabla de Subcategorías --}}
-
-    @if ($subcategories->count())
-        {{-- tabla que muestra las familias  --}}
-        <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            ID
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nombre
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Categoria
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Familia
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Acciones
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($subcategories as $subcategory)
-                        <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $subcategory->id }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $subcategory->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $subcategory->category->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $subcategory->category->family->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="{{ route('admin.subcategories.edit', $subcategory) }}">
-                                    Editar
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        {{-- links de paginacion --}}
-        <div class="mt-4">
-            {{ $subcategories->links() }}
-        </div>
-    @else
-        {{-- Alerta por si no se encuentran datos para mostrar en la tabla --}}
-        <div class="flex items-center p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-            role="alert">
-            <svg class="inline w-4 h-4 shrink-0 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor" viewBox="0 0 20 20">
-                <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div>
-                <span class="font-medium">Alerta Informativa!</span> Todavía no hay categorías de productos registradas.
+    <!-- Fondo con gradiente y elementos decorativos -->
+    <div class="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 relative overflow-hidden">
+        <!-- Elementos decorativos de fondo -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div
+                class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-pink-200/30 to-rose-300/20 rounded-full blur-3xl">
+            </div>
+            <div
+                class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-rose-200/30 to-pink-300/20 rounded-full blur-3xl">
+            </div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-pink-100/40 to-rose-100/40 rounded-full blur-2xl">
             </div>
         </div>
-    @endif
+
+        <div class="relative">
+            <x-slot name="action">
+                <x-link href="{{ route('admin.subcategories.create') }}" type="primary" name="Nueva Subcategoría" />
+            </x-slot>
+
+            <!-- Contenedor principal con backdrop blur -->
+            <div
+                class="backdrop-blur-sm bg-white/70 rounded-3xl shadow-2xl border border-white/20 mx-4 my-8 overflow-hidden">
+                <!-- Header con gradiente -->
+                <div class="bg-gradient-to-r from-pink-600 to-rose-600 px-8 py-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                                <i class="fas fa-bookmark text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-white">Gestión de Subcategorías</h2>
+                                <p class="text-pink-100 text-sm">Administra las subcategorías organizadas por categorías
+                                    y familias</p>
+                            </div>
+                        </div>
+                        <div class="text-white/80 text-sm">
+                            <i class="fas fa-list mr-1"></i>
+                            {{ $subcategories->total() ?? $subcategories->count() }} subcategorías
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de herramientas con controles de vista -->
+                <div class="bg-white border-b border-gray-200 px-8 py-4">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                        <!-- Controles de vista -->
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm font-medium text-gray-700">Vista:</span>
+                            <div class="flex bg-gray-100 rounded-lg p-1">
+                                <button onclick="toggleView('cards')" id="cards-btn"
+                                    class="view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-pink-600 text-white shadow-sm">
+                                    <i class="fas fa-th-large mr-2"></i>Tarjetas
+                                </button>
+                                <button onclick="toggleView('table')" id="table-btn"
+                                    class="view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-table mr-2"></i>Tabla
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filtros y búsqueda -->
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <input type="text" id="search-input" placeholder="Buscar subcategorías..."
+                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-sm w-64">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                            <select id="items-per-page"
+                                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-500">
+                                <option value="12">12 por página</option>
+                                <option value="24">24 por página</option>
+                                <option value="48">48 por página</option>
+                                <option value="96">96 por página</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    @if ($subcategories->count())
+                        <!-- Vista de tarjetas -->
+                        <div id="cards-view" class="view-content">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                @foreach ($subcategories as $subcategory)
+                                    <div
+                                        class="group relative bg-gradient-to-br from-white to-pink-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-pink-100 overflow-hidden">
+                                        <!-- Badge ID -->
+                                        <div class="absolute top-3 left-3">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                #{{ $subcategory->id }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Contenido principal -->
+                                        <div class="p-6 pt-12">
+                                            <!-- Icono central -->
+                                            <div class="flex justify-center mb-4">
+                                                <div
+                                                    class="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                    <i class="fas fa-bookmark text-white text-2xl"></i>
+                                                </div>
+                                            </div>
+
+                                            <!-- Nombre de la subcategoría -->
+                                            <h3
+                                                class="text-lg font-semibold text-gray-800 text-center mb-2 group-hover:text-pink-600 transition-colors duration-300">
+                                                {{ $subcategory->name }}
+                                            </h3>
+
+                                            <!-- Jerarquía de información -->
+                                            <div class="space-y-2 mb-4">
+                                                <div class="flex items-center justify-center">
+                                                    <span
+                                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                                        <i class="fas fa-tags mr-1"></i>
+                                                        {{ $subcategory->category->name }}
+                                                    </span>
+                                                </div>
+                                                <div class="flex items-center justify-center">
+                                                    <span
+                                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                        <i class="fas fa-layer-group mr-1"></i>
+                                                        {{ $subcategory->category->family->name }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Botones de acción -->
+                                            <div class="flex justify-center space-x-2">
+                                                <a href="{{ route('admin.subcategories.edit', $subcategory) }}"
+                                                    class="flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                                    <i class="fas fa-edit mr-2 text-white"></i>
+                                                    <span class="text-white text-sm font-medium">Editar</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Efecto decorativo -->
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-rose-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Vista de tabla moderna -->
+                        <div id="table-view" class="view-content hidden">
+                            <div class="overflow-hidden bg-white rounded-xl shadow-lg border border-gray-200">
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                            <tr>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                    <div class="flex items-center space-x-1">
+                                                        <span>ID</span>
+                                                        <i
+                                                            class="fas fa-sort text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                                                    </div>
+                                                </th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                    <div class="flex items-center space-x-1">
+                                                        <span>Subcategoría</span>
+                                                        <i
+                                                            class="fas fa-sort text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                                                    </div>
+                                                </th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                    Categoría</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                    Familia</th>
+                                                <th
+                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                    Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach ($subcategories as $subcategory)
+                                                <tr class="hover:bg-gray-50 transition-colors duration-200 group">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                            #{{ $subcategory->id }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <div class="flex-shrink-0 h-12 w-12">
+                                                                <div
+                                                                    class="h-12 w-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                                                                    <i class="fas fa-bookmark text-white"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ml-4">
+                                                                <div
+                                                                    class="text-sm font-semibold text-gray-900 group-hover:text-pink-600 transition-colors duration-200">
+                                                                    {{ $subcategory->name }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                                            <i class="fas fa-tags mr-1"></i>
+                                                            {{ $subcategory->category->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                            <i class="fas fa-layer-group mr-1"></i>
+                                                            {{ $subcategory->category->family->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('admin.subcategories.edit', $subcategory) }}"
+                                                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                                            <i class="fas fa-edit mr-2"></i>
+                                                            Editar
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paginación mejorada -->
+                        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                            {{ $subcategories->links() }}
+                        </div>
+                    @else
+                        <!-- Estado vacío mejorado -->
+                        <div class="text-center py-16">
+                            <div
+                                class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-pink-100 to-rose-100 rounded-full mb-6">
+                                <i class="fas fa-bookmark text-4xl text-pink-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">No hay subcategorías registradas</h3>
+                            <p class="text-gray-600 mb-8 max-w-md mx-auto">Todavía no has creado ninguna subcategoría.
+                                Las subcategorías te permiten organizar productos de manera más específica dentro de
+                                cada categoría.</p>
+                            <a href="{{ route('admin.subcategories.create') }}"
+                                class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-plus mr-3 text-white"></i>
+                                <span class="text-white">Crear Primera Subcategoría</span>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- JavaScript para funcionalidad avanzada --}}
+    @push('js')
+        <script>
+            // Estado de la vista actual
+            let currentView = 'cards';
+
+            // Función para cambiar entre vistas
+            function toggleView(viewType) {
+                // Ocultar todas las vistas
+                document.querySelectorAll('.view-content').forEach(view => {
+                    view.classList.add('hidden');
+                });
+
+                // Mostrar la vista seleccionada
+                document.getElementById(viewType + '-view').classList.remove('hidden');
+
+                // Actualizar botones
+                document.querySelectorAll('.view-toggle').forEach(btn => {
+                    btn.classList.remove('bg-pink-600', 'text-white', 'shadow-sm');
+                    btn.classList.add('text-gray-600', 'hover:text-gray-900');
+                });
+
+                const selectedBtn = document.getElementById(viewType + '-btn');
+                selectedBtn.classList.add('bg-pink-600', 'text-white', 'shadow-sm');
+                selectedBtn.classList.remove('text-gray-600', 'hover:text-gray-900');
+
+                // Guardar preferencia
+                localStorage.setItem('admin_subcategories_view', viewType);
+                currentView = viewType;
+            }
+
+            // Restaurar vista guardada
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedView = localStorage.getItem('admin_subcategories_view');
+                if (savedView && savedView !== 'cards') {
+                    toggleView(savedView);
+                }
+            });
+
+            // Búsqueda en tiempo real
+            let searchTimeout;
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    console.log('Búsqueda subcategorías:', searchTerm);
+                }, 300);
+            });
+
+            // Cambio de items por página
+            document.getElementById('items-per-page').addEventListener('change', function(e) {
+                const itemsPerPage = e.target.value;
+                console.log('Items por página:', itemsPerPage);
+            });
+        </script>
+    @endpush
+
 </x-admin-layout>
