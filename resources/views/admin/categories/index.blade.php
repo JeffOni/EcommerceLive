@@ -73,168 +73,28 @@
                         <div class="flex items-center space-x-4">
                             <div class="relative">
                                 <input type="text" id="search-input" placeholder="Buscar categorías..."
+                                    value="{{ request('search') }}"
                                     class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm w-64">
                                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                             </div>
                             <select id="items-per-page"
                                 class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500">
-                                <option value="12">12 por página</option>
-                                <option value="24">24 por página</option>
-                                <option value="48">48 por página</option>
-                                <option value="96">96 por página</option>
+                                <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12 por
+                                    página</option>
+                                <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24 por página
+                                </option>
+                                <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48 por página
+                                </option>
+                                <option value="96" {{ request('per_page') == 96 ? 'selected' : '' }}>96 por página
+                                </option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8">
+                <div class="p-8" id="categories-container">
                     @if ($categories->count())
-                        <!-- Vista de tarjetas -->
-                        <div id="cards-view" class="view-content">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                                @foreach ($categories as $category)
-                                    <div
-                                        class="group relative bg-gradient-to-br from-white to-teal-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-teal-100 overflow-hidden">
-                                        <!-- Badge ID -->
-                                        <div class="absolute top-3 left-3">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                #{{ $category->id }}
-                                            </span>
-                                        </div>
-
-                                        <!-- Badge Familia -->
-                                        <div class="absolute top-3 right-3">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">
-                                                <i class="fas fa-layer-group mr-1"></i>
-                                                {{ $category->family->name }}
-                                            </span>
-                                        </div>
-
-                                        <!-- Contenido principal -->
-                                        <div class="p-6 pt-16">
-                                            <!-- Icono central -->
-                                            <div class="flex justify-center mb-4">
-                                                <div
-                                                    class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                                    <i class="fas fa-tags text-white text-2xl"></i>
-                                                </div>
-                                            </div>
-
-                                            <!-- Nombre de la categoría -->
-                                            <h3
-                                                class="text-lg font-semibold text-gray-800 text-center mb-2 group-hover:text-teal-600 transition-colors duration-300">
-                                                {{ $category->name }}
-                                            </h3>
-
-                                            <!-- Información de la familia -->
-                                            <p class="text-sm text-gray-500 text-center mb-4">
-                                                Familia: {{ $category->family->name }}
-                                            </p>
-
-                                            <!-- Botones de acción -->
-                                            <div class="flex justify-center space-x-2">
-                                                <a href="{{ route('admin.categories.edit', $category) }}"
-                                                    class="flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                                                    <i class="fas fa-edit mr-2 text-white"></i>
-                                                    <span class="text-white text-sm font-medium">Editar</span>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <!-- Efecto decorativo -->
-                                        <div
-                                            class="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- Vista de tabla moderna -->
-                        <div id="table-view" class="view-content hidden">
-                            <div class="overflow-hidden bg-white rounded-xl shadow-lg border border-gray-200">
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
-                                            <tr>
-                                                <th
-                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                    <div class="flex items-center space-x-1">
-                                                        <span>ID</span>
-                                                        <i
-                                                            class="fas fa-sort text-gray-400 cursor-pointer hover:text-gray-600"></i>
-                                                    </div>
-                                                </th>
-                                                <th
-                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                    <div class="flex items-center space-x-1">
-                                                        <span>Categoría</span>
-                                                        <i
-                                                            class="fas fa-sort text-gray-400 cursor-pointer hover:text-gray-600"></i>
-                                                    </div>
-                                                </th>
-                                                <th
-                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                    Familia</th>
-                                                <th
-                                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                    Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            @foreach ($categories as $category)
-                                                <tr class="hover:bg-gray-50 transition-colors duration-200 group">
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                            #{{ $category->id }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="flex items-center">
-                                                            <div class="flex-shrink-0 h-12 w-12">
-                                                                <div
-                                                                    class="h-12 w-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                                                                    <i class="fas fa-tags text-white"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="ml-4">
-                                                                <div
-                                                                    class="text-sm font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-200">
-                                                                    {{ $category->name }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">
-                                                            <i class="fas fa-layer-group mr-1"></i>
-                                                            {{ $category->family->name }}
-                                                        </span>
-                                                    </td>
-                                                    <td
-                                                        class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="{{ route('admin.categories.edit', $category) }}"
-                                                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                                                            <i class="fas fa-edit mr-2"></i>
-                                                            Editar
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Paginación mejorada -->
-                        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                            {{ $categories->links() }}
-                        </div>
+                        @include('admin.categories.partials.categories-content')
                     @else
                         <!-- Estado vacío mejorado -->
                         <div class="text-center py-16">
@@ -288,12 +148,75 @@
                 currentView = viewType;
             }
 
+            // Variable para controlar el estado de carga
+            let isLoading = false;
+
+            // Función para cargar datos
+            function loadData() {
+                if (isLoading) return;
+
+                isLoading = true;
+                const searchInput = document.getElementById('search-input');
+                const itemsPerPage = document.getElementById('items-per-page');
+                const container = document.getElementById('categories-container');
+
+                // Mostrar indicador de carga
+                container.style.opacity = '0.6';
+
+                const params = new URLSearchParams();
+                if (searchInput.value.trim()) {
+                    params.append('search', searchInput.value.trim());
+                }
+                params.append('per_page', itemsPerPage.value);
+
+                const url = `{{ route('admin.categories.index') }}?${params.toString()}`;
+
+                fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html',
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        container.innerHTML = html;
+
+                        // Restaurar vista seleccionada
+                        const savedView = localStorage.getItem('admin_categories_view') || 'cards';
+                        if (savedView !== 'cards') {
+                            setTimeout(() => toggleView(savedView), 100);
+                        }
+
+                        container.style.opacity = '1';
+                        isLoading = false;
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar datos:', error);
+                        container.style.opacity = '1';
+                        isLoading = false;
+                    });
+            }
+
             // Restaurar vista guardada
             document.addEventListener('DOMContentLoaded', function() {
                 const savedView = localStorage.getItem('admin_categories_view');
                 if (savedView && savedView !== 'cards') {
                     toggleView(savedView);
                 }
+
+                // Establecer valor inicial de items por página desde URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const perPage = urlParams.get('per_page') || '12';
+                document.getElementById('items-per-page').value = perPage;
+
+                // Establecer valor inicial de búsqueda desde URL
+                const search = urlParams.get('search') || '';
+                document.getElementById('search-input').value = search;
             });
 
             // Búsqueda en tiempo real
@@ -301,15 +224,13 @@
             document.getElementById('search-input').addEventListener('input', function(e) {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
-                    const searchTerm = e.target.value.toLowerCase();
-                    console.log('Búsqueda categorías:', searchTerm);
-                }, 300);
+                    loadData();
+                }, 500); // Reducir a 500ms para mejor UX
             });
 
             // Cambio de items por página
             document.getElementById('items-per-page').addEventListener('change', function(e) {
-                const itemsPerPage = e.target.value;
-                console.log('Items por página:', itemsPerPage);
+                loadData();
             });
         </script>
     @endpush

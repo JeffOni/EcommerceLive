@@ -11,11 +11,28 @@ class FamilyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $families = Family::orderBy('id', 'desc') //ordena los registros de la tabla por el id de forma descendente
-            ->paginate(); //muestra todos los registros en la tabla de forma paginada es decir carga los datos como se los va necesitando
+        $perPage = $request->get('per_page', 12); // Valor por defecto: 12
+        $search = $request->get('search');
+
+        $query = Family::orderBy('id', 'desc');
+
+        // Aplicar filtro de búsqueda si existe
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        $families = $query->paginate($perPage);
+
+        // Mantener parámetros de búsqueda y paginación en los enlaces
+        $families->appends($request->only(['search', 'per_page']));
+
+        // Si es una petición AJAX, devolver solo el contenido
+        if ($request->ajax()) {
+            return view('admin.families.partials.families-content', compact('families'))->render();
+        }
+
         return view('admin.families.index', compact('families'));
     }
 

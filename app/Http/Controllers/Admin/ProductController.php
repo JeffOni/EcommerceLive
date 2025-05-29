@@ -13,13 +13,43 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $products = Product::orderBy('id', 'desc') //ordena los registros de la tabla por el id de forma descendente
-            ->with('subcategory.category.family') //con esta funcion se carga la relacion de subcategoria
-            ->paginate(); //muestra todos los registros en la tabla de forma paginada es decir carga los datos como se los va necesitando
-        return view('admin.products.index', compact('products')); //retorna la vista de los productos y le pasa la variable products
+        $perPage = $request->get('per_page', 12); // Valor por defecto: 12
+        $search = $request->get('search');
+
+        $query = Product::orderBy('id', 'desc')
+            ->with('subcategory.category.family'); // carga las relaciones completas
+
+        // Aplicar filtro de búsqueda si existe
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('sku', 'like', '%' . $search . '%')
+                    ->orWhereHas('subcategory', function ($subcategoryQuery) use ($search) {
+                        $subcategoryQuery->where('name', 'like', '%' . $search . '%')
+                            ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                                $categoryQuery->where('name', 'like', '%' . $search . '%')
+                                    ->orWhereHas('family', function ($familyQuery) use ($search) {
+                                        $familyQuery->where('name', 'like', '%' . $search . '%');
+                                    });
+                            });
+                    });
+            });
+        }
+
+        $products = $query->paginate($perPage);
+
+        // Mantener parámetros de búsqueda y paginación en los enlaces
+        $products->appends($request->only(['search', 'per_page']));
+
+        // Si es una petición AJAX, devolver solo el contenido
+        if ($request->ajax()) {
+            return view('admin.products.partials.products-content', compact('products'))->render();
+        }
+
+        return view('admin.products.index', compact('products'));
     }
 
     /**

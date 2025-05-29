@@ -14,12 +14,34 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $categories = Category::orderBy('id', 'desc') //ordena los registros de la tabla por el id de forma descendente
-            ->with('family') //carga la relacion con la tabla family con antelacion para no hacer consultas adicionales y evitar el n+1
-            ->paginate(); //muestra todos los registros en la tabla de forma paginada es decir carga los datos como se los va necesitando
+        $perPage = $request->get('per_page', 12); // Valor por defecto: 12
+        $search = $request->get('search');
+
+        $query = Category::orderBy('id', 'desc')
+            ->with('family'); // carga la relación con la tabla family
+
+        // Aplicar filtro de búsqueda si existe
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhereHas('family', function ($familyQuery) use ($search) {
+                        $familyQuery->where('name', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        $categories = $query->paginate($perPage);
+
+        // Mantener parámetros de búsqueda y paginación en los enlaces
+        $categories->appends($request->only(['search', 'per_page']));
+
+        // Si es una petición AJAX, devolver solo el contenido
+        if ($request->ajax()) {
+            return view('admin.categories.partials.categories-content', compact('categories'))->render();
+        }
+
         return view('admin.categories.index', compact('categories'));
     }
 

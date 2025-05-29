@@ -12,12 +12,37 @@ class SubcategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $subcategories = Subcategory::orderBy('id', 'desc') //ordena los registros de la tabla por el id de forma descendente
-            ->with('category.family') //carga la relacion con la tabla category y family con antelacion para no hacer consultas adicionales y evitar el n+1
-            ->paginate(10); //muestra todos los registros en la tabla de forma paginada es decir carga los datos como se los va necesitando
+        $perPage = $request->get('per_page', 12); // Valor por defecto: 12
+        $search = $request->get('search');
+
+        $query = Subcategory::orderBy('id', 'desc')
+            ->with('category.family'); // carga la relación con category y family
+
+        // Aplicar filtro de búsqueda si existe
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                        $categoryQuery->where('name', 'like', '%' . $search . '%')
+                            ->orWhereHas('family', function ($familyQuery) use ($search) {
+                                $familyQuery->where('name', 'like', '%' . $search . '%');
+                            });
+                    });
+            });
+        }
+
+        $subcategories = $query->paginate($perPage);
+
+        // Mantener parámetros de búsqueda y paginación en los enlaces
+        $subcategories->appends($request->only(['search', 'per_page']));
+
+        // Si es una petición AJAX, devolver solo el contenido
+        if ($request->ajax()) {
+            return view('admin.subcategories.partials.subcategories-content', compact('subcategories'))->render();
+        }
+
         return view('admin.subcategories.index', compact('subcategories'));
     }
 
