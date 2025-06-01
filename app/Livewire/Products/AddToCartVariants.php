@@ -154,6 +154,15 @@ class AddToCartVariants extends Component
                     ->toArray(),
             ],
         ]);
+
+        if (auth()->check()) {
+            // Si el usuario está autenticado, actualizamos el carrito del usuario
+            Cart::store(auth()->id());
+        } //else {
+        //     // Si no está autenticado, guardamos en la sesión
+        //     Cart::store('guest');
+        // }
+
         // Lógica para agregar al carrito
         $this->dispatch('swal', [
             'title' => 'Producto agregado al carrito!',

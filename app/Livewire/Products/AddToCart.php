@@ -69,6 +69,16 @@ class AddToCart extends Component
             ],
         ]);
 
+        if (auth()->check()) {
+            // Si el usuario está autenticado, actualizamos el carrito del usuario
+            Cart::store(auth()->id());
+        } //else {
+        //     // Si no está autenticado, guardamos en la sesión
+        //     Cart::store('guest');
+        // }
+
+
+
         // Notificación de éxito con SweetAlert
         $this->dispatch('swal', [
             'title' => 'Producto agregado al carrito!',
