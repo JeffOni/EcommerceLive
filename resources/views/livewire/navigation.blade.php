@@ -150,12 +150,12 @@
                     {{-- El icono es un icono de Font Awesome --}}
 
 
-                    <button
+                    <a href=""
                         class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
                         <i class="text-white fas fa-shopping-cart"></i>
-                        <span
-                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">0</span>
-                    </button>
+                        <span id="cart-count"
+                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">{{ Cart::instance('shopping')->count() }}</span>
+                    </a>
 
                 </div>
 
@@ -285,6 +285,9 @@
     --}}
     @push('js')
         <script>
+            Livewire.on('cartUpdated', (count) => {
+                document.getElementById('cart-count').innerText = count;
+            });
             {{--
                 FUNCIÓN: search(value)
                 Función original que envía el evento de búsqueda a Livewire

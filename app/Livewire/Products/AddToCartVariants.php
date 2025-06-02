@@ -162,7 +162,7 @@ class AddToCartVariants extends Component
         //     // Si no está autenticado, guardamos en la sesión
         //     Cart::store('guest');
         // }
-
+        $this->dispatch('cartUpdated', Cart::count());
         // Lógica para agregar al carrito
         $this->dispatch('swal', [
             'title' => 'Producto agregado al carrito!',

@@ -78,7 +78,7 @@ class AddToCart extends Component
         // }
 
 
-
+        $this->dispatch('cartUpdated', Cart::count());
         // Notificación de éxito con SweetAlert
         $this->dispatch('swal', [
             'title' => 'Producto agregado al carrito!',
