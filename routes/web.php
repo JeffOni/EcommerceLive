@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\ProductController;
@@ -41,3 +42,7 @@ Route::get('/subcategories/{subcategory}', [SubcategoryController::class, 'show'
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->name('products.show')
     ->scopeBindings();
+
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+

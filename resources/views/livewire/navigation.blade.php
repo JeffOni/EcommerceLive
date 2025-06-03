@@ -150,7 +150,7 @@
                     {{-- El icono es un icono de Font Awesome --}}
 
 
-                    <a href=""
+                    <a href="{{ route('cart.index') }}"
                         class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
                         <i class="text-white fas fa-shopping-cart"></i>
                         <span id="cart-count"
