@@ -163,6 +163,7 @@
                                                     </div>
                                                     <!-- Botón incrementar -->
                                                     <button x-on:click="$wire.increaseQuantity('{{ $item->rowId }}')"
+                                                        :disabled="{{ $item->qty }} >= {{ $item->options->stock }}"
                                                         class="flex items-center justify-center w-12 h-12 text-gray-600 transition-colors duration-200 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-xl hover:bg-gray-50">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
