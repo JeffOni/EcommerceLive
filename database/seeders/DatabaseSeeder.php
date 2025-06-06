@@ -22,6 +22,10 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Jefferson Alexis',
+            'last_name' => 'Pozo',
+            'document_type' => 1, // 1 = Cédula, 2 = Pasaporte, 3 = RUC
+            'document_number' => '1234567890',
+            'phone' => '0987654321',
             'email' => 'Admin@example.com',
             'password' => bcrypt('secreto123'),
         ]);

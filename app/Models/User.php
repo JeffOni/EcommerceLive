@@ -27,6 +27,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
+        'document_type', // 1 = Cédula, 2 = Pasaporte, 3 = RUC
+        'document_number',
+        'phone',
         'email',
         'password',
     ];
