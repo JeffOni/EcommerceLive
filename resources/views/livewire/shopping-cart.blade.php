@@ -1,16 +1,48 @@
+{{-- 
+    VISTA DEL CARRITO DE COMPRAS - COMPONENTE LIVEWIRE
+    ==================================================
+    
+    Esta vista maneja la presentación completa del carrito de compras con:
+    
+    CARACTERÍSTICAS PRINCIPALES:
+    - Diseño moderno con gradientes y efectos glassmorphism
+    - Lista detallada de productos con imágenes y controles de cantidad
+    - Resumen de compra con cálculos automáticos (subtotal, impuestos, total)
+    - Estados vacío y con productos diferenciados
+    - Controles interactivos para modificar cantidades
+    - Botones para eliminar productos individuales o limpiar todo el carrito
+    - Efectos visuales y animaciones para mejorar la experiencia de usuario
+    
+    ESTRUCTURA:
+    1. Fondo decorativo con elementos glassmorphism
+    2. Header principal con título e información del carrito
+    3. Grid responsive: Lista de productos (2/3) + Resumen (1/3)
+    4. Productos individuales con controles de cantidad
+    5. Panel de resumen con totales y botón de pago
+    
+    @author Tu Nombre
+    @version 1.0
+--}}
+
 <!-- Fondo moderno con gradiente y elementos decorativos -->
 <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
-    <!-- Elementos decorativos de fondo estilo admin -->
-
-
+    {{-- 
+        ELEMENTOS DECORATIVOS DE FONDO
+        =============================
+        Crean un efecto visual moderno con formas difusas y gradientes
+        que se posicionan absolutamente sin interferir con el contenido
+    --}}
     <!-- Elementos decorativos de fondo -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        {{-- Círculo decorativo superior derecho --}}
         <div
             class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-indigo-400/20 to-purple-500/10 blur-3xl animate-pulse">
         </div>
+        {{-- Círculo decorativo inferior izquierdo --}}
         <div
             class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-400/20 to-pink-500/10 blur-3xl animate-pulse">
         </div>
+        {{-- Elementos decorativos medianos para dar profundidad --}}
         <div
             class="absolute w-32 h-32 rounded-full top-1/3 right-1/4 bg-gradient-to-r from-blue-300/30 to-indigo-400/20 blur-2xl">
         </div>
@@ -20,16 +52,27 @@
     </div>
 
     <div class="relative px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        {{-- 
+            HEADER PRINCIPAL DEL CARRITO
+            ===========================
+            Sección centrada que incluye:
+            - Icono principal del carrito con gradiente
+            - Título principal con efecto de texto transparente
+            - Contador de productos con estilo glassmorphism
+        --}}
         <!-- Header mejorado del carrito -->
         <div class="mb-12 text-center">
+            {{-- Icono principal con gradiente y sombra --}}
             <div
                 class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl">
                 <i class="text-2xl text-white fas fa-shopping-cart"></i>
             </div>
+            {{-- Título principal con efecto degradado en el texto --}}
             <h1
                 class="mb-3 text-5xl font-bold text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text">
                 Carrito de Compras
             </h1>
+            {{-- Badge informativo con contador de productos --}}
             <div class="inline-flex items-center px-4 py-2 border rounded-full shadow-md glass-effect border-white/40">
                 <i class="mr-2 text-indigo-500 fas fa-shopping-bag"></i>
                 <span class="font-medium text-gray-700">
@@ -38,15 +81,34 @@
             </div>
         </div>
 
+        {{-- 
+            LAYOUT PRINCIPAL - GRID RESPONSIVE
+            ==================================
+            Distribución en grid que se adapta a diferentes tamaños de pantalla:
+            - 1 columna en móviles
+            - 3 columnas en desktop (2 para productos + 1 para resumen)
+        --}}
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            {{-- 
+                SECCIÓN DE PRODUCTOS DEL CARRITO
+                ================================
+                Ocupa 2/3 del espacio en desktop y columna completa en móvil
+            --}}
             <!-- Lista de productos del carrito -->
             <div class="lg:col-span-2">
+                {{-- Contenedor principal con efecto glassmorphism --}}
                 <!-- Contenedor principal con backdrop blur -->
                 <div class="overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20">
+                    {{-- 
+                        HEADER DE LA SECCIÓN DE PRODUCTOS
+                        ================================
+                        Incluye título, descripción y botón para limpiar carrito
+                    --}}
                     <!-- Header de la sección -->
                     <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
+                                {{-- Icono con efecto glassmorphism --}}
                                 <div class="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
                                     <i class="text-lg text-white fas fa-list"></i>
                                 </div>
@@ -55,6 +117,7 @@
                                     <p class="text-sm text-indigo-100">Revisa y modifica tu selección</p>
                                 </div>
                             </div>
+                            {{-- Botón para limpiar carrito (solo visible si hay productos) --}}
                             @if (Cart::count() > 0)
                                 <button wire:click="clearCart"
                                     class="inline-flex items-center px-4 py-2 font-medium text-white transition-all duration-200 border rounded-lg bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm border-red-300/30">
@@ -65,16 +128,35 @@
                         </div>
                     </div>
 
+                    {{-- 
+                        CONTENIDO DE PRODUCTOS
+                        =====================
+                        Lista de productos con @forelse para manejar estado vacío
+                    --}}
                     <!-- Contenido de productos -->
                     <div class="p-6">
                         @forelse (Cart::content() as $item)
+                            {{-- 
+                                PRODUCTO INDIVIDUAL
+                                ==================
+                                Cada producto incluye:
+                                - Efectos visuales y animaciones
+                                - Imagen del producto
+                                - Información detallada
+                                - Controles de cantidad
+                                - Botón de eliminación
+                                - Cálculo de subtotal
+                            --}}
                             <!-- Producto individual con animaciones premium -->
                             <div
                                 class="relative p-6 mb-6 overflow-hidden border shadow-lg group bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 rounded-3xl border-white/60 shadow-gray-400 last:mb-0 backdrop-blur-sm">
+                                {{-- Efecto de brillo que se activa en hover --}}
                                 <!-- Efecto de brillo dinámico -->
                                 <div
                                     class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-all duration-1000">
-                                </div> <!-- Indicadores de estado múltiples -->
+                                </div>
+                                {{-- Indicadores de estado en la esquina superior derecha --}}
+                                <!-- Indicadores de estado múltiples -->
                                 <div class="absolute flex items-center space-x-2 top-4 right-4">
                                     <div
                                         class="w-3 h-3 rounded-full shadow-lg bg-gradient-to-r from-green-400 to-emerald-500 ">
@@ -82,7 +164,9 @@
                                     <div
                                         class="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 opacity-60">
                                     </div>
-                                </div><!-- Badge de premium en esquina -->
+                                </div>
+                                {{-- Badge premium en la esquina superior izquierda --}}
+                                <!-- Badge de premium en esquina -->
                                 <div class="absolute transform -translate-y-1/2 top-5 left-6">
                                     <div
                                         class="px-3 py-1 text-xs font-bold text-white rounded-full shadow-lg bg-gradient-to-r from-amber-400 to-orange-500">
@@ -91,22 +175,35 @@
                                     </div>
                                 </div>
 
+                                {{-- 
+                                    LAYOUT PRINCIPAL DEL PRODUCTO
+                                    ============================
+                                    Flexible layout que se adapta a móvil y desktop
+                                --}}
                                 <div
                                     class="flex flex-col items-start space-y-6 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-8">
+                                    {{-- 
+                                        IMAGEN DEL PRODUCTO
+                                        ==================
+                                        Sección de imagen con efectos hover y badge de verificación
+                                    --}}
                                     <!-- Imagen del producto mejorada -->
                                     <div class="relative flex-shrink-0">
                                         <div
                                             class="overflow-hidden transition-all duration-300 shadow-xl w-28 h-28 lg:w-36 lg:h-36 rounded-2xl ">
+                                            {{-- Mostrar imagen del producto si existe, sino placeholder --}}
                                             @if ($item->options->image)
                                                 <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                                                     src="{{ $item->options->image }}" alt="{{ $item->name }}">
                                             @else
+                                                {{-- Placeholder cuando no hay imagen disponible --}}
                                                 <div
                                                     class="flex items-center justify-center w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100">
                                                     <i class="text-3xl text-indigo-400 fas fa-image"></i>
                                                 </div>
                                             @endif
                                         </div>
+                                        {{-- Badge de verificación/estado del producto --}}
                                         <!-- Badge de descuento (decorativo) -->
                                         <div
                                             class="absolute flex items-center justify-center w-8 h-8 rounded-full shadow-lg -top-2 -left-2 bg-gradient-to-r from-emerald-500 to-green-500">
@@ -114,9 +211,15 @@
                                         </div>
                                     </div>
 
+                                    {{-- 
+                                        INFORMACIÓN DEL PRODUCTO
+                                        =======================
+                                        Sección que contiene nombre, precio y botón de eliminación
+                                    --}}
                                     <!-- Información del producto mejorada -->
                                     <div class="flex-1 min-w-0 space-y-3">
                                         <div class="flex items-start justify-between">
+                                            {{-- Nombre del producto con enlace --}}
                                             <h3
                                                 class="mb-2 text-xl font-bold text-gray-900 underline transition-colors duration-300 hover:text-indigo-600">
                                                 <a href="{{ route('products.show', $item->id) }}"
@@ -125,27 +228,38 @@
                                                 </a>
                                             </h3>
                                         </div>
+                                        {{-- Precio por unidad --}}
                                         <div class="flex items-center mb-3 space-x-4">
                                             <span class="text-xl font-bold text-green-600">
                                                 ${{ number_format($item->price, 2) }}
                                             </span>
                                             <span class="text-sm text-gray-500">por unidad</span>
                                         </div>
+                                        {{-- Botón para eliminar producto del carrito --}}
                                         <button wire:click="removeItem('{{ $item->rowId }}')"
                                             class="inline-flex items-center text-sm text-red-500 transition-colors duration-200 hover:text-red-700">
                                             <i class="mr-2 fas fa-trash"></i>
                                             Quitar del carrito
                                         </button>
-                                    </div> <!-- Controles de cantidad con animaciones premium -->
+                                    </div> {{-- 
+                                        CONTROLES DE CANTIDAD
+                                        ====================
+                                        Sección con controles para modificar la cantidad del producto
+                                        y mostrar el subtotal calculado dinámicamente
+                                    --}}
+                                    <!-- Controles de cantidad con animaciones premium -->
                                     <div class="flex-shrink-0">
                                         <div class="space-y-3">
+                                            {{-- Etiqueta con gradiente --}}
                                             <label
                                                 class="block text-sm font-bold text-center text-transparent text-gray-700 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text">
                                                 Cantidad
                                             </label>
+                                            {{-- Controles de incremento/decremento --}}
                                             <div class="flex items-center justify-center">
                                                 <div
                                                     class="flex items-center bg-white border border-gray-300 rounded-xl">
+                                                    {{-- Botón decrementar cantidad --}}
                                                     <!-- Botón decrementar -->
                                                     <button x-on:click="$wire.decreaseQuantity('{{ $item->rowId }}')"
                                                         :disabled="{{ $item->qty }} <= 1"
@@ -156,11 +270,13 @@
                                                                 stroke-width="2" d="M20 12H4" />
                                                         </svg>
                                                     </button>
+                                                    {{-- Display de cantidad actual --}}
                                                     <!-- Display de cantidad -->
                                                     <div
                                                         class="flex items-center justify-center w-16 h-12 text-lg font-semibold text-gray-900 bg-white border-gray-300 border-x">
                                                         <span>{{ $item->qty }}</span>
                                                     </div>
+                                                    {{-- Botón incrementar cantidad --}}
                                                     <!-- Botón incrementar -->
                                                     <button x-on:click="$wire.increaseQuantity('{{ $item->rowId }}')"
                                                         :disabled="{{ $item->qty }} >= {{ $item->options->stock }}"
@@ -172,14 +288,22 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                            </div> <!-- Subtotal con efectos visuales -->
+                                            </div> {{-- 
+                                                SUBTOTAL CON EFECTOS VISUALES
+                                                ============================
+                                                Muestra el cálculo automático del subtotal por producto
+                                                con sugerencias de ahorro
+                                            --}}
+                                            <!-- Subtotal con efectos visuales -->
                                             <div
                                                 class="p-3 text-center border bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border-green-200/50">
                                                 <div class="mb-1 text-xs font-medium text-gray-500">Subtotal</div>
+                                                {{-- Precio total del producto (precio × cantidad) --}}
                                                 <div
                                                     class="text-lg font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text">
                                                     ${{ number_format($item->price * $item->qty, 2) }}
                                                 </div>
+                                                {{-- Sugerencia de ahorro (decorativa) --}}
                                                 <!-- Indicador de ahorro -->
                                                 <div class="mt-1 text-xs text-green-600">
                                                     <i class="mr-1 fas fa-piggy-bank"></i>
@@ -190,16 +314,26 @@
                                     </div>
                                 </div>
                             </div>
-                        @empty <!-- Estado vacío mejorado -->
+                        @empty
+                            {{-- 
+                                ESTADO VACÍO DEL CARRITO
+                                =======================
+                                Pantalla que se muestra cuando no hay productos en el carrito
+                            --}}
+                            <!-- Estado vacío mejorado -->
                             <div class="py-16 text-center">
+                                {{-- Icono decorativo del carrito vacío --}}
                                 <div
                                     class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100">
                                     <i class="text-4xl text-indigo-500 fas fa-shopping-cart"></i>
                                 </div>
+                                {{-- Mensaje principal --}}
                                 <h3 class="mb-4 text-2xl font-semibold text-gray-800">Tu carrito está vacío</h3>
+                                {{-- Mensaje secundario con llamada a la acción --}}
                                 <p class="max-w-md mx-auto mb-8 text-gray-600">No tienes productos en tu carrito de
-                                    compras. ¡Explora nuestro catálogo y encuentra productos increíbles!</p> <button
-                                    onclick="window.history.back()"
+                                    compras. ¡Explora nuestro catálogo y encuentra productos increíbles!</p>
+                                {{-- Botón para regresar a comprar --}}
+                                <button onclick="window.history.back()"
                                     class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl hover:shadow-xl hover:scale-105">
                                     <i class="mr-3 text-white fas fa-store"></i>
                                     <span class="text-white">Explorar Productos</span>
@@ -210,13 +344,26 @@
                 </div>
             </div>
 
+            {{-- 
+                SECCIÓN DEL RESUMEN DEL CARRITO
+                ==============================
+                Panel lateral sticky que ocupa 1/3 del espacio en desktop
+                y columna completa en móvil
+            --}}
             <!-- Resumen del carrito -->
             <div class="lg:col-span-1">
+                {{-- Contenedor principal sticky con glassmorphism --}}
                 <div
                     class="sticky overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20 top-8">
+                    {{-- 
+                        HEADER DEL RESUMEN
+                        =================
+                        Título y descripción del panel de resumen
+                    --}}
                     <!-- Header del resumen -->
                     <div class="px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600">
                         <div class="flex items-center space-x-3">
+                            {{-- Icono con efecto glassmorphism --}}
                             <div class="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
                                 <i class="text-lg text-white fas fa-calculator"></i>
                             </div>
