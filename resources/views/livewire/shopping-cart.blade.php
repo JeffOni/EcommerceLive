@@ -451,7 +451,7 @@
                                 </div>
                             </div><!-- Botones de acción premium -->
                             <div class="pt-6 space-y-4"> <!-- Botón principal de pago (sin ruta específica) -->
-                                <button
+                                <a href="{{ route('shipping.index') }}"
                                     class="relative inline-flex items-center justify-center w-full px-8 py-5 overflow-hidden font-bold text-white transition-all duration-500 transform shadow-2xl group bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 hover:from-green-700 hover:via-emerald-700 hover:to-green-800 rounded-2xl hover:shadow-2xl hover:scale-105">
                                     <!-- Efecto de brillo dinámico -->
                                     <div
@@ -474,7 +474,7 @@
                                     <div
                                         class="absolute w-4 h-4 bg-green-400 border-2 border-white rounded-full -top-1 -right-1 animate-pulse">
                                     </div>
-                                </button> <!-- Botón secundario mejorado -->
+                                </a> <!-- Botón secundario mejorado -->
                                 <button onclick="window.history.back()"
                                     class="inline-flex items-center justify-center w-full px-6 py-4 font-semibold text-gray-700 transition-all duration-300 border-2 border-gray-200 shadow-md group bg-gradient-to-r from-gray-100 via-white to-gray-100 hover:from-indigo-50 hover:via-blue-50 hover:to-indigo-50 hover:text-indigo-700 rounded-xl hover:border-indigo-300 hover:shadow-lg">
                                     <div class="flex items-center space-x-3">
