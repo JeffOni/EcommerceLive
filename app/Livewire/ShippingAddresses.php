@@ -2,12 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\CreateAddressForm;
 use App\Models\Address;
 use Livewire\Component;
 
 class ShippingAddresses extends Component
 {
     public $addresses;
+
+    public $newAddress = false;
+
+    public CreateAddressForm $createAddress;
     public function mount()
     {
         // Inicializar la lista de direcciones del usuario autenticado usando la relación
