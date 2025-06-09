@@ -14,14 +14,21 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Usuario propietario de la dirección
             $table->integer('type'); // Tipo de dirección (casa, trabajo, etc.)
-            $table->string('provincia'); // Provincia de Ecuador
-            $table->string('canton'); // Cantón dentro de la provincia
-            $table->string('parroquia'); // Parroquia dentro del cantón
+
+            // Relaciones con las tablas de ubicación geográfica
+            $table->foreignId('province_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('canton_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('parish_id')->nullable()->constrained()->onDelete('set null');
+
             $table->string('reference')->nullable(); // Referencia adicional (cerca de...)
             $table->string('address'); // Dirección específica (calle, número, etc.)
             $table->integer('receiver'); // Tipo de receptor (mismo usuario, tercero, etc.)
             $table->json('receiver_info')->nullable(); // Datos del receptor (nombre, teléfono, etc.)
             $table->boolean('default')->default(false); // Si es la dirección principal del usuario
+
+            // Campos adicionales
+            $table->string('postal_code')->nullable(); // Código postal (se asigna automáticamente)
+            $table->text('notes')->nullable(); // Notas especiales para entrega
 
             $table->timestamps();
         });

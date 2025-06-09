@@ -22,6 +22,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Rutas protegidas que requieren autenticación
+    Route::get('/shipping', [ShippingController::class, 'index'])->name('shipping.index');
 });
 
 // El método scopeBindings() en la ruta aplica el enlace automático de modelos anidados en rutas.
@@ -46,7 +49,4 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
-
-Route::get('/shipping', [ShippingController::class, 'index'])
-    ->name('shipping.index');
 
