@@ -1,0 +1,178 @@
+{
+  "provinces": {
+    "01": {
+      "name": "AZUAY",
+      "cantons": {
+        "0101": {
+          "name": "CUENCA",
+          "parishes": [
+            {"name": "Bellavista", "code": "010101"},
+            {"name": "Cañaribamba", "code": "010102"},
+            {"name": "El Batán", "code": "010103"},
+            {"name": "El Sagrario", "code": "010104"},
+            {"name": "El Vecino", "code": "010105"},
+            {"name": "Gil Ramírez Dávalos", "code": "010106"},
+            {"name": "Huayna Cápac", "code": "010107"},
+            {"name": "Machángara", "code": "010108"},
+            {"name": "Monay", "code": "010109"},
+            {"name": "San Blas", "code": "010110"},
+            {"name": "San Sebastián", "code": "010111"},
+            {"name": "Sucre", "code": "010112"},
+            {"name": "Totoracocha", "code": "010113"},
+            {"name": "Yanuncay", "code": "010114"},
+            {"name": "Hermano Miguel", "code": "010115"},
+            {"name": "Baños", "code": "010150"},
+            {"name": "Cumbe", "code": "010151"},
+            {"name": "Chaucha", "code": "010152"},
+            {"name": "Checa (Jidcay)", "code": "010153"},
+            {"name": "Chiquintad", "code": "010154"},
+            {"name": "Llacao", "code": "010155"},
+            {"name": "Molleturo", "code": "010156"},
+            {"name": "Nulti", "code": "010157"},
+            {"name": "Octavio Cordero Palacios (Santa Rosa)", "code": "010158"},
+            {"name": "Paccha", "code": "010159"},
+            {"name": "Quingeo", "code": "010160"},
+            {"name": "Ricaurte", "code": "010161"},
+            {"name": "San Joaquín", "code": "010162"},
+            {"name": "Santa Ana", "code": "010163"},
+            {"name": "Sayausí", "code": "010164"},
+            {"name": "Sidcay", "code": "010165"},
+            {"name": "Sinincay", "code": "010166"},
+            {"name": "Taríqui", "code": "010167"},
+            {"name": "Turi", "code": "010168"},
+            {"name": "Valle", "code": "010169"},
+            {"name": "Victoria del Portete (Irquis)", "code": "010170"}
+          ]
+        },
+        "0102": {
+          "name": "GIRÓN",
+          "parishes": [
+            {"name": "Girón", "code": "010201"},
+            {"name": "Asunción", "code": "010250"},
+            {"name": "San Gerardo", "code": "010251"}
+          ]
+        },
+        "0103": {
+          "name": "GUALACEO",
+          "parishes": [
+            {"name": "Gualaceo", "code": "010301"},
+            {"name": "Chordeleg", "code": "010350"},
+            {"name": "Daniel Córdova Toral (El Oriente)", "code": "010351"},
+            {"name": "Jadán", "code": "010352"},
+            {"name": "Remigio Crespo Toral (Gúlag)", "code": "010353"},
+            {"name": "San Juan", "code": "010354"},
+            {"name": "Zhidmad", "code": "010355"}
+          ]
+        },
+        "0104": {
+          "name": "NABÓN",
+          "parishes": [
+            {"name": "Nabón", "code": "010401"},
+            {"name": "Las Nieves (Chaya)", "code": "010450"},
+            {"name": "Cochapata", "code": "010451"},
+            {"name": "El Progreso (Cab. en Zhiña)", "code": "010452"}
+          ]
+        },
+        "0105": {
+          "name": "PAUTE",
+          "parishes": [
+            {"name": "Paute", "code": "010501"},
+            {"name": "Bulán (José Víctor Izquierdo)", "code": "010550"},
+            {"name": "Chicán (Guillermo Ortega)", "code": "010551"},
+            {"name": "El Cabo", "code": "010552"},
+            {"name": "Guarainag", "code": "010553"},
+            {"name": "Palmas", "code": "010554"},
+            {"name": "Pan", "code": "010555"},
+            {"name": "San Cristóbal (Carlos Ordóñez Lazo)", "code": "010556"},
+            {"name": "Tomebamba", "code": "010557"},
+            {"name": "Dug Dug", "code": "010558"}
+          ]
+        },
+        "0106": {
+          "name": "PUCARÁ",
+          "parishes": [
+            {"name": "Pucará", "code": "010601"},
+            {"name": "Camilo Ponce Enríquez", "code": "010650"}
+          ]
+        },
+        "0107": {
+          "name": "SAN FERNANDO",
+          "parishes": [
+            {"name": "San Fernando", "code": "010701"},
+            {"name": "Chumblín", "code": "010750"}
+          ]
+        },
+        "0108": {
+          "name": "SANTA ISABEL",
+          "parishes": [
+            {"name": "Santa Isabel (Chaguarurco)", "code": "010801"},
+            {"name": "Abdón Calderón (La Unión)", "code": "010850"},
+            {"name": "El Carmen de Pijilí", "code": "010851"},
+            {"name": "Presidente Córdova", "code": "010852"},
+            {"name": "San Salvador de Cañaribamba", "code": "010853"},
+            {"name": "Shaglli", "code": "010854"},
+            {"name": "Zhaglli (Shaglli)", "code": "010855"}
+          ]
+        },
+        "0109": {
+          "name": "SIGSIG",
+          "parishes": [
+            {"name": "Sigsig", "code": "010901"},
+            {"name": "Cuchil (Cutchil)", "code": "010950"},
+            {"name": "Gima", "code": "010951"},
+            {"name": "Guel", "code": "010952"},
+            {"name": "Ludo", "code": "010953"},
+            {"name": "San Bartolomé", "code": "010954"}
+          ]
+        },
+        "0110": {
+          "name": "OÑA",
+          "parishes": [
+            {"name": "Oña", "code": "011001"},
+            {"name": "La Susana", "code": "011050"}
+          ]
+        },
+        "0111": {
+          "name": "CHORDELEG",
+          "parishes": [
+            {"name": "Chordeleg", "code": "011101"},
+            {"name": "Delegsol", "code": "011150"},
+            {"name": "Luis Galarza Orellana (Cab. en Delegsol)", "code": "011151"},
+            {"name": "Principal", "code": "011152"},
+            {"name": "La Unión", "code": "011153"}
+          ]
+        },
+        "0112": {
+          "name": "EL PAN",
+          "parishes": [
+            {"name": "El Pan", "code": "011201"},
+            {"name": "Amaluza", "code": "011250"},
+            {"name": "Palmas", "code": "011251"},
+            {"name": "San Vicente", "code": "011252"}
+          ]
+        },
+        "0113": {
+          "name": "SEVILLA DE ORO",
+          "parishes": [
+            {"name": "Sevilla de Oro", "code": "011301"},
+            {"name": "Palmas", "code": "011350"},
+            {"name": "Amaluza", "code": "011351"}
+          ]
+        },
+        "0114": {
+          "name": "GUACHAPALA",
+          "parishes": [
+            {"name": "Guachapala", "code": "011401"}
+          ]
+        },
+        "0115": {
+          "name": "CAMILO PONCE ENRÍQUEZ",
+          "parishes": [
+            {"name": "Camilo Ponce Enríquez", "code": "011501"},
+            {"name": "El Carmen de Pijilí", "code": "011550"}
+          ]
+        }
+      }
+    }
+  }
+}

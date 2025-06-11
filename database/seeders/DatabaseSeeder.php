@@ -31,6 +31,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+                // Seeders geográficos (deben ir en orden por las relaciones)
+            ProvinceSeeder::class,
+            CantonSeeder::class,
+            ParishSeeder::class,
+
+                // Otros seeders
             FamilySeeder::class,
             OptionSeeder::class,
         ]);

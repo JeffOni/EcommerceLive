@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Parish;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -41,7 +42,7 @@ class CreateAddressForm extends Form
         $this->validate();
 
         // Obtener el código postal basado en la parroquia seleccionada
-        $parish = \App\Models\Parish::find($this->parish_id);
+        $parish = Parish::find($this->parish_id);
         $postal_code = $parish ? $parish->code : null;
 
         // Si es la primera dirección o se marca como default, hacer que sea la predeterminada
