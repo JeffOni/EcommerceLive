@@ -78,4 +78,37 @@ class Address extends Model
 
         return implode(', ', $parts);
     }
+
+    /**
+     * Obtener el código postal efectivo (personalizado o por defecto)
+     */
+    public function getEffectivePostalCode(): ?string
+    {
+        // Si tiene código personalizado, usar ese; si no, usar el por defecto de la parroquia
+        return $this->postal_code ?? $this->parish?->default_postal_code;
+    }
+
+    /**
+     * Verificar si usa código postal personalizado
+     */
+    public function hasCustomPostalCode(): bool
+    {
+        return $this->postal_code &&
+            $this->parish &&
+            $this->postal_code !== $this->parish->default_postal_code;
+    }
+
+    /**
+     * Obtener información de ubicación completa
+     */
+    public function getLocationInfoAttribute(): array
+    {
+        return [
+            'province' => $this->province?->name,
+            'canton' => $this->canton?->name,
+            'parish' => $this->parish?->name,
+            'postal_code' => $this->getEffectivePostalCode(),
+            'is_custom_postal_code' => $this->hasCustomPostalCode()
+        ];
+    }
 }

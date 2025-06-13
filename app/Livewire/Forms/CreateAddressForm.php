@@ -8,8 +8,8 @@ use Livewire\Form;
 
 class CreateAddressForm extends Form
 {
-    #[Validate('required|string|in:casa,trabajo,otro')]
-    public $type = ''; // Tipo de dirección (casa, trabajo, otro)
+    #[Validate('required|integer|in:1,2,3')]
+    public $type = 1; // Tipo de dirección (1=casa, 2=trabajo, 3=otro)
 
     #[Validate('required|exists:provinces,id')]
     public $province_id = ''; // ID de la Provincia de Ecuador
@@ -26,8 +26,11 @@ class CreateAddressForm extends Form
     #[Validate('required|string|max:255')]
     public $address = ''; // Dirección específica (calle, número, etc.)
 
-    #[Validate('required|string|in:propio,tercero')]
-    public $receiver = 'propio'; // Tipo de receptor (propio, tercero)
+    #[Validate('nullable|string|max:10')]
+    public $postal_code = ''; // Código postal (puede ser sugerido o personalizado)
+
+    #[Validate('required|integer|in:1,2')]
+    public $receiver = 1; // Tipo de receptor (1=propio, 2=tercero)
 
     #[Validate('nullable|array')]
     public $receiver_info = []; // Datos del receptor (nombre, teléfono, etc.)
@@ -41,9 +44,11 @@ class CreateAddressForm extends Form
 
         $this->validate();
 
-        // Obtener el código postal basado en la parroquia seleccionada
-        $parish = Parish::find($this->parish_id);
-        $postal_code = $parish ? $parish->code : null;
+        // Si no hay código postal ingresado, usar el de la parroquia seleccionada
+        if (empty($this->postal_code)) {
+            $parish = Parish::find($this->parish_id);
+            $this->postal_code = $parish ? $parish->default_postal_code : null;
+        }
 
         // Si es la primera dirección o se marca como default, hacer que sea la predeterminada
         $user = auth()->user();
@@ -60,7 +65,7 @@ class CreateAddressForm extends Form
             'province_id' => $this->province_id,
             'canton_id' => $this->canton_id,
             'parish_id' => $this->parish_id,
-            'postal_code' => $postal_code,
+            'postal_code' => $this->postal_code,
             'reference' => $this->reference,
             'address' => $this->address,
             'receiver' => $this->receiver,
@@ -78,18 +83,19 @@ class CreateAddressForm extends Form
     public function rules()
     {
         $rules = [
-            'type' => 'required|string|in:casa,trabajo,otro',
+            'type' => 'required|integer|in:1,2,3',
             'province_id' => 'required|exists:provinces,id',
             'canton_id' => 'required|exists:cantons,id',
             'parish_id' => 'required|exists:parishes,id',
             'reference' => 'nullable|string|max:255',
             'address' => 'required|string|max:255',
-            'receiver' => 'required|string|in:propio,tercero',
+            'postal_code' => 'nullable|string|max:10',
+            'receiver' => 'required|integer|in:1,2',
             'receiver_info' => 'nullable|array',
         ];
 
-        // Si el receptor es tercero, validar la información del receptor
-        if ($this->receiver === 'tercero') {
+        // Si el receptor es tercero (2), validar la información del receptor
+        if ($this->receiver === 2) {
             $rules['receiver_info.name'] = 'required|string|max:255';
             $rules['receiver_info.phone'] = 'required|string|max:20';
             $rules['receiver_info.identification'] = 'nullable|string|max:20';
@@ -102,7 +108,8 @@ class CreateAddressForm extends Form
     {
         return [
             'type.required' => 'El tipo de dirección es obligatorio.',
-            'type.in' => 'El tipo de dirección debe ser casa, trabajo u otro.',
+            'type.integer' => 'El tipo de dirección debe ser un número válido.',
+            'type.in' => 'El tipo de dirección debe ser casa (1), trabajo (2) u otro (3).',
             'province_id.required' => 'La provincia es obligatoria.',
             'province_id.exists' => 'La provincia seleccionada no es válida.',
             'canton_id.required' => 'El cantón es obligatorio.',
@@ -111,8 +118,10 @@ class CreateAddressForm extends Form
             'parish_id.exists' => 'La parroquia seleccionada no es válida.',
             'address.required' => 'La dirección específica es obligatoria.',
             'address.max' => 'La dirección no puede tener más de 255 caracteres.',
+            'postal_code.max' => 'El código postal no puede tener más de 10 caracteres.',
             'receiver.required' => 'El tipo de receptor es obligatorio.',
-            'receiver.in' => 'El receptor debe ser propio o tercero.',
+            'receiver.integer' => 'El tipo de receptor debe ser un número válido.',
+            'receiver.in' => 'El receptor debe ser propio (1) o tercero (2).',
             'receiver_info.name.required' => 'El nombre del receptor es obligatorio.',
             'receiver_info.phone.required' => 'El teléfono del receptor es obligatorio.',
         ];

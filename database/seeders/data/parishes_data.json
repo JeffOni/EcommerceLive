@@ -6,170 +6,2418 @@
         "0101": {
           "name": "CUENCA",
           "parishes": [
-            {"name": "Bellavista", "code": "010101"},
-            {"name": "Cañaribamba", "code": "010102"},
-            {"name": "El Batán", "code": "010103"},
-            {"name": "El Sagrario", "code": "010104"},
-            {"name": "El Vecino", "code": "010105"},
-            {"name": "Gil Ramírez Dávalos", "code": "010106"},
-            {"name": "Huayna Cápac", "code": "010107"},
-            {"name": "Machángara", "code": "010108"},
-            {"name": "Monay", "code": "010109"},
-            {"name": "San Blas", "code": "010110"},
-            {"name": "San Sebastián", "code": "010111"},
-            {"name": "Sucre", "code": "010112"},
-            {"name": "Totoracocha", "code": "010113"},
-            {"name": "Yanuncay", "code": "010114"},
-            {"name": "Hermano Miguel", "code": "010115"},
-            {"name": "Baños", "code": "010150"},
-            {"name": "Cumbe", "code": "010151"},
-            {"name": "Chaucha", "code": "010152"},
-            {"name": "Checa (Jidcay)", "code": "010153"},
-            {"name": "Chiquintad", "code": "010154"},
-            {"name": "Llacao", "code": "010155"},
-            {"name": "Molleturo", "code": "010156"},
-            {"name": "Nulti", "code": "010157"},
-            {"name": "Octavio Cordero Palacios (Santa Rosa)", "code": "010158"},
-            {"name": "Paccha", "code": "010159"},
-            {"name": "Quingeo", "code": "010160"},
-            {"name": "Ricaurte", "code": "010161"},
-            {"name": "San Joaquín", "code": "010162"},
-            {"name": "Santa Ana", "code": "010163"},
-            {"name": "Sayausí", "code": "010164"},
-            {"name": "Sidcay", "code": "010165"},
-            {"name": "Sinincay", "code": "010166"},
-            {"name": "Taríqui", "code": "010167"},
-            {"name": "Turi", "code": "010168"},
-            {"name": "Valle", "code": "010169"},
-            {"name": "Victoria del Portete (Irquis)", "code": "010170"}
+            {"name": "Bellavista", "code": "010101", "default_postal_code": "010101"},
+            {"name": "Cañaribamba", "code": "010102", "default_postal_code": "010102"},
+            {"name": "El Batán", "code": "010103", "default_postal_code": "010103"},
+            {"name": "El Sagrario", "code": "010104", "default_postal_code": "010104"},
+            {"name": "El Vecino", "code": "010105", "default_postal_code": "010105"},
+            {"name": "Gil Ramírez Dávalos", "code": "010106", "default_postal_code": "010106"},
+            {"name": "Huayna Cápac", "code": "010107", "default_postal_code": "010107"},
+            {"name": "Machángara", "code": "010108", "default_postal_code": "010108"},
+            {"name": "Monay", "code": "010109", "default_postal_code": "010109"},
+            {"name": "San Blas", "code": "010110", "default_postal_code": "010110"},
+            {"name": "San Sebastián", "code": "010111", "default_postal_code": "010111"},
+            {"name": "Sucre", "code": "010112", "default_postal_code": "010112"},
+            {"name": "Totoracocha", "code": "010113", "default_postal_code": "010113"},
+            {"name": "Yanuncay", "code": "010114", "default_postal_code": "010114"},
+            {"name": "Hermano Miguel", "code": "010115", "default_postal_code": "010115"},
+            {"name": "Baños", "code": "010150", "default_postal_code": "010150"},
+            {"name": "Cumbe", "code": "010151", "default_postal_code": "010151"},
+            {"name": "Chaucha", "code": "010152", "default_postal_code": "010152"},
+            {"name": "Checa (Jidcay)", "code": "010153", "default_postal_code": "010153"},
+            {"name": "Chiquintad", "code": "010154", "default_postal_code": "010154"},
+            {"name": "Llacao", "code": "010155", "default_postal_code": "010155"},
+            {"name": "Molleturo", "code": "010156", "default_postal_code": "010156"},
+            {"name": "Nulti", "code": "010157", "default_postal_code": "010157"},
+            {"name": "Octavio Cordero Palacios (Santa Rosa)", "code": "010158", "default_postal_code": "010158"},
+            {"name": "Paccha", "code": "010159", "default_postal_code": "010159"},
+            {"name": "Quingeo", "code": "010160", "default_postal_code": "010160"},
+            {"name": "Ricaurte", "code": "010161", "default_postal_code": "010161"},
+            {"name": "San Joaquín", "code": "010162", "default_postal_code": "010162"},
+            {"name": "Santa Ana", "code": "010163", "default_postal_code": "010163"},
+            {"name": "Sayausí", "code": "010164", "default_postal_code": "010164"},
+            {"name": "Sidcay", "code": "010165", "default_postal_code": "010165"},
+            {"name": "Sinincay", "code": "010166", "default_postal_code": "010166"},
+            {"name": "Taríqui", "code": "010167", "default_postal_code": "010167"},
+            {"name": "Turi", "code": "010168", "default_postal_code": "010168"},
+            {"name": "Valle", "code": "010169", "default_postal_code": "010169"},
+            {"name": "Victoria del Portete (Irquis)", "code": "010170", "default_postal_code": "010170"}
           ]
         },
         "0102": {
           "name": "GIRÓN",
           "parishes": [
-            {"name": "Girón", "code": "010201"},
-            {"name": "Asunción", "code": "010250"},
-            {"name": "San Gerardo", "code": "010251"}
+            {"name": "Girón", "code": "010201", "default_postal_code": "010201"},
+            {"name": "Asunción", "code": "010250", "default_postal_code": "010250"},
+            {"name": "San Gerardo", "code": "010251", "default_postal_code": "010251"}
           ]
         },
         "0103": {
           "name": "GUALACEO",
           "parishes": [
-            {"name": "Gualaceo", "code": "010301"},
-            {"name": "Chordeleg", "code": "010350"},
-            {"name": "Daniel Córdova Toral (El Oriente)", "code": "010351"},
-            {"name": "Jadán", "code": "010352"},
-            {"name": "Remigio Crespo Toral (Gúlag)", "code": "010353"},
-            {"name": "San Juan", "code": "010354"},
-            {"name": "Zhidmad", "code": "010355"}
+            {"name": "Gualaceo", "code": "010301", "default_postal_code": "010301"},
+            {"name": "Chordeleg", "code": "010350", "default_postal_code": "010350"},
+            {"name": "Daniel Córdova Toral (El Oriente)", "code": "010351", "default_postal_code": "010351"},
+            {"name": "Jadán", "code": "010352", "default_postal_code": "010352"},
+            {"name": "Remigio Crespo Toral (Gúlag)", "code": "010353", "default_postal_code": "010353"},
+            {"name": "San Juan", "code": "010354", "default_postal_code": "010354"},
+            {"name": "Zhidmad", "code": "010355", "default_postal_code": "010355"}
           ]
         },
         "0104": {
           "name": "NABÓN",
           "parishes": [
-            {"name": "Nabón", "code": "010401"},
-            {"name": "Las Nieves (Chaya)", "code": "010450"},
-            {"name": "Cochapata", "code": "010451"},
-            {"name": "El Progreso (Cab. en Zhiña)", "code": "010452"}
+            {"name": "Nabón", "code": "010401", "default_postal_code": "010401"},
+            {"name": "Las Nieves (Chaya)", "code": "010450", "default_postal_code": "010450"},
+            {"name": "Cochapata", "code": "010451", "default_postal_code": "010451"},
+            {"name": "El Progreso (Cab. en Zhiña)", "code": "010452", "default_postal_code": "010452"}
           ]
         },
         "0105": {
           "name": "PAUTE",
           "parishes": [
-            {"name": "Paute", "code": "010501"},
-            {"name": "Bulán (José Víctor Izquierdo)", "code": "010550"},
-            {"name": "Chicán (Guillermo Ortega)", "code": "010551"},
-            {"name": "El Cabo", "code": "010552"},
-            {"name": "Guarainag", "code": "010553"},
-            {"name": "Palmas", "code": "010554"},
-            {"name": "Pan", "code": "010555"},
-            {"name": "San Cristóbal (Carlos Ordóñez Lazo)", "code": "010556"},
-            {"name": "Tomebamba", "code": "010557"},
-            {"name": "Dug Dug", "code": "010558"}
+            {"name": "Paute", "code": "010501", "default_postal_code": "010501"},
+            {"name": "Bulán (José Víctor Izquierdo)", "code": "010550", "default_postal_code": "010550"},
+            {"name": "Chicán (Guillermo Ortega)", "code": "010551", "default_postal_code": "010551"},
+            {"name": "El Cabo", "code": "010552", "default_postal_code": "010552"},
+            {"name": "Guarainag", "code": "010553", "default_postal_code": "010553"},
+            {"name": "Palmas", "code": "010554", "default_postal_code": "010554"},
+            {"name": "Pan", "code": "010555", "default_postal_code": "010555"},
+            {"name": "San Cristóbal (Carlos Ordóñez Lazo)", "code": "010556", "default_postal_code": "010556"},
+            {"name": "Tomebamba", "code": "010557", "default_postal_code": "010557"},
+            {"name": "Dug Dug", "code": "010558", "default_postal_code": "010558"}
           ]
         },
         "0106": {
           "name": "PUCARÁ",
           "parishes": [
-            {"name": "Pucará", "code": "010601"},
-            {"name": "Camilo Ponce Enríquez", "code": "010650"}
+            {"name": "Pucará", "code": "010601", "default_postal_code": "010601"},
+            {"name": "Camilo Ponce Enríquez", "code": "010650", "default_postal_code": "010650"}
           ]
         },
         "0107": {
           "name": "SAN FERNANDO",
           "parishes": [
-            {"name": "San Fernando", "code": "010701"},
-            {"name": "Chumblín", "code": "010750"}
+            {"name": "San Fernando", "code": "010701", "default_postal_code": "010701"},
+            {"name": "Chumblín", "code": "010750", "default_postal_code": "010750"}
           ]
         },
         "0108": {
           "name": "SANTA ISABEL",
           "parishes": [
-            {"name": "Santa Isabel (Chaguarurco)", "code": "010801"},
-            {"name": "Abdón Calderón (La Unión)", "code": "010850"},
-            {"name": "El Carmen de Pijilí", "code": "010851"},
-            {"name": "Presidente Córdova", "code": "010852"},
-            {"name": "San Salvador de Cañaribamba", "code": "010853"},
-            {"name": "Shaglli", "code": "010854"},
-            {"name": "Zhaglli (Shaglli)", "code": "010855"}
+            {"name": "Santa Isabel (Chaguarurco)", "code": "010801", "default_postal_code": "010801"},
+            {"name": "Abdón Calderón (La Unión)", "code": "010850", "default_postal_code": "010850"},
+            {"name": "El Carmen de Pijilí", "code": "010851", "default_postal_code": "010851"},
+            {"name": "Presidente Córdova", "code": "010852", "default_postal_code": "010852"},
+            {"name": "San Salvador de Cañaribamba", "code": "010853", "default_postal_code": "010853"},
+            {"name": "Shaglli", "code": "010854", "default_postal_code": "010854"},
+            {"name": "Zhaglli (Shaglli)", "code": "010855", "default_postal_code": "010855"}
           ]
         },
         "0109": {
           "name": "SIGSIG",
           "parishes": [
-            {"name": "Sigsig", "code": "010901"},
-            {"name": "Cuchil (Cutchil)", "code": "010950"},
-            {"name": "Gima", "code": "010951"},
-            {"name": "Guel", "code": "010952"},
-            {"name": "Ludo", "code": "010953"},
-            {"name": "San Bartolomé", "code": "010954"}
+            {"name": "Sigsig", "code": "010901", "default_postal_code": "010901"},
+            {"name": "Cuchil (Cutchil)", "code": "010950", "default_postal_code": "010950"},
+            {"name": "Gima", "code": "010951", "default_postal_code": "010951"},
+            {"name": "Guel", "code": "010952", "default_postal_code": "010952"},
+            {"name": "Ludo", "code": "010953", "default_postal_code": "010953"},
+            {"name": "San Bartolomé", "code": "010954", "default_postal_code": "010954"}
           ]
         },
         "0110": {
           "name": "OÑA",
           "parishes": [
-            {"name": "Oña", "code": "011001"},
-            {"name": "La Susana", "code": "011050"}
+            {"name": "Oña", "code": "011001", "default_postal_code": "011001"},
+            {"name": "La Susana", "code": "011050", "default_postal_code": "011050"}
           ]
         },
         "0111": {
           "name": "CHORDELEG",
           "parishes": [
-            {"name": "Chordeleg", "code": "011101"},
-            {"name": "Delegsol", "code": "011150"},
-            {"name": "Luis Galarza Orellana (Cab. en Delegsol)", "code": "011151"},
-            {"name": "Principal", "code": "011152"},
-            {"name": "La Unión", "code": "011153"}
+            {"name": "Chordeleg", "code": "011101", "default_postal_code": "011101"},
+            {"name": "Delegsol", "code": "011150", "default_postal_code": "011150"},
+            {"name": "Luis Galarza Orellana (Cab. en Delegsol)", "code": "011151", "default_postal_code": "011151"},
+            {"name": "Principal", "code": "011152", "default_postal_code": "011152"},
+            {"name": "La Unión", "code": "011153", "default_postal_code": "011153"}
           ]
         },
         "0112": {
           "name": "EL PAN",
           "parishes": [
-            {"name": "El Pan", "code": "011201"},
-            {"name": "Amaluza", "code": "011250"},
-            {"name": "Palmas", "code": "011251"},
-            {"name": "San Vicente", "code": "011252"}
+            {"name": "El Pan", "code": "011201", "default_postal_code": "011201"},
+            {"name": "Amaluza", "code": "011250", "default_postal_code": "011250"},
+            {"name": "Palmas", "code": "011251", "default_postal_code": "011251"},
+            {"name": "San Vicente", "code": "011252", "default_postal_code": "011252"}
           ]
         },
         "0113": {
           "name": "SEVILLA DE ORO",
           "parishes": [
-            {"name": "Sevilla de Oro", "code": "011301"},
-            {"name": "Palmas", "code": "011350"},
-            {"name": "Amaluza", "code": "011351"}
+            {"name": "Sevilla de Oro", "code": "011301", "default_postal_code": "011301"},
+            {"name": "Palmas", "code": "011350", "default_postal_code": "011350"},
+            {"name": "Amaluza", "code": "011351", "default_postal_code": "011351"}
           ]
         },
         "0114": {
           "name": "GUACHAPALA",
           "parishes": [
-            {"name": "Guachapala", "code": "011401"}
+            {"name": "Guachapala", "code": "011401", "default_postal_code": "011401"}
           ]
         },
         "0115": {
           "name": "CAMILO PONCE ENRÍQUEZ",
           "parishes": [
-            {"name": "Camilo Ponce Enríquez", "code": "011501"},
-            {"name": "El Carmen de Pijilí", "code": "011550"}
+            {"name": "Camilo Ponce Enríquez", "code": "011501", "default_postal_code": "011501"},
+            {"name": "El Carmen de Pijilí", "code": "011550", "default_postal_code": "011550"}
+          ]
+        }
+      }
+    },
+    "02": {
+      "name": "BOLÍVAR",
+      "cantons": {
+        "0201": {
+          "name": "GUARANDA",
+          "parishes": [
+            {"name": "Ángel Polibio Chaves", "code": "020101", "default_postal_code": "020101"},
+            {"name": "Gabriel Ignacio Veintimilla", "code": "020102", "default_postal_code": "020102"},
+            {"name": "Guanujo", "code": "020103", "default_postal_code": "020103"},
+            {"name": "Facundo Vela", "code": "020150", "default_postal_code": "020150"},
+            {"name": "Julio E. Moreno (Catanahuazo Grande)", "code": "020151", "default_postal_code": "020151"},
+            {"name": "Salinas", "code": "020152", "default_postal_code": "020152"},
+            {"name": "San Lorenzo", "code": "020153", "default_postal_code": "020153"},
+            {"name": "San Luis de Pambil", "code": "020154", "default_postal_code": "020154"},
+            {"name": "San Simón (Yacoto)", "code": "020155", "default_postal_code": "020155"},
+            {"name": "Santa Fé (Santa Fé)", "code": "020156", "default_postal_code": "020156"},
+            {"name": "Simiatug", "code": "020157", "default_postal_code": "020157"}
+          ]
+        },
+        "0202": {
+          "name": "CHILLANES",
+          "parishes": [
+            {"name": "Chillanes", "code": "020201", "default_postal_code": "020201"},
+            {"name": "San José del Tambo (Tambopamba)", "code": "020250", "default_postal_code": "020250"}
+          ]
+        },
+        "0203": {
+          "name": "CHIMBO",
+          "parishes": [
+            {"name": "Chimbo", "code": "020301", "default_postal_code": "020301"},
+            {"name": "Asunción (Asancoto)", "code": "020350", "default_postal_code": "020350"},
+            {"name": "Caluma", "code": "020351", "default_postal_code": "020351"},
+            {"name": "Magdalena (Chapacoto)", "code": "020352", "default_postal_code": "020352"},
+            {"name": "San José de Chimbo", "code": "020353", "default_postal_code": "020353"},
+            {"name": "Telimbela", "code": "020354", "default_postal_code": "020354"}
+          ]
+        },
+        "0204": {
+          "name": "ECHEANDÍA",
+          "parishes": [
+            {"name": "Echeandía", "code": "020401", "default_postal_code": "020401"}
+          ]
+        },
+        "0205": {
+          "name": "SAN MIGUEL",
+          "parishes": [
+            {"name": "San Miguel", "code": "020501", "default_postal_code": "020501"},
+            {"name": "Balsapamba", "code": "020550", "default_postal_code": "020550"},
+            {"name": "Bilován", "code": "020551", "default_postal_code": "020551"},
+            {"name": "Régulo de Mora", "code": "020552", "default_postal_code": "020552"},
+            {"name": "San Pablo (San Pablo de Atenas)", "code": "020553", "default_postal_code": "020553"},
+            {"name": "Santiago", "code": "020554", "default_postal_code": "020554"},
+            {"name": "San Vicente", "code": "020555", "default_postal_code": "020555"}
+          ]
+        },
+        "0206": {
+          "name": "CALUMA",
+          "parishes": [
+            {"name": "Caluma", "code": "020601", "default_postal_code": "020601"}
+          ]
+        },
+        "0207": {
+          "name": "LAS NAVES",
+          "parishes": [
+            {"name": "Las Naves", "code": "020701", "default_postal_code": "020701"}
+          ]
+        }
+      }
+    },
+    "03": {
+      "name": "CAÑAR",
+      "cantons": {
+        "0301": {
+          "name": "AZOGUES",
+          "parishes": [
+            {"name": "Aurelio Bayas Martínez (Azogues)", "code": "030101", "default_postal_code": "030101"},
+            {"name": "Borrero", "code": "030102", "default_postal_code": "030102"},
+            {"name": "San Francisco", "code": "030103", "default_postal_code": "030103"},
+            {"name": "Bayas", "code": "030150", "default_postal_code": "030150"},
+            {"name": "Cojitambo", "code": "030151", "default_postal_code": "030151"},
+            {"name": "Déleg", "code": "030152", "default_postal_code": "030152"},
+            {"name": "Guapán", "code": "030153", "default_postal_code": "030153"},
+            {"name": "Javier Loyola (Chuquipata)", "code": "030154", "default_postal_code": "030154"},
+            {"name": "Luis Cordero", "code": "030155", "default_postal_code": "030155"},
+            {"name": "Pindilig", "code": "030156", "default_postal_code": "030156"},
+            {"name": "Rivera", "code": "030157", "default_postal_code": "030157"},
+            {"name": "San Miguel", "code": "030158", "default_postal_code": "030158"},
+            {"name": "Solano", "code": "030159", "default_postal_code": "030159"},
+            {"name": "Taday", "code": "030160", "default_postal_code": "030160"}
+          ]
+        },
+        "0302": {
+          "name": "BIBLIÁN",
+          "parishes": [
+            {"name": "Biblián", "code": "030201", "default_postal_code": "030201"},
+            {"name": "Nazón (Cab. en Pampa de Domínguez)", "code": "030250", "default_postal_code": "030250"},
+            {"name": "San Francisco de Sageo", "code": "030251", "default_postal_code": "030251"},
+            {"name": "Turupamba", "code": "030252", "default_postal_code": "030252"},
+            {"name": "Jerusalem", "code": "030253", "default_postal_code": "030253"}
+          ]
+        },
+        "0303": {
+          "name": "CAÑAR",
+          "parishes": [
+            {"name": "Cañar", "code": "030301", "default_postal_code": "030301"},
+            {"name": "Chorocopte", "code": "030350", "default_postal_code": "030350"},
+            {"name": "General Morales (Socarte)", "code": "030351", "default_postal_code": "030351"},
+            {"name": "Gualleturo", "code": "030352", "default_postal_code": "030352"},
+            {"name": "Honorato Vásquez (Tambo Viejo)", "code": "030353", "default_postal_code": "030353"},
+            {"name": "Ingapirca", "code": "030354", "default_postal_code": "030354"},
+            {"name": "Juncal", "code": "030355", "default_postal_code": "030355"},
+            {"name": "San Antonio", "code": "030356", "default_postal_code": "030356"},
+            {"name": "Suscal", "code": "030357", "default_postal_code": "030357"},
+            {"name": "Tambo", "code": "030358", "default_postal_code": "030358"},
+            {"name": "Zhud", "code": "030359", "default_postal_code": "030359"},
+            {"name": "Ventura", "code": "030360", "default_postal_code": "030360"},
+            {"name": "Ducur", "code": "030361", "default_postal_code": "030361"}
+          ]
+        },
+        "0304": {
+          "name": "LA TRONCAL",
+          "parishes": [
+            {"name": "La Troncal", "code": "030401", "default_postal_code": "030401"},
+            {"name": "Manuel J. Calle", "code": "030450", "default_postal_code": "030450"},
+            {"name": "Pancho Negro", "code": "030451", "default_postal_code": "030451"}
+          ]
+        },
+        "0305": {
+          "name": "EL TAMBO",
+          "parishes": [
+            {"name": "El Tambo", "code": "030501", "default_postal_code": "030501"}
+          ]
+        },
+        "0306": {
+          "name": "DÉLEG",
+          "parishes": [
+            {"name": "Déleg", "code": "030601", "default_postal_code": "030601"}
+          ]
+        },
+        "0307": {
+          "name": "SUSCAL",
+          "parishes": [
+            {"name": "Suscal", "code": "030701", "default_postal_code": "030701"}
+          ]        }
+      }
+    },
+    "04": {
+      "name": "CARCHI",
+      "cantons": {
+        "0401": {
+          "name": "TULCÁN",
+          "parishes": [
+            {"name": "Tulcán", "code": "040101", "default_postal_code": "040101"},
+            {"name": "González Suárez", "code": "040102", "default_postal_code": "040102"},
+            {"name": "El Carmelo (El Pun)", "code": "040150", "default_postal_code": "040150"},
+            {"name": "Huaca", "code": "040151", "default_postal_code": "040151"},
+            {"name": "Julio Andrade (Orejuela)", "code": "040152", "default_postal_code": "040152"},
+            {"name": "Maldonado", "code": "040153", "default_postal_code": "040153"},
+            {"name": "Pioter", "code": "040154", "default_postal_code": "040154"},
+            {"name": "Tobar Donoso (La Bocana de Camumbi)", "code": "040155", "default_postal_code": "040155"},
+            {"name": "Tufiño", "code": "040156", "default_postal_code": "040156"},
+            {"name": "Urbina (Taya)", "code": "040157", "default_postal_code": "040157"}
+          ]
+        },
+        "0402": {
+          "name": "BOLÍVAR",
+          "parishes": [
+            {"name": "Bolívar", "code": "040201", "default_postal_code": "040201"},
+            {"name": "García Moreno", "code": "040250", "default_postal_code": "040250"},
+            {"name": "Los Andes", "code": "040251", "default_postal_code": "040251"},
+            {"name": "Monte Olivo", "code": "040252", "default_postal_code": "040252"},
+            {"name": "San Vicente de Pusir", "code": "040253", "default_postal_code": "040253"},
+            {"name": "San Rafael", "code": "040254", "default_postal_code": "040254"}
+          ]
+        },
+        "0403": {
+          "name": "ESPEJO",
+          "parishes": [
+            {"name": "El Ángel", "code": "040301", "default_postal_code": "040301"},
+            {"name": "El Goaltal", "code": "040350", "default_postal_code": "040350"},
+            {"name": "La Libertad (Alizo)", "code": "040351", "default_postal_code": "040351"},
+            {"name": "San Isidro", "code": "040352", "default_postal_code": "040352"}
+          ]
+        },
+        "0404": {
+          "name": "MIRA",
+          "parishes": [
+            {"name": "Mira (Chontahuasi)", "code": "040401", "default_postal_code": "040401"},
+            {"name": "Concepción", "code": "040450", "default_postal_code": "040450"},
+            {"name": "Jijón y Caamaño (Cab. en Río Blanco)", "code": "040451", "default_postal_code": "040451"},
+            {"name": "Juan Montalvo (San Ignacio de Quil)", "code": "040452", "default_postal_code": "040452"}
+          ]
+        },
+        "0405": {
+          "name": "MONTÚFAR",
+          "parishes": [
+            {"name": "San Gabriel", "code": "040501", "default_postal_code": "040501"},
+            {"name": "Chingual", "code": "040550", "default_postal_code": "040550"},
+            {"name": "Cristóbal Colón", "code": "040551", "default_postal_code": "040551"},
+            {"name": "Fernández Salvador", "code": "040552", "default_postal_code": "040552"},
+            {"name": "La Paz", "code": "040553", "default_postal_code": "040553"},
+            {"name": "Piartal", "code": "040554", "default_postal_code": "040554"}
+          ]
+        },
+        "0406": {
+          "name": "SAN PEDRO DE HUACA",
+          "parishes": [
+            {"name": "Huaca", "code": "040601", "default_postal_code": "040601"},
+            {"name": "Mariscal Sucre", "code": "040650", "default_postal_code": "040650"}
+          ]
+        }
+      }
+    },
+    "05": {
+      "name": "COTOPAXI",
+      "cantons": {
+        "0501": {
+          "name": "LATACUNGA",
+          "parishes": [
+            {"name": "La Matriz", "code": "050101", "default_postal_code": "050101"},
+            {"name": "Eloy Alfaro (San Felipe)", "code": "050102", "default_postal_code": "050102"},
+            {"name": "Ignacio Flores (Parque Flores)", "code": "050103", "default_postal_code": "050103"},
+            {"name": "Juan Montalvo (San Sebastián)", "code": "050104", "default_postal_code": "050104"},
+            {"name": "San Buenaventura", "code": "050105", "default_postal_code": "050105"},
+            {"name": "Aláquez", "code": "050150", "default_postal_code": "050150"},
+            {"name": "Belisario Quevedo", "code": "050151", "default_postal_code": "050151"},
+            {"name": "Guaytacama", "code": "050152", "default_postal_code": "050152"},
+            {"name": "Joseguango Bajo", "code": "050153", "default_postal_code": "050153"},
+            {"name": "Mulaló", "code": "050154", "default_postal_code": "050154"},
+            {"name": "Once de Noviembre (Ilinchisi)", "code": "050155", "default_postal_code": "050155"},
+            {"name": "Poaló", "code": "050156", "default_postal_code": "050156"},
+            {"name": "San Juan de Pastocalle", "code": "050157", "default_postal_code": "050157"},
+            {"name": "Sigchos", "code": "050158", "default_postal_code": "050158"},
+            {"name": "Tanicuchí", "code": "050159", "default_postal_code": "050159"},
+            {"name": "Toacaso", "code": "050160", "default_postal_code": "050160"}
+          ]
+        },
+        "0502": {
+          "name": "LA MANÁ",
+          "parishes": [
+            {"name": "La Maná", "code": "050201", "default_postal_code": "050201"},
+            {"name": "El Carmen", "code": "050250", "default_postal_code": "050250"},
+            {"name": "Guasaganda (Cab. en Guasaganda Centro)", "code": "050251", "default_postal_code": "050251"},
+            {"name": "Pucayacu", "code": "050252", "default_postal_code": "050252"}
+          ]
+        },
+        "0503": {
+          "name": "PANGUA",
+          "parishes": [
+            {"name": "El Corazón", "code": "050301", "default_postal_code": "050301"},
+            {"name": "Moraspungo", "code": "050350", "default_postal_code": "050350"},
+            {"name": "Pinllopata", "code": "050351", "default_postal_code": "050351"},
+            {"name": "Ramón Campaña", "code": "050352", "default_postal_code": "050352"}
+          ]
+        },
+        "0504": {
+          "name": "PUJILÍ",
+          "parishes": [
+            {"name": "Pujilí", "code": "050401", "default_postal_code": "050401"},
+            {"name": "Angamarca", "code": "050450", "default_postal_code": "050450"},
+            {"name": "Chucchilán", "code": "050451", "default_postal_code": "050451"},
+            {"name": "Guangaje", "code": "050452", "default_postal_code": "050452"},
+            {"name": "Isinliví", "code": "050453", "default_postal_code": "050453"},
+            {"name": "La Victoria", "code": "050454", "default_postal_code": "050454"},
+            {"name": "Pilaló", "code": "050455", "default_postal_code": "050455"},
+            {"name": "Tingo", "code": "050456", "default_postal_code": "050456"},
+            {"name": "Zumbahua", "code": "050457", "default_postal_code": "050457"}
+          ]
+        },
+        "0505": {
+          "name": "SALCEDO",
+          "parishes": [
+            {"name": "San Miguel", "code": "050501", "default_postal_code": "050501"},
+            {"name": "Antonio José Holguín (Santa Lucía)", "code": "050550", "default_postal_code": "050550"},
+            {"name": "Cusubamba", "code": "050551", "default_postal_code": "050551"},
+            {"name": "Mulliquindil (Santa Ana)", "code": "050552", "default_postal_code": "050552"},
+            {"name": "Mulalillo", "code": "050553", "default_postal_code": "050553"},
+            {"name": "Panzaleo", "code": "050554", "default_postal_code": "050554"}
+          ]
+        },
+        "0506": {
+          "name": "SAQUISILÍ",
+          "parishes": [
+            {"name": "Saquisilí", "code": "050601", "default_postal_code": "050601"},
+            {"name": "Canchagua", "code": "050650", "default_postal_code": "050650"},
+            {"name": "Chantilín", "code": "050651", "default_postal_code": "050651"},
+            {"name": "Cochapamba", "code": "050652", "default_postal_code": "050652"}
+          ]
+        },
+        "0507": {
+          "name": "SIGCHOS",
+          "parishes": [
+            {"name": "Sigchos", "code": "050701", "default_postal_code": "050701"},
+            {"name": "Chugchilán", "code": "050750", "default_postal_code": "050750"},
+            {"name": "Isinliví", "code": "050751", "default_postal_code": "050751"},
+            {"name": "Las Pampas", "code": "050752", "default_postal_code": "050752"},
+            {"name": "Palo Quemado", "code": "050753", "default_postal_code": "050753"}
+          ]
+        }
+      }
+    },
+    "06": {
+      "name": "CHIMBORAZO",
+      "cantons": {
+        "0601": {
+          "name": "RIOBAMBA",
+          "parishes": [
+            {"name": "Maldonado", "code": "060101", "default_postal_code": "060101"},
+            {"name": "Veloz", "code": "060102", "default_postal_code": "060102"},
+            {"name": "Lizarzaburu", "code": "060103", "default_postal_code": "060103"},
+            {"name": "Velasco", "code": "060104", "default_postal_code": "060104"},
+            {"name": "Yaruquíes", "code": "060105", "default_postal_code": "060105"},
+            {"name": "Calpi", "code": "060150", "default_postal_code": "060150"},
+            {"name": "Cacha (Cab. en Machángara)", "code": "060151", "default_postal_code": "060151"},
+            {"name": "Cubijíes", "code": "060152", "default_postal_code": "060152"},
+            {"name": "Flores", "code": "060153", "default_postal_code": "060153"},
+            {"name": "Licán", "code": "060154", "default_postal_code": "060154"},
+            {"name": "Licto", "code": "060155", "default_postal_code": "060155"},
+            {"name": "Pungalá", "code": "060156", "default_postal_code": "060156"},
+            {"name": "Punín", "code": "060157", "default_postal_code": "060157"},
+            {"name": "Quimiag", "code": "060158", "default_postal_code": "060158"},
+            {"name": "San Juan", "code": "060159", "default_postal_code": "060159"},
+            {"name": "San Luis", "code": "060160", "default_postal_code": "060160"}
+          ]
+        },
+        "0602": {
+          "name": "ALAUSÍ",
+          "parishes": [
+            {"name": "Alausí", "code": "060201", "default_postal_code": "060201"},
+            {"name": "Achupallas", "code": "060250", "default_postal_code": "060250"},
+            {"name": "Cumandá", "code": "060251", "default_postal_code": "060251"},
+            {"name": "Gonzol", "code": "060252", "default_postal_code": "060252"},
+            {"name": "Guasuntos", "code": "060253", "default_postal_code": "060253"},
+            {"name": "Huigra", "code": "060254", "default_postal_code": "060254"},
+            {"name": "Multitud", "code": "060255", "default_postal_code": "060255"},
+            {"name": "Pistishí", "code": "060256", "default_postal_code": "060256"},
+            {"name": "Pumallacta", "code": "060257", "default_postal_code": "060257"},
+            {"name": "Sevilla", "code": "060258", "default_postal_code": "060258"},
+            {"name": "Sibambe", "code": "060259", "default_postal_code": "060259"},
+            {"name": "Tixán", "code": "060260", "default_postal_code": "060260"}
+          ]
+        },
+        "0603": {
+          "name": "COLTA",
+          "parishes": [
+            {"name": "Villa La Unión (Cajabamba)", "code": "060301", "default_postal_code": "060301"},
+            {"name": "Cañi", "code": "060350", "default_postal_code": "060350"},
+            {"name": "Columbe", "code": "060351", "default_postal_code": "060351"},
+            {"name": "Juan de Velasco (Pangor)", "code": "060352", "default_postal_code": "060352"},
+            {"name": "Santiago de Quito (Cab. en San Antonio de Quito)", "code": "060353", "default_postal_code": "060353"},
+            {"name": "Sicalpa", "code": "060354", "default_postal_code": "060354"}
+          ]
+        },
+        "0604": {
+          "name": "CHAMBO",
+          "parishes": [
+            {"name": "Chambo", "code": "060401", "default_postal_code": "060401"},
+            {"name": "Catalina (Zhud)", "code": "060450", "default_postal_code": "060450"}
+          ]
+        },
+        "0605": {
+          "name": "CHUNCHI",
+          "parishes": [
+            {"name": "Chunchi", "code": "060501", "default_postal_code": "060501"},
+            {"name": "Capzol", "code": "060550", "default_postal_code": "060550"},
+            {"name": "Compud", "code": "060551", "default_postal_code": "060551"},
+            {"name": "Gonzol", "code": "060552", "default_postal_code": "060552"},
+            {"name": "Llagos", "code": "060553", "default_postal_code": "060553"}
+          ]
+        },
+        "0606": {
+          "name": "GUAMOTE",
+          "parishes": [
+            {"name": "Guamote", "code": "060601", "default_postal_code": "060601"},
+            {"name": "Cebadas", "code": "060650", "default_postal_code": "060650"},
+            {"name": "Palmira", "code": "060651", "default_postal_code": "060651"}
+          ]
+        },
+        "0607": {
+          "name": "GUANO",
+          "parishes": [
+            {"name": "Guano", "code": "060701", "default_postal_code": "060701"},
+            {"name": "El Rosario", "code": "060750", "default_postal_code": "060750"},
+            {"name": "Ilapo", "code": "060751", "default_postal_code": "060751"},
+            {"name": "La Providencia", "code": "060752", "default_postal_code": "060752"},
+            {"name": "San Andrés", "code": "060753", "default_postal_code": "060753"},
+            {"name": "San Gerardo", "code": "060754", "default_postal_code": "060754"},
+            {"name": "San Isidro de Patulú", "code": "060755", "default_postal_code": "060755"},
+            {"name": "San José del Chazo", "code": "060756", "default_postal_code": "060756"},
+            {"name": "Santa Fé de Galán", "code": "060757", "default_postal_code": "060757"},
+            {"name": "Valparaíso", "code": "060758", "default_postal_code": "060758"}
+          ]
+        },
+        "0608": {
+          "name": "PALLATANGA",
+          "parishes": [
+            {"name": "Pallatanga", "code": "060801", "default_postal_code": "060801"}
+          ]
+        },
+        "0609": {
+          "name": "PENIPE",
+          "parishes": [
+            {"name": "Penipe", "code": "060901", "default_postal_code": "060901"},
+            {"name": "Bayushig", "code": "060950", "default_postal_code": "060950"},
+            {"name": "Bilbao", "code": "060951", "default_postal_code": "060951"},
+            {"name": "El Altar", "code": "060952", "default_postal_code": "060952"},
+            {"name": "La Candelaria", "code": "060953", "default_postal_code": "060953"},
+            {"name": "Matus", "code": "060954", "default_postal_code": "060954"},
+            {"name": "Puela", "code": "060955", "default_postal_code": "060955"}
+          ]
+        },
+        "0610": {
+          "name": "CUMANDÁ",
+          "parishes": [
+            {"name": "Cumandá", "code": "061001", "default_postal_code": "061001"}
+          ]
+        }
+      }
+    },
+    "07": {
+      "name": "EL ORO",
+      "cantons": {
+        "0701": {
+          "name": "MACHALA",
+          "parishes": [
+            {"name": "Machala", "code": "070101", "default_postal_code": "070101"},
+            {"name": "9 de Mayo", "code": "070102", "default_postal_code": "070102"},
+            {"name": "El Cambio", "code": "070103", "default_postal_code": "070103"},
+            {"name": "Jubones", "code": "070104", "default_postal_code": "070104"},
+            {"name": "La Providencia", "code": "070105", "default_postal_code": "070105"},
+            {"name": "Puerto Bolívar", "code": "070106", "default_postal_code": "070106"}
+          ]
+        },
+        "0702": {
+          "name": "ARENILLAS",
+          "parishes": [
+            {"name": "Arenillas", "code": "070201", "default_postal_code": "070201"},
+            {"name": "Chacras", "code": "070250", "default_postal_code": "070250"},
+            {"name": "La Libertad", "code": "070251", "default_postal_code": "070251"},
+            {"name": "Las Lajas", "code": "070252", "default_postal_code": "070252"},
+            {"name": "Palmales", "code": "070253", "default_postal_code": "070253"}
+          ]
+        },
+        "0703": {
+          "name": "ATAHUALPA",
+          "parishes": [
+            {"name": "Paccha", "code": "070301", "default_postal_code": "070301"},
+            {"name": "Ayapamba", "code": "070350", "default_postal_code": "070350"},
+            {"name": "Cordoncillo", "code": "070351", "default_postal_code": "070351"},
+            {"name": "Milagros", "code": "070352", "default_postal_code": "070352"},
+            {"name": "San José", "code": "070353", "default_postal_code": "070353"}
+          ]
+        },
+        "0704": {
+          "name": "BALSAS",
+          "parishes": [
+            {"name": "Balsas", "code": "070401", "default_postal_code": "070401"},
+            {"name": "Bellamaría", "code": "070450", "default_postal_code": "070450"}
+          ]
+        },
+        "0705": {
+          "name": "CHILLA",
+          "parishes": [
+            {"name": "Chilla", "code": "070501", "default_postal_code": "070501"}
+          ]
+        },
+        "0706": {
+          "name": "EL GUABO",
+          "parishes": [
+            {"name": "El Guabo", "code": "070601", "default_postal_code": "070601"},
+            {"name": "Barbones (Sucre)", "code": "070650", "default_postal_code": "070650"},
+            {"name": "La Iberia", "code": "070651", "default_postal_code": "070651"},
+            {"name": "Tendales (Cab. en Puerto Tendales)", "code": "070652", "default_postal_code": "070652"}
+          ]
+        },
+        "0707": {
+          "name": "HUAQUILLAS",
+          "parishes": [
+            {"name": "Huaquillas", "code": "070701", "default_postal_code": "070701"},
+            {"name": "Ecuador", "code": "070750", "default_postal_code": "070750"},
+            {"name": "Unión Lojana", "code": "070751", "default_postal_code": "070751"}
+          ]
+        },
+        "0708": {
+          "name": "MARCABELÍ",
+          "parishes": [
+            {"name": "Marcabelí", "code": "070801", "default_postal_code": "070801"},
+            {"name": "El Ingenio", "code": "070850", "default_postal_code": "070850"}
+          ]
+        },
+        "0709": {
+          "name": "PASAJE",
+          "parishes": [
+            {"name": "Pasaje", "code": "070901", "default_postal_code": "070901"},
+            {"name": "Buenavista", "code": "070950", "default_postal_code": "070950"},
+            {"name": "Casacay", "code": "070951", "default_postal_code": "070951"},
+            {"name": "La Peaña", "code": "070952", "default_postal_code": "070952"},
+            {"name": "Progreso", "code": "070953", "default_postal_code": "070953"},
+            {"name": "Uzhcurrumi", "code": "070954", "default_postal_code": "070954"}
+          ]
+        },
+        "0710": {
+          "name": "PIÑAS",
+          "parishes": [
+            {"name": "Piñas", "code": "071001", "default_postal_code": "071001"},
+            {"name": "Capiro (Cab. en La Capilla de Capiro)", "code": "071050", "default_postal_code": "071050"},
+            {"name": "La Bocana", "code": "071051", "default_postal_code": "071051"},
+            {"name": "Moromoro (Cab. en El Vado)", "code": "071052", "default_postal_code": "071052"},
+            {"name": "Piedras", "code": "071053", "default_postal_code": "071053"},
+            {"name": "San Roque (Ambrosio Maldonado)", "code": "071054", "default_postal_code": "071054"},
+            {"name": "Saracay", "code": "071055", "default_postal_code": "071055"}
+          ]
+        },
+        "0711": {
+          "name": "PORTOVELO",
+          "parishes": [
+            {"name": "Portovelo", "code": "071101", "default_postal_code": "071101"},
+            {"name": "Curtincapa", "code": "071150", "default_postal_code": "071150"},
+            {"name": "Morales", "code": "071151", "default_postal_code": "071151"},
+            {"name": "Salatí", "code": "071152", "default_postal_code": "071152"}
+          ]
+        },
+        "0712": {
+          "name": "SANTA ROSA",
+          "parishes": [
+            {"name": "Santa Rosa", "code": "071201", "default_postal_code": "071201"},
+            {"name": "Bellavista", "code": "071250", "default_postal_code": "071250"},
+            {"name": "Jambelí", "code": "071251", "default_postal_code": "071251"},
+            {"name": "La Avanzada", "code": "071252", "default_postal_code": "071252"},
+            {"name": "San Antonio", "code": "071253", "default_postal_code": "071253"},
+            {"name": "Torata", "code": "071254", "default_postal_code": "071254"},
+            {"name": "Victoria", "code": "071255", "default_postal_code": "071255"}
+          ]
+        },
+        "0713": {
+          "name": "ZARUMA",
+          "parishes": [
+            {"name": "Zaruma", "code": "071301", "default_postal_code": "071301"},
+            {"name": "Abañín", "code": "071350", "default_postal_code": "071350"},
+            {"name": "Arcapamba", "code": "071351", "default_postal_code": "071351"},
+            {"name": "Guanazán", "code": "071352", "default_postal_code": "071352"},
+            {"name": "Guizhaguiña", "code": "071353", "default_postal_code": "071353"},
+            {"name": "Huertas", "code": "071354", "default_postal_code": "071354"},
+            {"name": "Malvas", "code": "071355", "default_postal_code": "071355"},
+            {"name": "Muluncay Grande", "code": "071356", "default_postal_code": "071356"},
+            {"name": "Sinsao", "code": "071357", "default_postal_code": "071357"}
+          ]
+        },
+        "0714": {
+          "name": "LAS LAJAS",
+          "parishes": [
+            {"name": "La Victoria", "code": "071401", "default_postal_code": "071401"},
+            {"name": "El Paraíso", "code": "071450", "default_postal_code": "071450"},
+            {"name": "La Libertad", "code": "071451", "default_postal_code": "071451"},
+            {"name": "San Isidro", "code": "071452", "default_postal_code": "071452"}
+          ]
+        }
+      }
+    },
+    "08": {
+      "name": "ESMERALDAS",
+      "cantons": {
+        "0801": {
+          "name": "ESMERALDAS",
+          "parishes": [
+            {"name": "5 de Agosto", "code": "080101", "default_postal_code": "080101"},
+            {"name": "Bartolomé Ruiz (Cinco de Junio)", "code": "080102", "default_postal_code": "080102"},
+            {"name": "Luis Tello (Bartolomé Ruiz)", "code": "080103", "default_postal_code": "080103"},
+            {"name": "Simón Plata Torres", "code": "080104", "default_postal_code": "080104"},
+            {"name": "Vuelta Larga", "code": "080105", "default_postal_code": "080105"},
+            {"name": "Carlos Concha Torres (Cab. en Yurumanguí)", "code": "080150", "default_postal_code": "080150"},
+            {"name": "Chinca", "code": "080151", "default_postal_code": "080151"},
+            {"name": "Coronel Carlos Concha Torres (Cab. en Huele)", "code": "080152", "default_postal_code": "080152"},
+            {"name": "Crnel. Carlos Concha Torres (Cab. en Huele)", "code": "080153", "default_postal_code": "080153"},
+            {"name": "Majua", "code": "080154", "default_postal_code": "080154"},
+            {"name": "Montalvo (Cab. en Horqueta)", "code": "080155", "default_postal_code": "080155"},
+            {"name": "Río Verde", "code": "080156", "default_postal_code": "080156"},
+            {"name": "San Mateo", "code": "080157", "default_postal_code": "080157"},
+            {"name": "Tabiazo", "code": "080158", "default_postal_code": "080158"},
+            {"name": "Tachina", "code": "080159", "default_postal_code": "080159"}
+          ]
+        },
+        "0802": {
+          "name": "ELOY ALFARO",
+          "parishes": [
+            {"name": "Valdez (Limones)", "code": "080201", "default_postal_code": "080201"},
+            {"name": "Anchayacu", "code": "080250", "default_postal_code": "080250"},
+            {"name": "Atahualpa (Cab. en Camarones)", "code": "080251", "default_postal_code": "080251"},
+            {"name": "Borbón", "code": "080252", "default_postal_code": "080252"},
+            {"name": "La Tola", "code": "080253", "default_postal_code": "080253"},
+            {"name": "Luis Vargas Torres (Cab. en Playa de Oro)", "code": "080254", "default_postal_code": "080254"},
+            {"name": "Maldonado", "code": "080255", "default_postal_code": "080255"},
+            {"name": "Pampanal de Bolívar", "code": "080256", "default_postal_code": "080256"},
+            {"name": "San Francisco de Onzole", "code": "080257", "default_postal_code": "080257"},
+            {"name": "Santo Domingo de Onzole", "code": "080258", "default_postal_code": "080258"},
+            {"name": "Selva Alegre", "code": "080259", "default_postal_code": "080259"},
+            {"name": "Telembí", "code": "080260", "default_postal_code": "080260"}
+          ]
+        },
+        "0803": {
+          "name": "MUISNE",
+          "parishes": [
+            {"name": "Muisne", "code": "080301", "default_postal_code": "080301"},
+            {"name": "Bolívar", "code": "080350", "default_postal_code": "080350"},
+            {"name": "Daule", "code": "080351", "default_postal_code": "080351"},
+            {"name": "Galera", "code": "080352", "default_postal_code": "080352"},
+            {"name": "Quingue (Olmedo Perdomo Franco)", "code": "080353", "default_postal_code": "080353"},
+            {"name": "Salima", "code": "080354", "default_postal_code": "080354"},
+            {"name": "San Francisco", "code": "080355", "default_postal_code": "080355"},
+            {"name": "San Gregorio", "code": "080356", "default_postal_code": "080356"},
+            {"name": "San José de Chamanga (Cab. en Chamanga)", "code": "080357", "default_postal_code": "080357"}
+          ]
+        },
+        "0804": {
+          "name": "QUININDÉ",
+          "parishes": [
+            {"name": "Rosa Zárate (Quinindé)", "code": "080401", "default_postal_code": "080401"},
+            {"name": "Cube", "code": "080450", "default_postal_code": "080450"},
+            {"name": "Chura (Chancama) (Cab. en El Yerbero)", "code": "080451", "default_postal_code": "080451"},
+            {"name": "Malimpia", "code": "080452", "default_postal_code": "080452"},
+            {"name": "Viche", "code": "080453", "default_postal_code": "080453"}
+          ]
+        },
+        "0805": {
+          "name": "SAN LORENZO",
+          "parishes": [
+            {"name": "San Lorenzo", "code": "080501", "default_postal_code": "080501"},
+            {"name": "5 de Junio (Cab. en Uimbí)", "code": "080550", "default_postal_code": "080550"},
+            {"name": "Alto Tambo (Cab. en Guadual)", "code": "080551", "default_postal_code": "080551"},
+            {"name": "Ancón de Sardinas", "code": "080552", "default_postal_code": "080552"},
+            {"name": "Calderón", "code": "080553", "default_postal_code": "080553"},
+            {"name": "Carondelet", "code": "080554", "default_postal_code": "080554"},
+            {"name": "Mataje (Cab. en Santander)", "code": "080555", "default_postal_code": "080555"},
+            {"name": "San Javier de Cachaví", "code": "080556", "default_postal_code": "080556"},
+            {"name": "Santa Rita", "code": "080557", "default_postal_code": "080557"},
+            {"name": "Tambillo", "code": "080558", "default_postal_code": "080558"},
+            {"name": "Tululbí (Cab. en Ricaurte)", "code": "080559", "default_postal_code": "080559"}
+          ]
+        },
+        "0806": {
+          "name": "ATACAMES",
+          "parishes": [
+            {"name": "Atacames", "code": "080601", "default_postal_code": "080601"},
+            {"name": "La Unión", "code": "080650", "default_postal_code": "080650"},
+            {"name": "Súa (Cab. en La Bocana)", "code": "080651", "default_postal_code": "080651"},
+            {"name": "Tonchigüe", "code": "080652", "default_postal_code": "080652"},
+            {"name": "Tonsupa", "code": "080653", "default_postal_code": "080653"}
+          ]
+        },
+        "0807": {
+          "name": "RIOVERDE",
+          "parishes": [
+            {"name": "Rioverde", "code": "080701", "default_postal_code": "080701"},
+            {"name": "Chontaduro", "code": "080750", "default_postal_code": "080750"},
+            {"name": "Chumundé", "code": "080751", "default_postal_code": "080751"},
+            {"name": "Lagarto", "code": "080752", "default_postal_code": "080752"},
+            {"name": "Montalvo (Cab. en Horqueta)", "code": "080753", "default_postal_code": "080753"},
+            {"name": "Rocafuerte", "code": "080754", "default_postal_code": "080754"}
+          ]
+        },
+        "0808": {
+          "name": "LA CONCORDIA",
+          "parishes": [
+            {"name": "La Concordia", "code": "080801", "default_postal_code": "080801"},
+            {"name": "La Villegas (Cab. en Palma Real)", "code": "080850", "default_postal_code": "080850"},
+            {"name": "Monterrey", "code": "080851", "default_postal_code": "080851"},
+            {"name": "Plan Piloto", "code": "080852", "default_postal_code": "080852"}
+          ]
+        }
+      }
+    },
+    "09": {
+      "name": "GUAYAS",
+      "cantons": {
+        "0901": {
+          "name": "GUAYAQUIL",
+          "parishes": [
+            {"name": "Ayacucho", "code": "090101", "default_postal_code": "090101"},
+            {"name": "Bolívar (Sagrario)", "code": "090102", "default_postal_code": "090102"},
+            {"name": "Carbo (Concepción)", "code": "090103", "default_postal_code": "090103"},
+            {"name": "Febres Cordero", "code": "090104", "default_postal_code": "090104"},
+            {"name": "García Moreno", "code": "090105", "default_postal_code": "090105"},
+            {"name": "Letamendi", "code": "090106", "default_postal_code": "090106"},
+            {"name": "9 de Octubre", "code": "090107", "default_postal_code": "090107"},
+            {"name": "Olmedo (San Alejo)", "code": "090108", "default_postal_code": "090108"},
+            {"name": "Roca", "code": "090109", "default_postal_code": "090109"},
+            {"name": "Rocafuerte", "code": "090110", "default_postal_code": "090110"},
+            {"name": "Sucre", "code": "090111", "default_postal_code": "090111"},
+            {"name": "Tarqui", "code": "090112", "default_postal_code": "090112"},
+            {"name": "Urdaneta", "code": "090113", "default_postal_code": "090113"},
+            {"name": "Ximena", "code": "090114", "default_postal_code": "090114"},
+            {"name": "Pascuales", "code": "090115", "default_postal_code": "090115"},
+            {"name": "Chongón", "code": "090150", "default_postal_code": "090150"},
+            {"name": "Juan Gómez Rendón (Progreso)", "code": "090151", "default_postal_code": "090151"},
+            {"name": "Morro", "code": "090152", "default_postal_code": "090152"},
+            {"name": "Playas (Cab. en Gral. Villamil)", "code": "090153", "default_postal_code": "090153"},
+            {"name": "Puná", "code": "090154", "default_postal_code": "090154"},
+            {"name": "Tenguel", "code": "090155", "default_postal_code": "090155"}
+          ]
+        },
+        "0902": {
+          "name": "ALFREDO BAQUERIZO MORENO",
+          "parishes": [
+            {"name": "Alfredo Baquerizo Moreno (Juján)", "code": "090201", "default_postal_code": "090201"}
+          ]
+        },
+        "0903": {
+          "name": "BALAO",
+          "parishes": [
+            {"name": "Balao", "code": "090301", "default_postal_code": "090301"}
+          ]
+        },
+        "0904": {
+          "name": "BALZAR",
+          "parishes": [
+            {"name": "Balzar", "code": "090401", "default_postal_code": "090401"}
+          ]
+        },
+        "0905": {
+          "name": "COLIMES",
+          "parishes": [
+            {"name": "Colimes", "code": "090501", "default_postal_code": "090501"},
+            {"name": "San Jacinto", "code": "090550", "default_postal_code": "090550"}
+          ]
+        },
+        "0906": {
+          "name": "DAULE",
+          "parishes": [
+            {"name": "Daule", "code": "090601", "default_postal_code": "090601"},
+            {"name": "La Aurora", "code": "090650", "default_postal_code": "090650"},
+            {"name": "Juan Bautista Aguirre (Los Tintos)", "code": "090651", "default_postal_code": "090651"},
+            {"name": "Limonal", "code": "090652", "default_postal_code": "090652"},
+            {"name": "Los Lojas (Enrique Baquerizo Moreno)", "code": "090653", "default_postal_code": "090653"},
+            {"name": "Santa Clara", "code": "090654", "default_postal_code": "090654"},
+            {"name": "Magro", "code": "090655", "default_postal_code": "090655"}
+          ]
+        },
+        "0907": {
+          "name": "DURÁN",
+          "parishes": [
+            {"name": "Durán (Eloy Alfaro)", "code": "090701", "default_postal_code": "090701"}
+          ]
+        },
+        "0908": {
+          "name": "EL EMPALME",
+          "parishes": [
+            {"name": "El Empalme", "code": "090801", "default_postal_code": "090801"},
+            {"name": "Guayas (Pueblo Nuevo)", "code": "090850", "default_postal_code": "090850"},
+            {"name": "El Rosario", "code": "090851", "default_postal_code": "090851"}
+          ]
+        },
+        "0909": {
+          "name": "EL TRIUNFO",
+          "parishes": [
+            {"name": "El Triunfo", "code": "090901", "default_postal_code": "090901"}
+          ]
+        },
+        "0910": {
+          "name": "MILAGRO",
+          "parishes": [
+            {"name": "Milagro", "code": "091001", "default_postal_code": "091001"},
+            {"name": "Chobo", "code": "091050", "default_postal_code": "091050"},
+            {"name": "General Elizalde (Bucay)", "code": "091051", "default_postal_code": "091051"},
+            {"name": "Mariscal Sucre (Huaques)", "code": "091052", "default_postal_code": "091052"},
+            {"name": "Roberto Astudillo (Cab. en Cruce de Venecia)", "code": "091053", "default_postal_code": "091053"}
+          ]
+        },
+        "0911": {
+          "name": "NARANJAL",
+          "parishes": [
+            {"name": "Naranjal", "code": "091101", "default_postal_code": "091101"},
+            {"name": "Jesús María", "code": "091150", "default_postal_code": "091150"},
+            {"name": "San Carlos", "code": "091151", "default_postal_code": "091151"},
+            {"name": "Santa Rosa de Flandes", "code": "091152", "default_postal_code": "091152"},
+            {"name": "Taura", "code": "091153", "default_postal_code": "091153"}
+          ]
+        },
+        "0912": {
+          "name": "NARANJITO",
+          "parishes": [
+            {"name": "Naranjito", "code": "091201", "default_postal_code": "091201"}
+          ]
+        },
+        "0913": {
+          "name": "PALESTINA",
+          "parishes": [
+            {"name": "Palestina", "code": "091301", "default_postal_code": "091301"}
+          ]
+        },
+        "0914": {
+          "name": "PEDRO CARBO",
+          "parishes": [
+            {"name": "Pedro Carbo", "code": "091401", "default_postal_code": "091401"},
+            {"name": "Sabanilla", "code": "091450", "default_postal_code": "091450"},
+            {"name": "Valle de la Virgen", "code": "091451", "default_postal_code": "091451"}
+          ]
+        },
+        "0915": {
+          "name": "SAMBORONDÓN",
+          "parishes": [
+            {"name": "Samborondón", "code": "091501", "default_postal_code": "091501"},
+            {"name": "La Puntilla", "code": "091550", "default_postal_code": "091550"}
+          ]
+        },
+        "0916": {
+          "name": "SANTA LUCÍA",
+          "parishes": [
+            {"name": "Santa Lucía", "code": "091601", "default_postal_code": "091601"}
+          ]
+        },
+        "0917": {
+          "name": "SALITRE",
+          "parishes": [
+            {"name": "Salitre (Urbina Jado)", "code": "091701", "default_postal_code": "091701"},
+            {"name": "General Vernaza (Dos Esteros)", "code": "091750", "default_postal_code": "091750"},
+            {"name": "La Victoria (Ñauza)", "code": "091751", "default_postal_code": "091751"}
+          ]
+        },
+        "0918": {
+          "name": "SAN JACINTO DE YAGUACHI",
+          "parishes": [
+            {"name": "Yaguachi Nuevo (Nueva Yaguachi)", "code": "091801", "default_postal_code": "091801"},
+            {"name": "General Pedro J. Montero (Boliche)", "code": "091850", "default_postal_code": "091850"},
+            {"name": "Yaguachi Viejo (Cone)", "code": "091851", "default_postal_code": "091851"},
+            {"name": "Virgen de Fátima", "code": "091852", "default_postal_code": "091852"}
+          ]
+        },
+        "0919": {
+          "name": "PLAYAS",
+          "parishes": [
+            {"name": "General Villamil (Playas)", "code": "091901", "default_postal_code": "091901"},
+            {"name": "El Morro", "code": "091950", "default_postal_code": "091950"}
+          ]
+        },
+        "0920": {
+          "name": "SIMÓN BOLÍVAR",
+          "parishes": [
+            {"name": "Simón Bolívar", "code": "092001", "default_postal_code": "092001"},
+            {"name": "Crnel. Lorenzo de Garaicoa (Pedregal)", "code": "092050", "default_postal_code": "092050"}
+          ]
+        },
+        "0921": {
+          "name": "CORONEL MARCELINO MARIDUEÑA",
+          "parishes": [
+            {"name": "Coronel Marcelino Maridueña (San Carlos)", "code": "092101", "default_postal_code": "092101"}
+          ]
+        },
+        "0922": {
+          "name": "LOMAS DE SARGENTILLO",
+          "parishes": [
+            {"name": "Lomas de Sargentillo", "code": "092201", "default_postal_code": "092201"},
+            {"name": "Isidro Ayora", "code": "092250", "default_postal_code": "092250"}
+          ]
+        },
+        "0923": {
+          "name": "NOBOL",
+          "parishes": [
+            {"name": "Narcisa de Jesús", "code": "092301", "default_postal_code": "092301"}
+          ]
+        },
+        "0924": {
+          "name": "GENERAL ANTONIO ELIZALDE",
+          "parishes": [
+            {"name": "General Antonio Elizalde (Bucay)", "code": "092401", "default_postal_code": "092401"}
+          ]
+        },
+        "0925": {
+          "name": "ISIDRO AYORA",
+          "parishes": [
+            {"name": "Isidro Ayora", "code": "092501", "default_postal_code": "092501"}
+          ]
+        }
+      }
+    },
+    "10": {
+      "name": "IMBABURA",
+      "cantons": {
+        "1001": {
+          "name": "IBARRA",
+          "parishes": [
+            {"name": "El Sagrario", "code": "100101", "default_postal_code": "100101"},
+            {"name": "San Francisco", "code": "100102", "default_postal_code": "100102"},
+            {"name": "Caranqui", "code": "100103", "default_postal_code": "100103"},
+            {"name": "Alpachaca", "code": "100104", "default_postal_code": "100104"},
+            {"name": "Priorato", "code": "100105", "default_postal_code": "100105"},
+            {"name": "Ambuquí", "code": "100150", "default_postal_code": "100150"},
+            {"name": "Angochagua", "code": "100151", "default_postal_code": "100151"},
+            {"name": "Carolina", "code": "100152", "default_postal_code": "100152"},
+            {"name": "La Esperanza", "code": "100153", "default_postal_code": "100153"},
+            {"name": "Lita", "code": "100154", "default_postal_code": "100154"},
+            {"name": "Salinas", "code": "100155", "default_postal_code": "100155"},
+            {"name": "San Antonio", "code": "100156", "default_postal_code": "100156"}
+          ]
+        },
+        "1002": {
+          "name": "ANTONIO ANTE",
+          "parishes": [
+            {"name": "Andrade Marín (Lourdes)", "code": "100201", "default_postal_code": "100201"},
+            {"name": "Atuntaqui", "code": "100202", "default_postal_code": "100202"},
+            {"name": "Imbaya (Cab. en Crucita)", "code": "100250", "default_postal_code": "100250"},
+            {"name": "San Francisco de Natabuela", "code": "100251", "default_postal_code": "100251"},
+            {"name": "San José de Chaltura", "code": "100252", "default_postal_code": "100252"},
+            {"name": "San Roque", "code": "100253", "default_postal_code": "100253"}
+          ]
+        },
+        "1003": {
+          "name": "COTACACHI",
+          "parishes": [
+            {"name": "Cotacachi", "code": "100301", "default_postal_code": "100301"},
+            {"name": "Apuela", "code": "100350", "default_postal_code": "100350"},
+            {"name": "García Moreno (Cab. en Llurimagua)", "code": "100351", "default_postal_code": "100351"},
+            {"name": "Imantag", "code": "100352", "default_postal_code": "100352"},
+            {"name": "Peñaherrera", "code": "100353", "default_postal_code": "100353"},
+            {"name": "Plaza Gutiérrez (Cab. en Tumbatú)", "code": "100354", "default_postal_code": "100354"},
+            {"name": "Quiroga", "code": "100355", "default_postal_code": "100355"},
+            {"name": "6 de Julio de Cuellaje (Cab. en Cuellaje)", "code": "100356", "default_postal_code": "100356"},
+            {"name": "Vacas Galindo (Cab. en San Miguel Alto)", "code": "100357", "default_postal_code": "100357"}
+          ]
+        },
+        "1004": {
+          "name": "OTAVALO",
+          "parishes": [
+            {"name": "Otavalo", "code": "100401", "default_postal_code": "100401"},
+            {"name": "El Jordán", "code": "100402", "default_postal_code": "100402"},
+            {"name": "San Luis", "code": "100403", "default_postal_code": "100403"},
+            {"name": "Dr. Miguel Egas Cabezas (Peguche)", "code": "100450", "default_postal_code": "100450"},
+            {"name": "Eugenio Espejo (Calpaquí)", "code": "100451", "default_postal_code": "100451"},
+            {"name": "González Suárez", "code": "100452", "default_postal_code": "100452"},
+            {"name": "Pataquí", "code": "100453", "default_postal_code": "100453"},
+            {"name": "San José de Quichinche", "code": "100454", "default_postal_code": "100454"},
+            {"name": "San Pablo", "code": "100455", "default_postal_code": "100455"},
+            {"name": "San Rafael", "code": "100456", "default_postal_code": "100456"},
+            {"name": "Selva Alegre (Cab. en Alobuela)", "code": "100457", "default_postal_code": "100457"}
+          ]
+        },
+        "1005": {
+          "name": "PIMAMPIRO",
+          "parishes": [
+            {"name": "Pimampiro", "code": "100501", "default_postal_code": "100501"},
+            {"name": "Chuga", "code": "100550", "default_postal_code": "100550"},
+            {"name": "Mariano Acosta", "code": "100551", "default_postal_code": "100551"},
+            {"name": "San Francisco de Sigsipamba", "code": "100552", "default_postal_code": "100552"}
+          ]
+        },
+        "1006": {
+          "name": "SAN MIGUEL DE URCUQUÍ",
+          "parishes": [
+            {"name": "Urcuquí", "code": "100601", "default_postal_code": "100601"},
+            {"name": "Cahuasquí", "code": "100650", "default_postal_code": "100650"},
+            {"name": "La Merced de Buenos Aires", "code": "100651", "default_postal_code": "100651"},
+            {"name": "Pablo Arenas", "code": "100652", "default_postal_code": "100652"},
+            {"name": "San Blas", "code": "100653", "default_postal_code": "100653"},
+            {"name": "Tumbabiro", "code": "100654", "default_postal_code": "100654"}
+          ]
+        }
+      }
+    },
+    "11": {
+      "name": "LOJA",
+      "cantons": {
+        "1101": {
+          "name": "LOJA",
+          "parishes": [
+            {"name": "El Sagrario", "code": "110101", "default_postal_code": "110101"},
+            {"name": "Sucre", "code": "110102", "default_postal_code": "110102"},
+            {"name": "El Valle", "code": "110103", "default_postal_code": "110103"},
+            {"name": "San Sebastián", "code": "110104", "default_postal_code": "110104"},
+            {"name": "Chantaco", "code": "110150", "default_postal_code": "110150"},
+            {"name": "Chuquiribamba", "code": "110151", "default_postal_code": "110151"},
+            {"name": "El Cisne", "code": "110152", "default_postal_code": "110152"},
+            {"name": "Gualel", "code": "110153", "default_postal_code": "110153"},
+            {"name": "Jimbilla", "code": "110154", "default_postal_code": "110154"},
+            {"name": "Malacatos (Valladolid)", "code": "110155", "default_postal_code": "110155"},
+            {"name": "Purunuma (Eguiguren)", "code": "110156", "default_postal_code": "110156"},
+            {"name": "San Lucas", "code": "110157", "default_postal_code": "110157"},
+            {"name": "Santiago", "code": "110158", "default_postal_code": "110158"},
+            {"name": "Tak", "code": "110159", "default_postal_code": "110159"},
+            {"name": "Vilcabamba", "code": "110160", "default_postal_code": "110160"},
+            {"name": "Yangana (Arsenio Castillo)", "code": "110161", "default_postal_code": "110161"},
+            {"name": "Quinara", "code": "110162", "default_postal_code": "110162"}
+          ]
+        },
+        "1102": {
+          "name": "CALVAS",
+          "parishes": [
+            {"name": "Cariamanga", "code": "110201", "default_postal_code": "110201"},
+            {"name": "Chile", "code": "110250", "default_postal_code": "110250"},
+            {"name": "El Lucero", "code": "110251", "default_postal_code": "110251"},
+            {"name": "Sanguillin", "code": "110252", "default_postal_code": "110252"},
+            {"name": "Utuana", "code": "110253", "default_postal_code": "110253"},
+            {"name": "Colaisaca", "code": "110254", "default_postal_code": "110254"}
+          ]
+        },
+        "1103": {
+          "name": "CATAMAYO",
+          "parishes": [
+            {"name": "Catamayo (La Toma)", "code": "110301", "default_postal_code": "110301"},
+            {"name": "El Tambo", "code": "110350", "default_postal_code": "110350"},
+            {"name": "Guayquichuma", "code": "110351", "default_postal_code": "110351"},
+            {"name": "San Pedro de la Bendita", "code": "110352", "default_postal_code": "110352"},
+            {"name": "Zambi", "code": "110353", "default_postal_code": "110353"}
+          ]
+        },
+        "1104": {
+          "name": "CELICA",
+          "parishes": [
+            {"name": "Celica", "code": "110401", "default_postal_code": "110401"},
+            {"name": "Cruzpamba (Cab. en Carlos Bustamante)", "code": "110450", "default_postal_code": "110450"},
+            {"name": "Lalamor", "code": "110451", "default_postal_code": "110451"},
+            {"name": "Pozul (San Juan de Pozul)", "code": "110452", "default_postal_code": "110452"},
+            {"name": "Sabanilla", "code": "110453", "default_postal_code": "110453"},
+            {"name": "Tenta", "code": "110454", "default_postal_code": "110454"}
+          ]
+        },
+        "1105": {
+          "name": "CHAGUARPAMBA",
+          "parishes": [
+            {"name": "Chaguarpamba", "code": "110501", "default_postal_code": "110501"},
+            {"name": "Amarillos", "code": "110550", "default_postal_code": "110550"},
+            {"name": "Buenavista", "code": "110551", "default_postal_code": "110551"},
+            {"name": "El Rosario", "code": "110552", "default_postal_code": "110552"},
+            {"name": "Santa Rufina", "code": "110553", "default_postal_code": "110553"}
+          ]
+        },
+        "1106": {
+          "name": "ESPÍNDOLA",
+          "parishes": [
+            {"name": "Amaluza", "code": "110601", "default_postal_code": "110601"},
+            {"name": "Bellavista", "code": "110650", "default_postal_code": "110650"},
+            {"name": "Jimbura", "code": "110651", "default_postal_code": "110651"},
+            {"name": "Santa Teresita", "code": "110652", "default_postal_code": "110652"},
+            {"name": "27 de Abril (Cab. en La Naranja)", "code": "110653", "default_postal_code": "110653"},
+            {"name": "El Ingenio", "code": "110654", "default_postal_code": "110654"},
+            {"name": "El Airo", "code": "110655", "default_postal_code": "110655"}
+          ]
+        },
+        "1107": {
+          "name": "GONZANAMÁ",
+          "parishes": [
+            {"name": "Gonzanamá", "code": "110701", "default_postal_code": "110701"},
+            {"name": "Changaimina (La Libertad)", "code": "110750", "default_postal_code": "110750"},
+            {"name": "Nambacola", "code": "110751", "default_postal_code": "110751"},
+            {"name": "Purunuma (Eguiguren)", "code": "110752", "default_postal_code": "110752"},
+            {"name": "Sacapalca", "code": "110753", "default_postal_code": "110753"}
+          ]
+        },
+        "1108": {
+          "name": "MACARÁ",
+          "parishes": [
+            {"name": "Macará", "code": "110801", "default_postal_code": "110801"},
+            {"name": "General Eloy Alfaro (San Sebastián)", "code": "110850", "default_postal_code": "110850"},
+            {"name": "Larama", "code": "110851", "default_postal_code": "110851"},
+            {"name": "La Victoria", "code": "110852", "default_postal_code": "110852"},
+            {"name": "Sabiango (La Capilla)", "code": "110853", "default_postal_code": "110853"}
+          ]
+        },
+        "1109": {
+          "name": "PALTAS",
+          "parishes": [
+            {"name": "Catacocha", "code": "110901", "default_postal_code": "110901"},
+            {"name": "Cangonamá", "code": "110950", "default_postal_code": "110950"},
+            {"name": "Guachanamá", "code": "110951", "default_postal_code": "110951"},
+            {"name": "La Tingue", "code": "110952", "default_postal_code": "110952"},
+            {"name": "Lourdes", "code": "110953", "default_postal_code": "110953"},
+            {"name": "Olmedo (Santa Bárbara)", "code": "110954", "default_postal_code": "110954"},
+            {"name": "Orianga", "code": "110955", "default_postal_code": "110955"},
+            {"name": "San Antonio", "code": "110956", "default_postal_code": "110956"}
+          ]
+        },
+        "1110": {
+          "name": "PUYANGO",
+          "parishes": [
+            {"name": "Alamor", "code": "111001", "default_postal_code": "111001"},
+            {"name": "Ciano", "code": "111050", "default_postal_code": "111050"},
+            {"name": "El Arenal", "code": "111051", "default_postal_code": "111051"},
+            {"name": "El Limo (Mariana de Jesús)", "code": "111052", "default_postal_code": "111052"},
+            {"name": "Mercadillo", "code": "111053", "default_postal_code": "111053"},
+            {"name": "Vicentino", "code": "111054", "default_postal_code": "111054"}
+          ]
+        },
+        "1111": {
+          "name": "SARAGURO",
+          "parishes": [
+            {"name": "Saraguro", "code": "111101", "default_postal_code": "111101"},
+            {"name": "El Paraíso de Celén", "code": "111150", "default_postal_code": "111150"},
+            {"name": "El Tablón", "code": "111151", "default_postal_code": "111151"},
+            {"name": "Lluzhapa", "code": "111152", "default_postal_code": "111152"},
+            {"name": "Manú", "code": "111153", "default_postal_code": "111153"},
+            {"name": "San Antonio de Qumbe (Qumbe)", "code": "111154", "default_postal_code": "111154"},
+            {"name": "San Pablo de Tenta", "code": "111155", "default_postal_code": "111155"},
+            {"name": "San Sebastián de Yúluc", "code": "111156", "default_postal_code": "111156"},
+            {"name": "Selva Alegre", "code": "111157", "default_postal_code": "111157"},
+            {"name": "Urdaneta (Paquishapa)", "code": "111158", "default_postal_code": "111158"}
+          ]
+        },
+        "1112": {
+          "name": "SOZORANGA",
+          "parishes": [
+            {"name": "Sozoranga", "code": "111201", "default_postal_code": "111201"},
+            {"name": "Nueva Fátima", "code": "111250", "default_postal_code": "111250"},
+            {"name": "Tacamoros", "code": "111251", "default_postal_code": "111251"}
+          ]
+        },
+        "1113": {
+          "name": "ZAPOTILLO",
+          "parishes": [
+            {"name": "Zapotillo", "code": "111301", "default_postal_code": "111301"},
+            {"name": "Bolaspamba", "code": "111350", "default_postal_code": "111350"},
+            {"name": "Cazaderos", "code": "111351", "default_postal_code": "111351"},
+            {"name": "Mangahurco (Cazaderos)", "code": "111352", "default_postal_code": "111352"},
+            {"name": "Paletillas", "code": "111353", "default_postal_code": "111353"}
+          ]
+        },
+        "1114": {
+          "name": "PINDAL",
+          "parishes": [
+            {"name": "Pindal", "code": "111401", "default_postal_code": "111401"},
+            {"name": "12 de Diciembre (Cab. en Achiotes)", "code": "111450", "default_postal_code": "111450"},
+            {"name": "Chaquinal", "code": "111451", "default_postal_code": "111451"},
+            {"name": "Milagros", "code": "111452", "default_postal_code": "111452"}
+          ]
+        },
+        "1115": {
+          "name": "QUILANGA",
+          "parishes": [
+            {"name": "Quilanga", "code": "111501", "default_postal_code": "111501"},
+            {"name": "Fundochamba", "code": "111550", "default_postal_code": "111550"},
+            {"name": "San Antonio de las Aradas (Cab. en Las Aradas)", "code": "111551", "default_postal_code": "111551"}
+          ]
+        },        "1116": {
+          "name": "OLMEDO",
+          "parishes": [
+            {"name": "Olmedo", "code": "111601", "default_postal_code": "111601"},
+            {"name": "La Tingue", "code": "111650", "default_postal_code": "111650"}
+          ]
+        }
+      }
+    },
+    "12": {
+      "name": "LOS RÍOS",
+      "cantons": {
+        "1201": {
+          "name": "BABAHOYO",
+          "parishes": [
+            {"name": "Babahoyo", "code": "120101", "default_postal_code": "120101"},
+            {"name": "Camilo Ponce", "code": "120102", "default_postal_code": "120102"},
+            {"name": "10 de Agosto", "code": "120103", "default_postal_code": "120103"},
+            {"name": "El Salto", "code": "120104", "default_postal_code": "120104"},
+            {"name": "Clemente Baquerizo", "code": "120105", "default_postal_code": "120105"},
+            {"name": "Febres Cordero (Las Juntas)", "code": "120150", "default_postal_code": "120150"},
+            {"name": "Pimocha", "code": "120151", "default_postal_code": "120151"},
+            {"name": "Caracol", "code": "120152", "default_postal_code": "120152"},
+            {"name": "La Unión", "code": "120153", "default_postal_code": "120153"}
+          ]
+        },
+        "1202": {
+          "name": "BABA",
+          "parishes": [
+            {"name": "Baba", "code": "120201", "default_postal_code": "120201"},
+            {"name": "Guare", "code": "120250", "default_postal_code": "120250"},
+            {"name": "Isla de Bejucal", "code": "120251", "default_postal_code": "120251"}
+          ]
+        },
+        "1203": {
+          "name": "MONTALVO",
+          "parishes": [
+            {"name": "Montalvo", "code": "120301", "default_postal_code": "120301"}
+          ]
+        },
+        "1204": {
+          "name": "PUEBLOVIEJO",
+          "parishes": [
+            {"name": "Puebloviejo", "code": "120401", "default_postal_code": "120401"},
+            {"name": "Puerto Pechiche", "code": "120450", "default_postal_code": "120450"}
+          ]
+        },
+        "1205": {
+          "name": "QUEVEDO",
+          "parishes": [
+            {"name": "Quevedo", "code": "120501", "default_postal_code": "120501"},
+            {"name": "San Camilo", "code": "120502", "default_postal_code": "120502"},
+            {"name": "Nicolás Infante Díaz", "code": "120503", "default_postal_code": "120503"},
+            {"name": "Guayacanes", "code": "120504", "default_postal_code": "120504"},
+            {"name": "7 de Octubre", "code": "120505", "default_postal_code": "120505"},
+            {"name": "24 de Mayo", "code": "120506", "default_postal_code": "120506"},
+            {"name": "Venus del Río Quevedo", "code": "120507", "default_postal_code": "120507"},
+            {"name": "Mocache", "code": "120550", "default_postal_code": "120550"},
+            {"name": "La Esperanza", "code": "120551", "default_postal_code": "120551"}
+          ]
+        },
+        "1206": {
+          "name": "URDANETA",
+          "parishes": [
+            {"name": "Catarama", "code": "120601", "default_postal_code": "120601"},
+            {"name": "Ricaurte", "code": "120650", "default_postal_code": "120650"}
+          ]
+        },
+        "1207": {
+          "name": "VENTANAS",
+          "parishes": [
+            {"name": "Ventanas", "code": "120701", "default_postal_code": "120701"},
+            {"name": "Zapotal", "code": "120750", "default_postal_code": "120750"},
+            {"name": "Chacarita", "code": "120751", "default_postal_code": "120751"}
+          ]
+        },
+        "1208": {
+          "name": "VINCES",
+          "parishes": [
+            {"name": "Vinces", "code": "120801", "default_postal_code": "120801"},
+            {"name": "Antonio Sotomayor (Cab. en Playas de Vinces)", "code": "120850", "default_postal_code": "120850"},
+            {"name": "Palenque", "code": "120851", "default_postal_code": "120851"}
+          ]
+        },
+        "1209": {
+          "name": "PALENQUE",
+          "parishes": [
+            {"name": "Palenque", "code": "120901", "default_postal_code": "120901"}
+          ]
+        },
+        "1210": {
+          "name": "BUENA FE",
+          "parishes": [
+            {"name": "San Jacinto de Buena Fe", "code": "121001", "default_postal_code": "121001"},
+            {"name": "7 de Agosto", "code": "121050", "default_postal_code": "121050"},
+            {"name": "10 de Agosto (Cab. en Estero Hondo)", "code": "121051", "default_postal_code": "121051"},
+            {"name": "Patricia Pilar", "code": "121052", "default_postal_code": "121052"}
+          ]
+        },
+        "1211": {
+          "name": "VALENCIA",
+          "parishes": [
+            {"name": "Valencia", "code": "121101", "default_postal_code": "121101"}
+          ]
+        },
+        "1212": {
+          "name": "MOCACHE",
+          "parishes": [
+            {"name": "Mocache", "code": "121201", "default_postal_code": "121201"}
+          ]
+        },
+        "1213": {
+          "name": "QUINSALOMA",
+          "parishes": [
+            {"name": "Quinsaloma", "code": "121301", "default_postal_code": "121301"}
+          ]
+        }
+      }
+    },
+    "13": {
+      "name": "MANABÍ",
+      "cantons": {
+        "1301": {
+          "name": "PORTOVIEJO",
+          "parishes": [
+            {"name": "Portoviejo", "code": "130101", "default_postal_code": "130101"},
+            {"name": "12 de Marzo", "code": "130102", "default_postal_code": "130102"},
+            {"name": "Colón", "code": "130103", "default_postal_code": "130103"},
+            {"name": "Picoazá", "code": "130104", "default_postal_code": "130104"},
+            {"name": "San Pablo", "code": "130105", "default_postal_code": "130105"},
+            {"name": "Andrés de Vera", "code": "130106", "default_postal_code": "130106"},
+            {"name": "Simón Bolívar", "code": "130107", "default_postal_code": "130107"},
+            {"name": "18 de Octubre", "code": "130108", "default_postal_code": "130108"},
+            {"name": "Francisco Pacheco", "code": "130109", "default_postal_code": "130109"},
+            {"name": "Abdón Calderón", "code": "130150", "default_postal_code": "130150"},
+            {"name": "Crucita", "code": "130151", "default_postal_code": "130151"},
+            {"name": "Pueblo Nuevo", "code": "130152", "default_postal_code": "130152"},
+            {"name": "Riochico (Río Chico)", "code": "130153", "default_postal_code": "130153"},
+            {"name": "San Plácido", "code": "130154", "default_postal_code": "130154"},
+            {"name": "Alhajuela (Bajo Grande)", "code": "130155", "default_postal_code": "130155"},
+            {"name": "Chirijos", "code": "130156", "default_postal_code": "130156"}
+          ]
+        },
+        "1302": {
+          "name": "BOLÍVAR",
+          "parishes": [
+            {"name": "Calceta", "code": "130201", "default_postal_code": "130201"},
+            {"name": "Membrillo", "code": "130250", "default_postal_code": "130250"},
+            {"name": "Quiroga", "code": "130251", "default_postal_code": "130251"}
+          ]
+        },
+        "1303": {
+          "name": "CHONE",
+          "parishes": [
+            {"name": "Chone", "code": "130301", "default_postal_code": "130301"},
+            {"name": "Boyacá", "code": "130302", "default_postal_code": "130302"},
+            {"name": "Santa Rita", "code": "130303", "default_postal_code": "130303"},
+            {"name": "Ricaurte", "code": "130304", "default_postal_code": "130304"},
+            {"name": "Eloy Alfaro", "code": "130305", "default_postal_code": "130305"},
+            {"name": "Chibunga", "code": "130350", "default_postal_code": "130350"},
+            {"name": "Convento", "code": "130351", "default_postal_code": "130351"},
+            {"name": "San Antonio", "code": "130352", "default_postal_code": "130352"},
+            {"name": "Canuto", "code": "130353", "default_postal_code": "130353"}
+          ]
+        },
+        "1304": {
+          "name": "EL CARMEN",
+          "parishes": [
+            {"name": "El Carmen", "code": "130401", "default_postal_code": "130401"},
+            {"name": "4 de Diciembre", "code": "130450", "default_postal_code": "130450"},
+            {"name": "Wilfrido Loor Moreira (Maicito)", "code": "130451", "default_postal_code": "130451"}
+          ]
+        },
+        "1305": {
+          "name": "FLAVIO ALFARO",
+          "parishes": [
+            {"name": "Flavio Alfaro", "code": "130501", "default_postal_code": "130501"},
+            {"name": "San Francisco de Novillo (Cab. en Novillo)", "code": "130550", "default_postal_code": "130550"},
+            {"name": "Zapallo", "code": "130551", "default_postal_code": "130551"}
+          ]
+        },
+        "1306": {
+          "name": "JIPIJAPA",
+          "parishes": [
+            {"name": "Jipijapa", "code": "130601", "default_postal_code": "130601"},
+            {"name": "Dr. Miguel Morán Lucio", "code": "130602", "default_postal_code": "130602"},
+            {"name": "Manuel I. Parrales y Guale", "code": "130603", "default_postal_code": "130603"},
+            {"name": "San Lorenzo de Jipijapa", "code": "130604", "default_postal_code": "130604"},
+            {"name": "Anselmo Loor", "code": "130605", "default_postal_code": "130605"},
+            {"name": "La América", "code": "130650", "default_postal_code": "130650"},
+            {"name": "Membrillal", "code": "130651", "default_postal_code": "130651"},
+            {"name": "Pedro Pablo Gómez", "code": "130652", "default_postal_code": "130652"},
+            {"name": "Julcuy", "code": "130653", "default_postal_code": "130653"},
+            {"name": "Puerto López", "code": "130654", "default_postal_code": "130654"},
+            {"name": "Machalilla", "code": "130655", "default_postal_code": "130655"},
+            {"name": "Salango", "code": "130656", "default_postal_code": "130656"}
+          ]
+        },
+        "1307": {
+          "name": "JUNÍN",
+          "parishes": [
+            {"name": "Junín", "code": "130701", "default_postal_code": "130701"}
+          ]
+        },
+        "1308": {
+          "name": "MANTA",
+          "parishes": [
+            {"name": "Manta", "code": "130801", "default_postal_code": "130801"},
+            {"name": "Eloy Alfaro", "code": "130802", "default_postal_code": "130802"},
+            {"name": "Los Esteros", "code": "130803", "default_postal_code": "130803"},
+            {"name": "Manta", "code": "130804", "default_postal_code": "130804"},
+            {"name": "San Mateo", "code": "130805", "default_postal_code": "130805"},
+            {"name": "Tarqui", "code": "130806", "default_postal_code": "130806"},
+            {"name": "San Lorenzo", "code": "130850", "default_postal_code": "130850"},
+            {"name": "Santa Marianita (Boca de Pacoche)", "code": "130851", "default_postal_code": "130851"}
+          ]
+        },
+        "1309": {
+          "name": "MONTECRISTI",
+          "parishes": [
+            {"name": "Montecristi", "code": "130901", "default_postal_code": "130901"},
+            {"name": "Ancloncito", "code": "130950", "default_postal_code": "130950"},
+            {"name": "General Eloy Alfaro (Cab. en Arroyo de Plátano)", "code": "130951", "default_postal_code": "130951"},
+            {"name": "Pile", "code": "130952", "default_postal_code": "130952"},
+            {"name": "La Pila", "code": "130953", "default_postal_code": "130953"},
+            {"name": "Jaramijó", "code": "130954", "default_postal_code": "130954"}
+          ]
+        },
+        "1310": {
+          "name": "PAJÁN",
+          "parishes": [
+            {"name": "Paján", "code": "131001", "default_postal_code": "131001"},
+            {"name": "Campozano (Cab. en Campozano)", "code": "131050", "default_postal_code": "131050"},
+            {"name": "Cascol", "code": "131051", "default_postal_code": "131051"},
+            {"name": "Guale", "code": "131052", "default_postal_code": "131052"},
+            {"name": "Lascano", "code": "131053", "default_postal_code": "131053"}
+          ]
+        },
+        "1311": {
+          "name": "PICHINCHA",
+          "parishes": [
+            {"name": "Pichincha", "code": "131101", "default_postal_code": "131101"},
+            {"name": "Barraganete", "code": "131150", "default_postal_code": "131150"}
+          ]
+        },
+        "1312": {
+          "name": "ROCAFUERTE",
+          "parishes": [
+            {"name": "Rocafuerte", "code": "131201", "default_postal_code": "131201"}
+          ]
+        },
+        "1313": {
+          "name": "SANTA ANA",
+          "parishes": [
+            {"name": "Santa Ana de Vuelta Larga", "code": "131301", "default_postal_code": "131301"},
+            {"name": "Ayacucho", "code": "131350", "default_postal_code": "131350"},
+            {"name": "Honorato Vásquez (Cab. en Vásquez)", "code": "131351", "default_postal_code": "131351"},
+            {"name": "La Unión", "code": "131352", "default_postal_code": "131352"},
+            {"name": "Olmedo", "code": "131353", "default_postal_code": "131353"},
+            {"name": "Pueblo Nuevo", "code": "131354", "default_postal_code": "131354"},
+            {"name": "San Pablo (Cab. en Pueblo Nuevo)", "code": "131355", "default_postal_code": "131355"}
+          ]
+        },
+        "1314": {
+          "name": "SUCRE",
+          "parishes": [
+            {"name": "Bahía de Caráquez", "code": "131401", "default_postal_code": "131401"},
+            {"name": "Leonidas Plaza Gutiérrez", "code": "131402", "default_postal_code": "131402"},
+            {"name": "Sucre", "code": "131403", "default_postal_code": "131403"},
+            {"name": "Charapotó", "code": "131450", "default_postal_code": "131450"},
+            {"name": "San Isidro", "code": "131451", "default_postal_code": "131451"}
+          ]
+        },
+        "1315": {
+          "name": "TOSAGUA",
+          "parishes": [
+            {"name": "Tosagua", "code": "131501", "default_postal_code": "131501"},
+            {"name": "Bachillero", "code": "131550", "default_postal_code": "131550"},
+            {"name": "Ángel Pedro Giler (Cab. en Estero de Plátano)", "code": "131551", "default_postal_code": "131551"}
+          ]
+        },
+        "1316": {
+          "name": "24 DE MAYO",
+          "parishes": [
+            {"name": "Sucre", "code": "131601", "default_postal_code": "131601"},
+            {"name": "Bellavista", "code": "131650", "default_postal_code": "131650"},
+            {"name": "Noboa", "code": "131651", "default_postal_code": "131651"},
+            {"name": "Sixto Durán Ballén", "code": "131652", "default_postal_code": "131652"},
+            {"name": "Arq. Sixto Durán Ballén", "code": "131653", "default_postal_code": "131653"}
+          ]
+        },
+        "1317": {
+          "name": "PEDERNALES",
+          "parishes": [
+            {"name": "Pedernales", "code": "131701", "default_postal_code": "131701"},
+            {"name": "Cojimíes", "code": "131750", "default_postal_code": "131750"},
+            {"name": "10 de Agosto", "code": "131751", "default_postal_code": "131751"},
+            {"name": "Atahualpa", "code": "131752", "default_postal_code": "131752"}
+          ]
+        },
+        "1318": {
+          "name": "OLMEDO",
+          "parishes": [
+            {"name": "Olmedo", "code": "131801", "default_postal_code": "131801"}
+          ]
+        },
+        "1319": {
+          "name": "PUERTO LÓPEZ",
+          "parishes": [
+            {"name": "Puerto López", "code": "131901", "default_postal_code": "131901"},
+            {"name": "Machalilla", "code": "131950", "default_postal_code": "131950"},
+            {"name": "Salango", "code": "131951", "default_postal_code": "131951"}
+          ]
+        },
+        "1320": {
+          "name": "JAMA",
+          "parishes": [
+            {"name": "Jama", "code": "132001", "default_postal_code": "132001"}
+          ]
+        },
+        "1321": {
+          "name": "JARAMIJÓ",
+          "parishes": [
+            {"name": "Jaramijó", "code": "132101", "default_postal_code": "132101"}
+          ]
+        },
+        "1322": {
+          "name": "SAN VICENTE",
+          "parishes": [
+            {"name": "San Vicente", "code": "132201", "default_postal_code": "132201"},
+            {"name": "Canoa", "code": "132250", "default_postal_code": "132250"}
+          ]
+        }
+      }
+    },
+    "14": {
+      "name": "MORONA SANTIAGO",
+      "cantons": {
+        "1401": {
+          "name": "MORONA",
+          "parishes": [
+            {"name": "Macas", "code": "140101", "default_postal_code": "140101"},
+            {"name": "Alshi (Cab. en 9 de Octubre)", "code": "140150", "default_postal_code": "140150"},
+            {"name": "General Proaño", "code": "140151", "default_postal_code": "140151"},
+            {"name": "Huasaga (Cab. en Wampuik)", "code": "140152", "default_postal_code": "140152"},
+            {"name": "Macuma", "code": "140153", "default_postal_code": "140153"},
+            {"name": "Río Blanco", "code": "140154", "default_postal_code": "140154"},
+            {"name": "San Isidro", "code": "140155", "default_postal_code": "140155"},
+            {"name": "Sevilla Don Bosco", "code": "140156", "default_postal_code": "140156"},
+            {"name": "Sinaí", "code": "140157", "default_postal_code": "140157"},
+            {"name": "Zuña (Zuña)", "code": "140158", "default_postal_code": "140158"}
+          ]
+        },
+        "1402": {
+          "name": "GUALAQUIZA",
+          "parishes": [
+            {"name": "Gualaquiza", "code": "140201", "default_postal_code": "140201"},
+            {"name": "Bomboiza", "code": "140250", "default_postal_code": "140250"},
+            {"name": "Chiguaza", "code": "140251", "default_postal_code": "140251"},
+            {"name": "El Ideal", "code": "140252", "default_postal_code": "140252"},
+            {"name": "El Rosario", "code": "140253", "default_postal_code": "140253"},
+            {"name": "Nueva Tarqui", "code": "140254", "default_postal_code": "140254"}
+          ]
+        },
+        "1403": {
+          "name": "LIMÓN INDANZA",
+          "parishes": [
+            {"name": "General Leonidas Plaza Gutiérrez (Limón)", "code": "140301", "default_postal_code": "140301"},
+            {"name": "Indanza (Cab. en Indanza)", "code": "140350", "default_postal_code": "140350"},
+            {"name": "Pan de Azúcar", "code": "140351", "default_postal_code": "140351"},
+            {"name": "San Antonio (Cab. en San Antonio Centro)", "code": "140352", "default_postal_code": "140352"},
+            {"name": "San Miguel de Cuyes", "code": "140353", "default_postal_code": "140353"},
+            {"name": "Santa Susana de Chiviaza (Cab. en Chiviaza)", "code": "140354", "default_postal_code": "140354"},
+            {"name": "Yunganza (Cab. en El Rosario)", "code": "140355", "default_postal_code": "140355"}
+          ]
+        },
+        "1404": {
+          "name": "PALORA",
+          "parishes": [
+            {"name": "Palora (Metzera)", "code": "140401", "default_postal_code": "140401"},
+            {"name": "Arapicos", "code": "140450", "default_postal_code": "140450"},
+            {"name": "Cumandá (Cab. en Colonia Agrícola Sevilla del Oro)", "code": "140451", "default_postal_code": "140451"},
+            {"name": "Huamboya", "code": "140452", "default_postal_code": "140452"},
+            {"name": "Sangay (Cab. en Nayamanaca)", "code": "140453", "default_postal_code": "140453"}
+          ]
+        },
+        "1405": {
+          "name": "SANTIAGO",
+          "parishes": [
+            {"name": "Santiago de Méndez", "code": "140501", "default_postal_code": "140501"},
+            {"name": "Copal", "code": "140550", "default_postal_code": "140550"},
+            {"name": "Cópueno", "code": "140551", "default_postal_code": "140551"},
+            {"name": "Patuca", "code": "140552", "default_postal_code": "140552"},
+            {"name": "San Luis de El Acho (Cab. en El Acho)", "code": "140553", "default_postal_code": "140553"},
+            {"name": "Santiago", "code": "140554", "default_postal_code": "140554"},
+            {"name": "Tayuza", "code": "140555", "default_postal_code": "140555"},
+            {"name": "Tinguinza", "code": "140556", "default_postal_code": "140556"}
+          ]
+        },
+        "1406": {
+          "name": "SUCÚA",
+          "parishes": [
+            {"name": "Sucúa", "code": "140601", "default_postal_code": "140601"},
+            {"name": "Asunción", "code": "140650", "default_postal_code": "140650"},
+            {"name": "Huambi", "code": "140651", "default_postal_code": "140651"},
+            {"name": "Logroño", "code": "140652", "default_postal_code": "140652"},
+            {"name": "Yaupi", "code": "140653", "default_postal_code": "140653"}
+          ]
+        },
+        "1407": {
+          "name": "HUAMBOYA",
+          "parishes": [
+            {"name": "Huamboya", "code": "140701", "default_postal_code": "140701"},
+            {"name": "Chiguaza", "code": "140750", "default_postal_code": "140750"},
+            {"name": "Pablo Sexto", "code": "140751", "default_postal_code": "140751"}
+          ]
+        },
+        "1408": {
+          "name": "SAN JUAN BOSCO",
+          "parishes": [
+            {"name": "San Juan Bosco", "code": "140801", "default_postal_code": "140801"},
+            {"name": "Pan de Azúcar", "code": "140850", "default_postal_code": "140850"},
+            {"name": "Santiago de Pananza", "code": "140851", "default_postal_code": "140851"}
+          ]
+        },
+        "1409": {
+          "name": "TAISHA",
+          "parishes": [
+            {"name": "Taisha", "code": "140901", "default_postal_code": "140901"},
+            {"name": "Huasaga", "code": "140950", "default_postal_code": "140950"},
+            {"name": "Macuma", "code": "140951", "default_postal_code": "140951"},
+            {"name": "Tuutinentza", "code": "140952", "default_postal_code": "140952"},
+            {"name": "Wampuik", "code": "140953", "default_postal_code": "140953"}
+          ]
+        },
+        "1410": {
+          "name": "LOGROÑO",
+          "parishes": [
+            {"name": "Logroño", "code": "141001", "default_postal_code": "141001"},
+            {"name": "Shimpis", "code": "141050", "default_postal_code": "141050"},
+            {"name": "Yaupi", "code": "141051", "default_postal_code": "141051"}
+          ]
+        },
+        "1411": {
+          "name": "PABLO SEXTO",
+          "parishes": [
+            {"name": "Pablo Sexto", "code": "141101", "default_postal_code": "141101"}
+          ]
+        },        "1412": {
+          "name": "TIWINTZA",
+          "parishes": [
+            {"name": "Santiago", "code": "141201", "default_postal_code": "141201"}
+          ]
+        }
+      }
+    },
+    "15": {
+      "name": "NAPO",
+      "cantons": {
+        "1501": {
+          "name": "TENA",
+          "parishes": [
+            {"name": "Tena", "code": "150101", "default_postal_code": "150101"},
+            {"name": "Ahuano", "code": "150150", "default_postal_code": "150150"},
+            {"name": "Carlos Julio Arosemena Tola (Bombón)", "code": "150151", "default_postal_code": "150151"},
+            {"name": "Chontapunta", "code": "150152", "default_postal_code": "150152"},
+            {"name": "Misahuallí", "code": "150153", "default_postal_code": "150153"},
+            {"name": "Pano", "code": "150154", "default_postal_code": "150154"},
+            {"name": "Puerto Misahuallí", "code": "150155", "default_postal_code": "150155"},
+            {"name": "Puerto Napo", "code": "150156", "default_postal_code": "150156"},
+            {"name": "Rukullakta", "code": "150157", "default_postal_code": "150157"},
+            {"name": "Talag", "code": "150158", "default_postal_code": "150158"}
+          ]
+        },
+        "1502": {
+          "name": "ARCHIDONA",
+          "parishes": [
+            {"name": "Archidona", "code": "150201", "default_postal_code": "150201"},
+            {"name": "Avila (Cab. en Huiruno)", "code": "150250", "default_postal_code": "150250"},
+            {"name": "Cotundo", "code": "150251", "default_postal_code": "150251"},
+            {"name": "Loreto", "code": "150252", "default_postal_code": "150252"},
+            {"name": "San Pablo de Ushpayacu", "code": "150253", "default_postal_code": "150253"}
+          ]
+        },
+        "1503": {
+          "name": "EL CHACO",
+          "parishes": [
+            {"name": "El Chaco", "code": "150301", "default_postal_code": "150301"},
+            {"name": "Gonzalo Díaz de Pineda (El Bombón)", "code": "150350", "default_postal_code": "150350"},
+            {"name": "Linares", "code": "150351", "default_postal_code": "150351"},
+            {"name": "Oyacachi", "code": "150352", "default_postal_code": "150352"},
+            {"name": "Santa Rosa", "code": "150353", "default_postal_code": "150353"},
+            {"name": "Sardinas", "code": "150354", "default_postal_code": "150354"}
+          ]
+        },
+        "1504": {
+          "name": "QUIJOS",
+          "parishes": [
+            {"name": "Baeza", "code": "150401", "default_postal_code": "150401"},
+            {"name": "Cosanga", "code": "150450", "default_postal_code": "150450"},
+            {"name": "Cuyuja", "code": "150451", "default_postal_code": "150451"},
+            {"name": "Papallacta", "code": "150452", "default_postal_code": "150452"},
+            {"name": "San Francisco de Borja (Virgilio Dávila)", "code": "150453", "default_postal_code": "150453"},
+            {"name": "Sumaco", "code": "150454", "default_postal_code": "150454"}
+          ]
+        },
+        "1505": {
+          "name": "CARLOS JULIO AROSEMENA TOLA",
+          "parishes": [
+            {"name": "Carlos Julio Arosemena Tola", "code": "150501", "default_postal_code": "150501"}
+          ]
+        }
+      }
+    },
+    "16": {
+      "name": "PASTAZA",
+      "cantons": {
+        "1601": {
+          "name": "PASTAZA",
+          "parishes": [
+            {"name": "Puyo", "code": "160101", "default_postal_code": "160101"},
+            {"name": "Canelos", "code": "160150", "default_postal_code": "160150"},
+            {"name": "Diez de Agosto", "code": "160151", "default_postal_code": "160151"},
+            {"name": "Fátima", "code": "160152", "default_postal_code": "160152"},
+            {"name": "Montalvo (Andrés Córdova)", "code": "160153", "default_postal_code": "160153"},
+            {"name": "Pomona", "code": "160154", "default_postal_code": "160154"},
+            {"name": "Río Corrientes", "code": "160155", "default_postal_code": "160155"},
+            {"name": "Río Tigre", "code": "160156", "default_postal_code": "160156"},
+            {"name": "Sarayaku", "code": "160157", "default_postal_code": "160157"},
+            {"name": "Simón Bolívar (Cab. en Mushullacta)", "code": "160158", "default_postal_code": "160158"},
+            {"name": "Tarqui", "code": "160159", "default_postal_code": "160159"},
+            {"name": "Teniente Hugo Ortiz", "code": "160160", "default_postal_code": "160160"},
+            {"name": "Veracruz (Indillama)", "code": "160161", "default_postal_code": "160161"}
+          ]
+        },
+        "1602": {
+          "name": "MERA",
+          "parishes": [
+            {"name": "Mera", "code": "160201", "default_postal_code": "160201"},
+            {"name": "Madre Tierra", "code": "160250", "default_postal_code": "160250"},
+            {"name": "Shell", "code": "160251", "default_postal_code": "160251"}
+          ]
+        },
+        "1603": {
+          "name": "SANTA CLARA",
+          "parishes": [
+            {"name": "Santa Clara", "code": "160301", "default_postal_code": "160301"},
+            {"name": "San José", "code": "160350", "default_postal_code": "160350"}
+          ]
+        },
+        "1604": {
+          "name": "ARAJUNO",
+          "parishes": [
+            {"name": "Arajuno", "code": "160401", "default_postal_code": "160401"},
+            {"name": "Curaray", "code": "160450", "default_postal_code": "160450"}
+          ]
+        }
+      }
+    },
+    "17": {
+      "name": "PICHINCHA",
+      "cantons": {
+        "1701": {
+          "name": "QUITO",
+          "parishes": [
+            {"name": "Belisario Quevedo", "code": "170101", "default_postal_code": "170101"},
+            {"name": "Carcelén", "code": "170102", "default_postal_code": "170102"},
+            {"name": "Centro Histórico", "code": "170103", "default_postal_code": "170103"},
+            {"name": "Cochapamba", "code": "170104", "default_postal_code": "170104"},
+            {"name": "Comité del Pueblo", "code": "170105", "default_postal_code": "170105"},
+            {"name": "Concepción", "code": "170106", "default_postal_code": "170106"},
+            {"name": "Cotocollao", "code": "170107", "default_postal_code": "170107"},
+            {"name": "Chilibulo", "code": "170108", "default_postal_code": "170108"},
+            {"name": "Chillogallo", "code": "170109", "default_postal_code": "170109"},
+            {"name": "Chimbacalle", "code": "170110", "default_postal_code": "170110"},
+            {"name": "El Condado", "code": "170111", "default_postal_code": "170111"},
+            {"name": "Guamaní", "code": "170112", "default_postal_code": "170112"},
+            {"name": "Iñaquito", "code": "170113", "default_postal_code": "170113"},
+            {"name": "Itchimbía", "code": "170114", "default_postal_code": "170114"},
+            {"name": "Jipijapa", "code": "170115", "default_postal_code": "170115"},
+            {"name": "Kennedy", "code": "170116", "default_postal_code": "170116"},
+            {"name": "La Argelia", "code": "170117", "default_postal_code": "170117"},
+            {"name": "La Concepción", "code": "170118", "default_postal_code": "170118"},
+            {"name": "La Ecuatoriana", "code": "170119", "default_postal_code": "170119"},
+            {"name": "La Ferroviaria", "code": "170120", "default_postal_code": "170120"},
+            {"name": "La Libertad", "code": "170121", "default_postal_code": "170121"},
+            {"name": "La Magdalena", "code": "170122", "default_postal_code": "170122"},
+            {"name": "La Mena", "code": "170123", "default_postal_code": "170123"},
+            {"name": "Mariscal Sucre", "code": "170124", "default_postal_code": "170124"},
+            {"name": "Ponceano", "code": "170125", "default_postal_code": "170125"},
+            {"name": "Puengasí", "code": "170126", "default_postal_code": "170126"},
+            {"name": "Quitumbe", "code": "170127", "default_postal_code": "170127"},
+            {"name": "Rumipamba", "code": "170128", "default_postal_code": "170128"},
+            {"name": "San Bartolo", "code": "170129", "default_postal_code": "170129"},
+            {"name": "San Isidro del Inca", "code": "170130", "default_postal_code": "170130"},
+            {"name": "San Juan", "code": "170131", "default_postal_code": "170131"},
+            {"name": "Solanda", "code": "170132", "default_postal_code": "170132"},
+            {"name": "Turubamba", "code": "170133", "default_postal_code": "170133"},
+            {"name": "Alangasí", "code": "170150", "default_postal_code": "170150"},
+            {"name": "Amaguaña", "code": "170151", "default_postal_code": "170151"},
+            {"name": "Atahualpa (Habaspamba)", "code": "170152", "default_postal_code": "170152"},
+            {"name": "Calacalí", "code": "170153", "default_postal_code": "170153"},
+            {"name": "Calderón (Carapungo)", "code": "170154", "default_postal_code": "170154"},
+            {"name": "Conocoto", "code": "170155", "default_postal_code": "170155"},
+            {"name": "Cumbayá", "code": "170156", "default_postal_code": "170156"},
+            {"name": "Chavezpamba", "code": "170157", "default_postal_code": "170157"},
+            {"name": "Checa (Chilpa)", "code": "170158", "default_postal_code": "170158"},
+            {"name": "El Quinche", "code": "170159", "default_postal_code": "170159"},
+            {"name": "Gualea", "code": "170160", "default_postal_code": "170160"},
+            {"name": "Guangopolo", "code": "170161", "default_postal_code": "170161"},
+            {"name": "Guayllabamba", "code": "170162", "default_postal_code": "170162"},
+            {"name": "La Merced", "code": "170163", "default_postal_code": "170163"},
+            {"name": "Llano Chico", "code": "170164", "default_postal_code": "170164"},
+            {"name": "Lloa", "code": "170165", "default_postal_code": "170165"},
+            {"name": "Mindo", "code": "170166", "default_postal_code": "170166"},
+            {"name": "Nanegal", "code": "170167", "default_postal_code": "170167"},
+            {"name": "Nanegalito", "code": "170168", "default_postal_code": "170168"},
+            {"name": "Nayón", "code": "170169", "default_postal_code": "170169"},
+            {"name": "Nono", "code": "170170", "default_postal_code": "170170"},
+            {"name": "Pacto", "code": "170171", "default_postal_code": "170171"},
+            {"name": "Pedro Vicente Maldonado", "code": "170172", "default_postal_code": "170172"},
+            {"name": "Perucho", "code": "170173", "default_postal_code": "170173"},
+            {"name": "Pifo", "code": "170174", "default_postal_code": "170174"},
+            {"name": "Píntag", "code": "170175", "default_postal_code": "170175"},
+            {"name": "Pomasqui", "code": "170176", "default_postal_code": "170176"},
+            {"name": "Puéllaro", "code": "170177", "default_postal_code": "170177"},
+            {"name": "Puembo", "code": "170178", "default_postal_code": "170178"},
+            {"name": "San Antonio", "code": "170179", "default_postal_code": "170179"},
+            {"name": "San José de Minas", "code": "170180", "default_postal_code": "170180"},
+            {"name": "San Miguel del Común", "code": "170181", "default_postal_code": "170181"},
+            {"name": "Tababela", "code": "170182", "default_postal_code": "170182"},
+            {"name": "Tumbaco", "code": "170183", "default_postal_code": "170183"},
+            {"name": "Yaruquí", "code": "170184", "default_postal_code": "170184"},
+            {"name": "Zámbiza", "code": "170185", "default_postal_code": "170185"}
+          ]
+        },
+        "1702": {
+          "name": "CAYAMBE",
+          "parishes": [
+            {"name": "Cayambe", "code": "170201", "default_postal_code": "170201"},
+            {"name": "Juan Montalvo", "code": "170202", "default_postal_code": "170202"},
+            {"name": "Ascázubi", "code": "170250", "default_postal_code": "170250"},
+            {"name": "Cangahua", "code": "170251", "default_postal_code": "170251"},
+            {"name": "Olmedo (Pesillo)", "code": "170252", "default_postal_code": "170252"},
+            {"name": "Otón", "code": "170253", "default_postal_code": "170253"},
+            {"name": "Santa Rosa de Cusubamba", "code": "170254", "default_postal_code": "170254"}
+          ]
+        },
+        "1703": {
+          "name": "MEJÍA",
+          "parishes": [
+            {"name": "Machachi", "code": "170301", "default_postal_code": "170301"},
+            {"name": "Alóag", "code": "170350", "default_postal_code": "170350"},
+            {"name": "Aloasí", "code": "170351", "default_postal_code": "170351"},
+            {"name": "Cutuglahua", "code": "170352", "default_postal_code": "170352"},
+            {"name": "El Chaupi", "code": "170353", "default_postal_code": "170353"},
+            {"name": "Manuel Cornejo Astorga (Tandapi)", "code": "170354", "default_postal_code": "170354"},
+            {"name": "Tambillo", "code": "170355", "default_postal_code": "170355"},
+            {"name": "Uyumbicho", "code": "170356", "default_postal_code": "170356"}
+          ]
+        },
+        "1704": {
+          "name": "PEDRO MONCAYO",
+          "parishes": [
+            {"name": "Tabacundo", "code": "170401", "default_postal_code": "170401"},
+            {"name": "La Esperanza", "code": "170450", "default_postal_code": "170450"},
+            {"name": "Malchinguí", "code": "170451", "default_postal_code": "170451"},
+            {"name": "Tocachi", "code": "170452", "default_postal_code": "170452"},
+            {"name": "Tupigachi", "code": "170453", "default_postal_code": "170453"}
+          ]
+        },
+        "1705": {
+          "name": "RUMIÑAHUI",
+          "parishes": [
+            {"name": "Sangolquí", "code": "170501", "default_postal_code": "170501"},
+            {"name": "San Pedro de Taboada", "code": "170502", "default_postal_code": "170502"},
+            {"name": "San Rafael", "code": "170503", "default_postal_code": "170503"},
+            {"name": "Cotogchoa", "code": "170550", "default_postal_code": "170550"},
+            {"name": "Rumipamba", "code": "170551", "default_postal_code": "170551"}
+          ]
+        },
+        "1706": {
+          "name": "SAN MIGUEL DE LOS BANCOS",
+          "parishes": [
+            {"name": "San Miguel de los Bancos", "code": "170601", "default_postal_code": "170601"},
+            {"name": "Mindo", "code": "170650", "default_postal_code": "170650"},
+            {"name": "Pedro Vicente Maldonado", "code": "170651", "default_postal_code": "170651"}
+          ]
+        },
+        "1707": {
+          "name": "PEDRO VICENTE MALDONADO",
+          "parishes": [
+            {"name": "Pedro Vicente Maldonado", "code": "170701", "default_postal_code": "170701"}
+          ]
+        },
+        "1708": {
+          "name": "PUERTO QUITO",
+          "parishes": [
+            {"name": "Puerto Quito", "code": "170801", "default_postal_code": "170801"}
+          ]
+        }
+      }
+    },
+    "18": {
+      "name": "TUNGURAHUA",
+      "cantons": {
+        "1801": {
+          "name": "AMBATO",
+          "parishes": [
+            {"name": "Ambato", "code": "180101", "default_postal_code": "180101"},
+            {"name": "Atocha - Ficoa", "code": "180102", "default_postal_code": "180102"},
+            {"name": "Celiano Monge", "code": "180103", "default_postal_code": "180103"},
+            {"name": "Huachi Loreto", "code": "180104", "default_postal_code": "180104"},
+            {"name": "Huachi Chico", "code": "180105", "default_postal_code": "180105"},
+            {"name": "Huachi Grande", "code": "180106", "default_postal_code": "180106"},
+            {"name": "La Merced", "code": "180107", "default_postal_code": "180107"},
+            {"name": "La Península", "code": "180108", "default_postal_code": "180108"},
+            {"name": "Matriz", "code": "180109", "default_postal_code": "180109"},
+            {"name": "Pishilata", "code": "180110", "default_postal_code": "180110"},
+            {"name": "San Francisco", "code": "180111", "default_postal_code": "180111"},
+            {"name": "Agusto N. Martínez", "code": "180112", "default_postal_code": "180112"},
+            {"name": "Constantino Fernández", "code": "180113", "default_postal_code": "180113"},
+            {"name": "Izamba", "code": "180150", "default_postal_code": "180150"},
+            {"name": "Juan Benigno Vela", "code": "180151", "default_postal_code": "180151"},
+            {"name": "Montalvo", "code": "180152", "default_postal_code": "180152"},
+            {"name": "Pasa", "code": "180153", "default_postal_code": "180153"},
+            {"name": "Picaihua", "code": "180154", "default_postal_code": "180154"},
+            {"name": "Pilagüín (Pilahüín)", "code": "180155", "default_postal_code": "180155"},
+            {"name": "Quisapincha (Quizapincha)", "code": "180156", "default_postal_code": "180156"},
+            {"name": "San Bartolomé de Pinllo", "code": "180157", "default_postal_code": "180157"},
+            {"name": "San Fernando (Pasa San Fernando)", "code": "180158", "default_postal_code": "180158"},
+            {"name": "Santa Rosa", "code": "180159", "default_postal_code": "180159"},
+            {"name": "Totoras", "code": "180160", "default_postal_code": "180160"},
+            {"name": "Unamuncho", "code": "180161", "default_postal_code": "180161"},
+            {"name": "Atahualpa (Chisalata)", "code": "180162", "default_postal_code": "180162"},
+            {"name": "Ambatillo", "code": "180163", "default_postal_code": "180163"},
+            {"name": "Cunchibamba", "code": "180164", "default_postal_code": "180164"}
+          ]
+        },
+        "1802": {
+          "name": "BAÑOS DE AGUA SANTA",
+          "parishes": [
+            {"name": "Baños de Agua Santa", "code": "180201", "default_postal_code": "180201"},
+            {"name": "Lligua", "code": "180250", "default_postal_code": "180250"},
+            {"name": "Río Negro", "code": "180251", "default_postal_code": "180251"},
+            {"name": "Río Verde", "code": "180252", "default_postal_code": "180252"},
+            {"name": "Ulba", "code": "180253", "default_postal_code": "180253"}
+          ]
+        },
+        "1803": {
+          "name": "CEVALLOS",
+          "parishes": [
+            {"name": "Cevallos", "code": "180301", "default_postal_code": "180301"}
+          ]
+        },
+        "1804": {
+          "name": "MOCHA",
+          "parishes": [
+            {"name": "Mocha", "code": "180401", "default_postal_code": "180401"},
+            {"name": "Pinguilí", "code": "180450", "default_postal_code": "180450"}
+          ]
+        },
+        "1805": {
+          "name": "PATATE",
+          "parishes": [
+            {"name": "Patate", "code": "180501", "default_postal_code": "180501"},
+            {"name": "El Triunfo", "code": "180550", "default_postal_code": "180550"},
+            {"name": "Los Andes (Cab. en Poatug)", "code": "180551", "default_postal_code": "180551"},
+            {"name": "Sucre (Cab. en Sucre)", "code": "180552", "default_postal_code": "180552"}
+          ]
+        },
+        "1806": {
+          "name": "QUERO",
+          "parishes": [
+            {"name": "Quero", "code": "180601", "default_postal_code": "180601"},
+            {"name": "Rumipamba", "code": "180650", "default_postal_code": "180650"},
+            {"name": "Yanayacu - Mochapata (Cab. en Yanayacu)", "code": "180651", "default_postal_code": "180651"}
+          ]
+        },
+        "1807": {
+          "name": "SAN PEDRO DE PELILEO",
+          "parishes": [
+            {"name": "Pelileo", "code": "180701", "default_postal_code": "180701"},
+            {"name": "Pelileo Grande", "code": "180702", "default_postal_code": "180702"},
+            {"name": "Benítez (Pachanlica)", "code": "180750", "default_postal_code": "180750"},
+            {"name": "Bolívar", "code": "180751", "default_postal_code": "180751"},
+            {"name": "Cotaló", "code": "180752", "default_postal_code": "180752"},
+            {"name": "Chiquicha (Cab. en Chiquicha Grande)", "code": "180753", "default_postal_code": "180753"},
+            {"name": "El Rosario (Rumichaca)", "code": "180754", "default_postal_code": "180754"},
+            {"name": "García Moreno (Chumaqui)", "code": "180755", "default_postal_code": "180755"},
+            {"name": "Guambaló (Benítez)", "code": "180756", "default_postal_code": "180756"},
+            {"name": "Salasaca", "code": "180757", "default_postal_code": "180757"}
+          ]
+        },
+        "1808": {
+          "name": "SANTIAGO DE PÍLLARO",
+          "parishes": [
+            {"name": "Santiago de Píllaro", "code": "180801", "default_postal_code": "180801"},
+            {"name": "Ciudad Nueva", "code": "180802", "default_postal_code": "180802"},
+            {"name": "Baquerizo Moreno", "code": "180850", "default_postal_code": "180850"},
+            {"name": "Emilio María Terán (Rumipamba)", "code": "180851", "default_postal_code": "180851"},
+            {"name": "Marcos Espinel (Chacata)", "code": "180852", "default_postal_code": "180852"},
+            {"name": "Presidente Urbina (Tondolique)", "code": "180853", "default_postal_code": "180853"},
+            {"name": "San Andrés", "code": "180854", "default_postal_code": "180854"},
+            {"name": "San José de Poaló", "code": "180855", "default_postal_code": "180855"},
+            {"name": "San Miguelito", "code": "180856", "default_postal_code": "180856"}
+          ]
+        },        "1809": {
+          "name": "TISALEO",
+          "parishes": [
+            {"name": "Tisaleo", "code": "180901", "default_postal_code": "180901"},
+            {"name": "Quinchicoto", "code": "180950", "default_postal_code": "180950"}
+          ]
+        }
+      }
+    },
+    "19": {
+      "name": "ZAMORA CHINCHIPE",
+      "cantons": {
+        "1901": {
+          "name": "ZAMORA",
+          "parishes": [
+            {"name": "Zamora", "code": "190101", "default_postal_code": "190101"},
+            {"name": "El Limón", "code": "190150", "default_postal_code": "190150"},
+            {"name": "Guadalupe", "code": "190151", "default_postal_code": "190151"},
+            {"name": "Imbana (La Victoria de Imbana)", "code": "190152", "default_postal_code": "190152"},
+            {"name": "Rodrigo Borja (Cab. en Cumbaratza)", "code": "190153", "default_postal_code": "190153"},
+            {"name": "San Carlos de las Minas", "code": "190154", "default_postal_code": "190154"},
+            {"name": "Sabanilla", "code": "190155", "default_postal_code": "190155"},
+            {"name": "Timbara", "code": "190156", "default_postal_code": "190156"},
+            {"name": "Zurmi", "code": "190157", "default_postal_code": "190157"}
+          ]
+        },
+        "1902": {
+          "name": "CHINCHIPE",
+          "parishes": [
+            {"name": "Zumba", "code": "190201", "default_postal_code": "190201"},
+            {"name": "Chito", "code": "190250", "default_postal_code": "190250"},
+            {"name": "El Chorro", "code": "190251", "default_postal_code": "190251"},
+            {"name": "La Chonta", "code": "190252", "default_postal_code": "190252"},
+            {"name": "Pucapamba", "code": "190253", "default_postal_code": "190253"},
+            {"name": "San Andrés", "code": "190254", "default_postal_code": "190254"}
+          ]
+        },
+        "1903": {
+          "name": "NANGARITZA",
+          "parishes": [
+            {"name": "Guayzimi", "code": "190301", "default_postal_code": "190301"},
+            {"name": "Los Encuentros", "code": "190350", "default_postal_code": "190350"},
+            {"name": "Zurmi", "code": "190351", "default_postal_code": "190351"}
+          ]
+        },
+        "1904": {
+          "name": "YACUAMBI",
+          "parishes": [
+            {"name": "28 de Mayo (Yacuambi)", "code": "190401", "default_postal_code": "190401"},
+            {"name": "La Paz", "code": "190450", "default_postal_code": "190450"},
+            {"name": "Tutupali", "code": "190451", "default_postal_code": "190451"}
+          ]
+        },
+        "1905": {
+          "name": "YANTZAZA",
+          "parishes": [
+            {"name": "Yantzaza (Yanzatza)", "code": "190501", "default_postal_code": "190501"},
+            {"name": "Chicaña", "code": "190550", "default_postal_code": "190550"},
+            {"name": "El Pangui", "code": "190551", "default_postal_code": "190551"},
+            {"name": "Los Encuentros", "code": "190552", "default_postal_code": "190552"}
+          ]
+        },
+        "1906": {
+          "name": "EL PANGUI",
+          "parishes": [
+            {"name": "El Pangui", "code": "190601", "default_postal_code": "190601"},
+            {"name": "El Guisme", "code": "190650", "default_postal_code": "190650"},
+            {"name": "Pachicutza", "code": "190651", "default_postal_code": "190651"},
+            {"name": "Tundayme", "code": "190652", "default_postal_code": "190652"}
+          ]
+        },
+        "1907": {
+          "name": "CENTINELA DEL CÓNDOR",
+          "parishes": [
+            {"name": "Zumbi", "code": "190701", "default_postal_code": "190701"},
+            {"name": "Triunfo-Dorado", "code": "190750", "default_postal_code": "190750"},
+            {"name": "Yanúa", "code": "190751", "default_postal_code": "190751"}
+          ]
+        },
+        "1908": {
+          "name": "PALANDA",
+          "parishes": [
+            {"name": "Palanda", "code": "190801", "default_postal_code": "190801"},
+            {"name": "El Porvenir del Carmen", "code": "190850", "default_postal_code": "190850"},
+            {"name": "San Francisco del Vergel", "code": "190851", "default_postal_code": "190851"},
+            {"name": "Valladolid", "code": "190852", "default_postal_code": "190852"}
+          ]
+        },
+        "1909": {
+          "name": "PAQUISHA",
+          "parishes": [
+            {"name": "Paquisha", "code": "190901", "default_postal_code": "190901"},
+            {"name": "Bellavista", "code": "190950", "default_postal_code": "190950"},
+            {"name": "Nuevo Quito", "code": "190951", "default_postal_code": "190951"}
+          ]
+        }
+      }
+    },
+    "20": {
+      "name": "GALÁPAGOS",
+      "cantons": {
+        "2001": {
+          "name": "SAN CRISTÓBAL",
+          "parishes": [
+            {"name": "Puerto Baquerizo Moreno", "code": "200101", "default_postal_code": "200101"},
+            {"name": "El Progreso", "code": "200150", "default_postal_code": "200150"},
+            {"name": "Santa María", "code": "200151", "default_postal_code": "200151"}
+          ]
+        },
+        "2002": {
+          "name": "ISABELA",
+          "parishes": [
+            {"name": "Puerto Villamil", "code": "200201", "default_postal_code": "200201"},
+            {"name": "Santo Tomás", "code": "200250", "default_postal_code": "200250"}
+          ]
+        },
+        "2003": {
+          "name": "SANTA CRUZ",
+          "parishes": [
+            {"name": "Puerto Ayora", "code": "200301", "default_postal_code": "200301"},
+            {"name": "Bellavista", "code": "200350", "default_postal_code": "200350"},
+            {"name": "Santa Rosa", "code": "200351", "default_postal_code": "200351"}
+          ]
+        }
+      }
+    },
+    "21": {
+      "name": "SUCUMBÍOS",
+      "cantons": {
+        "2101": {
+          "name": "LAGO AGRIO",
+          "parishes": [
+            {"name": "Nueva Loja", "code": "210101", "default_postal_code": "210101"},
+            {"name": "Cuyabeno", "code": "210150", "default_postal_code": "210150"},
+            {"name": "Dureno", "code": "210151", "default_postal_code": "210151"},
+            {"name": "General Farfán", "code": "210152", "default_postal_code": "210152"},
+            {"name": "Jambelí", "code": "210153", "default_postal_code": "210153"},
+            {"name": "Pacayacu", "code": "210154", "default_postal_code": "210154"},
+            {"name": "Santa Cecilia", "code": "210155", "default_postal_code": "210155"},
+            {"name": "10 de Agosto", "code": "210156", "default_postal_code": "210156"},
+            {"name": "El Eno", "code": "210157", "default_postal_code": "210157"}
+          ]
+        },
+        "2102": {
+          "name": "GONZALO PIZARRO",
+          "parishes": [
+            {"name": "Lumbaquí", "code": "210201", "default_postal_code": "210201"},
+            {"name": "El Reventador", "code": "210250", "default_postal_code": "210250"},
+            {"name": "Gonzalo Pizarro", "code": "210251", "default_postal_code": "210251"},
+            {"name": "Puerto Libre", "code": "210252", "default_postal_code": "210252"}
+          ]
+        },
+        "2103": {
+          "name": "PUTUMAYO",
+          "parishes": [
+            {"name": "Puerto El Carmen del Putumayo", "code": "210301", "default_postal_code": "210301"},
+            {"name": "Palma Roja", "code": "210350", "default_postal_code": "210350"},
+            {"name": "Puerto Bolívar (Puerto Montúfar)", "code": "210351", "default_postal_code": "210351"},
+            {"name": "Puerto Rodríguez", "code": "210352", "default_postal_code": "210352"},
+            {"name": "Santa Elena", "code": "210353", "default_postal_code": "210353"}
+          ]
+        },
+        "2104": {
+          "name": "SHUSHUFINDI",
+          "parishes": [
+            {"name": "Shushufindi", "code": "210401", "default_postal_code": "210401"},
+            {"name": "Limoncocha", "code": "210450", "default_postal_code": "210450"},
+            {"name": "Pañacocha", "code": "210451", "default_postal_code": "210451"},
+            {"name": "San Roque (Cab. en San Vicente)", "code": "210452", "default_postal_code": "210452"},
+            {"name": "San Pedro de los Cofanes", "code": "210453", "default_postal_code": "210453"},
+            {"name": "Siete de Julio", "code": "210454", "default_postal_code": "210454"}
+          ]
+        },
+        "2105": {
+          "name": "SUCUMBÍOS",
+          "parishes": [
+            {"name": "La Bonita", "code": "210501", "default_postal_code": "210501"},
+            {"name": "El Playón de San Francisco", "code": "210550", "default_postal_code": "210550"},
+            {"name": "La Sofía", "code": "210551", "default_postal_code": "210551"},
+            {"name": "Rosa Florida", "code": "210552", "default_postal_code": "210552"},
+            {"name": "Santa Bárbara", "code": "210553", "default_postal_code": "210553"}
+          ]
+        },
+        "2106": {
+          "name": "CASCALES",
+          "parishes": [
+            {"name": "El Dorado de Cascales", "code": "210601", "default_postal_code": "210601"},
+            {"name": "El Reventador", "code": "210650", "default_postal_code": "210650"},
+            {"name": "Gonzalo Pizarro", "code": "210651", "default_postal_code": "210651"},
+            {"name": "Lumbaqui", "code": "210652", "default_postal_code": "210652"},
+            {"name": "Puerto Libre", "code": "210653", "default_postal_code": "210653"},
+            {"name": "Santa Rosa de Sucumbíos", "code": "210654", "default_postal_code": "210654"}
+          ]
+        },
+        "2107": {
+          "name": "CUYABENO",
+          "parishes": [
+            {"name": "Tarapoa", "code": "210701", "default_postal_code": "210701"},
+            {"name": "Aguas Negras", "code": "210750", "default_postal_code": "210750"},
+            {"name": "Cuyabeno", "code": "210751", "default_postal_code": "210751"},
+            {"name": "Laguna de Cuyabeno", "code": "210752", "default_postal_code": "210752"}
+          ]
+        }
+      }
+    },
+    "22": {
+      "name": "ORELLANA",
+      "cantons": {
+        "2201": {
+          "name": "ORELLANA",
+          "parishes": [
+            {"name": "Puerto Francisco de Orellana (El Coca)", "code": "220101", "default_postal_code": "220101"},
+            {"name": "Dayuma", "code": "220150", "default_postal_code": "220150"},
+            {"name": "Inés Arango (Cab. en Western)", "code": "220151", "default_postal_code": "220151"},
+            {"name": "La Joya de los Sachas", "code": "220152", "default_postal_code": "220152"},
+            {"name": "Taracoa (Cab. en Nueva Esperanza: Manuel Galindo)", "code": "220153", "default_postal_code": "220153"},
+            {"name": "Alejandro Labaka", "code": "220154", "default_postal_code": "220154"},
+            {"name": "El Dorado", "code": "220155", "default_postal_code": "220155"},
+            {"name": "El Edén", "code": "220156", "default_postal_code": "220156"},
+            {"name": "García Moreno", "code": "220157", "default_postal_code": "220157"},
+            {"name": "Nuevo Paraíso (Cab. en Unión Chimborazense)", "code": "220158", "default_postal_code": "220158"},
+            {"name": "San José de Guayusa", "code": "220159", "default_postal_code": "220159"},
+            {"name": "San Luis de Armenia", "code": "220160", "default_postal_code": "220160"}
+          ]
+        },
+        "2202": {
+          "name": "AGUARICO",
+          "parishes": [
+            {"name": "Nuevo Rocafuerte", "code": "220201", "default_postal_code": "220201"},
+            {"name": "Capitán Augusto Rivadeneyra", "code": "220250", "default_postal_code": "220250"},
+            {"name": "Cononaco", "code": "220251", "default_postal_code": "220251"},
+            {"name": "Santa María de Huiririma", "code": "220252", "default_postal_code": "220252"},
+            {"name": "Tiputini", "code": "220253", "default_postal_code": "220253"},
+            {"name": "Yasuní", "code": "220254", "default_postal_code": "220254"}
+          ]
+        },
+        "2203": {
+          "name": "LA JOYA DE LOS SACHAS",
+          "parishes": [
+            {"name": "La Joya de los Sachas", "code": "220301", "default_postal_code": "220301"},
+            {"name": "Enokanqui", "code": "220350", "default_postal_code": "220350"},
+            {"name": "Pompeya", "code": "220351", "default_postal_code": "220351"},
+            {"name": "San Carlos", "code": "220352", "default_postal_code": "220352"},
+            {"name": "San Sebastián del Coca", "code": "220353", "default_postal_code": "220353"},
+            {"name": "Unión Milagreña", "code": "220354", "default_postal_code": "220354"}
+          ]
+        },
+        "2204": {
+          "name": "LORETO",
+          "parishes": [
+            {"name": "Loreto", "code": "220401", "default_postal_code": "220401"},
+            {"name": "Avila", "code": "220450", "default_postal_code": "220450"},
+            {"name": "Puerto Murialdo", "code": "220451", "default_postal_code": "220451"},
+            {"name": "San José de Payamino", "code": "220452", "default_postal_code": "220452"},
+            {"name": "San Vicente de Huaticocha", "code": "220453", "default_postal_code": "220453"}
+          ]
+        }
+      }
+    },
+    "23": {
+      "name": "SANTO DOMINGO DE LOS TSÁCHILAS",
+      "cantons": {
+        "2301": {
+          "name": "SANTO DOMINGO",
+          "parishes": [
+            {"name": "Santo Domingo de los Colorados", "code": "230101", "default_postal_code": "230101"},
+            {"name": "Bombolí", "code": "230102", "default_postal_code": "230102"},
+            {"name": "Zaracay", "code": "230103", "default_postal_code": "230103"},
+            {"name": "Abraham Calazacón", "code": "230104", "default_postal_code": "230104"},
+            {"name": "Río Verde", "code": "230105", "default_postal_code": "230105"},
+            {"name": "Río Toachi", "code": "230106", "default_postal_code": "230106"},
+            {"name": "Chigüilpe", "code": "230107", "default_postal_code": "230107"},
+            {"name": "Alluriquín", "code": "230150", "default_postal_code": "230150"},
+            {"name": "Puerto Limón", "code": "230151", "default_postal_code": "230151"},
+            {"name": "Luz de América", "code": "230152", "default_postal_code": "230152"},
+            {"name": "San Jacinto del Búa", "code": "230153", "default_postal_code": "230153"},
+            {"name": "Valle Hermoso", "code": "230154", "default_postal_code": "230154"},
+            {"name": "El Esfuerzo", "code": "230155", "default_postal_code": "230155"}
+          ]
+        }
+      }
+    },
+    "24": {
+      "name": "SANTA ELENA",
+      "cantons": {
+        "2401": {
+          "name": "SANTA ELENA",
+          "parishes": [
+            {"name": "Santa Elena", "code": "240101", "default_postal_code": "240101"},
+            {"name": "Atahualpa", "code": "240150", "default_postal_code": "240150"},
+            {"name": "Colonche", "code": "240151", "default_postal_code": "240151"},
+            {"name": "Chanduy", "code": "240152", "default_postal_code": "240152"},
+            {"name": "Manglaralto", "code": "240153", "default_postal_code": "240153"},
+            {"name": "Simón Bolívar (Julio Moreno)", "code": "240154", "default_postal_code": "240154"}
+          ]
+        },
+        "2402": {
+          "name": "LA LIBERTAD",
+          "parishes": [
+            {"name": "La Libertad", "code": "240201", "default_postal_code": "240201"}
+          ]
+        },
+        "2403": {
+          "name": "SALINAS",
+          "parishes": [
+            {"name": "Salinas", "code": "240301", "default_postal_code": "240301"},
+            {"name": "Anconcito", "code": "240350", "default_postal_code": "240350"},
+            {"name": "José Luis Tamayo (Muey)", "code": "240351", "default_postal_code": "240351"}
           ]
         }
       }

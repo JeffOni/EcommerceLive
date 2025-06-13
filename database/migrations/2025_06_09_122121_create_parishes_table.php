@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('code', 6)->unique(); // Código de 6 dígitos único
             $table->foreignId('canton_id')->constrained()->onDelete('cascade');
+            $table->string('default_postal_code')->nullable(); // Código postal principal de la parroquia
             $table->timestamps();
 
             // Índice para mejorar performance en consultas por cantón

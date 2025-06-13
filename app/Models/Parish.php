@@ -11,7 +11,8 @@ class Parish extends Model
     protected $fillable = [
         'name',
         'code',
-        'canton_id'
+        'canton_id',
+        'default_postal_code'
     ];
 
     /**

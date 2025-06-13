@@ -20,6 +20,9 @@ class ShippingAddresses extends Component
     public $cantons = [];
     public $parishes = [];
 
+    // Propiedad para el código postal sugerido
+    public $suggestedPostalCode = null;
+
     public function mount()
     {
         // Verificación adicional de autenticación en el componente
@@ -57,6 +60,7 @@ class ShippingAddresses extends Component
         $this->createAddress->reset();
         $this->cantons = [];
         $this->parishes = [];
+        $this->suggestedPostalCode = null;
     }
 
     public function updatedCreateAddressProvinceId($provinceId)
@@ -71,9 +75,11 @@ class ShippingAddresses extends Component
             $this->createAddress->canton_id = '';
             $this->createAddress->parish_id = '';
             $this->parishes = [];
+            $this->suggestedPostalCode = null;
         } else {
             $this->cantons = [];
             $this->parishes = [];
+            $this->suggestedPostalCode = null;
         }
     }
 
@@ -87,8 +93,34 @@ class ShippingAddresses extends Component
 
             // Resetear parroquia seleccionada
             $this->createAddress->parish_id = '';
+            $this->suggestedPostalCode = null;
         } else {
             $this->parishes = [];
+            $this->suggestedPostalCode = null;
+        }
+    }
+
+    public function updatedCreateAddressParishId($parishId)
+    {
+        // Cuando se selecciona una parroquia, sugerir el código postal
+        if ($parishId) {
+            $parish = Parish::find($parishId);
+            $this->suggestedPostalCode = $parish ? $parish->default_postal_code : null;
+
+            // Solo autocompletar si no hay valor manual ingresado
+            if (!$this->createAddress->postal_code) {
+                $this->createAddress->postal_code = $this->suggestedPostalCode;
+            }
+        } else {
+            $this->suggestedPostalCode = null;
+        }
+    }
+
+    public function useDefaultPostalCode()
+    {
+        // Usar el código postal sugerido
+        if ($this->suggestedPostalCode) {
+            $this->createAddress->postal_code = $this->suggestedPostalCode;
         }
     }
 
