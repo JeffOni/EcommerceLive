@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use Illuminate\Http\Request;
 
 class ShippingController extends Controller
@@ -21,5 +22,24 @@ class ShippingController extends Controller
         // Por ejemplo, podrías obtener información del carrito, calcular costos de envío, etc.
 
         return view('shipping.index'); // Asegúrate de tener una vista llamada shipping.index
+    }
+
+    /**
+     * Elimina una dirección
+     *
+     * @param  \App\Models\Address  $address
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Address $address)
+    {
+        // Si usas policies puedes agregar: $this->authorize('delete', $address);
+        $address->delete();
+        return redirect()->back()->with('swal', [
+            'title' => '¡Eliminada!',
+            'text' => 'La dirección ha sido eliminada.',
+            'icon' => 'success',
+            'timer' => 2000,
+            'showConfirmButton' => false
+        ]);
     }
 }

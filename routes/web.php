@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FamilyController;
@@ -49,4 +50,6 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
+
+Route::delete('/addresses/{address}', [ShippingController::class, 'destroy'])->name('addresses.destroy');
 

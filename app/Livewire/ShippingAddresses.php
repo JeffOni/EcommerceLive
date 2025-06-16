@@ -7,6 +7,8 @@ use App\Models\Address;
 use App\Models\Province;
 use App\Models\Canton;
 use App\Models\Parish;
+use App\Enums\TypeOfDocuments;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class ShippingAddresses extends Component
@@ -22,6 +24,10 @@ class ShippingAddresses extends Component
 
     // Propiedad para el código postal sugerido
     public $suggestedPostalCode = null;
+    public $addressToDelete = null;
+    public $documentTypes = [];
+
+    protected $listeners = [];
 
     public function mount()
     {
@@ -41,6 +47,9 @@ class ShippingAddresses extends Component
 
         // Cargar todas las provincias para el select inicial
         $this->provinces = Province::orderBy('name')->get();
+
+        $this->documentTypes = TypeOfDocuments::cases();
+        $this->createAddress->receiver_document_type = TypeOfDocuments::CÉDULA->value;
     }
 
     public function openNewAddress()
@@ -128,22 +137,23 @@ class ShippingAddresses extends Component
     {
         try {
             $this->createAddress->submit();
-
-            // Recargar las direcciones después de crear una nueva
             $this->mount();
-
-            // Cerrar el formulario de nueva dirección
             $this->newAddress = false;
-
-            // Mostrar mensaje de éxito
-            session()->flash('message', 'Dirección agregada exitosamente.');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Los errores de validación se manejan automáticamente por Livewire
+            $this->dispatch('swal', [
+                'title' => '¡Dirección guardada!',
+                'text' => 'La dirección se guardó correctamente.',
+                'icon' => 'success',
+                'timer' => 2000,
+                'showConfirmButton' => false
+            ]);
+        } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
-            // Manejar otros errores
-            session()->flash('error', 'Error al guardar la dirección: ' . $e->getMessage());
+            $this->dispatch('swal', [
+                'title' => 'Error',
+                'text' => 'Error al guardar la dirección: ' . $e->getMessage(),
+                'icon' => 'error',
+            ]);
         }
     }
 
@@ -153,17 +163,23 @@ class ShippingAddresses extends Component
             $address = Address::where('id', $addressId)
                 ->where('user_id', auth()->id())
                 ->first();
-
             if ($address) {
                 $address->delete();
-
-                // Recargar las direcciones
                 $this->mount();
-
-                session()->flash('message', 'Dirección eliminada exitosamente.');
+                $this->dispatch('swal', [
+                    'title' => '¡Eliminada!',
+                    'text' => 'La dirección fue eliminada.',
+                    'icon' => 'success',
+                    'timer' => 2000,
+                    'showConfirmButton' => false
+                ]);
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Error al eliminar la dirección: ' . $e->getMessage());
+            $this->dispatch('swal', [
+                'title' => 'Error',
+                'text' => 'Error al eliminar la dirección: ' . $e->getMessage(),
+                'icon' => 'error',
+            ]);
         }
     }
 
@@ -185,6 +201,33 @@ class ShippingAddresses extends Component
 
         } catch (\Exception $e) {
             session()->flash('error', 'Error al establecer dirección predeterminada: ' . $e->getMessage());
+        }
+    }
+
+    public function updatedCreateAddressReceiver($receiverType)
+    {
+        // Convertir a entero para asegurar comparación correcta
+        $receiverType = (int) $receiverType;
+
+        // Cuando se selecciona "otra persona", inicializar los campos del receptor
+        if ($receiverType === 2) {
+            // Inicializar los campos individuales del receptor si están vacíos
+            if (empty($this->createAddress->receiver_name)) {
+                $this->createAddress->receiver_name = '';
+                $this->createAddress->receiver_last_name = '';
+                $this->createAddress->receiver_document_type = TypeOfDocuments::CÉDULA->value; // Cédula por defecto
+                $this->createAddress->receiver_document_number = '';
+                $this->createAddress->receiver_email = '';
+                $this->createAddress->receiver_phone = '';
+            }
+        } else {
+            // Si se selecciona "yo mismo", limpiar todos los campos del receptor
+            $this->createAddress->receiver_name = '';
+            $this->createAddress->receiver_last_name = '';
+            $this->createAddress->receiver_document_type = TypeOfDocuments::CÉDULA->value;
+            $this->createAddress->receiver_document_number = '';
+            $this->createAddress->receiver_email = '';
+            $this->createAddress->receiver_phone = '';
         }
     }
 
