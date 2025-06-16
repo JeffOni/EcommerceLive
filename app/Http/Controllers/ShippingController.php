@@ -25,20 +25,45 @@ class ShippingController extends Controller
     }
 
     /**
-     * Elimina una dirección
+     * =================================================================
+     * MÉTODO DESTROY - ELIMINACIÓN DE DIRECCIONES CON PATRÓN ADMIN
+     * =================================================================
+     * 
+     * Este método implementa el mismo patrón usado en ProductController del admin:
+     * 1. Recibe el model binding automático de Laravel (Address $address)
+     * 2. Valida que el usuario autenticado sea el propietario de la dirección
+     * 3. Elimina la dirección de la base de datos
+     * 4. Redirige de vuelta con mensaje SweetAlert de éxito
+     * 
+     * Flujo completo:
+     * Vista Livewire → Formulario oculto → Este método → SweetAlert de éxito
+     * 
+     * Seguridad:
+     * - Protegido por middleware de autenticación en las rutas
+     * - Verificación adicional de propiedad del recurso
+     * - Model binding automático previene inyección SQL
      *
-     * @param  \App\Models\Address  $address
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \App\Models\Address  $address - Dirección a eliminar (model binding)
+     * @return \Illuminate\Http\RedirectResponse - Redirección con mensaje SweetAlert
      */
     public function destroy(Address $address)
     {
-        // Si usas policies puedes agregar: $this->authorize('delete', $address);
+        // Verificar que la dirección pertenezca al usuario autenticado
+        // Esta validación adicional previene que usuarios maliciosos eliminen direcciones ajenas
+        if ($address->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para eliminar esta dirección');
+        }
+
+        // Eliminar la dirección de la base de datos
         $address->delete();
+
+        // Redirigir de vuelta con mensaje SweetAlert de éxito
+        // El array 'swal' se pasa a la sesión y se muestra automáticamente en el frontend
         return redirect()->back()->with('swal', [
             'title' => '¡Eliminada!',
-            'text' => 'La dirección ha sido eliminada.',
+            'text' => 'La dirección ha sido eliminada correctamente.',
             'icon' => 'success',
-            'timer' => 2000,
+            'timer' => 3000,
             'showConfirmButton' => false
         ]);
     }

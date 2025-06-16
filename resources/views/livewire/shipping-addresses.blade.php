@@ -702,8 +702,20 @@
                                             </button>
                                         @endif
 
-                                        <button wire:click="deleteAddress({{ $address->id }})"
-                                            wire:confirm="¿Estás seguro de que quieres eliminar esta dirección?"
+                                        {{-- =================================================================
+                                        BOTÓN DE ELIMINAR - PATRÓN ADMIN CON SWEETALERT
+                                        =================================================================
+                                        
+                                        Este botón implementa el mismo patrón usado en el admin:
+                                        1. onclick="confirmDelete(addressId)" - Llama función JS
+                                        2. La función JS muestra SweetAlert de confirmación
+                                        3. Si acepta, envía el formulario oculto correspondiente
+                                        4. El formulario va al ShippingController@destroy
+                                        5. El controlador elimina y redirige con SweetAlert de éxito
+                                        
+                                        NO usa wire:click para mantener consistencia con el admin
+                                        --}}
+                                        <button onclick="confirmDelete({{ $address->id }})"
                                             class="px-3 py-1 text-xs font-medium text-red-600 bg-red-100 rounded hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500">
                                             Eliminar
                                         </button>
@@ -712,6 +724,27 @@
                             </div>
                         @endforeach
                     </div>
+
+                    {{-- =================================================================
+                    FORMULARIOS OCULTOS PARA ELIMINACIÓN - PATRÓN ADMIN
+                    =================================================================
+                    
+                    Cada dirección tiene su propio formulario oculto con:
+                    - ID único: delete-form-{addressId}
+                    - Método DELETE con @method('DELETE')
+                    - Token CSRF con @csrf
+                    - Ruta hacia ShippingController@destroy
+                    
+                    Estos formularios son enviados por JavaScript cuando el usuario
+                    confirma la eliminación en el SweetAlert
+                    --}}
+                    @foreach ($addresses as $address)
+                        <form action="{{ route('addresses.destroy', $address) }}" method="POST"
+                            id="delete-form-{{ $address->id }}">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endforeach
                 @else
                     <div class="text-center py-8">
                         <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor"
@@ -743,11 +776,56 @@
     </section>
 </div>
 
-@push('scripts')
+{{-- =================================================================
+JAVASCRIPT - SISTEMA DE ELIMINACIÓN CON SWEETALERT (PATRÓN ADMIN)
+=================================================================
+
+Este script implementa exactamente el mismo patrón usado en ProductController del admin:
+
+1. window.addEventListener('swal') - Escucha eventos SweetAlert de Livewire
+2. confirmDelete(addressId) - Función que maneja la confirmación de eliminación
+
+FLUJO COMPLETO:
+├── Usuario hace clic en "Eliminar"
+├── Se ejecuta confirmDelete(addressId)
+├── SweetAlert muestra confirmación con botones "Sí, Eliminar!" y "Cancelar"
+├── Si usuario acepta: document.getElementById('delete-form-' + addressId).submit()
+├── Formulario se envía a ShippingController@destroy
+├── Controlador elimina dirección y redirige con swal
+└── Laravel flash session muestra SweetAlert de éxito automáticamente
+
+CARACTERÍSTICAS:
+- Sin validaciones typeof innecesarias (SweetAlert garantizado)
+- Sin console.log de debug (código limpio para producción)
+- Patrón idéntico al admin para consistencia
+- Usa @push('js') que es el stack correcto del layout
+--}}
+@push('js')
     <script>
+        // Escuchar eventos SweetAlert emitidos por Livewire
         window.addEventListener('swal', event => {
             const params = event.detail;
             Swal.fire(params);
         });
+
+        // Función de confirmación de eliminación - Patrón idéntico al admin
+        function confirmDelete(addressId) {
+            // Sweet Alert 2 - Patrón idéntico al admin
+            Swal.fire({
+                title: "¿Estás Seguro?",
+                text: "No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, Eliminar!",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar formulario oculto correspondiente
+                    document.getElementById('delete-form-' + addressId).submit();
+                }
+            });
+        }
     </script>
 @endpush

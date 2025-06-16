@@ -26,6 +26,13 @@ Route::middleware([
 
     // Rutas protegidas que requieren autenticación
     Route::get('/shipping', [ShippingController::class, 'index'])->name('shipping.index');
+
+    // Ruta para eliminar direcciones - Implementa el patrón admin con SweetAlert
+    // Protegida por middleware de autenticación y verificación
+    // Se conecta con el componente Livewire ShippingAddresses para confirmar eliminación
+    Route::delete('/addresses/{address}', [ShippingController::class, 'destroy'])->name('addresses.destroy');
+
+
 });
 
 // El método scopeBindings() en la ruta aplica el enlace automático de modelos anidados en rutas.
@@ -50,6 +57,4 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
-
-Route::delete('/addresses/{address}', [ShippingController::class, 'destroy'])->name('addresses.destroy');
 

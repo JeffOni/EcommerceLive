@@ -11,6 +11,27 @@ use App\Enums\TypeOfDocuments;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
+/**
+ * =================================================================
+ * COMPONENTE LIVEWIRE - GESTIÓN DE DIRECCIONES DE ENVÍO
+ * =================================================================
+ * 
+ * Este componente maneja la creación y visualización de direcciones.
+ * Para la ELIMINACIÓN, implementa el patrón admin:
+ * 
+ * PATRÓN DE ELIMINACIÓN IMPLEMENTADO:
+ * ├── Vista: Botón onclick="confirmDelete(addressId)"
+ * ├── JavaScript: Función que muestra SweetAlert de confirmación
+ * ├── Formularios ocultos: Uno por cada dirección con method DELETE
+ * ├── Si acepta: JS envía formulario a ShippingController@destroy
+ * └── Controlador: Valida, elimina y redirige con SweetAlert de éxito
+ * 
+ * NOTA IMPORTANTE:
+ * - NO usa métodos Livewire para eliminar (deleteAddress, confirmDelete)
+ * - Sigue exactamente el patrón de ProductController del admin
+ * - Mantiene consistencia en toda la aplicación
+ * - Garantiza seguridad con validación de propiedad en el controlador
+ */
 class ShippingAddresses extends Component
 {
     public $addresses;
@@ -24,7 +45,7 @@ class ShippingAddresses extends Component
 
     // Propiedad para el código postal sugerido
     public $suggestedPostalCode = null;
-    public $addressToDelete = null;
+    public $addressToDelete = null; // Ya no se usa - mantenido por compatibilidad
     public $documentTypes = [];
 
     protected $listeners = [];
@@ -155,6 +176,21 @@ class ShippingAddresses extends Component
                 'icon' => 'error',
             ]);
         }
+    }
+
+    public function confirmDelete($addressId)
+    {
+        $this->dispatch('swal:confirm', [
+            'addressId' => $addressId,
+            'title' => '¿Estás seguro?',
+            'text' => '¿Quieres eliminar esta dirección? Esta acción no se puede deshacer.',
+            'icon' => 'warning',
+            'showCancelButton' => true,
+            'confirmButtonColor' => '#d33',
+            'cancelButtonColor' => '#3085d6',
+            'confirmButtonText' => 'Sí, eliminar',
+            'cancelButtonText' => 'Cancelar'
+        ]);
     }
 
     public function deleteAddress($addressId)
