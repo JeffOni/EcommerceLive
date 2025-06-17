@@ -6,6 +6,19 @@
         </header>
 
         <div class="p-4">
+            {{-- 
+            =================================================================
+            SECCIÓN DE DEBUG TEMPORAL 
+            =================================================================
+            Este bloque se muestra solo cuando $editingAddress es true
+            Útil para verificar que el modo edición se activa correctamente
+            --}}
+            @if ($editingAddress)
+                <div class="p-4 mb-4 text-blue-700 bg-blue-100 border border-blue-300 rounded">
+                    DEBUG: Modo edición activado. ID: {{ $editingAddressId }}
+                </div>
+            @endif
+
             {{-- Mensajes de éxito y error --}}
             @if (session()->has('message'))
                 <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-300 rounded">
@@ -555,7 +568,6 @@
                                                         <path fill-rule="evenodd"
                                                             d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
                                                             clip-rule="evenodd"></path>
-                                                    </svg>
                                                 </div>
                                                 <div class="ml-3">
                                                     <p class="text-sm text-amber-800">
@@ -602,6 +614,462 @@
                                             d="M5 13l4 4L19 7"></path>
                                     </svg>
                                     Guardar Dirección
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @elseif ($editingAddress)
+                {{-- 
+                =================================================================
+                FORMULARIO DE EDICIÓN DE DIRECCIONES
+                =================================================================
+                
+                Este formulario se muestra cuando $editingAddress es true.
+                
+                CARACTERÍSTICAS:
+                ├── Usa wire:model="editAddress.*" (formulario EditAddressForm)
+                ├── Colores amarillo/naranja para diferenciarlo del de creación
+                ├── Misma estructura y campos que el formulario de creación
+                ├── Botón "Actualizar Dirección" en lugar de "Guardar"
+                └── Método wire:submit.prevent="updateAddress"
+                
+                DIFERENCIAS VISUALES CON EL FORMULARIO DE CREACIÓN:
+                ├── Gradiente amarillo en lugar de azul
+                ├── Ícono de edición (cruz) en lugar de ubicación
+                ├── Título "Editar Dirección" 
+                ├── Colores de focus yellow-500 en lugar de blue-500
+                └── Botón gradient amarillo/naranja
+                --}}
+                <div
+                    class="bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-white border-b border-yellow-200 px-6 py-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center w-10 h-10 bg-yellow-100 rounded-full">
+                                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Editar Dirección de Envío</h3>
+                                <p class="text-sm text-gray-600">Modifica la información de tu dirección</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form wire:submit.prevent="updateAddress" class="p-6 space-y-6">
+                        {{-- Primera fila: Tipo de dirección y Dirección específica --}}
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tipo de dirección</label>
+                                <select wire:model="editAddress.type"
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                    <option value="">Selecciona un tipo</option>
+                                    <option value="1">Casa</option>
+                                    <option value="2">Trabajo</option>
+                                    <option value="3">Otro</option>
+                                </select>
+                                @error('editAddress.type')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="md:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Dirección específica</label>
+                                <input wire:model="editAddress.address" type="text"
+                                    placeholder="Calle, número, edificio, etc."
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                @error('editAddress.address')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Segunda fila: Selects geográficos en cascada --}}
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        Provincia
+                                    </span>
+                                </label>
+                                <select wire:model.live="editAddress.province_id"
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500 transition-colors duration-200">
+                                    <option value="">Selecciona una provincia</option>
+                                    @foreach ($provinces as $province)
+                                        <option value="{{ $province->id }}">{{ $province->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('editAddress.province_id')
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                            </path>
+                                        </svg>
+                                        Cantón
+                                    </span>
+                                </label>
+                                <select wire:model.live="editAddress.canton_id"
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500 transition-colors duration-200 {{ empty($cantons) ? 'bg-gray-100 cursor-not-allowed' : '' }}"
+                                    {{ empty($cantons) ? 'disabled' : '' }}>
+                                    <option value="">
+                                        {{ empty($cantons) ? 'Primero selecciona una provincia' : 'Selecciona un cantón' }}
+                                    </option>
+                                    @foreach ($cantons as $canton)
+                                        <option value="{{ $canton->id }}">{{ $canton->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('editAddress.canton_id')
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                        Parroquia
+                                    </span>
+                                </label>
+                                <select wire:model.live="editAddress.parish_id"
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500 transition-colors duration-200 {{ empty($parishes) ? 'bg-gray-100 cursor-not-allowed' : '' }}"
+                                    {{ empty($parishes) ? 'disabled' : '' }}>
+                                    <option value="">
+                                        {{ empty($parishes) ? 'Primero selecciona un cantón' : 'Selecciona una parroquia' }}
+                                    </option>
+                                    @foreach ($parishes as $parish)
+                                        <option value="{{ $parish->id }}">{{ $parish->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('editAddress.parish_id')
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                        Código Postal
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input wire:model="editAddress.postal_code" type="text"
+                                        placeholder="{{ $suggestedPostalCode ? $suggestedPostalCode : 'Ej: 170101' }}"
+                                        class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500 transition-colors duration-200 {{ $suggestedPostalCode ? 'pr-10' : '' }}"
+                                        maxlength="6">
+
+                                    @if ($suggestedPostalCode)
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                            <button type="button" wire:click="useDefaultPostalCodeEdit"
+                                                class="text-amber-500 hover:text-amber-700 focus:outline-none"
+                                                title="Usar código postal sugerido">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                @if ($suggestedPostalCode && !$editAddress->postal_code)
+                                    <p class="mt-1 text-xs text-amber-600 flex items-center">
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        Código sugerido: {{ $suggestedPostalCode }}
+                                    </p>
+                                @endif
+
+                                @error('editAddress.postal_code')
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Referencia y Notas --}}
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Referencia (opcional)</label>
+                                <input wire:model="editAddress.reference" type="text"
+                                    placeholder="Cerca de..., frente a..., etc."
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                @error('editAddress.reference')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Notas especiales
+                                    (opcional)</label>
+                                <input wire:model="editAddress.notes" type="text"
+                                    placeholder="Ej: Timbre roto, llamar por teléfono..."
+                                    class="w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                @error('editAddress.notes')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Tipo de receptor --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </path>
+                                    </svg>
+                                    ¿Quién recibirá el pedido?
+                                </span>
+                            </label>
+
+                            <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+                                <label
+                                    class="relative flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-50 {{ $editAddress->receiver == 1 ? 'border-amber-500 bg-amber-50 ring-1 ring-amber-500' : 'border-gray-300' }}">
+                                    <div class="flex items-center">
+                                        <input wire:model.live="editAddress.receiver" type="radio" value="1"
+                                            class="w-4 h-4 text-amber-600 border-gray-300 focus:ring-amber-500">
+                                        <div class="ml-3">
+                                            <div class="flex items-center">
+                                                <span class="text-2xl mr-2">🙋‍♂️</span>
+                                                <div>
+                                                    <div class="font-medium text-gray-900">Yo mismo</div>
+                                                    <div class="text-sm text-gray-500">Recibiré personalmente el pedido
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label
+                                    class="relative flex items-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-50 {{ $editAddress->receiver == 2 ? 'border-amber-500 bg-amber-50 ring-1 ring-amber-500' : 'border-gray-300' }}">
+                                    <div class="flex items-center">
+                                        <input wire:model.live="editAddress.receiver" type="radio" value="2"
+                                            class="w-4 h-4 text-amber-600 border-gray-300 focus:ring-amber-500">
+                                        <div class="ml-3">
+                                            <div class="flex items-center">
+                                                <span class="text-2xl mr-2">👥</span>
+                                                <div>
+                                                    <div class="font-medium text-gray-900">Otra persona</div>
+                                                    <div class="text-sm text-gray-500">Un tercero recibirá el pedido
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            @error('editAddress.receiver')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Información del receptor alternativo --}}
+                        @if ($editAddress->receiver == 2)
+                            <div class="transition-all duration-300 ease-in-out">
+                                <div
+                                    class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl shadow-sm">
+                                    <div class="flex items-center mb-4">
+                                        <div class="flex-shrink-0">
+                                            <div
+                                                class="flex items-center justify-center w-10 h-10 bg-amber-100 rounded-full">
+                                                <svg class="w-5 h-5 text-amber-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="text-lg font-semibold text-amber-900">Datos del receptor
+                                                alternativo</h4>
+                                            <p class="text-sm text-amber-700">Información de la persona que recibirá tu
+                                                pedido</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        {{-- Nombre y Apellido --}}
+                                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Nombres
+                                                    *</label>
+                                                <input wire:model="editAddress.receiver_name" type="text"
+                                                    placeholder="Ej: Juan Carlos"
+                                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                                @error('editAddress.receiver_name')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+                                                <input wire:model="editAddress.receiver_last_name" type="text"
+                                                    placeholder="Ej: Pérez González"
+                                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                                @error('editAddress.receiver_last_name')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Documento y Teléfono --}}
+                                        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de
+                                                    documento</label>
+                                                <select wire:model="editAddress.receiver_document_type"
+                                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                                    <option value="">Seleccionar</option>
+                                                    @foreach ($documentTypes as $type)
+                                                        <option value="{{ $type->value }}">{{ $type->label() }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('editAddress.receiver_document_type')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Número de
+                                                    documento</label>
+                                                <input wire:model="editAddress.receiver_document_number"
+                                                    type="text" placeholder="Ej: 1234567890"
+                                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                                @error('editAddress.receiver_document_number')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono
+                                                    *</label>
+                                                <input wire:model="editAddress.receiver_phone" type="tel"
+                                                    placeholder="Ej: 0999999999"
+                                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                                @error('editAddress.receiver_phone')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Email --}}
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                            <input wire:model="editAddress.receiver_email" type="email"
+                                                placeholder="Ej: juan@example.com"
+                                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                                            @error('editAddress.receiver_email')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- Checkbox para dirección predeterminada --}}
+                        <div class="flex items-center">
+                            <input wire:model="editAddress.default" type="checkbox" id="editDefault"
+                                class="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500">
+                            <label for="editDefault" class="ml-2 text-sm text-gray-700">
+                                Establecer como dirección predeterminada
+                            </label>
+                        </div>
+
+                        {{-- Botones --}}
+                        <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+                            <button type="button" wire:click="cancelEditAddress"
+                                class="flex-1 sm:flex-none order-2 sm:order-1 px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200">
+                                <span class="flex items-center justify-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                    Cancelar
+                                </span>
+                            </button>
+                            <button type="submit"
+                                class="flex-1 sm:flex-none order-1 sm:order-2 px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-yellow-600 to-orange-600 border border-transparent rounded-lg shadow-sm hover:from-yellow-700 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
+                                <span class="flex items-center justify-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Actualizar Dirección
                                 </span>
                             </button>
                         </div>
@@ -701,6 +1169,22 @@
                                                 Predeterminada
                                             </button>
                                         @endif
+
+                                        {{-- =================================================================
+                                        BOTÓN DE EDITAR - INTEGRACIÓN CON EDITADDRESSFORM
+                                        =================================================================
+                                        
+                                        Este botón inicia el modo edición de la dirección:
+                                        1. wire:click="startEditingAddress(addressId)" - Llama método Livewire
+                                        2. El método carga la dirección en el EditAddressForm
+                                        3. Se activa el modo edición ($editingAddress = true)
+                                        4. Se muestra el formulario de edición en lugar de la lista
+                                        5. Se cargan automáticamente los selects en cascada
+                                        --}}
+                                        <button wire:click="startEditingAddress({{ $address->id }})"
+                                            class="px-3 py-1 text-xs font-medium text-green-600 bg-green-100 rounded hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                            Editar
+                                        </button>
 
                                         {{-- =================================================================
                                         BOTÓN DE ELIMINAR - PATRÓN ADMIN CON SWEETALERT

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Forms\Shipping;
 
 use App\Models\Parish;
 use App\Enums\TypeOfDocuments;
