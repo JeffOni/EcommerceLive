@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Jefferson Alexis',
-            'last_name' => 'Pozo',
+            'name' => 'Usuario',
+            'last_name' => 'Prueba',
             'document_type' => 1, // 1 = Cédula, 2 = Pasaporte, 3 = RUC
             'document_number' => '1234567890',
             'phone' => '0987654321',
@@ -41,6 +41,6 @@ class DatabaseSeeder extends Seeder
             OptionSeeder::class,
         ]);
 
-        Product::factory(50)->create();
+        // Product::factory(50)->create();
     }
 }
