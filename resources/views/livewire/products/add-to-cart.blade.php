@@ -66,9 +66,8 @@
 
                         {{-- SKU Badge --}}
                         @if ($product->sku)
-                            <div class="absolute top-4 right-4">
-                                <span
-                                    class="inline-flex items-center px-2 py-1 text-xs font-mono text-gray-600 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+                            <div class="absolute top-4 right-4"> <span
+                                    class="inline-flex items-center px-2 py-1 text-xs font-mono text-gray-600 glass-effect rounded-lg shadow-sm">
                                     SKU: {{ $product->sku }}
                                 </span>
                             </div>
@@ -78,7 +77,7 @@
                         <div
                             class="absolute transition-opacity duration-300 opacity-0 bottom-4 right-4 group-hover:opacity-100">
                             <button
-                                class="p-2 transition-colors duration-200 rounded-full shadow-lg bg-white/90 backdrop-blur-sm hover:bg-white">
+                                class="p-2 transition-colors duration-200 rounded-full shadow-lg glass-effect hover:bg-white">
                                 <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

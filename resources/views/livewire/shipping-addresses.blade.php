@@ -50,8 +50,7 @@
                 class="mb-3 text-5xl font-bold text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text">
                 Direcciones de Envío
             </h1>
-            <div
-                class="inline-flex items-center px-4 py-2 border rounded-full shadow-md backdrop-blur-sm bg-white/70 border-white/40">
+            <div class="inline-flex items-center px-4 py-2 border rounded-full shadow-md glass-effect border-white/40">
                 <i class="mr-2 text-indigo-500 fas fa-home"></i>
                 <span class="font-medium text-gray-700">
                     {{ $addresses->count() }} {{ $addresses->count() === 1 ? 'dirección' : 'direcciones' }} configuradas
@@ -61,12 +60,12 @@
 
         {{-- Contenedor principal con glassmorphism --}}
         {{-- clases de glassmorphism echas con tailwind overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20 --}}
-        <div class="overflow-hidden border shadow-2xl glass-effect rounded-3xl border-white/20">
+        <div class="overflow-hidden border shadow-2xl glass-effect rounded-3xl">
             {{-- Header con gradiente --}}
             <div class="px-8 py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
-                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                        <div class="p-3 glass-effect rounded-xl">
                             <i class="text-xl text-white fas fa-map-marker-alt"></i>
                         </div>
                         <div>
@@ -76,7 +75,7 @@
                     </div>
                     @if (!$newAddress && !$editingAddress)
                         <button wire:click="openNewAddress"
-                            class="inline-flex items-center px-4 py-2 font-medium text-white transition-all duration-200 border bg-white/20 border-white/30 rounded-xl hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm">
+                            class="inline-flex items-center px-4 py-2 font-medium text-white transition-all duration-200 border glass-effect rounded-xl hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50">
                             <i class="mr-2 fas fa-plus"></i>
                             Nueva Dirección
                         </button>
@@ -88,7 +87,7 @@
                 {{-- Mensajes de estado con diseño mejorado --}}
                 @if (session()->has('message'))
                     <div
-                        class="p-4 mb-6 border shadow-lg backdrop-blur-sm bg-emerald-50/80 border-emerald-200/50 rounded-2xl">
+                        class="p-4 mb-6 border shadow-lg glass-effect bg-emerald-50/80 border-emerald-200/50 rounded-2xl">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100">
@@ -103,7 +102,7 @@
                 @endif
 
                 @if (session()->has('error'))
-                    <div class="p-4 mb-6 border shadow-lg backdrop-blur-sm bg-red-50/80 border-red-200/50 rounded-2xl">
+                    <div class="p-4 mb-6 border shadow-lg glass-effect bg-red-50/80 border-red-200/50 rounded-2xl">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full">
@@ -120,11 +119,11 @@
                 @if ($newAddress)
                     {{-- Formulario para nueva dirección con diseño mejorado --}}
                     <div
-                        class="overflow-hidden border shadow-xl backdrop-blur-sm bg-gradient-to-br from-emerald-50/50 to-blue-50/50 border-emerald-200/50 rounded-2xl">
+                        class="overflow-hidden border shadow-xl glass-effect bg-gradient-to-br from-emerald-50/50 to-blue-50/50 border-emerald-200/50 rounded-2xl">
                         <div class="px-6 py-4 bg-gradient-to-r from-emerald-500 to-blue-500">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3">
-                                    <div class="p-2 rounded-lg bg-white/20 backdrop-blur-sm">
+                                    <div class="p-2 rounded-lg glass-effect">
                                         <i class="text-lg text-white fas fa-plus"></i>
                                     </div>
                                     <div>
@@ -134,7 +133,7 @@
                                     </div>
                                 </div>
                                 <button wire:click="cancelNewAddress"
-                                    class="p-2 transition-colors rounded-lg bg-white/20 hover:bg-white/30">
+                                    class="p-2 transition-colors rounded-lg glass-effect hover:bg-white/30">
                                     <i class="text-white fas fa-times"></i>
                                 </button>
                             </div>
@@ -683,7 +682,7 @@
                             {{-- Botones con diseño mejorado --}}
                             <div class="flex flex-col gap-4 pt-8 border-t sm:flex-row border-white/20">
                                 <button type="button" wire:click="cancelNewAddress"
-                                    class="flex-1 order-2 px-6 py-3 text-sm font-medium text-gray-600 transition-all duration-200 border border-gray-200 shadow-lg sm:flex-none sm:order-1 bg-white/80 backdrop-blur-sm rounded-xl hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-300">
+                                    class="flex-1 order-2 px-6 py-3 text-sm font-medium text-gray-600 transition-all duration-200 border border-gray-200 shadow-lg sm:flex-none sm:order-1 glass-effect rounded-xl hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-300">
                                     <span class="flex items-center justify-center">
                                         <i class="mr-2 fas fa-times"></i>
                                         Cancelar
@@ -1170,13 +1169,13 @@
                         <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
                             @foreach ($addresses as $address)
                                 <div
-                                    class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02] {{ $address->default ? 'ring-2 ring-indigo-300 bg-gradient-to-br from-indigo-50/80 to-purple-50/80' : '' }}">
+                                    class="glass-effect border border-white/40 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02] {{ $address->default ? 'ring-2 ring-indigo-300 bg-gradient-to-br from-indigo-50/80 to-purple-50/80' : '' }}">
                                     {{-- Header ultra compacto de la tarjeta con botones de acción --}}
                                     <div
                                         class="bg-gradient-to-r {{ $address->default ? 'from-indigo-500 to-purple-500' : 'from-gray-600 to-gray-700' }} px-3 py-2">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-2">
-                                                <div class="p-1 rounded bg-white/20 backdrop-blur-sm">
+                                                <div class="p-1 rounded glass-effect">
                                                     @if ($address->type == 1)
                                                         <i class="text-xs text-white fas fa-home"></i>
                                                     @elseif($address->type == 2)
@@ -1260,7 +1259,7 @@
                                                     $receiverInfo = $address->receiver_info;
                                                 @endphp
                                                 <div
-                                                    class="p-2 mt-2 border rounded-md bg-gradient-to-r from-amber-50/80 to-orange-50/80 border-amber-200/50 backdrop-blur-sm">
+                                                    class="p-2 mt-2 border rounded-md bg-gradient-to-r from-amber-50/80 to-orange-50/80 border-amber-200/50 glass-effect">
                                                     <div class="flex items-center mb-1 space-x-1">
                                                         <i class="text-xs fas fa-user text-amber-600"></i>
                                                         <span

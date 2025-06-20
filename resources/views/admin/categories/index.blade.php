@@ -29,13 +29,12 @@
             </x-slot>
 
             <!-- Contenedor principal con backdrop blur -->
-            <div
-                class="backdrop-blur-sm bg-white/70 rounded-3xl shadow-2xl border border-white/20 mx-4 my-8 overflow-hidden">
+            <div class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
                 <!-- Header con gradiente -->
                 <div class="bg-gradient-to-r from-teal-600 to-cyan-600 px-8 py-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <div class="p-3 glass-effect rounded-xl">
                                 <i class="fas fa-tags text-white text-xl"></i>
                             </div>
                             <div>

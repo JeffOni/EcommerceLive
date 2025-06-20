@@ -15,8 +15,7 @@
         <p class="text-gray-600 text-lg">Administra las opciones y características de tus productos</p>
     </div>
 
-    <section
-        class="max-w-6xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 relative overflow-hidden">
+    <section class="max-w-6xl mx-auto glass-effect rounded-3xl shadow-2xl p-8 relative overflow-hidden">
         <!-- Decorative gradient overlay -->
         <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
 

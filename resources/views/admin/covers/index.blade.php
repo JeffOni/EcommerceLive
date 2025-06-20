@@ -29,13 +29,12 @@
             </x-slot>
 
             <!-- Contenedor principal con backdrop blur -->
-            <div
-                class="backdrop-blur-sm bg-white/70 rounded-3xl shadow-2xl border border-white/20 mx-4 my-8 overflow-hidden">
+            <div class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
                 <!-- Header con gradiente -->
                 <div class="bg-gradient-to-r from-orange-600 to-amber-600 px-8 py-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <div class="p-3 glass-effect rounded-xl">
                                 <i class="fas fa-image text-white text-xl"></i>
                             </div>
                             <div>
@@ -77,7 +76,7 @@
                                             <!-- Overlay con ícono de arrastrar -->
                                             <div
                                                 class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                                                <div class="glass-effect rounded-xl p-3">
                                                     <i class="fas fa-arrows-alt text-white text-xl"></i>
                                                 </div>
                                             </div>

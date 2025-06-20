@@ -1,6 +1,13 @@
-<x-admin-layout :breadcrumbs="[
-    [
-        'name' => 'Dashboard',
+<x-admin-layout :breadcrumbs="            <!-- Contenedor principal con backdrop blur -->
+            <div
+                class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
+                <!-- Header con gradiente -->
+                <div class="bg-gradient-to-r from-indigo-600 to-blue-600 px-8 py-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 glass-effect rounded-xl">
+                                <i class="fas fa-layer-group text-white text-xl"></i>
+                            </div>      'name' => 'Dashboard',
         'route' => route('admin.dashboard'),
     ],
     [
@@ -30,12 +37,12 @@
 
             <!-- Contenedor principal con backdrop blur -->
             <div
-                class="backdrop-blur-sm bg-white/70 rounded-3xl shadow-2xl border border-white/20 mx-4 my-8 overflow-hidden">
+                class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
                 <!-- Header con gradiente -->
                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <div class="p-3 glass-effect rounded-xl">
                                 <i class="fas fa-layer-group text-white text-xl"></i>
                             </div>
                             <div>

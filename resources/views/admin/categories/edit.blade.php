@@ -34,8 +34,7 @@
         </div>
 
         <div class="max-w-4xl mx-auto px-6 pb-12">
-            <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden relative">
+            <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden relative">
                 <!-- Decorative gradient overlay -->
                 <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
 

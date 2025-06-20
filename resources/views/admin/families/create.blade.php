@@ -40,8 +40,7 @@
             <form action="{{ route('admin.families.store') }}" method="POST" class="relative">
                 @csrf
 
-                <div
-                    class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 relative overflow-hidden">
+                <div class="glass-effect rounded-3xl shadow-2xl p-8 relative overflow-hidden">
                     <!-- Decorative gradient overlay -->
                     <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none">
                     </div>

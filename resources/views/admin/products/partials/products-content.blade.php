@@ -1,9 +1,9 @@
 <!-- Vista de tarjetas -->
 <div id="cards-view" class="view-content">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @foreach ($products as $product)
             <div
-                class="group relative bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-blue-100 overflow-hidden flex flex-col h-full">
+                class="relative flex flex-col h-full overflow-hidden transition-all duration-500 transform border border-blue-100 shadow-lg group bg-gradient-to-br from-white to-blue-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2">
 
                 {{-- 
                     MEJORA UI #1: Badge ID modificado
@@ -11,9 +11,9 @@
                     - Se eliminaron los badges de estado "Activo/Inactivo" para limpiar la interfaz
                     - El badge ID usa colores azules consistentes con el tema del diseño
                 --}}
-                <div class="absolute top-3 left-3 z-10">
+                <div class="absolute z-10 top-3 left-3">
                     <span
-                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
                         #{{ $product->id }}
                     </span>
                     {{-- 
@@ -23,12 +23,12 @@
                         Se mantiene el código comentado para futura referencia si se necesita restaurar.
                     
                     @if ($product->status)
-                        <span class="block bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">
-                            <i class="fas fa-check-circle mr-1"></i>Activo
+                        <span class="block px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
+                            <i class="mr-1 fas fa-check-circle"></i>Activo
                         </span>
                     @else
-                        <span class="block bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
-                            <i class="fas fa-times-circle mr-1"></i>Inactivo
+                        <span class="block px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-full">
+                            <i class="mr-1 fas fa-times-circle"></i>Inactivo
                         </span>
                     @endif
                     --}}
@@ -40,31 +40,31 @@
                     - Se mantiene el botón principal de edición en la parte inferior de cada tarjeta
                 --}}
                 {{-- CÓDIGO REMOVIDO - Botones de acción hover
-                <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="absolute transition-opacity duration-300 opacity-0 top-3 right-3 group-hover:opacity-100">
                     <div class="flex space-x-2">
                         <a href="{{ route('admin.products.edit', $product) }}"
-                            class="p-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:bg-blue-500 hover:text-white transition-all duration-200">
-                            <i class="fas fa-edit text-sm"></i>
+                            class="p-2 transition-all duration-200 rounded-lg shadow-md glass-effect hover:bg-blue-500 hover:text-white">
+                            <i class="text-sm fas fa-edit"></i>
                         </a>
                     </div>
                 </div>
                 --}}
 
                 <!-- Imagen del producto -->
-                <div class="relative w-full h-48 bg-gray-100 overflow-hidden">
+                <div class="relative w-full h-48 overflow-hidden bg-gray-100">
                     @if ($product->image_path)
                         <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
                     @else
                         <div
-                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
-                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                            class="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-purple-100">
+                            <i class="text-4xl text-gray-400 fas fa-image"></i>
                         </div>
                     @endif
 
                     <!-- Overlay con precio -->
                     <div class="absolute bottom-3 left-3 right-3">
-                        <div class="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2">
+                        <div class="px-3 py-2 rounded-lg glass-effect">
                             <div class="text-lg font-bold text-gray-900">
                                 ${{ number_format($product->price, 2) }}
                             </div>
@@ -76,7 +76,7 @@
                 <div class="p-6">
                     <!-- Nombre del producto -->
                     <h3
-                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+                        class="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 line-clamp-2">
                         {{ $product->name }}
                     </h3>
 
@@ -84,37 +84,37 @@
                     @if ($product->sku)
                         <div class="mb-3">
                             <span
-                                class="inline-flex items-center px-2 py-1 rounded-md text-xs font-mono bg-gray-100 text-gray-700">
+                                class="inline-flex items-center px-2 py-1 font-mono text-xs text-gray-700 bg-gray-100 rounded-md">
                                 SKU: {{ $product->sku }}
                             </span>
                         </div>
                     @endif
 
                     <!-- Jerarquía (Familia > Categoría > Subcategoría) -->
-                    <div class="space-y-1 mb-4 text-xs">
+                    <div class="mb-4 space-y-1 text-xs">
                         <div class="flex items-center">
-                            <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md">
-                                <i class="fas fa-layer-group mr-1"></i>
+                            <span class="px-2 py-1 text-indigo-700 bg-indigo-100 rounded-md">
+                                <i class="mr-1 fas fa-layer-group"></i>
                                 {{ $product->subcategory->category->family->name }}
                             </span>
                         </div>
                         <div class="flex items-center">
-                            <span class="bg-teal-100 text-teal-700 px-2 py-1 rounded-md">
-                                <i class="fas fa-tags mr-1"></i>
+                            <span class="px-2 py-1 text-teal-700 bg-teal-100 rounded-md">
+                                <i class="mr-1 fas fa-tags"></i>
                                 {{ $product->subcategory->category->name }}
                             </span>
                         </div>
                         <div class="flex items-center">
-                            <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded-md">
-                                <i class="fas fa-tag mr-1"></i>
+                            <span class="px-2 py-1 text-pink-700 bg-pink-100 rounded-md">
+                                <i class="mr-1 fas fa-tag"></i>
                                 {{ $product->subcategory->name }}
                             </span>
                         </div>
                     </div> <!-- Información adicional -->
-                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                    <div class="mb-4 space-y-2 text-sm text-gray-600">
                         @if ($product->created_at)
                             <div class="flex items-center space-x-2">
-                                <i class="fas fa-calendar-plus text-blue-500"></i>
+                                <i class="text-blue-500 fas fa-calendar-plus"></i>
                                 <span>{{ $product->created_at->diffForHumans() }}</span>
                             </div>
                         @endif
@@ -124,7 +124,7 @@
                     <div class="mt-auto">
                         <a href="{{ route('admin.products.edit', $product) }}"
                             class="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                            <i class="fas fa-edit mr-2"></i>
+                            <i class="mr-2 fas fa-edit"></i>
                             Editar Producto
                         </a>
                     </div>
@@ -132,7 +132,7 @@
 
                 <!-- Indicador de hover -->
                 <div
-                    class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300">
+                    class="absolute inset-x-0 bottom-0 h-1 transition-transform duration-300 transform scale-x-0 bg-gradient-to-r from-blue-500 to-purple-600 group-hover:scale-x-100">
                 </div>
             </div>
         @endforeach
@@ -147,38 +147,38 @@
     - Facilita la identificación rápida de productos en vista tabular
     - Uso de íconos Font Awesome para mejorar la presentación visual
 --}}
-<div id="table-view" class="view-content hidden">
-    <div class="overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
+<div id="table-view" class="hidden view-content">
+    <div class="overflow-hidden border border-gray-200 shadow-lg rounded-2xl">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gradient-to-r from-blue-600 to-purple-600">
                     <tr>
                         {{-- MEJORA UI #2: Nueva columna ID agregada --}}
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-4 py-3 text-xs font-semibold tracking-wider text-left text-white uppercase">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-hashtag"></i>
                                 <span>ID</span>
                             </div>
                         </th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-4 py-3 text-xs font-semibold tracking-wider text-left text-white uppercase">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-box"></i>
                                 <span>Producto</span>
                             </div>
                         </th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-4 py-3 text-xs font-semibold tracking-wider text-left text-white uppercase">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-barcode"></i>
                                 <span>SKU</span>
                             </div>
                         </th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-4 py-3 text-xs font-semibold tracking-wider text-left text-white uppercase">
                             <div class="flex items-center space-x-2">
                                 <i class="fas fa-dollar-sign"></i>
                                 <span>Precio</span>
                             </div>
                         </th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-4 py-3 text-xs font-semibold tracking-wider text-center text-white uppercase">
                             <div class="flex items-center justify-center space-x-2">
                                 <i class="fas fa-cogs"></i>
                                 <span>Acciones</span>
@@ -188,28 +188,28 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($products as $product)
-                        <tr class="hover:bg-blue-50 transition-colors duration-200">
+                        <tr class="transition-colors duration-200 hover:bg-blue-50">
                             {{-- MEJORA UI #2: Celda ID con badge azul consistente --}}
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <span
-                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
                                     #{{ $product->id }}
                                 </span>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg overflow-hidden mr-3 bg-gray-100 flex-shrink-0">
+                                    <div class="flex-shrink-0 w-10 h-10 mr-3 overflow-hidden bg-gray-100 rounded-lg">
                                         @if ($product->image_path)
                                             <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                                                class="w-full h-full object-cover">
+                                                class="object-cover w-full h-full">
                                         @else
                                             <div
-                                                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
-                                                <i class="fas fa-image text-gray-400 text-sm"></i>
+                                                class="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-purple-100">
+                                                <i class="text-sm text-gray-400 fas fa-image"></i>
                                             </div>
                                         @endif
                                     </div>
-                                    <div class="min-w-0 flex-1">
+                                    <div class="flex-1 min-w-0">
                                         <div class="text-sm font-semibold text-gray-900 truncate">{{ $product->name }}
                                         </div>
                                         <div class="text-xs text-gray-500">
@@ -223,11 +223,11 @@
                             <td class="px-4 py-3 whitespace-nowrap">
                                 @if ($product->sku)
                                     <span
-                                        class="inline-flex items-center px-2 py-1 rounded-md text-xs font-mono bg-gray-100 text-gray-700">
+                                        class="inline-flex items-center px-2 py-1 font-mono text-xs text-gray-700 bg-gray-100 rounded-md">
                                         {{ $product->sku }}
                                     </span>
                                 @else
-                                    <span class="text-gray-400 text-xs">Sin SKU</span>
+                                    <span class="text-xs text-gray-400">Sin SKU</span>
                                 @endif
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
@@ -235,10 +235,10 @@
                                     ${{ number_format($product->price, 2) }}
                                 </div>
                             </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-center">
+                            <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <a href="{{ route('admin.products.edit', $product) }}"
                                     class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                    <i class="fas fa-edit mr-2"></i>
+                                    <i class="mr-2 fas fa-edit"></i>
                                     Editar
                                 </a>
                             </td>

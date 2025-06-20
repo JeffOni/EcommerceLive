@@ -34,7 +34,7 @@
                 <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="flex space-x-2">
                         <a href="{{ route('admin.families.edit', $family) }}"
-                            class="p-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:bg-indigo-500 hover:text-white transition-all duration-200">
+                            class="p-2 glass-effect rounded-lg shadow-md hover:bg-indigo-500 hover:text-white transition-all duration-200">
                             <i class="fas fa-edit text-sm"></i>
                         </a>
                     </div>

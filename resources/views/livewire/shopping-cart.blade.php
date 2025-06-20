@@ -98,7 +98,7 @@
             <div class="lg:col-span-2">
                 {{-- Contenedor principal con efecto glassmorphism --}}
                 <!-- Contenedor principal con backdrop blur -->
-                <div class="overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20">
+                <div class="overflow-hidden border shadow-2xl glass-effect rounded-3xl">
                     {{-- 
                         HEADER DE LA SECCIÓN DE PRODUCTOS
                         ================================
@@ -109,7 +109,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 {{-- Icono con efecto glassmorphism --}}
-                                <div class="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                                <div class="p-2 glass-effect rounded-xl">
                                     <i class="text-lg text-white fas fa-list"></i>
                                 </div>
                                 <div>
@@ -120,7 +120,7 @@
                             {{-- Botón para limpiar carrito (solo visible si hay productos) --}}
                             @if (Cart::count() > 0)
                                 <button wire:click="clearCart"
-                                    class="inline-flex items-center px-4 py-2 font-medium text-white transition-all duration-200 border rounded-lg bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm border-red-300/30">
+                                    class="inline-flex items-center px-4 py-2 font-medium text-white transition-all duration-200 border rounded-lg glass-effect border-red-300/30">
                                     <i class="mr-2 fas fa-trash-alt"></i>
                                     Limpiar Carrito
                                 </button>
@@ -149,9 +149,9 @@
                             --}}
                             <!-- Producto individual con animaciones premium -->
                             <div
-                                class="relative p-6 mb-6 overflow-hidden border shadow-lg group bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 rounded-3xl border-white/60 shadow-gray-400 last:mb-0 backdrop-blur-sm">
+                                class="relative p-6 mb-6 overflow-hidden border shadow-lg group bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 rounded-3xl border-white/60 shadow-gray-400 last:mb-0 glass-effect">
                                 {{-- Efecto de brillo que se activa en hover --}}
-                                <!-- Efecto de brillo dinámico -->
+                                <!-- Efecto de brillo dinámico --}}
                                 <div
                                     class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-all duration-1000">
                                 </div>
@@ -353,8 +353,7 @@
             <!-- Resumen del carrito -->
             <div class="lg:col-span-1">
                 {{-- Contenedor principal sticky con glassmorphism --}}
-                <div
-                    class="sticky overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20 top-8">
+                <div class="sticky overflow-hidden border shadow-2xl glass-effect rounded-3xl top-8">
                     {{-- 
                         HEADER DEL RESUMEN
                         =================
@@ -364,7 +363,7 @@
                     <div class="px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600">
                         <div class="flex items-center space-x-3">
                             {{-- Icono con efecto glassmorphism --}}
-                            <div class="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <div class="p-2 glass-effect rounded-xl">
                                 <i class="text-lg text-white fas fa-calculator"></i>
                             </div>
                             <div>
@@ -461,11 +460,12 @@
                                     <!-- Iconos y texto -->
                                     <div class="relative flex items-center space-x-3">
                                         <div
-                                            class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm">
+                                            class="flex items-center justify-center w-8 h-8 rounded-full glass-effect">
                                             <i class="text-white fas fa-credit-card"></i>
                                         </div>
                                         <span class="text-lg">Proceder al Pago Seguro</span>
-                                        <div class="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
+                                        <div
+                                            class="flex items-center justify-center w-6 h-6 rounded-full glass-effect">
                                             <i class="text-sm text-white fas fa-shield-alt"></i>
                                         </div>
                                     </div>
