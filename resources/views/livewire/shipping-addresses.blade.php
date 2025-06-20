@@ -60,7 +60,8 @@
         </div>
 
         {{-- Contenedor principal con glassmorphism --}}
-        <div class="overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20">
+        {{-- clases de glassmorphism echas con tailwind overflow-hidden border shadow-2xl backdrop-blur-sm bg-white/70 rounded-3xl border-white/20 --}}
+        <div class="overflow-hidden border shadow-2xl glass-effect rounded-3xl border-white/20">
             {{-- Header con gradiente --}}
             <div class="px-8 py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
                 <div class="flex items-center justify-between">
