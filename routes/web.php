@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SubcategoryController;
@@ -60,5 +61,26 @@ Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 
 Route::get('checkout', [CheckoutController::class, 'index'])
-    ->name('checkout.index');
+    ->name('checkout.index')
+    ->middleware('auth');
+
+Route::get('checkout/thank-you', [CheckoutController::class, 'thankYou'])
+    ->name('checkout.thank-you')
+    ->middleware('auth');
+
+// Rutas para procesar pagos - requieren autenticación
+Route::middleware('auth')->group(function () {
+    Route::post('/payments/transfer-receipt', [PaymentController::class, 'uploadTransferReceipt'])
+        ->name('payments.transfer-receipt');
+
+    Route::post('/payments/cash-confirm', [PaymentController::class, 'confirmCashPayment'])
+        ->name('payments.cash-confirm');
+
+    Route::post('/payments/qr-receipt', [PaymentController::class, 'uploadQrReceipt'])
+        ->name('payments.qr-receipt');
+});
+
+// [FUTURO] Rutas para integración PayPhone y PayPal
+// Route::post('/payments/payphone-gateway', [PaymentController::class, 'payphoneGateway'])->name('payments.payphone-gateway');
+// Route::post('/payments/paypal-gateway', [PaymentController::class, 'paypalGateway'])->name('payments.paypal-gateway');
 

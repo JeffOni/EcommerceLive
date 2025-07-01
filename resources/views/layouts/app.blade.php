@@ -57,6 +57,9 @@
 
     @livewireScripts
 
+    {{-- Alpine.js ya está incluido en Livewire 3, no necesitamos CDN adicional --}}
+    {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
+
     {{-- new stack in welcome view --}}
     @stack('js')
 

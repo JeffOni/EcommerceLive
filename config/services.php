@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'payphone' => [
+        'app_id' => env('PAYPHONE_APP_ID'),
+        'app_secret' => env('PAYPHONE_APP_SECRET'),
+        'base_url' => env('PAYPHONE_BASE_URL', 'https://pay.payphoneapp.com/api'),
+    ],
+
 ];

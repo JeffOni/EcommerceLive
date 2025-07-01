@@ -301,8 +301,14 @@
                         <div class="flex items-center space-x-4">
                             <div class="flex items-center bg-white border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800"
                                 x-data="{
-                                    quantity: @entangle('quantity'),
+                                    quantity: @entangle('quantity').live,
                                     maxStock: {{ $product->stock }},
+                                    init() {
+                                        // Asegurar que quantity tenga un valor inicial
+                                        if (!this.quantity) {
+                                            this.quantity = 1;
+                                        }
+                                    },
                                     // Función para incrementar cantidad con validación de stock
                                     increment() {
                                         if (this.quantity < this.maxStock) {
@@ -315,14 +321,18 @@
                                             this.quantity--;
                                         }
                                     }
-                                }"> {{-- Botón para decrementar cantidad --}}
+                                }" x-init="init()">
+
+                                {{-- Botón para decrementar cantidad --}}
                                 <button @click="decrement()" :disabled="quantity <= 1"
                                     class="flex items-center justify-center w-12 h-12 text-gray-600 transition-colors duration-200 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-l-xl hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M20 12H4" />
                                     </svg>
-                                </button> {{-- Display de cantidad actual --}}
+                                </button>
+
+                                {{-- Display de cantidad actual --}}
                                 <div
                                     class="flex items-center justify-center w-16 h-12 text-lg font-semibold text-gray-900 bg-white border-gray-300 dark:text-white dark:bg-gray-800 border-x dark:border-gray-600">
                                     <span x-text="quantity"></span>

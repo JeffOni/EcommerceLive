@@ -245,7 +245,9 @@
                             <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
                                 {{ $this->familyName }}
                             </p>
-                            <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
+                            @if ($this->familyId)
+                                <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
+                            @endif
                         </div>
                         <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
                             @foreach ($this->categories as $category)
