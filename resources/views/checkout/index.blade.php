@@ -3,16 +3,82 @@
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <div class="col-span-1">
                 <div class="lg:max-w-[40rem] px-4 lg:pr-8 lg:pl-8 sm:pl-6 ml-auto py-12">
-                    <h1 class="mb-4 text-2xl font-bold">Pago</h1>
-                    <div class="overflow-hidden border border-gray-200 rounded-lg shadow">
-                        <ul cl } else { this.showErrorMessage('Error: ' + result.message);
-                        }
-                    } catch (error) {
-                        this.showErrorMessage(' Error al subir el comprobante: ' + error.message);
-                    }
-                },
+                    <!-- Dirección de Envío -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold">Dirección de Envío</h2>
+                            @if ($defaultAddress)
+                                <a href="{{ route('shipping.index') }}"
+                                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                                    <i class="mr-1.5 fas fa-edit text-xs"></i>
+                                    Gestionar direcciones
+                                </a>
+                            @endif
+                        </div>
 
-                async submitQrReceipt(event) {de-y divide-gray-200">
+                        @if ($defaultAddress)
+                            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <i class="mr-2 text-green-600 fas fa-map-marker-alt"></i>
+                                            <p class="font-semibold text-gray-900">{{ $defaultAddress->address }}</p>
+                                        </div>
+                                        <p class="text-sm text-gray-600 ml-6">
+                                            {{ $defaultAddress->parish->name ?? '' }},
+                                            {{ $defaultAddress->canton->name ?? '' }},
+                                            {{ $defaultAddress->province->name ?? '' }}
+                                        </p>
+                                        @if ($defaultAddress->reference)
+                                            <p class="text-sm text-gray-500 ml-6">Ref: {{ $defaultAddress->reference }}
+                                            </p>
+                                        @endif
+                                        @if ($defaultAddress->postal_code)
+                                            <p class="text-sm text-gray-500 ml-6">CP: {{ $defaultAddress->postal_code }}
+                                            </p>
+                                        @endif
+                                        @if ($defaultAddress->receiver_name && $defaultAddress->receiver_name !== auth()->user()->name)
+                                            <p class="text-sm text-gray-600 ml-6 mt-1">
+                                                <i class="mr-1 fas fa-user text-xs"></i>
+                                                Receptor: {{ $defaultAddress->receiver_name }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                                        Por defecto
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <p class="text-xs text-gray-500">
+                                    <i class="mr-1 fas fa-info-circle"></i>
+                                    Tu pedido será enviado a esta dirección. Si necesitas enviarlo a otra dirección,
+                                    puedes cambiar tu dirección predeterminada desde la gestión de direcciones.
+                                </p>
+                            </div>
+                        @else
+                            <div class="p-6 border border-red-200 rounded-lg bg-red-50">
+                                <div class="text-center">
+                                    <i class="mb-3 text-3xl text-red-500 fas fa-map-marker-alt"></i>
+                                    <p class="mb-2 font-semibold text-red-800">No tienes una dirección de envío
+                                        configurada</p>
+                                    <p class="mb-4 text-sm text-red-600">
+                                        Para continuar con tu compra, necesitas configurar al menos una dirección de
+                                        envío.
+                                    </p>
+                                    <a href="{{ route('shipping.index') }}"
+                                        class="inline-flex items-center px-4 py-2 font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+                                        <i class="mr-2 fas fa-plus"></i>
+                                        Configurar dirección de envío
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <h1 class="mb-4 text-2xl font-bold">Método de Pago</h1>
+                    <div class="overflow-hidden border border-gray-200 rounded-lg shadow">
+                        <ul class="divide-y divide-gray-200">
                             <!--
                             <li>
                                 <label class="flex items-center p-4" for="">
@@ -280,24 +346,26 @@
                                         }
                                     "
                                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                
+
                                 <!-- Vista previa -->
                                 <div x-show="imagePreview" class="mt-3" x-cloak>
-                                    <label class="block text-xs font-medium text-gray-600 mb-1">Vista previa:</label>
-                                    <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-2">
+                                    <label class="block mb-1 text-xs font-medium text-gray-600">Vista previa:</label>
+                                    <div class="relative p-2 border-2 border-gray-300 border-dashed rounded-lg">
                                         <template x-if="imagePreview === 'pdf'">
-                                            <div class="flex items-center justify-center h-24 bg-red-50 rounded">
+                                            <div class="flex items-center justify-center h-24 rounded bg-red-50">
                                                 <div class="text-center">
-                                                    <i class="fa-solid fa-file-pdf text-red-500 text-2xl mb-1"></i>
+                                                    <i class="mb-1 text-2xl text-red-500 fa-solid fa-file-pdf"></i>
                                                     <p class="text-xs text-red-600">Archivo PDF seleccionado</p>
                                                 </div>
                                             </div>
                                         </template>
                                         <template x-if="imagePreview && imagePreview !== 'pdf'">
-                                            <img :src="imagePreview" alt="Vista previa" class="w-full h-24 object-cover rounded">
+                                            <img :src="imagePreview" alt="Vista previa"
+                                                class="object-cover w-full h-24 rounded">
                                         </template>
-                                        <button type="button" @click="imagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
-                                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <button type="button"
+                                            @click="imagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
+                                            class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full top-1 right-1 hover:bg-red-600">
                                             ×
                                         </button>
                                     </div>
@@ -364,24 +432,26 @@
                                         }
                                     "
                                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
-                                
+
                                 <!-- Vista previa QR -->
                                 <div x-show="qrImagePreview" class="mt-3" x-cloak>
-                                    <label class="block text-xs font-medium text-gray-600 mb-1">Vista previa:</label>
-                                    <div class="relative border-2 border-dashed border-purple-300 rounded-lg p-2">
+                                    <label class="block mb-1 text-xs font-medium text-gray-600">Vista previa:</label>
+                                    <div class="relative p-2 border-2 border-purple-300 border-dashed rounded-lg">
                                         <template x-if="qrImagePreview === 'pdf'">
-                                            <div class="flex items-center justify-center h-24 bg-purple-50 rounded">
+                                            <div class="flex items-center justify-center h-24 rounded bg-purple-50">
                                                 <div class="text-center">
-                                                    <i class="fa-solid fa-file-pdf text-purple-500 text-2xl mb-1"></i>
+                                                    <i class="mb-1 text-2xl text-purple-500 fa-solid fa-file-pdf"></i>
                                                     <p class="text-xs text-purple-600">Archivo PDF seleccionado</p>
                                                 </div>
                                             </div>
                                         </template>
                                         <template x-if="qrImagePreview && qrImagePreview !== 'pdf'">
-                                            <img :src="qrImagePreview" alt="Vista previa QR" class="w-full h-24 object-cover rounded">
+                                            <img :src="qrImagePreview" alt="Vista previa QR"
+                                                class="object-cover w-full h-24 rounded">
                                         </template>
-                                        <button type="button" @click="qrImagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
-                                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">
+                                        <button type="button"
+                                            @click="qrImagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
+                                            class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full top-1 right-1 hover:bg-red-600">
                                             ×
                                         </button>
                                     </div>
@@ -412,7 +482,7 @@
     </div>
 
     <script>
-        function checkoutData() {
+        window.checkoutData = function() {
             return {
                 payment: 2, // Por defecto transferencia
                 showPaymentModal: false,
@@ -423,12 +493,9 @@
                 shipping: {{ $shipping ?? 0 }},
                 total: {{ $totalWithShipping ?? 0 }},
                 orderNumber: '',
-
                 init() {
-                    // Generar número de pedido al inicializar
                     this.orderNumber = this.generateOrderNumber();
                 },
-
                 generateOrderNumber() {
                     const now = new Date();
                     const dateStr = now.getFullYear() +
@@ -438,12 +505,12 @@
                     return `ORD-${dateStr}-${randomStr}`;
                 },
 
-                // Métodos de pago con funcionalidad real
+                // Métodos de pago unificados - usando CheckoutController
                 async submitTransferReceipt(event) {
                     try {
                         const formData = new FormData(event.target);
 
-                        const response = await fetch('{{ route('payments.transfer-receipt') }}', {
+                        const response = await fetch('{{ route('checkout.transfer-payment') }}', {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -453,16 +520,24 @@
                         });
 
                         const result = await response.json();
+                        console.log('Resultado de transfer payment:', result);
 
                         if (result.success) {
                             this.showTransferModal = false;
-                            // Mostrar mensaje de felicidades
-                            this.showSuccessMessage(result.message);
+
+                            // Mostrar animación celebratoria con confeti
+                            this.showSuccessAnimation();
+
+                            // Redirigir después de la animación
+                            setTimeout(() => {
+                                window.location.href = result.redirect_url ||
+                                    '{{ route('checkout.thank-you') }}';
+                            }, 3000);
                         } else {
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
-                        alert('Error al subir el comprobante: ' + error.message);
+                        this.showErrorMessage('Error al subir el comprobante: ' + error.message);
                     }
                 },
 
@@ -470,7 +545,7 @@
                     try {
                         const formData = new FormData(event.target);
 
-                        const response = await fetch('{{ route('payments.qr-receipt') }}', {
+                        const response = await fetch('{{ route('checkout.qr-payment') }}', {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -483,8 +558,15 @@
 
                         if (result.success) {
                             this.showQrModal = false;
-                            // Mostrar mensaje de felicidades
-                            this.showSuccessMessage(result.message);
+
+                            // Mostrar animación celebratoria con confeti
+                            this.showSuccessAnimation();
+
+                            // Redirigir después de la animación
+                            setTimeout(() => {
+                                window.location.href = result.redirect_url ||
+                                    '{{ route('checkout.thank-you') }}';
+                            }, 3000);
                         } else {
                             this.showErrorMessage('Error: ' + result.message);
                         }
@@ -495,25 +577,41 @@
 
                 async confirmCashPayment() {
                     try {
-                        const response = await fetch('{{ route('payments.cash-confirm') }}', {
+                        // Verificar que hay una dirección por defecto disponible
+                        @if (!$defaultAddress)
+                            this.showErrorMessage(
+                                'No tienes una dirección de envío configurada. Por favor, configura una dirección antes de continuar.'
+                            );
+                            return;
+                        @endif
+
+                        console.log('Iniciando confirmación de pago en efectivo...');
+
+                        const response = await fetch('{{ route('checkout.store') }}', {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
                             },
-                            body: JSON.stringify({})
+                            body: JSON.stringify({
+                                payment_method: 3 // Pago en efectivo contra entrega
+                            })
                         });
 
                         const result = await response.json();
+                        console.log('Respuesta del servidor:', result);
 
                         if (result.success) {
-                            // Mostrar mensaje de felicidades
-                            this.showSuccessMessage(result.message);
+                            console.log('Pedido creado exitosamente');
+                            // Redirigir a la página de agradecimiento
+                            window.location.href = result.redirect_url || '{{ route('checkout.thank-you') }}';
                         } else {
+                            console.error('Error en la respuesta:', result);
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
+                        console.error('Error completo:', error);
                         this.showErrorMessage('Error al confirmar el pedido: ' + error.message);
                     }
                 },
@@ -521,122 +619,123 @@
                 showSuccessMessage(message) {
                     // Crear overlay con animación
                     const successOverlay = document.createElement('div');
-                    successOverlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                    successOverlay.className =
+                        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
                     successOverlay.style.opacity = '0';
                     successOverlay.style.transition = 'opacity 0.3s ease-in-out';
 
                     successOverlay.innerHTML = `
-                        <div class="relative w-full max-w-md mx-4">
-                            <!-- Modal principal -->
-                            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transform scale-75 transition-all duration-500 ease-out success-modal">
-                                <!-- Header con gradiente -->
-                                <div class="bg-gradient-to-r from-green-400 to-green-600 px-6 py-8 text-center relative overflow-hidden">
-                                    <!-- Partículas animadas -->
-                                    <div class="absolute inset-0 opacity-20">
-                                        <div class="particle" style="left: 20%; animation-delay: 0s;"></div>
-                                        <div class="particle" style="left: 40%; animation-delay: 0.5s;"></div>
-                                        <div class="particle" style="left: 60%; animation-delay: 1s;"></div>
-                                        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
-                                    </div>
-                                    
-                                    <!-- Icono principal animado -->
-                                    <div class="relative mb-4">
-                                        <div class="success-icon-container">
-                                            <div class="success-icon bg-white rounded-full p-4 mx-auto w-20 h-20 flex items-center justify-center">
-                                                <svg class="checkmark w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <h3 class="text-2xl font-bold text-white mb-2">¡Excelente!</h3>
-                                    <p class="text-green-100 text-sm">Pago procesado exitosamente</p>
+                    <div class="relative w-full max-w-md mx-4">
+                        <!-- Modal principal -->
+                        <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl success-modal">
+                            <!-- Header con gradiente -->
+                            <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-green-400 to-green-600">
+                                <!-- Partículas animadas -->
+                                <div class="absolute inset-0 opacity-20">
+                                    <div class="particle" style="left: 20%; animation-delay: 0s;"></div>
+                                    <div class="particle" style="left: 40%; animation-delay: 0.5s;"></div>
+                                    <div class="particle" style="left: 60%; animation-delay: 1s;"></div>
+                                    <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
                                 </div>
                                 
-                                <!-- Contenido -->
-                                <div class="px-6 py-6 text-center">
-                                    <p class="text-gray-700 mb-6 leading-relaxed">${message}</p>
-                                    
-                                    <!-- Botones -->
-                                    <div class="space-y-3">
-                                        <button onclick="window.location.href='{{ route('checkout.thank-you') }}'" 
-                                                class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
-                                            <i class="fa-solid fa-heart mr-2"></i>
-                                            Ver detalles
-                                        </button>
-                                        
-                                        <button onclick="this.closest('.fixed').remove()" 
-                                                class="w-full px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200">
-                                            Cerrar
-                                        </button>
+                                <!-- Icono principal animado -->
+                                <div class="relative mb-4">
+                                    <div class="success-icon-container">
+                                        <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full success-icon">
+                                            <svg class="w-10 h-10 text-green-500 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
                                     </div>
+                                </div>
+                                
+                                <h3 class="mb-2 text-2xl font-bold text-white">¡Excelente!</h3>
+                                <p class="text-sm text-green-100">Pago procesado exitosamente</p>
+                            </div>
+                            
+                            <!-- Contenido -->
+                            <div class="px-6 py-6 text-center">
+                                <p class="mb-6 leading-relaxed text-gray-700">${message}</p>
+                                
+                                <!-- Botones -->
+                                <div class="space-y-3">
+                                    <button onclick="window.location.href='{{ route('checkout.thank-you') }}'" 
+                                            class="w-full px-6 py-3 font-semibold text-white transition-all duration-200 transform rounded-lg shadow-lg bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:scale-105">
+                                        <i class="mr-2 fa-solid fa-heart"></i>
+                                        Ver detalles
+                                    </button>
+                                    
+                                    <button onclick="this.closest('.fixed').remove()" 
+                                            class="w-full px-6 py-2 text-gray-700 transition-colors duration-200 bg-gray-100 rounded-lg hover:bg-gray-200">
+                                        Cerrar
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Confetti animado -->
-                        <div class="confetti-container absolute inset-0 pointer-events-none overflow-hidden">
-                            ${this.generateConfetti()}
-                        </div>
-                    `;
+                    </div>
+                    
+                    <!-- Confetti animado -->
+                    <div class="absolute inset-0 overflow-hidden pointer-events-none confetti-container">
+                        ${this.generateConfetti()}
+                    </div>
+                `;
 
                     // Agregar estilos CSS
                     if (!document.querySelector('#success-animation-styles')) {
                         const styles = document.createElement('style');
                         styles.id = 'success-animation-styles';
                         styles.textContent = `
-                            @keyframes particle-float {
-                                0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
-                                50% { opacity: 1; }
-                                100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
-                            }
-                            
-                            @keyframes checkmark-draw {
-                                0% { stroke-dasharray: 0 100; }
-                                100% { stroke-dasharray: 100 0; }
-                            }
-                            
-                            @keyframes confetti-fall {
-                                0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-                                100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-                            }
-                            
-                            @keyframes bounce-in {
-                                0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-                                50% { transform: scale(1.1) rotate(5deg); }
-                                100% { transform: scale(1) rotate(0deg); opacity: 1; }
-                            }
-                            
-                            .particle {
-                                position: absolute;
-                                width: 10px;
-                                height: 10px;
-                                background: white;
-                                border-radius: 50%;
-                                animation: particle-float 2s infinite ease-in-out;
-                            }
-                            
-                            .success-icon-container {
-                                animation: bounce-in 0.6s ease-out 0.2s both;
-                            }
-                            
-                            .checkmark {
-                                stroke-dasharray: 100;
-                                animation: checkmark-draw 0.8s ease-out 0.5s both;
-                            }
-                            
-                            .confetti-piece {
-                                position: absolute;
-                                width: 10px;
-                                height: 10px;
-                                animation: confetti-fall 3s linear infinite;
-                            }
-                            
-                            .success-modal {
-                                animation: bounce-in 0.5s ease-out both;
-                            }
-                        `;
+                        @keyframes particle-float {
+                            0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
+                            50% { opacity: 1; }
+                            100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
+                        }
+                        
+                        @keyframes checkmark-draw {
+                            0% { stroke-dasharray: 0 100; }
+                            100% { stroke-dasharray: 100 0; }
+                        }
+                        
+                        @keyframes confetti-fall {
+                            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+                            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+                        }
+                        
+                        @keyframes bounce-in {
+                            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+                            50% { transform: scale(1.1) rotate(5deg); }
+                            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                        }
+                        
+                        .particle {
+                            position: absolute;
+                            width: 10px;
+                            height: 10px;
+                            background: white;
+                            border-radius: 50%;
+                            animation: particle-float 2s infinite ease-in-out;
+                        }
+                        
+                        .success-icon-container {
+                            animation: bounce-in 0.6s ease-out 0.2s both;
+                        }
+                        
+                        .checkmark {
+                            stroke-dasharray: 100;
+                            animation: checkmark-draw 0.8s ease-out 0.5s both;
+                        }
+                        
+                        .confetti-piece {
+                            position: absolute;
+                            width: 10px;
+                            height: 10px;
+                            animation: confetti-fall 3s linear infinite;
+                        }
+                        
+                        .success-modal {
+                            animation: bounce-in 0.5s ease-out both;
+                        }
+                    `;
                         document.head.appendChild(styles);
                     }
 
@@ -673,14 +772,14 @@
                         const duration = 2 + Math.random() * 2;
 
                         confetti += `
-                            <div class="confetti-piece" 
-                                 style="left: ${left}%; 
-                                        background-color: ${color}; 
-                                        animation-delay: ${delay}s;
-                                        animation-duration: ${duration}s;
-                                        transform: rotate(${Math.random() * 360}deg);">
-                            </div>
-                        `;
+                        <div class="confetti-piece" 
+                             style="left: ${left}%; 
+                                    background-color: ${color}; 
+                                    animation-delay: ${delay}s;
+                                    animation-duration: ${duration}s;
+                                    transform: rotate(${Math.random() * 360}deg);">
+                        </div>
+                    `;
                     }
 
                     return confetti;
@@ -689,63 +788,64 @@
                 showErrorMessage(message) {
                     // Crear overlay con animación de error
                     const errorOverlay = document.createElement('div');
-                    errorOverlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                    errorOverlay.className =
+                        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
                     errorOverlay.style.opacity = '0';
                     errorOverlay.style.transition = 'opacity 0.3s ease-in-out';
 
                     errorOverlay.innerHTML = `
-                        <div class="relative w-full max-w-md mx-4">
-                            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transform scale-75 transition-all duration-500 ease-out error-modal">
-                                <!-- Header con gradiente rojo -->
-                                <div class="bg-gradient-to-r from-red-400 to-red-600 px-6 py-8 text-center relative overflow-hidden">
-                                    <!-- Icono de error animado -->
-                                    <div class="relative mb-4">
-                                        <div class="error-icon-container">
-                                            <div class="error-icon bg-white rounded-full p-4 mx-auto w-20 h-20 flex items-center justify-center">
-                                                <svg class="x-mark w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                            </div>
+                    <div class="relative w-full max-w-md mx-4">
+                        <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl error-modal">
+                            <!-- Header con gradiente rojo -->
+                            <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-red-400 to-red-600">
+                                <!-- Icono de error animado -->
+                                <div class="relative mb-4">
+                                    <div class="error-icon-container">
+                                        <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full error-icon">
+                                            <svg class="w-10 h-10 text-red-500 x-mark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
                                         </div>
                                     </div>
-                                    
-                                    <h3 class="text-2xl font-bold text-white mb-2">¡Ups!</h3>
-                                    <p class="text-red-100 text-sm">Ocurrió un problema</p>
                                 </div>
                                 
-                                <!-- Contenido -->
-                                <div class="px-6 py-6 text-center">
-                                    <p class="text-gray-700 mb-6 leading-relaxed">${message}</p>
-                                    
-                                    <!-- Botón -->
-                                    <button onclick="this.closest('.fixed').remove()" 
-                                            class="w-full px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
-                                        <i class="fa-solid fa-times mr-2"></i>
-                                        Entendido
-                                    </button>
-                                </div>
+                                <h3 class="mb-2 text-2xl font-bold text-white">¡Ups!</h3>
+                                <p class="text-sm text-red-100">Ocurrió un problema</p>
+                            </div>
+                            
+                            <!-- Contenido -->
+                            <div class="px-6 py-6 text-center">
+                                <p class="mb-6 leading-relaxed text-gray-700">${message}</p>
+                                
+                                <!-- Botón -->
+                                <button onclick="this.closest('.fixed').remove()" 
+                                        class="w-full px-6 py-3 font-semibold text-white transition-all duration-200 transform rounded-lg shadow-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:scale-105">
+                                    <i class="mr-2 fa-solid fa-times"></i>
+                                    Entendido
+                                </button>
                             </div>
                         </div>
-                    `;
+                    </div>
+                `;
 
                     // Agregar estilos CSS para errores si no existen
                     if (!document.querySelector('#error-animation-styles')) {
                         const styles = document.createElement('style');
                         styles.id = 'error-animation-styles';
                         styles.textContent = `
-                            .error-icon-container {
-                                animation: bounce-in 0.6s ease-out 0.2s both;
-                            }
-                            
-                            .x-mark {
-                                stroke-dasharray: 100;
-                                animation: checkmark-draw 0.8s ease-out 0.5s both;
-                            }
-                            
-                            .error-modal {
-                                animation: bounce-in 0.5s ease-out both;
-                            }
-                        `;
+                        .error-icon-container {
+                            animation: bounce-in 0.6s ease-out 0.2s both;
+                        }
+                        
+                        .x-mark {
+                            stroke-dasharray: 100;
+                            animation: checkmark-draw 0.8s ease-out 0.5s both;
+                        }
+                        
+                        .error-modal {
+                            animation: bounce-in 0.5s ease-out both;
+                        }
+                    `;
                         document.head.appendChild(styles);
                     }
 
@@ -765,6 +865,131 @@
                             setTimeout(() => errorOverlay.remove(), 300);
                         }
                     }, 5000);
+                },
+
+                showSuccessAnimation() {
+                    console.log('Ejecutando showSuccessAnimation');
+                    // Crear overlay con animación de éxito
+                    const successOverlay = document.createElement('div');
+                    successOverlay.className =
+                        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                    successOverlay.style.opacity = '0';
+                    successOverlay.style.transition = 'opacity 0.3s ease-in-out';
+
+                    successOverlay.innerHTML = `
+                        <div class="relative w-full max-w-md mx-4">
+                            <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl success-modal">
+                                <!-- Header con gradiente verde -->
+                                <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-green-400 to-green-600">
+                                    <!-- Icono de éxito animado -->
+                                    <div class="relative mb-4">
+                                        <div class="success-icon-container">
+                                            <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full success-icon">
+                                                <svg class="w-10 h-10 text-green-500 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h3 class="mb-2 text-2xl font-bold text-white">¡Genial!</h3>
+                                    <p class="text-sm text-green-100">Comprobante enviado exitosamente</p>
+                                </div>
+                                
+                                <!-- Contenido -->
+                                <div class="px-6 py-6 text-center">
+                                    <p class="mb-4 leading-relaxed text-gray-700">Tu comprobante ha sido enviado correctamente. Verificaremos tu pago en las próximas 24 horas.</p>
+                                    <div class="flex items-center justify-center mb-4">
+                                        <div class="w-8 h-8 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
+                                        <span class="ml-3 text-sm text-gray-600">Redirigiendo...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Agregar estilos CSS para animaciones si no existen
+                    if (!document.querySelector('#success-animation-styles')) {
+                        const styles = document.createElement('style');
+                        styles.id = 'success-animation-styles';
+                        styles.textContent = `
+                            @keyframes bounce-in {
+                                0% { transform: scale(0.3); opacity: 0; }
+                                50% { transform: scale(1.05); }
+                                70% { transform: scale(0.9); }
+                                100% { transform: scale(1); opacity: 1; }
+                            }
+                            
+                            @keyframes checkmark-draw {
+                                0% { stroke-dashoffset: 100; }
+                                100% { stroke-dashoffset: 0; }
+                            }
+                            
+                            @keyframes confetti {
+                                0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+                                100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+                            }
+                            
+                            .success-icon-container {
+                                animation: bounce-in 0.6s ease-out 0.2s both;
+                            }
+                            
+                            .checkmark {
+                                stroke-dasharray: 100;
+                                animation: checkmark-draw 0.8s ease-out 0.5s both;
+                            }
+                            
+                            .success-modal {
+                                animation: bounce-in 0.5s ease-out both;
+                            }
+                            
+                            .confetti-piece {
+                                position: fixed;
+                                width: 10px;
+                                height: 10px;
+                                z-index: 60;
+                                animation: confetti 3s linear infinite;
+                            }
+                        `;
+                        document.head.appendChild(styles);
+                    }
+
+                    document.body.appendChild(successOverlay);
+
+                    // Animar entrada
+                    setTimeout(() => {
+                        successOverlay.style.opacity = '1';
+                        const modal = successOverlay.querySelector('.success-modal');
+                        modal.style.transform = 'scale(1)';
+                    }, 10);
+
+                    // Crear confeti
+                    this.createConfetti();
+                },
+
+                createConfetti() {
+                    const colors = ['#f43f5e', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
+                    const confettiCount = 50;
+
+                    for (let i = 0; i < confettiCount; i++) {
+                        setTimeout(() => {
+                            const confetti = document.createElement('div');
+                            confetti.className = 'confetti-piece';
+                            confetti.style.left = Math.random() * 100 + 'vw';
+                            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                            confetti.style.animationDelay = Math.random() * 3 + 's';
+                            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+
+                            document.body.appendChild(confetti);
+
+                            // Remover confeti después de la animación
+                            setTimeout(() => {
+                                if (confetti.parentNode) {
+                                    confetti.remove();
+                                }
+                            }, 5000);
+                        }, i * 100);
+                    }
                 }
             }
         }

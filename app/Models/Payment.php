@@ -11,6 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'user_id',
+        'order_id',
         'payment_method',
         'amount',
         'status',
@@ -20,12 +21,15 @@ class Payment extends Model
         'comments',
         'cart_data',
         'response_data',
+        'verified_at',
+        'verified_by',
     ];
 
     protected $casts = [
         'cart_data' => 'array',
         'response_data' => 'array',
         'amount' => 'decimal:2',
+        'verified_at' => 'datetime',
     ];
 
     /**
@@ -34,6 +38,22 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relación con la orden
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    /**
+     * Relación con el usuario que verificó el pago
+     */
+    public function verifiedBy()
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 
     /**

@@ -123,6 +123,27 @@
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
+                                <x-dropdown-link href="{{ route('orders.tracking.index') }}">
+                                    <i class="fas fa-shopping-bag mr-2"></i>
+                                    Mis Pedidos
+                                </x-dropdown-link>
+
+                                <x-dropdown-link href="{{ route('notifications.index') }}">
+                                    <i class="fas fa-bell mr-2"></i>
+                                    Notificaciones
+                                    @if (auth()->user() && auth()->user()->unreadNotifications()->count() > 0)
+                                        <span
+                                            class="ml-2 inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                            {{ auth()->user()->unreadNotifications()->count() }}
+                                        </span>
+                                    @endif
+                                </x-dropdown-link>
+
+                                <x-dropdown-link href="{{ route('shipping.index') }}">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    Mis Direcciones
+                                </x-dropdown-link>
+
                                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                     <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                         {{ __('API Tokens') }}

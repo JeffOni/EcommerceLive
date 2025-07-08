@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\Payment;
+use App\Models\Order;
 
 class PaymentController extends Controller
 {
@@ -20,6 +21,29 @@ class PaymentController extends Controller
         ]);
 
         try {
+            // Obtener la dirección por defecto del usuario (igual que en CheckoutController)
+            $address = \App\Models\Address::where('user_id', auth()->id())
+                ->where('default', true)
+                ->with(['province', 'canton', 'parish'])
+                ->first();
+
+            if (!$address) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes una dirección de envío configurada'
+                ], 400);
+            }
+
+            $shippingAddress = [
+                'address' => $address->address,
+                'reference' => $address->reference,
+                'province' => $address->province->name ?? '',
+                'canton' => $address->canton->name ?? '',
+                'parish' => $address->parish->name ?? '',
+                'postal_code' => $address->postal_code,
+                'notes' => $address->notes,
+            ];
+
             // Obtener datos del carrito
             Cart::instance('shopping');
             $cartData = Cart::content()->map(function ($item) {
@@ -32,16 +56,30 @@ class PaymentController extends Controller
                 ];
             })->toArray();
 
-            $total = (float) Cart::total(2, '.', '') + 5.00; // +shipping
+            $subtotal = (float) Cart::total(2, '.', '');
+            $shipping = 5.00;
+            $total = $subtotal + $shipping;
 
             // Subir archivo
             $file = $request->file('receipt_file');
             $filename = 'transfer_' . auth()->id() . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('payment_receipts', $filename, 'public');
 
-            // Guardar en base de datos
+            // Crear orden primero
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'content' => $cartData,
+                'total' => $total,
+                'status' => 1, // Pendiente
+                'shipping_address' => $shippingAddress,
+                'subtotal' => $subtotal,
+                'shipping_cost' => $shipping,
+            ]);
+
+            // Guardar pago asociado a la orden
             $payment = Payment::create([
                 'user_id' => auth()->id(),
+                'order_id' => $order->id,
                 'payment_method' => 'bank_transfer',
                 'amount' => $total,
                 'status' => 'pending_verification',
@@ -53,13 +91,27 @@ class PaymentController extends Controller
             // Limpiar el carrito
             Cart::destroy();
 
+            // Log para depuración
+            \Log::info('PaymentController - Transferencia procesada:', [
+                'order_id' => $order->id,
+                'payment_id' => $payment->id,
+                'shipping_address' => $shippingAddress,
+                'user_id' => auth()->id()
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => '¡Felicidades! Tu comprobante ha sido enviado exitosamente. Verificaremos tu pago en las próximas 24 horas y te notificaremos por email.',
-                'payment_id' => $payment->id
+                'payment_id' => $payment->id,
+                'order_id' => $order->id
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('Error en transferencia bancaria:', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error al subir el comprobante: ' . $e->getMessage()
@@ -78,6 +130,29 @@ class PaymentController extends Controller
         ]);
 
         try {
+            // Obtener la dirección por defecto del usuario (igual que en CheckoutController)
+            $address = \App\Models\Address::where('user_id', auth()->id())
+                ->where('default', true)
+                ->with(['province', 'canton', 'parish'])
+                ->first();
+
+            if (!$address) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes una dirección de envío configurada'
+                ], 400);
+            }
+
+            $shippingAddress = [
+                'address' => $address->address,
+                'reference' => $address->reference,
+                'province' => $address->province->name ?? '',
+                'canton' => $address->canton->name ?? '',
+                'parish' => $address->parish->name ?? '',
+                'postal_code' => $address->postal_code,
+                'notes' => $address->notes,
+            ];
+
             // Obtener datos del carrito
             Cart::instance('shopping');
             $cartData = Cart::content()->map(function ($item) {
@@ -90,16 +165,30 @@ class PaymentController extends Controller
                 ];
             })->toArray();
 
-            $total = (float) Cart::total(2, '.', '') + 5.00; // +shipping
+            $subtotal = (float) Cart::total(2, '.', '');
+            $shipping = 5.00;
+            $total = $subtotal + $shipping;
 
             // Subir archivo
             $file = $request->file('receipt_file');
             $filename = 'qr_' . auth()->id() . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('payment_receipts', $filename, 'public');
 
-            // Guardar en base de datos
+            // Crear orden primero
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'content' => $cartData,
+                'total' => $total,
+                'status' => 1, // Pendiente
+                'shipping_address' => $shippingAddress,
+                'subtotal' => $subtotal,
+                'shipping_cost' => $shipping,
+            ]);
+
+            // Guardar pago asociado a la orden
             $payment = Payment::create([
                 'user_id' => auth()->id(),
+                'order_id' => $order->id,
                 'payment_method' => 'qr_deuna',
                 'amount' => $total,
                 'status' => 'pending_verification',
@@ -111,13 +200,27 @@ class PaymentController extends Controller
             // Limpiar el carrito
             Cart::destroy();
 
+            // Log para depuración
+            \Log::info('PaymentController - QR De Una procesado:', [
+                'order_id' => $order->id,
+                'payment_id' => $payment->id,
+                'shipping_address' => $shippingAddress,
+                'user_id' => auth()->id()
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => '¡Excelente! Tu comprobante QR ha sido recibido. Verificaremos tu pago De Una en las próximas 24 horas y te confirmaremos por email.',
-                'payment_id' => $payment->id
+                'payment_id' => $payment->id,
+                'order_id' => $order->id
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('Error en pago QR De Una:', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error al subir el comprobante: ' . $e->getMessage()
@@ -133,6 +236,37 @@ class PaymentController extends Controller
         try {
             // Obtener datos del carrito
             Cart::instance('shopping');
+
+            if (Cart::count() == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El carrito está vacío'
+                ], 400);
+            }
+
+            // Obtener la dirección por defecto del usuario (igual que en CheckoutController)
+            $address = \App\Models\Address::where('user_id', auth()->id())
+                ->where('default', true)
+                ->with(['province', 'canton', 'parish'])
+                ->first();
+
+            if (!$address) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes una dirección de envío configurada'
+                ], 400);
+            }
+
+            $shippingAddress = [
+                'address' => $address->address,
+                'reference' => $address->reference,
+                'province' => $address->province->name ?? '',
+                'canton' => $address->canton->name ?? '',
+                'parish' => $address->parish->name ?? '',
+                'postal_code' => $address->postal_code,
+                'notes' => $address->notes,
+            ];
+
             $cartData = Cart::content()->map(function ($item) {
                 return [
                     'id' => $item->id,
@@ -143,15 +277,46 @@ class PaymentController extends Controller
                 ];
             })->toArray();
 
-            $total = (float) Cart::total(2, '.', '') + 5.00; // +shipping
+            $subtotal = (float) Cart::total(2, '.', '');
+            $shipping = 5.00;
+            $total = $subtotal + $shipping;
 
-            // Guardar registro de pago
+            // Log para depuración
+            \Log::info('PaymentController - Dirección por defecto obtenida:', [
+                'shipping_address' => $shippingAddress,
+                'user_id' => auth()->id()
+            ]);
+
+            // Crear la orden primero
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'content' => $cartData,
+                'shipping_address' => $shippingAddress,
+                'payment_method' => 2, // Pago en efectivo contra entrega
+                'total' => $total,
+                'subtotal' => $subtotal,
+                'shipping_cost' => $shipping,
+                'status' => 2, // Pago confirmado (para pago en efectivo)
+                'notes' => 'Pago en efectivo contra entrega'
+            ]);
+
+            // Crear el registro de pago asociado a la orden
             $payment = Payment::create([
+                'order_id' => $order->id,
                 'user_id' => auth()->id(),
                 'payment_method' => 'cash_on_delivery',
                 'amount' => $total,
                 'status' => 'confirmed',
                 'cart_data' => $cartData,
+            ]);
+
+            // Actualizar la orden con el payment_id
+            $order->update(['payment_id' => $payment->id]);
+
+            // Log del resultado
+            \Log::info('Orden creada exitosamente:', [
+                'order_id' => $order->id,
+                'shipping_address_saved' => $order->shipping_address
             ]);
 
             // Limpiar el carrito
@@ -160,7 +325,8 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => '¡Perfecto! Tu pedido ha sido confirmado. Pagarás $' . number_format($total, 2) . ' en efectivo cuando recibas tus productos en tu domicilio.',
-                'payment_id' => $payment->id
+                'payment_id' => $payment->id,
+                'order_id' => $order->id
             ]);
 
         } catch (\Exception $e) {

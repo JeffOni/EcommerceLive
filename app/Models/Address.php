@@ -99,6 +99,51 @@ class Address extends Model
     }
 
     /**
+     * Accessors para los datos del receptor que están en receiver_info JSON
+     */
+    public function getReceiverNameAttribute(): ?string
+    {
+        return $this->receiver_info['name'] ?? null;
+    }
+
+    public function getReceiverLastNameAttribute(): ?string
+    {
+        return $this->receiver_info['last_name'] ?? null;
+    }
+
+    public function getReceiverFullNameAttribute(): ?string
+    {
+        $name = $this->receiver_name;
+        $lastName = $this->receiver_last_name;
+
+        if ($name && $lastName) {
+            return $name . ' ' . $lastName;
+        }
+
+        return $name ?: $lastName;
+    }
+
+    public function getReceiverPhoneAttribute(): ?string
+    {
+        return $this->receiver_info['phone'] ?? null;
+    }
+
+    public function getReceiverEmailAttribute(): ?string
+    {
+        return $this->receiver_info['email'] ?? null;
+    }
+
+    public function getReceiverDocumentTypeAttribute(): ?int
+    {
+        return $this->receiver_info['document_type'] ?? null;
+    }
+
+    public function getReceiverDocumentNumberAttribute(): ?string
+    {
+        return $this->receiver_info['document_number'] ?? null;
+    }
+
+    /**
      * Obtener información de ubicación completa
      */
     public function getLocationInfoAttribute(): array

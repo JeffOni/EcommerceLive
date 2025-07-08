@@ -5,14 +5,20 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WelcomeController;
-use App\Models\Product;
-use App\Models\Variant;
-use Illuminate\Support\Facades\Route;
+
+
+// Rutas administrativas para verificación de pagos
+Route::middleware(['auth', 'can:admin-panel'])->prefix('admin')->group(function () {
+    Route::get('/payments/verification', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'index'])->name('admin.payments.verification');
+    Route::patch('/payments/{payment}/verify', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'verify'])->name('admin.payments.verify');
+});
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
@@ -64,12 +70,24 @@ Route::get('checkout', [CheckoutController::class, 'index'])
     ->name('checkout.index')
     ->middleware('auth');
 
+Route::post('checkout', [CheckoutController::class, 'store'])
+    ->name('checkout.store')
+    ->middleware('auth');
+
 Route::get('checkout/thank-you', [CheckoutController::class, 'thankYou'])
     ->name('checkout.thank-you')
     ->middleware('auth');
 
 // Rutas para procesar pagos - requieren autenticación
 Route::middleware('auth')->group(function () {
+    // Nuevas rutas centralizadas en CheckoutController
+    Route::post('/checkout/transfer-payment', [CheckoutController::class, 'storeTransferPayment'])
+        ->name('checkout.transfer-payment');
+
+    Route::post('/checkout/qr-payment', [CheckoutController::class, 'storeQrPayment'])
+        ->name('checkout.qr-payment');
+
+    // Rutas antiguas del PaymentController (mantener por compatibilidad temporal)
     Route::post('/payments/transfer-receipt', [PaymentController::class, 'uploadTransferReceipt'])
         ->name('payments.transfer-receipt');
 
@@ -78,6 +96,39 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/payments/qr-receipt', [PaymentController::class, 'uploadQrReceipt'])
         ->name('payments.qr-receipt');
+});
+
+// Rutas para el centro de notificaciones del cliente
+Route::middleware('auth')->group(function () {
+    Route::get('/notificaciones', [NotificationController::class, 'index'])
+        ->name('notifications.index');
+
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
+
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.mark-all-read');
+
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
+        ->name('notifications.destroy');
+
+    Route::get('/notifications/unread', [NotificationController::class, 'getUnread'])
+        ->name('notifications.unread');
+});
+
+// Rutas para el tracking de órdenes del cliente
+Route::middleware('auth')->group(function () {
+    Route::get('/mis-pedidos', [OrderTrackingController::class, 'index'])
+        ->name('orders.tracking.index');
+
+    Route::get('/pedidos/{order}/tracking', [OrderTrackingController::class, 'show'])
+        ->name('orders.tracking.show');
+
+    Route::get('/pedidos/{order}/status', [OrderTrackingController::class, 'status'])
+        ->name('orders.tracking.status');
+
+    Route::get('/pedidos/{order}/factura', [CheckoutController::class, 'downloadInvoice'])
+        ->name('orders.invoice');
 });
 
 // [FUTURO] Rutas para integración PayPhone y PayPal
