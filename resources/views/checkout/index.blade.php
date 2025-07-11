@@ -208,34 +208,34 @@
                         <!-- Botones dinámicos según método de pago -->
                         <div class="mt-6">
                             <!--
-                            <button x-show="payment == 1" @click="showPaymentModal = true"
+                            <button x-show="payment == 1" x-cloak @click="showPaymentModal = true"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">
                                 Pagar con PayPhone - <span x-text="'$' + total.toFixed(2)"></span>
                             </button>
                             -->
-                            <button x-show="payment == 2" @click="showTransferModal = true"
+                            <button x-show="payment == 2" x-cloak @click="showTransferModal = true"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-green-600 rounded-lg hover:bg-green-700">
                                 Ya Transferí - Subir Comprobante
                             </button>
 
-                            <button x-show="payment == 3" @click="confirmCashPayment()"
+                            <button x-show="payment == 3" x-cloak @click="confirmCashPayment()"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-orange-600 rounded-lg hover:bg-orange-700">
                                 Confirmar Pedido (Pago Contra Entrega)
                             </button>
 
-                            <button x-show="payment == 4" @click="showQrModal = true"
+                            <button x-show="payment == 4" x-cloak @click="showQrModal = true"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-purple-600 rounded-lg hover:bg-purple-700">
                                 Ya Pagué con QR - Subir Comprobante
                             </button>
 
                             <!-- Botones para métodos de pago futuros (comentados) -->
                             <!--
-                            <button x-show="payment == 5" @click="submitPayPhoneGateway()"
+                            <button x-show="payment == 5" x-cloak @click="submitPayPhoneGateway()"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-blue-800 rounded-lg hover:bg-blue-900">
                                 Pagar con PayPhone - <span x-text="'$' + total.toFixed(2)"></span>
                             </button>
 
-                            <button x-show="payment == 6" @click="submitPayPalGateway()"
+                            <button x-show="payment == 6" x-cloak @click="submitPayPalGateway()"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-yellow-600 rounded-lg hover:bg-yellow-700">
                                 Pagar con PayPal - <span x-text="'$' + total.toFixed(2)"></span>
                             </button>
