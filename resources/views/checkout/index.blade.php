@@ -8,71 +8,72 @@
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-xl font-bold">Dirección de Envío</h2>
                             @if ($defaultAddress)
-                                <a href="{{ route('shipping.index') }}"
-                                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
-                                    <i class="mr-1.5 fas fa-edit text-xs"></i>
-                                    Gestionar direcciones
-                                </a>
+                            <a href="{{ route('shipping.index') }}"
+                                class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                                <i class="mr-1.5 fas fa-edit text-xs"></i>
+                                Gestionar direcciones
+                            </a>
                             @endif
                         </div>
 
                         @if ($defaultAddress)
-                            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center mb-2">
-                                            <i class="mr-2 text-green-600 fas fa-map-marker-alt"></i>
-                                            <p class="font-semibold text-gray-900">{{ $defaultAddress->address }}</p>
-                                        </div>
-                                        <p class="text-sm text-gray-600 ml-6">
-                                            {{ $defaultAddress->parish->name ?? '' }},
-                                            {{ $defaultAddress->canton->name ?? '' }},
-                                            {{ $defaultAddress->province->name ?? '' }}
-                                        </p>
-                                        @if ($defaultAddress->reference)
-                                            <p class="text-sm text-gray-500 ml-6">Ref: {{ $defaultAddress->reference }}
-                                            </p>
-                                        @endif
-                                        @if ($defaultAddress->postal_code)
-                                            <p class="text-sm text-gray-500 ml-6">CP: {{ $defaultAddress->postal_code }}
-                                            </p>
-                                        @endif
-                                        @if ($defaultAddress->receiver_name && $defaultAddress->receiver_name !== auth()->user()->name)
-                                            <p class="text-sm text-gray-600 ml-6 mt-1">
-                                                <i class="mr-1 fas fa-user text-xs"></i>
-                                                Receptor: {{ $defaultAddress->receiver_name }}
-                                            </p>
-                                        @endif
+                        <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <i class="mr-2 text-green-600 fas fa-map-marker-alt"></i>
+                                        <p class="font-semibold text-gray-900">{{ $defaultAddress->address }}</p>
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
-                                        Por defecto
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <p class="text-xs text-gray-500">
-                                    <i class="mr-1 fas fa-info-circle"></i>
-                                    Tu pedido será enviado a esta dirección. Si necesitas enviarlo a otra dirección,
-                                    puedes cambiar tu dirección predeterminada desde la gestión de direcciones.
-                                </p>
-                            </div>
-                        @else
-                            <div class="p-6 border border-red-200 rounded-lg bg-red-50">
-                                <div class="text-center">
-                                    <i class="mb-3 text-3xl text-red-500 fas fa-map-marker-alt"></i>
-                                    <p class="mb-2 font-semibold text-red-800">No tienes una dirección de envío
-                                        configurada</p>
-                                    <p class="mb-4 text-sm text-red-600">
-                                        Para continuar con tu compra, necesitas configurar al menos una dirección de
-                                        envío.
+                                    <p class="text-sm text-gray-600 ml-6">
+                                        {{ $defaultAddress->parish->name ?? '' }},
+                                        {{ $defaultAddress->canton->name ?? '' }},
+                                        {{ $defaultAddress->province->name ?? '' }}
                                     </p>
-                                    <a href="{{ route('shipping.index') }}"
-                                        class="inline-flex items-center px-4 py-2 font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
-                                        <i class="mr-2 fas fa-plus"></i>
-                                        Configurar dirección de envío
-                                    </a>
+                                    @if ($defaultAddress->reference)
+                                    <p class="text-sm text-gray-500 ml-6">Ref: {{ $defaultAddress->reference }}
+                                    </p>
+                                    @endif
+                                    @if ($defaultAddress->postal_code)
+                                    <p class="text-sm text-gray-500 ml-6">CP: {{ $defaultAddress->postal_code }}
+                                    </p>
+                                    @endif
+                                    @if ($defaultAddress->receiver_name && $defaultAddress->receiver_name !==
+                                    auth()->user()->name)
+                                    <p class="text-sm text-gray-600 ml-6 mt-1">
+                                        <i class="mr-1 fas fa-user text-xs"></i>
+                                        Receptor: {{ $defaultAddress->receiver_name }}
+                                    </p>
+                                    @endif
                                 </div>
+                                <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                                    Por defecto
+                                </span>
                             </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-xs text-gray-500">
+                                <i class="mr-1 fas fa-info-circle"></i>
+                                Tu pedido será enviado a esta dirección. Si necesitas enviarlo a otra dirección,
+                                puedes cambiar tu dirección predeterminada desde la gestión de direcciones.
+                            </p>
+                        </div>
+                        @else
+                        <div class="p-6 border border-red-200 rounded-lg bg-red-50">
+                            <div class="text-center">
+                                <i class="mb-3 text-3xl text-red-500 fas fa-map-marker-alt"></i>
+                                <p class="mb-2 font-semibold text-red-800">No tienes una dirección de envío
+                                    configurada</p>
+                                <p class="mb-4 text-sm text-red-600">
+                                    Para continuar con tu compra, necesitas configurar al menos una dirección de
+                                    envío.
+                                </p>
+                                <a href="{{ route('shipping.index') }}"
+                                    class="inline-flex items-center px-4 py-2 font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+                                    <i class="mr-2 fas fa-plus"></i>
+                                    Configurar dirección de envío
+                                </a>
+                            </div>
+                        </div>
                         @endif
                     </div>
 
@@ -97,8 +98,7 @@
                             -->
                             <li>
                                 <label class="flex items-center p-4" for="">
-                                    <input type="radio" name="payment" value="2" x-model="payment"
-                                        class="mr-2">
+                                    <input type="radio" name="payment" value="2" x-model="payment" class="mr-2">
                                     <span class="ml-2 text-lg font-semibold">Transferencia Bancaria</span>
                                     <img class="h-16 ml-auto " src="{{ asset('img/bank-transfer2.png') }}"
                                         alt="Transferencia Bancaria">
@@ -117,8 +117,7 @@
                             </li>
                             <li>
                                 <label class="flex items-center p-4" for="">
-                                    <input type="radio" name="payment" value="3" x-model="payment"
-                                        class="mr-2">
+                                    <input type="radio" name="payment" value="3" x-model="payment" class="mr-2">
                                     <span class="ml-2 text-lg font-semibold">Pago en Efectivo (Contra Entrega)</span>
                                     <img class="h-10 ml-auto" src="{{ asset('img/cash.png') }}" alt="Pago en Efectivo">
                                 </label>
@@ -130,8 +129,7 @@
                             </li>
                             <li>
                                 <label class="flex items-center p-4" for="">
-                                    <input type="radio" name="payment" value="4" x-model="payment"
-                                        class="mr-2">
+                                    <input type="radio" name="payment" value="4" x-model="payment" class="mr-2">
                                     <span class="ml-2 text-lg font-semibold">Pago con QR De Una (Banco Pichincha)</span>
                                     <img class="h-10 ml-auto" src="{{ asset('img/qr.png') }}" alt="Pago QR De Una">
                                 </label>
@@ -374,7 +372,8 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Comentarios (opcional)</label>
-                            <textarea name="comments" rows="3" placeholder="Agrega cualquier comentario sobre la transferencia..."
+                            <textarea name="comments" rows="3"
+                                placeholder="Agrega cualquier comentario sobre la transferencia..."
                                 class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
                         </div>
                     </div>
@@ -461,8 +460,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Número de transacción
                                 (opcional)</label>
-                            <input type="text" name="transaction_number"
-                                placeholder="Número de transacción De Una"
+                            <input type="text" name="transaction_number" placeholder="Número de transacción De Una"
                                 class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
                         </div>
                     </div>
@@ -604,8 +602,12 @@
 
                         if (result.success) {
                             console.log('Pedido creado exitosamente');
-                            // Redirigir a la página de agradecimiento
-                            window.location.href = result.redirect_url || '{{ route('checkout.thank-you') }}';
+                            // Mostrar animación celebratoria con confeti
+                            this.showSuccessAnimation();
+                            // Redirigir después de la animación
+                            setTimeout(() => {
+                                window.location.href = result.redirect_url || '{{ route('checkout.thank-you') }}';
+                            }, 3000);
                         } else {
                             console.error('Error en la respuesta:', result);
                             this.showErrorMessage('Error: ' + result.message);
