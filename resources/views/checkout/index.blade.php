@@ -24,23 +24,23 @@
                                         <i class="mr-2 text-green-600 fas fa-map-marker-alt"></i>
                                         <p class="font-semibold text-gray-900">{{ $defaultAddress->address }}</p>
                                     </div>
-                                    <p class="text-sm text-gray-600 ml-6">
+                                    <p class="ml-6 text-sm text-gray-600">
                                         {{ $defaultAddress->parish->name ?? '' }},
                                         {{ $defaultAddress->canton->name ?? '' }},
                                         {{ $defaultAddress->province->name ?? '' }}
                                     </p>
                                     @if ($defaultAddress->reference)
-                                    <p class="text-sm text-gray-500 ml-6">Ref: {{ $defaultAddress->reference }}
+                                    <p class="ml-6 text-sm text-gray-500">Ref: {{ $defaultAddress->reference }}
                                     </p>
                                     @endif
                                     @if ($defaultAddress->postal_code)
-                                    <p class="text-sm text-gray-500 ml-6">CP: {{ $defaultAddress->postal_code }}
+                                    <p class="ml-6 text-sm text-gray-500">CP: {{ $defaultAddress->postal_code }}
                                     </p>
                                     @endif
                                     @if ($defaultAddress->receiver_name && $defaultAddress->receiver_name !==
                                     auth()->user()->name)
-                                    <p class="text-sm text-gray-600 ml-6 mt-1">
-                                        <i class="mr-1 fas fa-user text-xs"></i>
+                                    <p class="mt-1 ml-6 text-sm text-gray-600">
+                                        <i class="mr-1 text-xs fas fa-user"></i>
                                         Receptor: {{ $defaultAddress->receiver_name }}
                                     </p>
                                     @endif
@@ -68,7 +68,7 @@
                                     envío.
                                 </p>
                                 <a href="{{ route('shipping.index') }}"
-                                    class="inline-flex items-center px-4 py-2 font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+                                    class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700">
                                     <i class="mr-2 fas fa-plus"></i>
                                     Configurar dirección de envío
                                 </a>
@@ -674,9 +674,9 @@
                 },
 
                 showSuccessAnimation() {
-                    // Crear overlay de bloqueo y animación de éxito
+                    // Crear overlay de bloqueo y animación de éxito (ahora cumple función de loader también)
                     const overlay = document.createElement('div');
-                    overlay.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-70';
+                    overlay.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-60'; // Fondo negro sólido
                     overlay.style.opacity = '0';
                     overlay.style.transition = 'opacity 0.3s ease-in-out';
                     overlay.style.pointerEvents = 'all';
@@ -695,7 +695,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <h3 class="mb-2 text-2xl font-bold text-white">¡Genial!</h3>
                                     <p class="text-sm text-green-100">Comprobante enviado exitosamente</p>
                                 </div>
@@ -725,30 +724,24 @@
                                 70% { transform: scale(0.9); }
                                 100% { transform: scale(1); opacity: 1; }
                             }
-                            
                             @keyframes checkmark-draw {
                                 0% { stroke-dashoffset: 100; }
                                 100% { stroke-dashoffset: 0; }
                             }
-                            
                             @keyframes confetti {
                                 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
                                 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
                             }
-                            
                             .success-icon-container {
                                 animation: bounce-in 0.6s ease-out 0.2s both;
                             }
-                            
                             .checkmark {
                                 stroke-dasharray: 100;
                                 animation: checkmark-draw 0.8s ease-out 0.5s both;
                             }
-                            
                             .success-modal {
                                 animation: bounce-in 0.5s ease-out both;
                             }
-                            
                             .confetti-piece {
                                 position: fixed;
                                 width: 10px;
@@ -772,15 +765,13 @@
 
                     // Redirigir forzadamente después de 3.2s (ligeramente más que la animación)
                     setTimeout(() => {
-                        document.body.style.overflow = '';
-                        window.removeEventListener('keydown', this._blockKeys, true);
-                        overlay.remove();
-                        // Usar la última URL de redirección si existe
+                        // Redirigir primero, el overlay se elimina automáticamente al recargar la página
                         if (this._lastRedirectUrl) {
                             window.location.href = this._lastRedirectUrl;
                         } else {
                             window.location.href = '{{ route('checkout.thank-you') }}';
                         }
+                        // No quitamos el overlay ni restauramos el scroll aquí, para que la animación cubra hasta el cambio de vista
                     }, 3200);
                 },
 
