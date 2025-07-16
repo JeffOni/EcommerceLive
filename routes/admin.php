@@ -40,10 +40,13 @@ Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 Route::get('orders/{order}/download-pdf', [OrderController::class, 'downloadPDF'])->name('orders.downloadPDF');
+Route::get('orders/{order}/check-shipment', [OrderController::class, 'checkShipment'])->name('orders.checkShipment');
+Route::post('orders/{order}/assign-driver', [OrderController::class, 'assignDriver'])->name('orders.assignDriver');
 
 // Rutas de repartidores
-Route::resource('delivery-drivers', DeliveryDriverController::class);
+Route::get('delivery-drivers/active', [DeliveryDriverController::class, 'getActiveDrivers'])->name('delivery-drivers.active');
 Route::patch('delivery-drivers/{deliveryDriver}/toggle-status', [DeliveryDriverController::class, 'toggleStatus'])->name('delivery-drivers.toggleStatus');
+Route::resource('delivery-drivers', DeliveryDriverController::class);
 
 // Rutas de envíos
 Route::resource('shipments', ShipmentController::class);

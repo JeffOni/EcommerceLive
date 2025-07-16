@@ -491,8 +491,59 @@
                 shipping: {{ $shipping ?? 0 }},
                 total: {{ $totalWithShipping ?? 0 }},
                 orderNumber: '',
+                
+                // Datos de dirección de envío para validación
+                shippingProvince: @if($defaultAddress) '{{ $defaultAddress->province->name ?? '' }}' @else '' @endif,
+                
                 init() {
                     this.orderNumber = this.generateOrderNumber();
+                    this.validateShippingProvince();
+                },
+                
+                // Validar provincia de envío
+                validateShippingProvince() {
+                    const allowedProvinces = ['Pichincha', 'Manabí'];
+                    
+                    if (this.shippingProvince && !allowedProvinces.includes(this.shippingProvince)) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Dirección de envío no disponible',
+                            html: `
+                                <p>Lo sentimos, actualmente solo realizamos envíos a:</p>
+                                <ul style="text-align: left; margin: 10px 0;">
+                                    <li>• <strong>Pichincha</strong> (Quito y alrededores)</li>
+                                    <li>• <strong>Manabí</strong> (Manta, Portoviejo y alrededores)</li>
+                                </ul>
+                                <p>Tu dirección actual está en: <strong>${this.shippingProvince}</strong></p>
+                                <p style="margin-top: 15px;">Puedes:</p>
+                                <ul style="text-align: left;">
+                                    <li>• Cambiar tu dirección si tienes una en zona de cobertura</li>
+                                    <li>• Contactarnos para coordinar un retiro en tienda</li>
+                                </ul>
+                            `,
+                            showCancelButton: true,
+                            confirmButtonText: 'Cambiar dirección',
+                            cancelButtonText: 'Cancelar compra',
+                            confirmButtonColor: '#3b82f6',
+                            cancelButtonColor: '#ef4444'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('shipping.index') }}';
+                            } else {
+                                window.location.href = '{{ route('cart.index') }}';
+                            }
+                        });
+                        return false;
+                    }
+                    return true;
+                },
+                
+                // Verificar provincia antes de cualquier pago
+                checkProvinceBeforePayment() {
+                    if (!this.validateShippingProvince()) {
+                        return false;
+                    }
+                    return true;
                 },
                 generateOrderNumber() {
                     const now = new Date();
@@ -505,7 +556,13 @@
 
                 // Métodos de pago unificados - usando CheckoutController
                 async submitTransferReceipt(event) {
+                    // Validar provincia antes de procesar
+                    if (!this.checkProvinceBeforePayment()) {
+                        return;
+                    }
+                    
                     try {
+                        console.log('Iniciando envío de comprobante de transferencia...');
                         const formData = new FormData(event.target);
 
                         const response = await fetch('{{ route('checkout.transfer-payment') }}', {
@@ -522,25 +579,26 @@
 
                         if (result.success) {
                             this.showTransferModal = false;
-
-                            // Mostrar animación celebratoria con confeti
+                            this._lastRedirectUrl = result.redirect_url;
                             this.showSuccessAnimation();
-
-                            // Redirigir después de la animación
-                            setTimeout(() => {
-                                window.location.href = result.redirect_url ||
-                                    '{{ route('checkout.thank-you') }}';
-                            }, 3000);
                         } else {
+                            console.error('Error en respuesta:', result);
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
+                        console.error('Error completo:', error);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
                     }
                 },
 
                 async submitQrReceipt(event) {
+                    // Validar provincia antes de procesar
+                    if (!this.checkProvinceBeforePayment()) {
+                        return;
+                    }
+                    
                     try {
+                        console.log('Iniciando envío de comprobante QR...');
                         const formData = new FormData(event.target);
 
                         const response = await fetch('{{ route('checkout.qr-payment') }}', {
@@ -553,27 +611,28 @@
                         });
 
                         const result = await response.json();
+                        console.log('Resultado de QR payment:', result);
 
                         if (result.success) {
                             this.showQrModal = false;
-
-                            // Mostrar animación celebratoria con confeti
+                            this._lastRedirectUrl = result.redirect_url;
                             this.showSuccessAnimation();
-
-                            // Redirigir después de la animación
-                            setTimeout(() => {
-                                window.location.href = result.redirect_url ||
-                                    '{{ route('checkout.thank-you') }}';
-                            }, 3000);
                         } else {
+                            console.error('Error en respuesta QR:', result);
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
+                        console.error('Error completo QR:', error);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
                     }
                 },
 
                 async confirmCashPayment() {
+                    // Validar provincia antes de procesar
+                    if (!this.checkProvinceBeforePayment()) {
+                        return;
+                    }
+                    
                     try {
                         // Verificar que hay una dirección por defecto disponible
                         @if (!$defaultAddress)
@@ -602,12 +661,8 @@
 
                         if (result.success) {
                             console.log('Pedido creado exitosamente');
-                            // Mostrar animación celebratoria con confeti
+                            this._lastRedirectUrl = result.redirect_url || '{{ route('checkout.thank-you') }}';
                             this.showSuccessAnimation();
-                            // Redirigir después de la animación
-                            setTimeout(() => {
-                                window.location.href = result.redirect_url || '{{ route('checkout.thank-you') }}';
-                            }, 3000);
                         } else {
                             console.error('Error en la respuesta:', result);
                             this.showErrorMessage('Error: ' + result.message);
@@ -618,173 +673,122 @@
                     }
                 },
 
-                showSuccessMessage(message) {
-                    // Crear overlay con animación
-                    const successOverlay = document.createElement('div');
-                    successOverlay.className =
-                        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
-                    successOverlay.style.opacity = '0';
-                    successOverlay.style.transition = 'opacity 0.3s ease-in-out';
-
-                    successOverlay.innerHTML = `
-                    <div class="relative w-full max-w-md mx-4">
-                        <!-- Modal principal -->
-                        <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl success-modal">
-                            <!-- Header con gradiente -->
-                            <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-green-400 to-green-600">
-                                <!-- Partículas animadas -->
-                                <div class="absolute inset-0 opacity-20">
-                                    <div class="particle" style="left: 20%; animation-delay: 0s;"></div>
-                                    <div class="particle" style="left: 40%; animation-delay: 0.5s;"></div>
-                                    <div class="particle" style="left: 60%; animation-delay: 1s;"></div>
-                                    <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
-                                </div>
-                                
-                                <!-- Icono principal animado -->
-                                <div class="relative mb-4">
-                                    <div class="success-icon-container">
-                                        <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full success-icon">
-                                            <svg class="w-10 h-10 text-green-500 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                            </svg>
+                showSuccessAnimation() {
+                    // Crear overlay de bloqueo y animación de éxito
+                    const overlay = document.createElement('div');
+                    overlay.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-70';
+                    overlay.style.opacity = '0';
+                    overlay.style.transition = 'opacity 0.3s ease-in-out';
+                    overlay.style.pointerEvents = 'all';
+                    overlay.style.userSelect = 'none';
+                    overlay.tabIndex = -1;
+                    overlay.innerHTML = `
+                        <div class="relative w-full max-w-md mx-4">
+                            <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl success-modal">
+                                <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-green-400 to-green-600">
+                                    <div class="relative mb-4">
+                                        <div class="success-icon-container">
+                                            <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full success-icon">
+                                                <svg class="w-10 h-10 text-green-500 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <h3 class="mb-2 text-2xl font-bold text-white">¡Excelente!</h3>
-                                <p class="text-sm text-green-100">Pago procesado exitosamente</p>
-                            </div>
-                            
-                            <!-- Contenido -->
-                            <div class="px-6 py-6 text-center">
-                                <p class="mb-6 leading-relaxed text-gray-700">${message}</p>
-                                
-                                <!-- Botones -->
-                                <div class="space-y-3">
-                                    <button onclick="window.location.href='{{ route('checkout.thank-you') }}'" 
-                                            class="w-full px-6 py-3 font-semibold text-white transition-all duration-200 transform rounded-lg shadow-lg bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:scale-105">
-                                        <i class="mr-2 fa-solid fa-heart"></i>
-                                        Ver detalles
-                                    </button>
                                     
-                                    <button onclick="this.closest('.fixed').remove()" 
-                                            class="w-full px-6 py-2 text-gray-700 transition-colors duration-200 bg-gray-100 rounded-lg hover:bg-gray-200">
-                                        Cerrar
-                                    </button>
+                                    <h3 class="mb-2 text-2xl font-bold text-white">¡Genial!</h3>
+                                    <p class="text-sm text-green-100">Comprobante enviado exitosamente</p>
+                                </div>
+                                <div class="px-6 py-6 text-center">
+                                    <p class="mb-4 leading-relaxed text-gray-700">Tu comprobante ha sido enviado correctamente. Verificaremos tu pago en las próximas 24 horas.</p>
+                                    <div class="flex items-center justify-center mb-4">
+                                        <div class="w-8 h-8 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
+                                        <span class="ml-3 text-sm text-gray-600">Redirigiendo...</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Confetti animado -->
-                    <div class="absolute inset-0 overflow-hidden pointer-events-none confetti-container">
-                        ${this.generateConfetti()}
-                    </div>
-                `;
+                    `;
 
-                    // Agregar estilos CSS
+                    // Prevenir scroll y teclas
+                    document.body.style.overflow = 'hidden';
+                    window.addEventListener('keydown', this._blockKeys, true);
+
+                    // Agregar estilos CSS para animaciones si no existen
                     if (!document.querySelector('#success-animation-styles')) {
                         const styles = document.createElement('style');
                         styles.id = 'success-animation-styles';
                         styles.textContent = `
-                        @keyframes particle-float {
-                            0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
-                            50% { opacity: 1; }
-                            100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
-                        }
-                        
-                        @keyframes checkmark-draw {
-                            0% { stroke-dasharray: 0 100; }
-                            100% { stroke-dasharray: 100 0; }
-                        }
-                        
-                        @keyframes confetti-fall {
-                            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-                            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-                        }
-                        
-                        @keyframes bounce-in {
-                            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-                            50% { transform: scale(1.1) rotate(5deg); }
-                            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-                        }
-                        
-                        .particle {
-                            position: absolute;
-                            width: 10px;
-                            height: 10px;
-                            background: white;
-                            border-radius: 50%;
-                            animation: particle-float 2s infinite ease-in-out;
-                        }
-                        
-                        .success-icon-container {
-                            animation: bounce-in 0.6s ease-out 0.2s both;
-                        }
-                        
-                        .checkmark {
-                            stroke-dasharray: 100;
-                            animation: checkmark-draw 0.8s ease-out 0.5s both;
-                        }
-                        
-                        .confetti-piece {
-                            position: absolute;
-                            width: 10px;
-                            height: 10px;
-                            animation: confetti-fall 3s linear infinite;
-                        }
-                        
-                        .success-modal {
-                            animation: bounce-in 0.5s ease-out both;
-                        }
-                    `;
+                            @keyframes bounce-in {
+                                0% { transform: scale(0.3); opacity: 0; }
+                                50% { transform: scale(1.05); }
+                                70% { transform: scale(0.9); }
+                                100% { transform: scale(1); opacity: 1; }
+                            }
+                            
+                            @keyframes checkmark-draw {
+                                0% { stroke-dashoffset: 100; }
+                                100% { stroke-dashoffset: 0; }
+                            }
+                            
+                            @keyframes confetti {
+                                0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+                                100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+                            }
+                            
+                            .success-icon-container {
+                                animation: bounce-in 0.6s ease-out 0.2s both;
+                            }
+                            
+                            .checkmark {
+                                stroke-dasharray: 100;
+                                animation: checkmark-draw 0.8s ease-out 0.5s both;
+                            }
+                            
+                            .success-modal {
+                                animation: bounce-in 0.5s ease-out both;
+                            }
+                            
+                            .confetti-piece {
+                                position: fixed;
+                                width: 10px;
+                                height: 10px;
+                                z-index: 10000;
+                                animation: confetti 3s linear infinite;
+                            }
+                        `;
                         document.head.appendChild(styles);
                     }
 
-                    document.body.appendChild(successOverlay);
-
-                    // Animar entrada
+                    document.body.appendChild(overlay);
                     setTimeout(() => {
-                        successOverlay.style.opacity = '1';
-                        const modal = successOverlay.querySelector('.success-modal');
+                        overlay.style.opacity = '1';
+                        const modal = overlay.querySelector('.success-modal');
                         modal.style.transform = 'scale(1)';
                     }, 10);
 
-                    // Auto-remover después de 8 segundos y redirigir
+                    // Crear confeti
+                    this.createConfetti();
+
+                    // Redirigir forzadamente después de 3.2s (ligeramente más que la animación)
                     setTimeout(() => {
-                        if (successOverlay.parentNode) {
-                            successOverlay.style.opacity = '0';
-                            setTimeout(() => {
-                                successOverlay.remove();
-                                // Redireccionar a página de agradecimiento
-                                window.location.href = '{{ route('checkout.thank-you') }}';
-                            }, 300);
+                        document.body.style.overflow = '';
+                        window.removeEventListener('keydown', this._blockKeys, true);
+                        overlay.remove();
+                        // Usar la última URL de redirección si existe
+                        if (this._lastRedirectUrl) {
+                            window.location.href = this._lastRedirectUrl;
+                        } else {
+                            window.location.href = '{{ route('checkout.thank-you') }}';
                         }
-                    }, 4000); // Reducido a 4 segundos para redirección más rápida
+                    }, 3200);
                 },
 
-                generateConfetti() {
-                    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
-                    let confetti = '';
-
-                    for (let i = 0; i < 50; i++) {
-                        const color = colors[Math.floor(Math.random() * colors.length)];
-                        const left = Math.random() * 100;
-                        const delay = Math.random() * 3;
-                        const duration = 2 + Math.random() * 2;
-
-                        confetti += `
-                        <div class="confetti-piece" 
-                             style="left: ${left}%; 
-                                    background-color: ${color}; 
-                                    animation-delay: ${delay}s;
-                                    animation-duration: ${duration}s;
-                                    transform: rotate(${Math.random() * 360}deg);">
-                        </div>
-                    `;
-                    }
-
-                    return confetti;
+                // Bloquear teclas y scroll
+                _blockKeys(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                 },
 
                 showErrorMessage(message) {
@@ -867,106 +871,6 @@
                             setTimeout(() => errorOverlay.remove(), 300);
                         }
                     }, 5000);
-                },
-
-                showSuccessAnimation() {
-                    console.log('Ejecutando showSuccessAnimation');
-                    // Crear overlay con animación de éxito
-                    const successOverlay = document.createElement('div');
-                    successOverlay.className =
-                        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
-                    successOverlay.style.opacity = '0';
-                    successOverlay.style.transition = 'opacity 0.3s ease-in-out';
-
-                    successOverlay.innerHTML = `
-                        <div class="relative w-full max-w-md mx-4">
-                            <div class="overflow-hidden transition-all duration-500 ease-out transform scale-75 bg-white shadow-2xl rounded-2xl success-modal">
-                                <!-- Header con gradiente verde -->
-                                <div class="relative px-6 py-8 overflow-hidden text-center bg-gradient-to-r from-green-400 to-green-600">
-                                    <!-- Icono de éxito animado -->
-                                    <div class="relative mb-4">
-                                        <div class="success-icon-container">
-                                            <div class="flex items-center justify-center w-20 h-20 p-4 mx-auto bg-white rounded-full success-icon">
-                                                <svg class="w-10 h-10 text-green-500 checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <h3 class="mb-2 text-2xl font-bold text-white">¡Genial!</h3>
-                                    <p class="text-sm text-green-100">Comprobante enviado exitosamente</p>
-                                </div>
-                                
-                                <!-- Contenido -->
-                                <div class="px-6 py-6 text-center">
-                                    <p class="mb-4 leading-relaxed text-gray-700">Tu comprobante ha sido enviado correctamente. Verificaremos tu pago en las próximas 24 horas.</p>
-                                    <div class="flex items-center justify-center mb-4">
-                                        <div class="w-8 h-8 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
-                                        <span class="ml-3 text-sm text-gray-600">Redirigiendo...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    // Agregar estilos CSS para animaciones si no existen
-                    if (!document.querySelector('#success-animation-styles')) {
-                        const styles = document.createElement('style');
-                        styles.id = 'success-animation-styles';
-                        styles.textContent = `
-                            @keyframes bounce-in {
-                                0% { transform: scale(0.3); opacity: 0; }
-                                50% { transform: scale(1.05); }
-                                70% { transform: scale(0.9); }
-                                100% { transform: scale(1); opacity: 1; }
-                            }
-                            
-                            @keyframes checkmark-draw {
-                                0% { stroke-dashoffset: 100; }
-                                100% { stroke-dashoffset: 0; }
-                            }
-                            
-                            @keyframes confetti {
-                                0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-                                100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-                            }
-                            
-                            .success-icon-container {
-                                animation: bounce-in 0.6s ease-out 0.2s both;
-                            }
-                            
-                            .checkmark {
-                                stroke-dasharray: 100;
-                                animation: checkmark-draw 0.8s ease-out 0.5s both;
-                            }
-                            
-                            .success-modal {
-                                animation: bounce-in 0.5s ease-out both;
-                            }
-                            
-                            .confetti-piece {
-                                position: fixed;
-                                width: 10px;
-                                height: 10px;
-                                z-index: 60;
-                                animation: confetti 3s linear infinite;
-                            }
-                        `;
-                        document.head.appendChild(styles);
-                    }
-
-                    document.body.appendChild(successOverlay);
-
-                    // Animar entrada
-                    setTimeout(() => {
-                        successOverlay.style.opacity = '1';
-                        const modal = successOverlay.querySelector('.success-modal');
-                        modal.style.transform = 'scale(1)';
-                    }, 10);
-
-                    // Crear confeti
-                    this.createConfetti();
                 },
 
                 createConfetti() {

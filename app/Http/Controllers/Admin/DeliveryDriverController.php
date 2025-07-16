@@ -202,4 +202,17 @@ class DeliveryDriverController extends Controller
             'new_status' => $deliveryDriver->is_active
         ]);
     }
+
+    /**
+     * Get active drivers for AJAX requests
+     */
+    public function getActiveDrivers()
+    {
+        $drivers = DeliveryDriver::active()
+            ->select('id', 'name', 'phone')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json($drivers);
+    }
 }

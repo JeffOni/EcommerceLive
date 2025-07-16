@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Address;
+use App\Services\ShipmentService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CheckoutController extends Controller
 {
+    protected $shipmentService;
+
+    public function __construct(ShipmentService $shipmentService)
+    {
+        $this->shipmentService = $shipmentService;
+    }
+
     public function index()
     {
         // Configurar la instancia del carrito
@@ -170,6 +178,16 @@ class CheckoutController extends Controller
     {
         \Log::info('Iniciando storeTransferPayment para usuario: ' . auth()->id());
 
+        // Verificar que el carrito no esté vacío ANTES de hacer cualquier cosa
+        Cart::instance('shopping');
+        if (Cart::count() == 0) {
+            \Log::error('Intento de procesamiento con carrito vacío para usuario: ' . auth()->id());
+            return response()->json([
+                'success' => false,
+                'message' => 'Tu carrito está vacío. Por favor, agrega productos antes de continuar.'
+            ], 400);
+        }
+
         $request->validate([
             'receipt_file' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:5120', // 5MB
             'comments' => 'nullable|string|max:500'
@@ -188,8 +206,6 @@ class CheckoutController extends Controller
                     'message' => 'Error al crear la orden. Verifica que tengas productos en el carrito y una dirección por defecto.'
                 ], 500);
             }
-
-            \Log::info('Orden creada exitosamente: ' . $order->id);
 
             \Log::info('Orden creada exitosamente: ' . $order->id);
 
@@ -217,7 +233,9 @@ class CheckoutController extends Controller
             $order->update(['payment_id' => $payment->id]);
             \Log::info('Orden actualizada con payment_id: ' . $payment->id);
 
+            // IMPORTANTE: Limpiar carrito SOLO después de todo exitoso
             Cart::destroy();
+            \Log::info('Carrito limpiado exitosamente');
 
             return response()->json([
                 'success' => true,
@@ -230,7 +248,8 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             \Log::error('Error en transferencia bancaria:', [
                 'error' => $e->getMessage(),
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString()
             ]);
 
             return response()->json([
@@ -245,6 +264,18 @@ class CheckoutController extends Controller
      */
     public function storeQrPayment(Request $request)
     {
+        \Log::info('Iniciando storeQrPayment para usuario: ' . auth()->id());
+
+        // Verificar que el carrito no esté vacío ANTES de hacer cualquier cosa
+        Cart::instance('shopping');
+        if (Cart::count() == 0) {
+            \Log::error('Intento de procesamiento QR con carrito vacío para usuario: ' . auth()->id());
+            return response()->json([
+                'success' => false,
+                'message' => 'Tu carrito está vacío. Por favor, agrega productos antes de continuar.'
+            ], 400);
+        }
+
         $request->validate([
             'receipt_file' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:5120', // 5MB
             'transaction_number' => 'nullable|string|max:100'
@@ -255,11 +286,14 @@ class CheckoutController extends Controller
             $order = $this->createOrderFromCart(4); // Método de pago: QR
 
             if (!$order) {
+                \Log::error('No se pudo crear la orden desde el carrito para QR');
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al crear la orden.'
+                    'message' => 'Error al crear la orden. Verifica que tengas productos en el carrito y una dirección por defecto.'
                 ], 500);
             }
+
+            \Log::info('Orden QR creada exitosamente: ' . $order->id);
 
             // Guardar el archivo de comprobante
             $file = $request->file('receipt_file');
@@ -280,7 +314,9 @@ class CheckoutController extends Controller
             // Actualizar la orden con el payment_id
             $order->update(['payment_id' => $payment->id]);
 
+            // IMPORTANTE: Limpiar carrito SOLO después de todo exitoso
             Cart::destroy();
+            \Log::info('Carrito QR limpiado exitosamente');
 
             return response()->json([
                 'success' => true,
@@ -293,7 +329,8 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             \Log::error('Error en pago QR:', [
                 'error' => $e->getMessage(),
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString()
             ]);
 
             return response()->json([
@@ -312,7 +349,7 @@ class CheckoutController extends Controller
 
         \Log::info('Verificando carrito - Count: ' . Cart::count());
         if (Cart::count() == 0) {
-            \Log::error('El carrito está vacío');
+            \Log::error('El carrito está vacío al intentar crear orden');
             return null;
         }
 
@@ -366,7 +403,14 @@ class CheckoutController extends Controller
             ];
         })->values()->toArray();
 
-        return \App\Models\Order::create([
+        \Log::info('Creando orden con datos:', [
+            'user_id' => auth()->id(),
+            'payment_method' => $paymentMethod,
+            'total' => $totalWithShipping,
+            'items_count' => count($cartContent)
+        ]);
+
+        $order = \App\Models\Order::create([
             'user_id' => auth()->id(),
             'status' => 1,
             'payment_method' => $paymentMethod,
@@ -376,5 +420,18 @@ class CheckoutController extends Controller
             'content' => $cartContent,
             'shipping_address' => $shipping_address,
         ]);
+
+        \Log::info('Orden creada exitosamente con ID: ' . $order->id);
+
+        // Crear envío automáticamente para la orden
+        try {
+            $this->shipmentService->createShipmentForOrder($order);
+            \Log::info('Envío creado para orden: ' . $order->id);
+        } catch (\Exception $e) {
+            // Log el error pero no falla la orden
+            \Log::error('Error creando envío para orden ' . $order->id . ': ' . $e->getMessage());
+        }
+
+        return $order;
     }
 }

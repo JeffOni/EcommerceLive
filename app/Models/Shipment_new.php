@@ -64,11 +64,11 @@ class Shipment extends Model
     }
 
     /**
-     * Relación con DeliveryDriver
+     * Relación con User (delivery driver)
      */
     public function deliveryDriver(): BelongsTo
     {
-        return $this->belongsTo(DeliveryDriver::class, 'delivery_driver_id');
+        return $this->belongsTo(User::class, 'delivery_driver_id');
     }
 
     /**
@@ -118,14 +118,14 @@ class Shipment extends Model
     /**
      * Asignar conductor al envío
      */
-    public function assignDriver(DeliveryDriver $driver): bool
+    public function assignDriver(int $driverId): bool
     {
         if (!$this->canBeAssigned()) {
             return false;
         }
 
         $this->update([
-            'delivery_driver_id' => $driver->id,
+            'delivery_driver_id' => $driverId,
             'status' => ShipmentStatus::ASSIGNED,
             'assigned_at' => now(),
         ]);
@@ -209,11 +209,11 @@ class Shipment extends Model
     {
         $allowedProvinces = ['Pichincha', 'Manabí'];
         $province = $address['province'] ?? null;
-
+        
         return in_array($province, $allowedProvinces);
     }
 
-    // Scopes para mantener compatibilidad
+    // Scopes
     public function scopePending(Builder $query): Builder
     {
         return $query->where('status', ShipmentStatus::PENDING);
@@ -242,80 +242,5 @@ class Shipment extends Model
     public function scopeByDriver(Builder $query, int $driverId): Builder
     {
         return $query->where('delivery_driver_id', $driverId);
-    }
-
-    // Accessors usando el Enum
-    public function getStatusLabelAttribute(): string
-    {
-        return $this->status->label();
-    }
-
-    public function getStatusClassAttribute(): string
-    {
-        return match ($this->status) {
-            ShipmentStatus::PENDING => 'bg-yellow-100 text-yellow-800',
-            ShipmentStatus::ASSIGNED => 'bg-blue-100 text-blue-800',
-            ShipmentStatus::PICKED_UP => 'bg-purple-100 text-purple-800',
-            ShipmentStatus::IN_TRANSIT => 'bg-orange-100 text-orange-800',
-            ShipmentStatus::DELIVERED => 'bg-green-100 text-green-800',
-            ShipmentStatus::FAILED => 'bg-red-100 text-red-800',
-        };
-    }
-
-    public function getStatusIconAttribute(): string
-    {
-        return match ($this->status) {
-            ShipmentStatus::PENDING => 'fas fa-clock',
-            ShipmentStatus::ASSIGNED => 'fas fa-user-check',
-            ShipmentStatus::PICKED_UP => 'fas fa-hand-paper',
-            ShipmentStatus::IN_TRANSIT => 'fas fa-truck',
-            ShipmentStatus::DELIVERED => 'fas fa-check-circle',
-            ShipmentStatus::FAILED => 'fas fa-times-circle',
-        };
-    }
-
-    public function getCurrentLocationAttribute(): ?array
-    {
-        if ($this->current_latitude && $this->current_longitude) {
-            return [
-                'lat' => (float) $this->current_latitude,
-                'lng' => (float) $this->current_longitude,
-                'updated_at' => $this->location_updated_at
-            ];
-        }
-        return null;
-    }
-
-    /**
-     * Actualizar ubicación GPS del envío
-     */
-    public function updateLocation(float $lat, float $lng): void
-    {
-        $this->update([
-            'current_latitude' => $lat,
-            'current_longitude' => $lng,
-            'location_updated_at' => now()
-        ]);
-    }
-
-    /**
-     * Agregar calificación del cliente
-     */
-    public function addCustomerFeedback(float $rating, string $feedback = null): void
-    {
-        $this->update([
-            'customer_rating' => $rating,
-            'customer_feedback' => $feedback
-        ]);
-
-        // Actualizar rating del repartidor (promedio simple)
-        if ($this->deliveryDriver) {
-            $avgRating = self::where('delivery_driver_id', $this->delivery_driver_id)
-                ->whereNotNull('customer_rating')
-                ->avg('customer_rating');
-
-            // Aquí necesitarías un método en el modelo User para actualizar rating
-            // $this->deliveryDriver->updateRating($avgRating);
-        }
     }
 }

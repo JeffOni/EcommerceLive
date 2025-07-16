@@ -138,4 +138,79 @@ class OrderController extends Controller
 
         return response()->download(storage_path('app/' . $order->pdf_path));
     }
+
+    /**
+     * Verificar si la orden tiene un envío
+     */
+    public function checkShipment(\App\Models\Order $order)
+    {
+        return response()->json([
+            'hasShipment' => $order->hasShipment(),
+            'shipment' => $order->hasShipment() ? $order->shipment : null
+        ]);
+    }
+
+    /**
+     * Asignar repartidor a una orden
+     */
+    public function assignDriver(Request $request, \App\Models\Order $order)
+    {
+        $request->validate([
+            'delivery_driver_id' => 'required|exists:delivery_drivers,id'
+        ]);
+
+        try {
+            // Verificar que la orden esté en un estado válido para asignar repartidor
+            $validStates = [1, 2, 3]; // Pendiente, Verificado, Preparando
+            if (!in_array($order->status, $validStates)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Esta orden no puede tener un repartidor asignado en su estado actual.'
+                ]);
+            }
+
+            // Usar el ShipmentService para crear/asignar envío
+            $shipmentService = app(\App\Services\ShipmentService::class);
+            $driver = \App\Models\DeliveryDriver::findOrFail($request->delivery_driver_id);
+
+            // Si no tiene envío, crearlo primero
+            if (!$order->hasShipment()) {
+                $shipment = $shipmentService->createShipmentForOrder($order);
+                if (!$shipment) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No se pudo crear el envío para esta orden. Verifica que la dirección sea válida.'
+                    ]);
+                }
+            } else {
+                $shipment = $order->shipment;
+            }
+
+            // Asignar el repartidor
+            $success = $shipmentService->assignDriverToShipment($shipment, $driver);
+
+            if ($success) {
+                // Actualizar el estado de la orden a "Asignado" (4)
+                $order->update(['status' => 4]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Repartidor {$driver->name} asignado correctamente a la orden #{$order->id}"
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se pudo asignar el repartidor al envío.'
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Error asignando repartidor a orden: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al asignar el repartidor. Inténtalo de nuevo.'
+            ]);
+        }
+    }
 }
