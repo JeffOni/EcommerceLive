@@ -12,7 +12,7 @@
                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105">
 
                         {{-- Badge de Variant Info --}}
-                        <div class="absolute top-4 left-4 space-y-2">
+                        <div class="absolute space-y-2 top-4 left-4">
                             @if ($this->variant)
                             <span
                                 class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">
@@ -39,7 +39,7 @@
                         @if ($this->variantInfo['sku'])
                         <div class="absolute top-4 right-4">
                             <span
-                                class="inline-flex items-center px-2 py-1 text-xs font-mono text-gray-600 glass-effect rounded-lg shadow-sm">
+                                class="inline-flex items-center px-2 py-1 font-mono text-xs text-gray-600 rounded-lg shadow-sm glass-effect">
                                 SKU: {{ $this->variantInfo['sku'] }}
                             </span>
                         </div>
@@ -63,7 +63,7 @@
                 {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
                 <div class="space-y-3">
                     <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
-                    <div class="flex space-x-3 overflow-x-auto pb-2">
+                    <div class="flex pb-2 space-x-3 overflow-x-auto">
                         @foreach ($this->availableImages as $index => $image)
                         <div class="flex-shrink-0">
                             <button wire:click="selectImage('{{ $image['url'] }}')"
@@ -224,7 +224,7 @@
                             :class="activeTab === 'description' ? 
                                 'border-blue-500 text-blue-600 dark:text-blue-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
+                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
                             Descripción
                         </button>
 
@@ -233,8 +233,8 @@
                             :class="activeTab === 'features' ? 
                                 'border-green-500 text-green-600 dark:text-green-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
-                            <i class="fas fa-star mr-1"></i>
+                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
+                            <i class="mr-1 fas fa-star"></i>
                             Características Especiales
                         </button>
                         @endif
@@ -244,8 +244,8 @@
                             :class="activeTab === 'preparation' ? 
                                 'border-purple-500 text-purple-600 dark:text-purple-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
-                            <i class="fas fa-utensils mr-1"></i>
+                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
+                            <i class="mr-1 fas fa-utensils"></i>
                             Preparación Recomendada
                         </button>
                         @endif
@@ -256,7 +256,7 @@
                         <div x-show="activeTab === 'description'" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 transform translate-y-2"
                             x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
-                            <div class="flex items-center space-x-2 mb-3">
+                            <div class="flex items-center mb-3 space-x-2">
                                 <div class="w-1 h-6 bg-blue-500 rounded-full"></div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Descripción</h3>
                             </div>
@@ -270,15 +270,15 @@
                         <div x-show="activeTab === 'features'" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 transform translate-y-2"
                             x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
-                            <div class="flex items-center space-x-2 mb-3">
+                            <div class="flex items-center mb-3 space-x-2">
                                 <div class="w-1 h-6 bg-green-500 rounded-full"></div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    <i class="fas fa-star text-green-500 mr-2"></i>
+                                    <i class="mr-2 text-green-500 fas fa-star"></i>
                                     Características Especiales
                                 </h3>
                             </div>
                             <div
-                                class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                                class="p-4 border border-green-200 rounded-lg bg-green-50 dark:bg-green-900/20 dark:border-green-700">
                                 <p class="leading-relaxed text-green-800 dark:text-green-200">
                                     {{ $product->general_features }}
                                 </p>
@@ -291,15 +291,15 @@
                         <div x-show="activeTab === 'preparation'" x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 transform translate-y-2"
                             x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
-                            <div class="flex items-center space-x-2 mb-3">
+                            <div class="flex items-center mb-3 space-x-2">
                                 <div class="w-1 h-6 bg-purple-500 rounded-full"></div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    <i class="fas fa-utensils text-purple-500 mr-2"></i>
+                                    <i class="mr-2 text-purple-500 fas fa-utensils"></i>
                                     Preparación Recomendada
                                 </h3>
                             </div>
                             <div
-                                class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg">
+                                class="p-4 border border-purple-200 rounded-lg bg-purple-50 dark:bg-purple-900/20 dark:border-purple-700">
                                 <p class="leading-relaxed text-purple-800 dark:text-purple-200">
                                     {{ $product->recommended_preparation }}
                                 </p>
@@ -384,14 +384,14 @@
                                 );
                                 @endphp
                                 @if ($selectedFeature)
-                                <span class="text-xs text-blue-600 font-medium">
+                                <span class="text-xs font-medium text-blue-600">
                                     {{ $selectedFeature['description'] }}
                                 </span>
                                 @endif
                                 @endif
                             </div>
 
-                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                                 @foreach ($option->pivot->features as $feature)
                                 <div class="relative">
                                     @switch($option->type)
@@ -429,7 +429,7 @@
                                         @endif
 
                                         {{-- Nombre del color --}}
-                                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                                        <div class="absolute transform -translate-x-1/2 -bottom-6 left-1/2">
                                             <span class="text-xs text-gray-600 dark:text-gray-400">
                                                 {{ $feature['description'] }}
                                             </span>
@@ -455,15 +455,17 @@
                     </div> {{-- Botones de Acción Mejorados --}}
                     <div class="space-y-3">
                         {{-- Botón Principal: Agregar al Carrito --}}
-                        <button wire:click="addToCart" wire:loading.attr="disabled" @if
-                            (!$this->variantInfo['available'] || !$this->variantInfo['hasStock']) disabled @endif
+                        @php
+                        $isDisabled = !$this->variantInfo['available'] || !$this->variantInfo['hasStock'];
+                        $buttonClass = $this->variantInfo['available'] && $this->variantInfo['hasStock']
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+                        hover:scale-[1.02] active:scale-[0.98]'
+                        : 'bg-gray-400 cursor-not-allowed opacity-60';
+                        @endphp
+                        <button wire:click="addToCart" wire:loading.attr="disabled" {{ $isDisabled ? 'disabled' : '' }}
                             class="w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white
                             rounded-xl transition-all duration-300 transform shadow-lg hover:shadow-xl focus:ring-4
-                            focus:ring-blue-300 dark:focus:ring-blue-800
-                            {{ $this->variantInfo['available'] && $this->variantInfo['hasStock']
-                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
-                            hover:scale-[1.02] active:scale-[0.98]'
-                            : 'bg-gray-400 cursor-not-allowed opacity-60' }}">
+                            focus:ring-blue-300 dark:focus:ring-blue-800 {{ $buttonClass }}">
 
                             <span wire:loading.remove class="flex items-center">
                                 @if ($this->variantInfo['available'] && $this->variantInfo['hasStock'])
@@ -503,7 +505,7 @@
                         @if ($this->variant)
                         @if ($this->variantInfo['hasStock'])
                         <div
-                            class="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-700">
+                            class="p-3 border border-blue-200 rounded-lg bg-blue-50 dark:bg-blue-900/20 dark:border-blue-700">
                             <div class="flex items-center space-x-2">
                                 <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
@@ -521,7 +523,7 @@
                         </div>
                         @else
                         <div
-                            class="p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-700">
+                            class="p-3 border border-red-200 rounded-lg bg-red-50 dark:bg-red-900/20 dark:border-red-700">
                             <div class="flex items-center space-x-2">
                                 <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"

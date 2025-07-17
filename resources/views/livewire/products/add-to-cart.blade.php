@@ -468,11 +468,15 @@ Mejoras realizadas en este componente:
                         - Animaciones de hover y click para mejor feedback
                         - Deshabilitado automáticamente cuando no hay stock
                         --}}
-                        <button wire:click="addToCart" wire:loading.attr="disabled" @if ($product->stock <= 0) disabled
-                                @endif class="w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all duration-300 transform shadow-lg hover:shadow-xl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800
-                        {{ $product->stock > 0
-                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:scale-[1.02] active:scale-[0.98]'
-                            : 'bg-gray-400 cursor-not-allowed opacity-60' }}">
+                        @php
+                        $isDisabled = $product->stock <= 0; $buttonClass=$product->stock > 0
+                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+                            hover:scale-[1.02] active:scale-[0.98]'
+                            : 'bg-gray-400 cursor-not-allowed opacity-60';
+                            @endphp
+                            <button wire:click="addToCart" wire:loading.attr="disabled" {{ $isDisabled ? 'disabled' : ''
+                                }}
+                                class="w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all duration-300 transform shadow-lg hover:shadow-xl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 {{ $buttonClass }}">
 
                                 {{-- Estados del botón según disponibilidad --}}
                                 <span wire:loading.remove class="flex items-center">
@@ -502,41 +506,41 @@ Mejoras realizadas en este componente:
                                     </svg>
                                     Agregando...
                                 </span>
-                        </button>
+                            </button>
 
-                        {{--
-                        ALERTAS INFORMATIVAS MEJORADAS
-                        ==============================
-                        MEJORA CLAVE: Consistencia visual con AddToCartVariants
+                            {{--
+                            ALERTAS INFORMATIVAS MEJORADAS
+                            ==============================
+                            MEJORA CLAVE: Consistencia visual con AddToCartVariants
 
-                        - Alerta para productos disponibles (fondo azul):
-                        * Icono de verificación
-                        * Información completa: SKU, precio, stock
-                        * Diseño consistente con componente de variantes
+                            - Alerta para productos disponibles (fondo azul):
+                            * Icono de verificación
+                            * Información completa: SKU, precio, stock
+                            * Diseño consistente con componente de variantes
 
-                        - Alerta para productos agotados (fondo rojo):
-                        * Icono de error
-                        * Información del producto sin stock
-                        * Mensaje claro de estado
-                        --}}
-                        {{-- Información del producto --}}
-                        @if ($product->stock > 0)
-                        <div
-                            class="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-700">
-                            <div class="flex items-center space-x-2"></div>
-                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                                Producto disponible: {{ $product->sku ?? 'SKU no disponible' }}
-                            </span>
-                        </div>
-                        <div class="mt-1 text-xs text-blue-600 dark:text-blue-300">
-                            Precio: ${{ number_format($product->price, 2) }} |
-                            Stock: {{ $product->stock }} unidades
-                        </div>
+                            - Alerta para productos agotados (fondo rojo):
+                            * Icono de error
+                            * Información del producto sin stock
+                            * Mensaje claro de estado
+                            --}}
+                            {{-- Información del producto --}}
+                            @if ($product->stock > 0)
+                            <div
+                                class="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-700">
+                                <div class="flex items-center space-x-2"></div>
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                                    Producto disponible: {{ $product->sku ?? 'SKU no disponible' }}
+                                </span>
+                            </div>
+                            <div class="mt-1 text-xs text-blue-600 dark:text-blue-300">
+                                Precio: ${{ number_format($product->price, 2) }} |
+                                Stock: {{ $product->stock }} unidades
+                            </div>
                     </div>
                     @else
                     <div class="p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-700">
