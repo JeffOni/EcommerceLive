@@ -140,12 +140,14 @@ class ProductController extends Controller
             'image' => 'nullable|image|max:2048',
             'sku' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
+            'custom_price' => 'nullable|numeric|min:0',
         ]); //valida los datos del request
 
         // Inicializar el array $data con los campos del formulario
         $data = [
             'sku' => $request->sku,
             'stock' => $request->stock,
+            'custom_price' => $request->custom_price ? $request->custom_price : null,
             // Agrega aquí otros campos que necesites actualizar
         ];
 

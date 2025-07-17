@@ -23,12 +23,18 @@ class ProductCreate extends Component
     public $category_id = ''; //variable publica category_id para almacenar el id de la categoria seleccionada
 
     public $image; //variable publica image para almacenar la imagen del producto
+    public $image2; //variable publica image2 para almacenar la segunda imagen del producto
+    public $image3; //variable publica image3 para almacenar la tercera imagen del producto
 
     public $product = [ //variable publica product inicializada como un arreglo para almacenar los datos del formulario
         'sku' => '',
         'name' => '',
         'description' => '',
+        'general_features' => '',
+        'recommended_preparation' => '',
         'image_path' => '',
+        'image_2' => '',
+        'image_3' => '',
         'price' => '',
         'subcategory_id' => ''
     ];
@@ -82,22 +88,37 @@ class ProductCreate extends Component
     {
         $this->validate([ //se valida el formulario
             'image' => 'required|image|max:1024', //el campo image definido en la variable $image es una imagen y su tamaño maximo es de 1MB
+            'image2' => 'nullable|image|max:1024', //segunda imagen opcional
+            'image3' => 'nullable|image|max:1024', //tercera imagen opcional
             'product.sku' => 'required|unique:products,sku', //el campo sku es requerido y debe ser unico en la tabla products
             'product.name' => 'required|max:255', //el campo name es requerido
             'product.description' => 'nullable', //el campo description puede ser nulo
+            'product.general_features' => 'nullable', //el campo general_features puede ser nulo
+            'product.recommended_preparation' => 'nullable', //el campo recommended_preparation puede ser nulo
             'product.price' => 'required|numeric|min:0', //el campo price es requerido y debe ser numerico
             'product.subcategory_id' => 'required|exists:subcategories,id', //el campo subcategory_id es requerido
-        ],[], [ //se definen los nombres de los campos para mostrar en el mensaje de error
+        ], [], [ //se definen los nombres de los campos para mostrar en el mensaje de error
             'product.sku' => 'SKU',
             'product.name' => 'Nombre',
             'product.description' => 'Descripción',
+            'product.general_features' => 'Características Generales',
+            'product.recommended_preparation' => 'Preparación Recomendada',
             'product.price' => 'Precio',
             'product.subcategory_id' => 'Subcategoría',
-            'image' => 'Imagen',
+            'image' => 'Imagen Principal',
+            'image2' => 'Segunda Imagen',
+            'image3' => 'Tercera Imagen',
         ]);
 
         $this->product['image_path'] = $this->image->store('products', 'public'); //se almacena la imagen en la carpeta products dentro de la carpeta public
-        //el nombre de la imagen se almacena en la variable image_path dentro de la variable product
+
+        // Almacenar las imágenes adicionales si se proporcionan
+        if ($this->image2) {
+            $this->product['image_2'] = $this->image2->store('products', 'public');
+        }
+        if ($this->image3) {
+            $this->product['image_3'] = $this->image3->store('products', 'public');
+        }
 
         $product = Product::create($this->product); //se crea un nuevo producto en la tabla products con los datos del formulario
         //se almacena el producto en la variable product
@@ -108,7 +129,7 @@ class ProductCreate extends Component
             'text' => 'El producto se ha creado correctamente',
         ]);
 
-        return redirect()->route('admin.products.edit', $product); //redirecciona a la vista de editar producto y le pasa el id del producto creado
+        $this->redirectRoute('admin.products.edit', $product); //redirecciona a la vista de editar producto y le pasa el id del producto creado
 
     }
 

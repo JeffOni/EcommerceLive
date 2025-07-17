@@ -27,7 +27,11 @@ class Product extends Model
         'sku',          // Código único de producto (Stock Keeping Unit)
         'name',         // Nombre del producto
         'description',  // Descripción detallada del producto
+        'general_features', // Características generales del producto
+        'recommended_preparation', // Preparación recomendada
         'image_path',   // Ruta a la imagen principal del producto
+        'image_2',      // Ruta a la segunda imagen del producto
+        'image_3',      // Ruta a la tercera imagen del producto
         'price',        // Precio base del producto
         'stock',        // Cantidad disponible en inventario
         'subcategory_id' // ID de la subcategoría a la que pertenece
@@ -37,6 +41,20 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn() => Storage::url($this->image_path),
+        );
+    }
+
+    protected function image2(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->image_2 ? Storage::url($this->image_2) : null,
+        );
+    }
+
+    protected function image3(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->image_3 ? Storage::url($this->image_3) : null,
         );
     }
 

@@ -16,9 +16,9 @@
     ],
 ]">
 
-<x-slot name="action">
-    <x-link href="{{ route('admin.products.edit', $product) }}" type="secondary" name="Regresar" />
-</x-slot>
+    <x-slot name="action">
+        <x-link href="{{ route('admin.products.edit', $product) }}" type="secondary" name="Regresar" />
+    </x-slot>
 
     <div class="min-h-screen bg-white">
         <form action="{{ route('admin.products.variantsUpdate', [$product, $variant]) }}" method="POST"
@@ -109,6 +109,24 @@
                                         placeholder="Ingrese el stock disponible" type="number" name="stock"
                                         value="{{ old('stock', $variant->stock) }}" />
                                 </div>
+
+                                <!-- Custom Price Field -->
+                                <div class="space-y-3">
+                                    <x-label class="text-slate-700 font-semibold flex items-center text-lg"
+                                        value="{{ __('Precio Personalizado') }}">
+                                        <i class="fas fa-dollar-sign mr-2 text-yellow-500"></i>
+                                    </x-label>
+                                    <x-input
+                                        class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                        placeholder="Precio personalizado (opcional, deje vacío para usar precio base: ${{ number_format($product->price, 2) }})"
+                                        type="number" step="0.01" name="custom_price"
+                                        value="{{ old('custom_price', $variant->custom_price) }}" />
+                                    <p class="text-sm text-gray-600 italic">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Si no especifica un precio, se usará el precio base del producto: ${{
+                                        number_format($product->price, 2) }}
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Action Button -->
@@ -128,8 +146,8 @@
 
 
     @push('js')
-        <script>
-            function previewImage(event, querySelector) {
+    <script>
+        function previewImage(event, querySelector) {
                 // Recuperamos el input que desencadeno la acción
                 let input = event.target;
 
@@ -170,7 +188,7 @@
                     });
                 }
             }
-        </script>
+    </script>
     @endpush
 
 </x-admin-layout>
