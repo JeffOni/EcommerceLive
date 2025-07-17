@@ -14,35 +14,35 @@
                         {{-- Badge de Variant Info --}}
                         <div class="absolute top-4 left-4 space-y-2">
                             @if ($this->variant)
-                                <span
-                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    Variante Seleccionada
-                                </span>
+                            <span
+                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                Variante Seleccionada
+                            </span>
                             @else
-                                <span
-                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-orange-800 bg-orange-100 rounded-full dark:bg-orange-900 dark:text-orange-200">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Selecciona opciones
-                                </span>
+                            <span
+                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-orange-800 bg-orange-100 rounded-full dark:bg-orange-900 dark:text-orange-200">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Selecciona opciones
+                            </span>
                             @endif
                         </div>
 
                         {{-- SKU Badge --}}
                         @if ($this->variantInfo['sku'])
-                            <div class="absolute top-4 right-4">
-                                <span
-                                    class="inline-flex items-center px-2 py-1 text-xs font-mono text-gray-600 glass-effect rounded-lg shadow-sm">
-                                    SKU: {{ $this->variantInfo['sku'] }}
-                                </span>
-                            </div>
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="inline-flex items-center px-2 py-1 text-xs font-mono text-gray-600 glass-effect rounded-lg shadow-sm">
+                                SKU: {{ $this->variantInfo['sku'] }}
+                            </span>
+                        </div>
                         @endif
 
                         {{-- Botón de Zoom --}}
@@ -60,27 +60,39 @@
                     </div>
                 </div>
 
-                {{-- Galería de Imágenes Mejorada --}}
+                {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
                 <div class="space-y-3">
                     <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
                     <div class="flex space-x-3 overflow-x-auto pb-2">
                         @foreach ($this->availableImages as $index => $image)
-                            <div class="flex-shrink-0">
-                                <button
-                                    class="relative w-20 h-20 overflow-hidden border-2 rounded-xl transition-all duration-200 {{ $image['active'] ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300' }}">
-                                    <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
-                                        class="object-cover w-full h-full">
+                        <div class="flex-shrink-0">
+                            <button wire:click="selectImage('{{ $image['url'] }}')"
+                                class="relative w-20 h-20 overflow-hidden border-2 rounded-xl transition-all duration-200 {{ $image['active'] ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300' }}">
+                                <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
+                                    class="object-cover w-full h-full">
 
-                                    {{-- Badge de tipo de imagen --}}
-                                    <div class="absolute bottom-1 left-1">
-                                        @if ($image['type'] === 'variant')
-                                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                        @elseif($image['type'] === 'product')
-                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                        @endif
-                                    </div>
-                                </button>
-                            </div>
+                                {{-- Badge de tipo de imagen --}}
+                                <div class="absolute bottom-1 left-1">
+                                    @if ($image['type'] === 'variant')
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    @elseif($image['type'] === 'product')
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    @endif
+                                </div>
+
+                                {{-- Label de imagen --}}
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 text-center">
+                                    @if ($image['type'] === 'variant')
+                                    Variante
+                                    @elseif($image['label'])
+                                    {{ $image['label'] }}
+                                    @else
+                                    Vista {{ $index + 1 }}
+                                    @endif
+                                </div>
+                            </button>
+                        </div>
                         @endforeach
                     </div>
 
@@ -94,6 +106,8 @@
                             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
                             <span>Producto</span>
                         </div>
+                        <span>{{ count($this->availableImages) }} imagen{{ count($this->availableImages) > 1 ? 's' : ''
+                            }} disponible{{ count($this->availableImages) > 1 ? 's' : '' }}</span>
                     </div>
                 </div>
             </div>
@@ -117,13 +131,13 @@
                     {{-- Calificaciones --}}
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center space-x-1">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <svg class="w-5 h-5 {{ $i <= 4 ? 'text-yellow-400' : 'text-gray-300' }}"
-                                    fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            @for ($i = 1; $i <= 5; $i++) <svg
+                                class="w-5 h-5 {{ $i <= 4 ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
-                            @endfor
+                                @endfor
                         </div>
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4.7</span>
                         <span class="text-sm text-gray-500">(127 reseñas)</span>
@@ -138,70 +152,161 @@
                             ${{ number_format($this->variantInfo['price'], 2) }}
                         </span>
                         @if ($this->variant && $this->variantInfo['price'] != $product->price)
-                            {{-- Mostrar precio base cuando hay diferencia --}}
-                            <span class="text-xl text-gray-500 line-through">
-                                ${{ number_format($product->price, 2) }}
-                            </span>
-                            @php
-                                $discount = (($product->price - $this->variantInfo['price']) / $product->price) * 100;
-                            @endphp
-                            @if ($discount > 0)
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                    -{{ number_format($discount, 0) }}%
-                                </span>
-                            @endif
+                        {{-- Mostrar precio base cuando hay diferencia --}}
+                        <span class="text-xl text-gray-500 line-through">
+                            ${{ number_format($product->price, 2) }}
+                        </span>
+                        @php
+                        $discount = (($product->price - $this->variantInfo['price']) / $product->price) * 100;
+                        @endphp
+                        @if ($discount > 0)
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            -{{ number_format($discount, 0) }}%
+                        </span>
+                        @endif
                         @endif
                     </div>
 
                     {{-- Estado del variant --}}
                     <div class="flex items-center space-x-3">
                         @if ($this->variantInfo['available'] && $this->variantInfo['hasStock'])
-                            <div class="flex items-center space-x-2">
-                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-sm font-medium text-green-700 dark:text-green-400">
-                                    Variante disponible
-                                </span>
-                            </div>
-                            <span class="text-sm text-gray-500">
-                                {{ $this->variantInfo['stock'] }} en stock
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="text-sm font-medium text-green-700 dark:text-green-400">
+                                Variante disponible
                             </span>
+                        </div>
+                        <span class="text-sm text-gray-500">
+                            {{ $this->variantInfo['stock'] }} en stock
+                        </span>
                         @elseif ($this->variantInfo['available'] && !$this->variantInfo['hasStock'])
-                            <div class="flex items-center space-x-2">
-                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                <span class="text-sm font-medium text-red-700 dark:text-red-400">
-                                    Variante agotada
-                                </span>
-                            </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <span class="text-sm font-medium text-red-700 dark:text-red-400">
+                                Variante agotada
+                            </span>
+                        </div>
                         @else
-                            <div class="flex items-center space-x-2">
-                                <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
-                                <span class="text-sm font-medium text-orange-700 dark:text-orange-400">
-                                    Selecciona todas las opciones
-                                </span>
-                            </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                            <span class="text-sm font-medium text-orange-700 dark:text-orange-400">
+                                Selecciona todas las opciones
+                            </span>
+                        </div>
                         @endif
                     </div>
 
                     @if ($this->variant && $this->variantInfo['hasStock'])
-                        <p class="text-sm font-medium text-blue-600 dark:text-blue-400">
-                            <i class="mr-1 fas fa-check-circle"></i>
-                            Configuración válida - Listo para agregar al carrito
-                        </p>
+                    <p class="text-sm font-medium text-blue-600 dark:text-blue-400">
+                        <i class="mr-1 fas fa-check-circle"></i>
+                        Configuración válida - Listo para agregar al carrito
+                    </p>
                     @elseif ($this->variant && !$this->variantInfo['hasStock'])
-                        <p class="text-sm font-medium text-red-600 dark:text-red-400">
-                            <i class="mr-1 fas fa-exclamation-triangle"></i>
-                            Esta variante no tiene stock disponible
-                        </p>
+                    <p class="text-sm font-medium text-red-600 dark:text-red-400">
+                        <i class="mr-1 fas fa-exclamation-triangle"></i>
+                        Esta variante no tiene stock disponible
+                    </p>
                     @endif
                 </div>
 
-                {{-- Descripción --}}
-                <div class="space-y-3">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Descripción</h3>
-                    <p class="leading-relaxed text-gray-600 dark:text-gray-300">
-                        {{ $product->description }}
-                    </p>
+                {{--
+                INFORMACIÓN DETALLADA DEL PRODUCTO - CON VARIANTES
+                ================================================
+                Pestañas para organizar la información:
+                - Descripción general
+                - Características especiales
+                - Preparación recomendada
+                --}}
+                <div class="space-y-6" x-data="{ activeTab: 'description' }">
+                    <div class="flex border-b border-gray-200 dark:border-gray-700">
+                        <button @click="activeTab = 'description'"
+                            :class="activeTab === 'description' ? 
+                                'border-blue-500 text-blue-600 dark:text-blue-400' : 
+                                'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
+                            Descripción
+                        </button>
+
+                        @if($product->general_features)
+                        <button @click="activeTab = 'features'"
+                            :class="activeTab === 'features' ? 
+                                'border-green-500 text-green-600 dark:text-green-400' : 
+                                'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
+                            <i class="fas fa-star mr-1"></i>
+                            Características Especiales
+                        </button>
+                        @endif
+
+                        @if($product->recommended_preparation)
+                        <button @click="activeTab = 'preparation'"
+                            :class="activeTab === 'preparation' ? 
+                                'border-purple-500 text-purple-600 dark:text-purple-400' : 
+                                'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                            class="py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-200">
+                            <i class="fas fa-utensils mr-1"></i>
+                            Preparación Recomendada
+                        </button>
+                        @endif
+                    </div>
+
+                    <div class="min-h-[120px]">
+                        {{-- Tab: Descripción --}}
+                        <div x-show="activeTab === 'description'" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <div class="w-1 h-6 bg-blue-500 rounded-full"></div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Descripción</h3>
+                            </div>
+                            <p class="leading-relaxed text-gray-600 dark:text-gray-300">
+                                {{ $product->description ?: 'Sin descripción disponible.' }}
+                            </p>
+                        </div>
+
+                        {{-- Tab: Características Especiales --}}
+                        @if($product->general_features)
+                        <div x-show="activeTab === 'features'" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <div class="w-1 h-6 bg-green-500 rounded-full"></div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                    <i class="fas fa-star text-green-500 mr-2"></i>
+                                    Características Especiales
+                                </h3>
+                            </div>
+                            <div
+                                class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                                <p class="leading-relaxed text-green-800 dark:text-green-200">
+                                    {{ $product->general_features }}
+                                </p>
+                            </div>
+                        </div>
+                        @endif
+
+                        {{-- Tab: Preparación Recomendada --}}
+                        @if($product->recommended_preparation)
+                        <div x-show="activeTab === 'preparation'" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-3">
+                            <div class="flex items-center space-x-2 mb-3">
+                                <div class="w-1 h-6 bg-purple-500 rounded-full"></div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                    <i class="fas fa-utensils text-purple-500 mr-2"></i>
+                                    Preparación Recomendada
+                                </h3>
+                            </div>
+                            <div
+                                class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg">
+                                <p class="leading-relaxed text-purple-800 dark:text-purple-200">
+                                    {{ $product->recommended_preparation }}
+                                </p>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Selector de Cantidad y Compra --}}
@@ -266,126 +371,126 @@
                     <div class="space-y-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Configurar Producto</h3>
                         @foreach ($product->options as $option)
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ $option->name }}
-                                    </label>
-                                    @if (isset($selectedFeatures[$option->id]))
-                                        @php
-                                            $selectedFeature = collect($option->pivot->features)->firstWhere(
-                                                'id',
-                                                $selectedFeatures[$option->id],
-                                            );
-                                        @endphp
-                                        @if ($selectedFeature)
-                                            <span class="text-xs text-blue-600 font-medium">
-                                                {{ $selectedFeature['description'] }}
-                                            </span>
-                                        @endif
-                                    @endif
-                                </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    {{ $option->name }}
+                                </label>
+                                @if (isset($selectedFeatures[$option->id]))
+                                @php
+                                $selectedFeature = collect($option->pivot->features)->firstWhere(
+                                'id',
+                                $selectedFeatures[$option->id],
+                                );
+                                @endphp
+                                @if ($selectedFeature)
+                                <span class="text-xs text-blue-600 font-medium">
+                                    {{ $selectedFeature['description'] }}
+                                </span>
+                                @endif
+                                @endif
+                            </div>
 
-                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                                    @foreach ($option->pivot->features as $feature)
-                                        <div class="relative">
-                                            @switch($option->type)
-                                                @case(1)
-                                                    {{-- Selector de Texto/Talla --}}
-                                                    <button
-                                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
-                                                        class="w-full px-3 py-2 text-sm font-medium transition-all duration-200 border rounded-lg {{ $selectedFeatures[$option->id] === $feature['id']
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                                @foreach ($option->pivot->features as $feature)
+                                <div class="relative">
+                                    @switch($option->type)
+                                    @case(1)
+                                    {{-- Selector de Texto/Talla --}}
+                                    <button
+                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
+                                        class="w-full px-3 py-2 text-sm font-medium transition-all duration-200 border rounded-lg {{ $selectedFeatures[$option->id] === $feature['id']
                                                             ? 'bg-blue-600 text-white border-blue-600 shadow-lg scale-105'
                                                             : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50' }} dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600">
-                                                        {{ $feature['value'] }}
-                                                    </button>
-                                                @break
+                                        {{ $feature['value'] }}
+                                    </button>
+                                    @break
 
-                                                @case(2)
-                                                    {{-- Selector de Color Mejorado --}}
-                                                    <button
-                                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
-                                                        class="relative w-full h-12 rounded-lg border-2 transition-all duration-200 {{ $selectedFeatures[$option->id] === $feature['id']
+                                    @case(2)
+                                    {{-- Selector de Color Mejorado --}}
+                                    <button
+                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
+                                        class="relative w-full h-12 rounded-lg border-2 transition-all duration-200 {{ $selectedFeatures[$option->id] === $feature['id']
                                                             ? 'border-blue-600 shadow-lg scale-105'
                                                             : 'border-gray-300 hover:border-blue-400' }}"
-                                                        style="background: linear-gradient(135deg, {{ $feature['value'] }}, {{ $feature['value'] }}dd);"
-                                                        title="{{ $feature['description'] }}">
+                                        style="background: linear-gradient(135deg, {{ $feature['value'] }}, {{ $feature['value'] }}dd);"
+                                        title="{{ $feature['description'] }}">
 
-                                                        {{-- Checkmark cuando está seleccionado --}}
-                                                        @if ($selectedFeatures[$option->id] === $feature['id'])
-                                                            <div class="absolute inset-0 flex items-center justify-center">
-                                                                <svg class="w-5 h-5 text-white drop-shadow-lg"
-                                                                    fill="currentColor" viewBox="0 0 20 20">
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                        clip-rule="evenodd" />
-                                                                </svg>
-                                                            </div>
-                                                        @endif
+                                        {{-- Checkmark cuando está seleccionado --}}
+                                        @if ($selectedFeatures[$option->id] === $feature['id'])
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-white drop-shadow-lg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        @endif
 
-                                                        {{-- Nombre del color --}}
-                                                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                                                            <span class="text-xs text-gray-600 dark:text-gray-400">
-                                                                {{ $feature['description'] }}
-                                                            </span>
-                                                        </div>
-                                                    </button>
-                                                @break
+                                        {{-- Nombre del color --}}
+                                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                                            <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                {{ $feature['description'] }}
+                                            </span>
+                                        </div>
+                                    </button>
+                                    @break
 
-                                                @default
-                                                    {{-- Selector genérico --}}
-                                                    <button
-                                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
-                                                        class="w-full px-3 py-2 text-sm font-medium transition-all duration-200 border rounded-lg {{ $selectedFeatures[$option->id] === $feature['id']
+                                    @default
+                                    {{-- Selector genérico --}}
+                                    <button
+                                        wire:click="$set('selectedFeatures.{{ $option->id }}', '{{ $feature['id'] }}')"
+                                        class="w-full px-3 py-2 text-sm font-medium transition-all duration-200 border rounded-lg {{ $selectedFeatures[$option->id] === $feature['id']
                                                             ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
                                                             : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400' }}">
-                                                        {{ $feature['description'] }}
-                                                    </button>
-                                            @endswitch
-                                        </div>
-                                    @endforeach
+                                        {{ $feature['description'] }}
+                                    </button>
+                                    @endswitch
                                 </div>
+                                @endforeach
                             </div>
+                        </div>
                         @endforeach
                     </div> {{-- Botones de Acción Mejorados --}}
                     <div class="space-y-3">
                         {{-- Botón Principal: Agregar al Carrito --}}
-                        <button wire:click="addToCart" wire:loading.attr="disabled"
-                            @if (!$this->variantInfo['available'] || !$this->variantInfo['hasStock']) disabled @endif
-                            class="w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white rounded-xl transition-all duration-300 transform shadow-lg hover:shadow-xl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800
-                        {{ $this->variantInfo['available'] && $this->variantInfo['hasStock']
-                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:scale-[1.02] active:scale-[0.98]'
+                        <button wire:click="addToCart" wire:loading.attr="disabled" @if
+                            (!$this->variantInfo['available'] || !$this->variantInfo['hasStock']) disabled @endif
+                            class="w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white
+                            rounded-xl transition-all duration-300 transform shadow-lg hover:shadow-xl focus:ring-4
+                            focus:ring-blue-300 dark:focus:ring-blue-800
+                            {{ $this->variantInfo['available'] && $this->variantInfo['hasStock']
+                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+                            hover:scale-[1.02] active:scale-[0.98]'
                             : 'bg-gray-400 cursor-not-allowed opacity-60' }}">
 
                             <span wire:loading.remove class="flex items-center">
                                 @if ($this->variantInfo['available'] && $this->variantInfo['hasStock'])
-                                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h9.5" />
-                                    </svg>
-                                    Agregar al Carrito
+                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h9.5" />
+                                </svg>
+                                Agregar al Carrito
                                 @elseif ($this->variantInfo['available'] && !$this->variantInfo['hasStock'])
-                                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.734-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
-                                    Producto Agotado
+                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.734-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                                Producto Agotado
                                 @else
-                                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.734-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
-                                    Selecciona todas las opciones
+                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.734-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                                Selecciona todas las opciones
                                 @endif
                             </span>
 
                             <span wire:loading class="flex items-center">
                                 <svg class="w-5 h-5 mr-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
@@ -396,43 +501,43 @@
 
                         {{-- Información del variant seleccionado --}}
                         @if ($this->variant)
-                            @if ($this->variantInfo['hasStock'])
-                                <div
-                                    class="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-700">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                                            Variante seleccionada: {{ $this->variantInfo['sku'] }}
-                                        </span>
-                                    </div>
-                                    <div class="mt-1 text-xs text-blue-600 dark:text-blue-300">
-                                        Precio: ${{ number_format($this->variantInfo['price'], 2) }} |
-                                        Stock: {{ $this->variantInfo['stock'] }} unidades
-                                    </div>
-                                </div>
-                            @else
-                                <div
-                                    class="p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-700">
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        <span class="text-sm font-medium text-red-800 dark:text-red-200">
-                                            Variante agotada: {{ $this->variantInfo['sku'] }}
-                                        </span>
-                                    </div>
-                                    <div class="mt-1 text-xs text-red-600 dark:text-red-300">
-                                        Precio: ${{ number_format($this->variantInfo['price'], 2) }} |
-                                        Sin stock disponible
-                                    </div>
-                                </div>
-                            @endif
+                        @if ($this->variantInfo['hasStock'])
+                        <div
+                            class="p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-700">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                                    Variante seleccionada: {{ $this->variantInfo['sku'] }}
+                                </span>
+                            </div>
+                            <div class="mt-1 text-xs text-blue-600 dark:text-blue-300">
+                                Precio: ${{ number_format($this->variantInfo['price'], 2) }} |
+                                Stock: {{ $this->variantInfo['stock'] }} unidades
+                            </div>
+                        </div>
+                        @else
+                        <div
+                            class="p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-700">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-sm font-medium text-red-800 dark:text-red-200">
+                                    Variante agotada: {{ $this->variantInfo['sku'] }}
+                                </span>
+                            </div>
+                            <div class="mt-1 text-xs text-red-600 dark:text-red-300">
+                                Precio: ${{ number_format($this->variantInfo['price'], 2) }} |
+                                Sin stock disponible
+                            </div>
+                        </div>
+                        @endif
                         @endif
 
                         {{-- Botones Secundarios --}}
@@ -488,8 +593,8 @@
                         <div class="flex items-center space-x-3">
                             <div
                                 class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-xl">
-                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>

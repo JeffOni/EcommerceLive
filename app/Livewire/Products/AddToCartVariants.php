@@ -37,6 +37,7 @@ use App\Models\Feature;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Storage;
 
 class AddToCartVariants extends Component
 {
@@ -208,6 +209,7 @@ class AddToCartVariants extends Component
 
     /**
      * Obtiene las imágenes disponibles para el variant actual
+     * MEJORADO: Incluye las tres imágenes del producto
      */
     #[Computed]
     public function availableImages()
@@ -219,7 +221,28 @@ class AddToCartVariants extends Component
             $images->push([
                 'url' => $this->product->image,
                 'type' => 'product',
+                'label' => 'Principal',
                 'active' => !$this->variant
+            ]);
+        }
+
+        // Agregar segunda imagen del producto si existe
+        if (isset($this->product->getAttributes()['image_2']) && $this->product->getAttributes()['image_2']) {
+            $images->push([
+                'url' => Storage::url($this->product->getAttributes()['image_2']),
+                'type' => 'product',
+                'label' => 'Vista 2',
+                'active' => false
+            ]);
+        }
+
+        // Agregar tercera imagen del producto si existe
+        if (isset($this->product->getAttributes()['image_3']) && $this->product->getAttributes()['image_3']) {
+            $images->push([
+                'url' => Storage::url($this->product->getAttributes()['image_3']),
+                'type' => 'product',
+                'label' => 'Vista 3',
+                'active' => false
             ]);
         }
 
@@ -228,6 +251,7 @@ class AddToCartVariants extends Component
             $images->push([
                 'url' => $this->variant->image,
                 'type' => 'variant',
+                'label' => 'Variante',
                 'active' => true
             ]);
         }
@@ -237,6 +261,7 @@ class AddToCartVariants extends Component
             $images->push([
                 'url' => asset('img/no-image.png'),
                 'type' => 'placeholder',
+                'label' => 'Sin imagen',
                 'active' => true
             ]);
         }
@@ -251,6 +276,16 @@ class AddToCartVariants extends Component
     {
         // Resetear cantidad a 1 cuando cambie la variante
         $this->quantity = 1;
+    }
+
+    /**
+     * Selecciona una imagen específica como activa
+     */
+    public function selectImage($imageUrl)
+    {
+        // El frontend maneja el cambio de imagen activa con Alpine.js
+        // Este método está disponible por si se necesita lógica adicional del backend
+        $this->dispatch('imageSelected', ['url' => $imageUrl]);
     }
 
     public function render()

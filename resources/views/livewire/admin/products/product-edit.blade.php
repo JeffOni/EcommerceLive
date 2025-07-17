@@ -19,12 +19,13 @@
 
         <x-validation-errors class="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl max-w-4xl mx-auto" />
 
-        <!-- Main Content Grid: Image on Left, Form on Right -->
+        <!-- Main Content Grid: Images on Left, Form on Right -->
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
-                <!-- Left Column: Image Upload -->
-                <div class="flex flex-col">
-                    <figure class="relative flex-1">
+                <!-- Left Column: Images Upload -->
+                <div class="flex flex-col space-y-8">
+                    <!-- Imagen Principal -->
+                    <figure class="relative">
                         <div class="absolute top-6 right-6 z-20">
                             <x-label
                                 class="flex items-center px-4 py-3 bg-white rounded-xl shadow-lg cursor-pointer hover:bg-indigo-50 hover:shadow-xl transition-all duration-300 border border-gray-200 group">
@@ -32,30 +33,32 @@
                                     class="mr-2 fas fa-camera text-indigo-500 group-hover:text-indigo-600 transition-colors"></i>
                                 <span
                                     class="font-semibold text-indigo-700 group-hover:text-indigo-800 transition-colors">Actualizar
-                                    Imagen</span>
+                                    Imagen Principal</span>
                                 <input type="file" wire:model="image" class="hidden" accept="image/*" name="image"
-                                    onchange="previewImageWithAnimationLivewire(event, '.aspect-square img', 'portada')" />
+                                    onchange="previewImage1(event)" />
                             </x-label>
                         </div>
 
                         <div
                             class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
                             @if($image)
-                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-                                src="{{ $image->temporaryUrl() }}" alt="Nueva imagen de producto">
+                            <img id="preview1"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $image->temporaryUrl() }}" alt="Nueva imagen principal">
                             @elseif($productEdit['image_path'])
-                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                            <img id="preview1"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
                                 src="{{ Storage::url($productEdit['image_path']) }}" alt="Imagen actual del producto">
                             @else
-                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                            <div id="preview1" class="w-full h-full flex items-center justify-center bg-gray-100">
                                 <div class="text-center">
                                     <i class="fas fa-image text-gray-400 text-6xl mb-4"></i>
-                                    <p class="text-gray-500 font-medium">Sin imagen</p>
+                                    <p class="text-gray-500 font-medium">Sin imagen principal</p>
                                 </div>
                             </div>
                             @endif
-                            <!-- Spinner con estilos originales bonitos -->
-                            <div id="cover-image-spinner" style="display:none;"
+                            <!-- Spinner -->
+                            <div id="spinner1" style="display:none;"
                                 class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
                                 <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
                                     <div
@@ -79,7 +82,131 @@
                         </div>
                         @enderror
 
-                        <figcaption class="font-semibold text-center text-gray-700 mt-4 text-lg">Imagen de Producto
+                        <figcaption class="font-semibold text-center text-gray-700 mt-4 text-lg">Imagen Principal
+                        </figcaption>
+                    </figure>
+
+                    <!-- Segunda Imagen -->
+                    <figure class="relative">
+                        <div class="absolute top-6 right-6 z-20">
+                            <x-label
+                                class="flex items-center px-4 py-3 bg-white rounded-xl shadow-lg cursor-pointer hover:bg-green-50 hover:shadow-xl transition-all duration-300 border border-gray-200 group">
+                                <i
+                                    class="mr-2 fas fa-camera text-green-500 group-hover:text-green-600 transition-colors"></i>
+                                <span
+                                    class="font-semibold text-green-700 group-hover:text-green-800 transition-colors">Segunda
+                                    Imagen</span>
+                                <input type="file" wire:model="image2" class="hidden" accept="image/*" name="image2"
+                                    onchange="previewImage2(event)" />
+                            </x-label>
+                        </div>
+
+                        <div
+                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($image2)
+                            <img id="preview2"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $image2->temporaryUrl() }}" alt="Nueva segunda imagen">
+                            @elseif(!empty($productEdit['image_2']))
+                            <img id="preview2"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ Storage::url($productEdit['image_2']) }}" alt="Segunda imagen actual">
+                            @else
+                            <div id="preview2" class="w-full h-full flex items-center justify-center bg-gray-100">
+                                <div class="text-center">
+                                    <i class="fas fa-image text-gray-400 text-6xl mb-4"></i>
+                                    <p class="text-gray-500 font-medium">Sin segunda imagen</p>
+                                </div>
+                            </div>
+                            @endif
+                            <!-- Spinner -->
+                            <div id="spinner2" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-green-200 border-t-green-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                        </div>
+
+                        <!-- Error específico para segunda imagen -->
+                        @error('image2')
+                        <div class="mt-3 p-3 bg-red-100 border border-red-300 rounded-lg">
+                            <p class="text-red-700 text-sm font-medium">{{ $message }}</p>
+                        </div>
+                        @enderror
+
+                        <figcaption class="font-semibold text-center text-gray-700 mt-4 text-lg">Segunda Imagen
+                        </figcaption>
+                    </figure>
+
+                    <!-- Tercera Imagen -->
+                    <figure class="relative">
+                        <div class="absolute top-6 right-6 z-20">
+                            <x-label
+                                class="flex items-center px-4 py-3 bg-white rounded-xl shadow-lg cursor-pointer hover:bg-purple-50 hover:shadow-xl transition-all duration-300 border border-gray-200 group">
+                                <i
+                                    class="mr-2 fas fa-camera text-purple-500 group-hover:text-purple-600 transition-colors"></i>
+                                <span
+                                    class="font-semibold text-purple-700 group-hover:text-purple-800 transition-colors">Tercera
+                                    Imagen</span>
+                                <input type="file" wire:model="image3" class="hidden" accept="image/*" name="image3"
+                                    onchange="previewImage3(event)" />
+                            </x-label>
+                        </div>
+
+                        <div
+                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($image3)
+                            <img id="preview3"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $image3->temporaryUrl() }}" alt="Nueva tercera imagen">
+                            @elseif(!empty($productEdit['image_3']))
+                            <img id="preview3"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ Storage::url($productEdit['image_3']) }}" alt="Tercera imagen actual">
+                            @else
+                            <div id="preview3" class="w-full h-full flex items-center justify-center bg-gray-100">
+                                <div class="text-center">
+                                    <i class="fas fa-image text-gray-400 text-6xl mb-4"></i>
+                                    <p class="text-gray-500 font-medium">Sin tercera imagen</p>
+                                </div>
+                            </div>
+                            @endif
+                            <!-- Spinner -->
+                            <div id="spinner3" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-purple-200 border-t-purple-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                        </div>
+
+                        <!-- Error específico para tercera imagen -->
+                        @error('image3')
+                        <div class="mt-3 p-3 bg-red-100 border border-red-300 rounded-lg">
+                            <p class="text-red-700 text-sm font-medium">{{ $message }}</p>
+                        </div>
+                        @enderror
+
+                        <figcaption class="font-semibold text-center text-gray-700 mt-4 text-lg">Tercera Imagen
                         </figcaption>
                     </figure>
                 </div>
@@ -249,21 +376,32 @@
             document.addEventListener('livewire:init', () => {
                 Livewire.on('image-uploaded', () => {
                     if (typeof showImageUploadToast === 'function') {
-                        showImageUploadToast('imagen del producto');
+                        showImageUploadToast('imagen principal');
+                    }
+                });
+
+                Livewire.on('image2-uploaded', () => {
+                    if (typeof showImageUploadToast === 'function') {
+                        showImageUploadToast('segunda imagen');
+                    }
+                });
+
+                Livewire.on('image3-uploaded', () => {
+                    if (typeof showImageUploadToast === 'function') {
+                        showImageUploadToast('tercera imagen');
                     }
                 });
             });
 
-            // Función de emergencia si la global no funciona
-            function previewImageWithAnimationLivewire(event, querySelector, imageType) {
+            // Funciones de preview para cada imagen
+            function previewImage1(event) {
                 const input = event.target;
-                const imgPreview = document.querySelector(querySelector);
-                const spinner = document.getElementById('cover-image-spinner');
+                const imgPreview = document.getElementById('preview1');
+                const spinner = document.getElementById('spinner1');
 
                 if (!input.files.length) return;
 
                 const file = input.files[0];
-
                 if (!file.type.startsWith('image/')) {
                     alert('Archivo no válido');
                     input.value = '';
@@ -273,13 +411,107 @@
                 if (spinner) spinner.style.display = 'flex';
 
                 const objectURL = URL.createObjectURL(file);
-                imgPreview.style.opacity = '0.5';
+                
+                if (imgPreview.tagName === 'IMG') {
+                    imgPreview.style.opacity = '0.5';
+                    setTimeout(() => {
+                        imgPreview.src = objectURL;
+                        imgPreview.style.opacity = '1';
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                } else {
+                    // Es un div, crear nueva imagen
+                    const newImg = document.createElement('img');
+                    newImg.id = 'preview1';
+                    newImg.className = 'w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105';
+                    newImg.src = objectURL;
+                    newImg.alt = 'Nueva imagen principal';
+                    
+                    setTimeout(() => {
+                        imgPreview.parentNode.replaceChild(newImg, imgPreview);
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                }
+            }
 
-                setTimeout(() => {
-                    imgPreview.src = objectURL;
-                    imgPreview.style.opacity = '1';
-                    if (spinner) spinner.style.display = 'none';
-                }, 500);
+            function previewImage2(event) {
+                const input = event.target;
+                const imgPreview = document.getElementById('preview2');
+                const spinner = document.getElementById('spinner2');
+
+                if (!input.files.length) return;
+
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Archivo no válido');
+                    input.value = '';
+                    return;
+                }
+
+                if (spinner) spinner.style.display = 'flex';
+
+                const objectURL = URL.createObjectURL(file);
+                
+                if (imgPreview.tagName === 'IMG') {
+                    imgPreview.style.opacity = '0.5';
+                    setTimeout(() => {
+                        imgPreview.src = objectURL;
+                        imgPreview.style.opacity = '1';
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                } else {
+                    // Es un div, crear nueva imagen
+                    const newImg = document.createElement('img');
+                    newImg.id = 'preview2';
+                    newImg.className = 'w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105';
+                    newImg.src = objectURL;
+                    newImg.alt = 'Nueva segunda imagen';
+                    
+                    setTimeout(() => {
+                        imgPreview.parentNode.replaceChild(newImg, imgPreview);
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                }
+            }
+
+            function previewImage3(event) {
+                const input = event.target;
+                const imgPreview = document.getElementById('preview3');
+                const spinner = document.getElementById('spinner3');
+
+                if (!input.files.length) return;
+
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Archivo no válido');
+                    input.value = '';
+                    return;
+                }
+
+                if (spinner) spinner.style.display = 'flex';
+
+                const objectURL = URL.createObjectURL(file);
+                
+                if (imgPreview.tagName === 'IMG') {
+                    imgPreview.style.opacity = '0.5';
+                    setTimeout(() => {
+                        imgPreview.src = objectURL;
+                        imgPreview.style.opacity = '1';
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                } else {
+                    // Es un div, crear nueva imagen
+                    const newImg = document.createElement('img');
+                    newImg.id = 'preview3';
+                    newImg.className = 'w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105';
+                    newImg.src = objectURL;
+                    newImg.alt = 'Nueva tercera imagen';
+                    
+                    setTimeout(() => {
+                        imgPreview.parentNode.replaceChild(newImg, imgPreview);
+                        if (spinner) spinner.style.display = 'none';
+                    }, 500);
+                }
             }
     </script>
     @endpush
