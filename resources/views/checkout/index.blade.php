@@ -560,7 +560,11 @@
                     if (!this.checkProvinceBeforePayment()) {
                         return;
                     }
-                    
+                    // Evitar doble envío
+                    if (this._isSubmittingTransfer) return;
+                    this._isSubmittingTransfer = true;
+                    const submitBtn = event.target.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
                     try {
                         console.log('Iniciando envío de comprobante de transferencia...');
                         const formData = new FormData(event.target);
@@ -588,6 +592,9 @@
                     } catch (error) {
                         console.error('Error completo:', error);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
+                    } finally {
+                        this._isSubmittingTransfer = false;
+                        if (submitBtn) submitBtn.disabled = false;
                     }
                 },
 
@@ -596,7 +603,11 @@
                     if (!this.checkProvinceBeforePayment()) {
                         return;
                     }
-                    
+                    // Evitar doble envío
+                    if (this._isSubmittingQr) return;
+                    this._isSubmittingQr = true;
+                    const submitBtn = event.target.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
                     try {
                         console.log('Iniciando envío de comprobante QR...');
                         const formData = new FormData(event.target);
@@ -624,6 +635,9 @@
                     } catch (error) {
                         console.error('Error completo QR:', error);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
+                    } finally {
+                        this._isSubmittingQr = false;
+                        if (submitBtn) submitBtn.disabled = false;
                     }
                 },
 
