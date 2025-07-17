@@ -163,7 +163,7 @@ class DashboardController extends Controller
                 'icon' => 'fas fa-box',
                 'title' => 'Órdenes en procesamiento',
                 'message' => "Hay {$oldProcessingOrders} órdenes en procesamiento hace más de 3 días",
-                'action_url' => route('admin.orders.verified'),
+                'action_url' => route('admin.orders.index'),
                 'action_text' => 'Ver órdenes'
             ];
         }

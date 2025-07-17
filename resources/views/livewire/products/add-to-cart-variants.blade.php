@@ -4,110 +4,122 @@
 
             {{-- Sección de Imagen del Producto --}}
             <div class="space-y-6">
-                {{-- Imagen Principal --}}
-                <div class="relative group">
-                    <div
-                        class="overflow-hidden bg-white border border-gray-100 shadow-2xl aspect-square rounded-3xl dark:border-gray-700 dark:bg-gray-800">
-                        <img src="{{ $this->currentImage }}" alt="{{ $product->name }}"
-                            class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105">
-
-                        {{-- Badge de Variant Info --}}
-                        <div class="absolute space-y-2 top-4 left-4">
-                            @if ($this->variant)
-                            <span
-                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                                Variante Seleccionada
-                            </span>
-                            @else
-                            <span
-                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-orange-800 bg-orange-100 rounded-full dark:bg-orange-900 dark:text-orange-200">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                Selecciona opciones
-                            </span>
-                            @endif
-                        </div>
-
-                        {{-- SKU Badge --}}
-                        @if ($this->variantInfo['sku'])
-                        <div class="absolute top-4 right-4">
-                            <span
-                                class="inline-flex items-center px-2 py-1 font-mono text-xs text-gray-600 rounded-lg shadow-sm glass-effect">
-                                SKU: {{ $this->variantInfo['sku'] }}
-                            </span>
-                        </div>
-                        @endif
-
-                        {{-- Botón de Zoom --}}
+                <div x-data="{ 
+                    currentImage: '{{ $this->availableImages[0]['url'] ?? '' }}'
+                }" x-init="
+                    // Buscar imagen de variante al inicializar
+                    const availableImages = @js($this->availableImages);
+                    const variantImage = availableImages.find(img => img.type === 'variant');
+                    if (variantImage) {
+                        currentImage = variantImage.url;
+                    }
+                " wire:key="image-gallery-{{ md5(json_encode($this->selectedFeatures)) }}">
+                    {{-- Imagen Principal --}}
+                    <div class="relative group">
                         <div
-                            class="absolute transition-opacity duration-300 opacity-0 bottom-4 right-4 group-hover:opacity-100">
-                            <button
-                                class="p-2 transition-colors duration-200 rounded-full shadow-lg glass-effect hover:bg-white">
-                                <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                </svg>
-                            </button>
+                            class="overflow-hidden bg-white border border-gray-100 shadow-2xl aspect-square rounded-3xl dark:border-gray-700 dark:bg-gray-800">
+                            <img :src="currentImage" alt="{{ $product->name }}"
+                                class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105">
+
+                            {{-- Badge de Variant Info --}}
+                            <div class="absolute space-y-2 top-4 left-4">
+                                @if ($this->variant)
+                                <span
+                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    Variante Seleccionada
+                                </span>
+                                @else
+                                <span
+                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-orange-800 bg-orange-100 rounded-full dark:bg-orange-900 dark:text-orange-200">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    Selecciona opciones
+                                </span>
+                                @endif
+                            </div>
+
+                            {{-- SKU Badge --}}
+                            @if ($this->variantInfo['sku'])
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2 py-1 font-mono text-xs text-gray-600 rounded-lg shadow-sm glass-effect">
+                                    SKU: {{ $this->variantInfo['sku'] }}
+                                </span>
+                            </div>
+                            @endif
+
+                            {{-- Botón de Zoom --}}
+                            <div
+                                class="absolute transition-opacity duration-300 opacity-0 bottom-4 right-4 group-hover:opacity-100">
+                                <button
+                                    class="p-2 transition-colors duration-200 rounded-full shadow-lg glass-effect hover:bg-white">
+                                    <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
-                <div class="space-y-3">
-                    <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
-                    <div class="flex pb-2 space-x-3 overflow-x-auto">
-                        @foreach ($this->availableImages as $index => $image)
-                        <div class="flex-shrink-0">
-                            <button wire:click="selectImage('{{ $image['url'] }}')"
-                                class="relative w-20 h-20 overflow-hidden border-2 rounded-xl transition-all duration-200 {{ $image['active'] ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300' }}">
-                                <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
-                                    class="object-cover w-full h-full">
+                    {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
+                    <div class="space-y-3 mt-6">
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
+                        <div class="flex pb-2 space-x-3 overflow-x-auto">
+                            @foreach ($this->availableImages as $index => $image)
+                            <div class="flex-shrink-0">
+                                <button type="button" @click="currentImage = '{{ $image['url'] }}'"
+                                    :class="currentImage === '{{ $image['url'] }}' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300'"
+                                    class="relative w-20 h-20 overflow-hidden border-2 rounded-xl transition-all duration-200">
+                                    <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
+                                        class="object-cover w-full h-full">
 
-                                {{-- Badge de tipo de imagen --}}
-                                <div class="absolute bottom-1 left-1">
-                                    @if ($image['type'] === 'variant')
-                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    @elseif($image['type'] === 'product')
-                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    @endif
-                                </div>
+                                    {{-- Badge de tipo de imagen --}}
+                                    <div class="absolute bottom-1 left-1">
+                                        @if ($image['type'] === 'variant')
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        @elseif($image['type'] === 'product')
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        @endif
+                                    </div>
 
-                                {{-- Label de imagen --}}
-                                <div
-                                    class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 text-center">
-                                    @if ($image['type'] === 'variant')
-                                    Variante
-                                    @elseif($image['label'])
-                                    {{ $image['label'] }}
-                                    @else
-                                    Vista {{ $index + 1 }}
-                                    @endif
-                                </div>
-                            </button>
+                                    {{-- Label de imagen --}}
+                                    <div
+                                        class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 text-center">
+                                        @if ($image['type'] === 'variant')
+                                        Variante
+                                        @elseif($image['label'])
+                                        {{ $image['label'] }}
+                                        @else
+                                        Vista {{ $index + 1 }}
+                                        @endif
+                                    </div>
+                                </button>
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
 
-                    {{-- Leyenda --}}
-                    <div class="flex items-center space-x-4 text-xs text-gray-500">
-                        <div class="flex items-center space-x-1">
-                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span>Variante</span>
+                        {{-- Leyenda --}}
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <div class="flex items-center space-x-1">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span>Variante</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span>Producto</span>
+                            </div>
+                            <span>{{ count($this->availableImages) }} imagen{{ count($this->availableImages) > 1 ? 's' :
+                                '' }} disponible{{ count($this->availableImages) > 1 ? 's' : '' }}</span>
                         </div>
-                        <div class="flex items-center space-x-1">
-                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span>Producto</span>
-                        </div>
-                        <span>{{ count($this->availableImages) }} imagen{{ count($this->availableImages) > 1 ? 's' : ''
-                            }} disponible{{ count($this->availableImages) > 1 ? 's' : '' }}</span>
                     </div>
                 </div>
             </div>

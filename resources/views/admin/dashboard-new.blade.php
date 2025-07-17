@@ -62,7 +62,8 @@
                                 ${{ number_format(\App\Models\Order::where('status', '>=', 2)->sum('total'), 2) }}</p>
                             <div class="flex items-center mt-1">
                                 <span class="text-sm text-gray-500">Hoy:
-                                    ${{ number_format(\App\Models\Order::where('status', '>=', 2)->whereDate('created_at', today())->sum('total'), 2) }}</span>
+                                    ${{ number_format(\App\Models\Order::where('status', '>=',
+                                    2)->whereDate('created_at', today())->sum('total'), 2) }}</span>
                             </div>
                         </div>
                         <div class="p-3 bg-green-100 rounded-lg">
@@ -77,7 +78,8 @@
                         <div>
                             <p class="text-sm font-medium text-gray-600">Pagos Pendientes</p>
                             <p class="text-2xl font-bold text-gray-900">
-                                {{ \App\Models\Payment::where('status', 'pending')->whereNotNull('receipt_path')->count() }}
+                                {{ \App\Models\Payment::where('status',
+                                'pending')->whereNotNull('receipt_path')->count() }}
                             </p>
                             <div class="flex items-center mt-1">
                                 <a href="{{ route('admin.payments.verification') }}"
@@ -125,52 +127,50 @@
 
                     <div class="space-y-4">
                         @php
-                            $recentOrders = \App\Models\Order::with(['user', 'payment'])
-                                ->orderBy('created_at', 'desc')
-                                ->take(5)
-                                ->get();
+                        $recentOrders = \App\Models\Order::with(['user', 'payment'])
+                        ->orderBy('created_at', 'desc')
+                        ->take(5)
+                        ->get();
                         @endphp
 
                         @forelse($recentOrders as $order)
-                            <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-medium text-gray-900">#{{ $order->id }}</span>
-                                        <span
-                                            class="text-sm font-bold text-gray-900">${{ number_format($order->total, 2) }}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-1">
-                                        <span
-                                            class="text-xs text-gray-500">{{ $order->user->name ?? 'Usuario' }}</span>
-                                        @php
-                                            $statusColors = [
-                                                1 => 'bg-yellow-100 text-yellow-800',
-                                                2 => 'bg-blue-100 text-blue-800',
-                                                3 => 'bg-purple-100 text-purple-800',
-                                                4 => 'bg-green-100 text-green-800',
-                                                5 => 'bg-red-100 text-red-800',
-                                            ];
-                                            $statusLabels = [
-                                                1 => 'Pendiente',
-                                                2 => 'Verificado',
-                                                3 => 'Enviado',
-                                                4 => 'Entregado',
-                                                5 => 'Cancelado',
-                                            ];
-                                        @endphp
-                                        <span
-                                            class="px-2 py-1 text-xs font-medium rounded-full {{ $statusColors[$order->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                            {{ $statusLabels[$order->status] ?? 'Desconocido' }}
-                                        </span>
-                                    </div>
-                                    <div class="mt-1">
-                                        <span
-                                            class="text-xs text-gray-400">{{ $order->created_at->diffForHumans() }}</span>
-                                    </div>
+                        <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-900">#{{ $order->id }}</span>
+                                    <span class="text-sm font-bold text-gray-900">${{ number_format($order->total, 2)
+                                        }}</span>
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span class="text-xs text-gray-500">{{ $order->user->name ?? 'Usuario' }}</span>
+                                    @php
+                                    $statusColors = [
+                                    1 => 'bg-yellow-100 text-yellow-800',
+                                    2 => 'bg-blue-100 text-blue-800',
+                                    3 => 'bg-purple-100 text-purple-800',
+                                    4 => 'bg-green-100 text-green-800',
+                                    5 => 'bg-red-100 text-red-800',
+                                    ];
+                                    $statusLabels = [
+                                    1 => 'Pendiente',
+                                    2 => 'Verificado',
+                                    3 => 'Enviado',
+                                    4 => 'Entregado',
+                                    5 => 'Cancelado',
+                                    ];
+                                    @endphp
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium rounded-full {{ $statusColors[$order->status] ?? 'bg-gray-100 text-gray-800' }}">
+                                        {{ $statusLabels[$order->status] ?? 'Desconocido' }}
+                                    </span>
+                                </div>
+                                <div class="mt-1">
+                                    <span class="text-xs text-gray-400">{{ $order->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
+                        </div>
                         @empty
-                            <p class="text-sm text-gray-500 text-center py-4">No hay órdenes recientes</p>
+                        <p class="text-sm text-gray-500 text-center py-4">No hay órdenes recientes</p>
                         @endforelse
                     </div>
                 </div>
@@ -192,7 +192,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.orders.verified') }}"
+                        <a href="{{ route('admin.payments.verification') }}"
                             class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                             <div class="p-2 bg-blue-100 rounded-lg">
                                 <i class="text-blue-600 fas fa-box"></i>
@@ -231,59 +231,57 @@
 
             <!-- Pagos pendientes destacados -->
             @php
-                $pendingPayments = \App\Models\Payment::with('user')
-                    ->where('status', 'pending')
-                    ->whereNotNull('receipt_path')
-                    ->orderBy('created_at', 'desc')
-                    ->take(3)
-                    ->get();
+            $pendingPayments = \App\Models\Payment::with('user')
+            ->where('status', 'pending')
+            ->whereNotNull('receipt_path')
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
             @endphp
 
             @if (count($pendingPayments) > 0)
-                <div class="mt-8">
-                    <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900">
-                                <i class="mr-2 text-yellow-600 fas fa-exclamation-triangle"></i>
-                                Pagos Requieren Verificación
-                            </h3>
-                            <a href="{{ route('admin.payments.verification') }}"
-                                class="text-sm font-medium text-blue-600 hover:text-blue-500">
-                                Ver todos
-                                ({{ \App\Models\Payment::where('status', 'pending')->whereNotNull('receipt_path')->count() }})
-                            </a>
-                        </div>
+            <div class="mt-8">
+                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            <i class="mr-2 text-yellow-600 fas fa-exclamation-triangle"></i>
+                            Pagos Requieren Verificación
+                        </h3>
+                        <a href="{{ route('admin.payments.verification') }}"
+                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Ver todos
+                            ({{ \App\Models\Payment::where('status', 'pending')->whereNotNull('receipt_path')->count()
+                            }})
+                        </a>
+                    </div>
 
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                            @foreach ($pendingPayments as $payment)
-                                <div class="p-4 border border-yellow-200 rounded-lg bg-yellow-50">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span
-                                            class="text-sm font-medium text-gray-900">{{ $payment->user->name ?? 'Usuario' }}</span>
-                                        <span
-                                            class="text-sm font-bold text-gray-900">${{ number_format($payment->amount, 2) }}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span
-                                            class="text-xs text-gray-600">{{ ucfirst($payment->payment_method) }}</span>
-                                        <span
-                                            class="text-xs text-gray-500">{{ $payment->created_at->diffForHumans() }}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span
-                                            class="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-full">
-                                            Pendiente
-                                        </span>
-                                        <a href="{{ route('admin.payments.verification') }}"
-                                            class="text-xs font-medium text-blue-600 hover:text-blue-500">
-                                            Verificar →
-                                        </a>
-                                    </div>
-                                </div>
-                            @endforeach
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        @foreach ($pendingPayments as $payment)
+                        <div class="p-4 border border-yellow-200 rounded-lg bg-yellow-50">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-900">{{ $payment->user->name ?? 'Usuario'
+                                    }}</span>
+                                <span class="text-sm font-bold text-gray-900">${{ number_format($payment->amount, 2)
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-gray-600">{{ ucfirst($payment->payment_method) }}</span>
+                                <span class="text-xs text-gray-500">{{ $payment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-full">
+                                    Pendiente
+                                </span>
+                                <a href="{{ route('admin.payments.verification') }}"
+                                    class="text-xs font-medium text-blue-600 hover:text-blue-500">
+                                    Verificar →
+                                </a>
+                            </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
+            </div>
             @endif
         </div>
     </div>
