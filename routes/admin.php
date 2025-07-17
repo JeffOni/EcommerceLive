@@ -33,6 +33,14 @@ Route::put('products/{product}/variants/{variant}', [ProductController::class, '
     ->name('products.variantsUpdate')
     ->scopeBindings();
 
+// Ruta para subida temporal de imágenes de variantes
+Route::post('products/variants/upload-temp-image', [ProductController::class, 'uploadTempVariantImage'])
+    ->name('products.variants.upload-temp-image');
+
+// Ruta para limpiar flag de toast
+Route::post('products/variants/clear-toast-flag', [ProductController::class, 'clearToastFlag'])
+    ->name('products.variants.clear-toast-flag');
+
 Route::resource('covers', CoverController::class);
 
 // Rutas de órdenes

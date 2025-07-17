@@ -40,9 +40,9 @@
                 @include('layouts.partials.admin.breadcrumb')
                 {{-- slot que contiene el action para mostrar o ejectuar --}}
                 @isset($action)
-                    <div>
-                        {{ $action }}
-                    </div>
+                <div>
+                    {{ $action }}
+                </div>
                 @endisset
             </div>
             {{-- slot que contiene el main --}}
@@ -54,18 +54,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Sistema Global de Upload de Imágenes -->
+    <script src="{{ asset('js/image-upload-handler.js') }}"></script>
+
     @livewireScripts
 
     @stack('js')
 
     {{-- script para mostrar el mensaje de alerta cuando se usa redirect route --}}
     @if (session('swal'))
-        <script>//json enconde sirve par mejorar la seguridad de la aplicacion
+    <script>
+        //json enconde sirve par mejorar la seguridad de la aplicacion
             Swal.fire({!! json_encode(session('swal')) !!});//json_enconde sirve para convertir un array en un objeto tipo json
-        </script>
+    </script>
     @endif
 
-    {{-- script para mostrar el mensaje de alerta cuando se usa emits o eventos de livewire debe estar por debajo de la importacion de srcipt de livewire --}}
+    {{-- script para mostrar el mensaje de alerta cuando se usa emits o eventos de livewire debe estar por debajo de la
+    importacion de srcipt de livewire --}}
 
     <script>
         Livewire.on('swal', (message) => {//tambien en lugar de message puede ser cualquier nombre

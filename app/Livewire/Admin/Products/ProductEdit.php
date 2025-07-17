@@ -27,6 +27,33 @@ class ProductEdit extends Component
 
     public $image; //variable publica image para almacenar la imagen del producto
 
+    /**
+     * Validación en tiempo real cuando se actualiza la imagen
+     */
+    public function updatedImage()
+    {
+        // Si no hay imagen, no hacer nada
+        if (!$this->image) {
+            return;
+        }
+
+        try {
+            $this->validateOnly('image', [
+                'image' => 'required|image|mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif|max:2048'
+            ]);
+
+            // Si la validación es exitosa, disparar evento para ocultar spinner
+            $this->dispatch('image-uploaded');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Si hay error de validación, resetear la imagen para quitar el spinner
+            $this->reset('image');
+
+            // Re-lanzar la excepción para mostrar el error
+            throw $e;
+        }
+    }
+
     public function updatedFamilyId($value)
     //metodo updatedFamilyId se ejecuta cada vez que se actualiza la variable family_id para resetera los campos en category y subcategory
     {
@@ -48,7 +75,7 @@ class ProductEdit extends Component
 
     public function mount($product)
     {
-        $this->productEdit =  $product->only('sku', 'name', 'description', 'image_path', 'price', 'stock', 'subcategory_id'); //solo se obtienen los campos necesarios del producto con only
+        $this->productEdit = $product->only('sku', 'name', 'description', 'image_path', 'price', 'stock', 'subcategory_id'); //solo se obtienen los campos necesarios del producto con only
 
         $this->families = Family::all(); //cargar todos los datos de la tabla families
 
@@ -87,9 +114,9 @@ class ProductEdit extends Component
     public function store()
     {
         $this->validate([
-            'image' => 'nullable|image|max:1024', //maximo 1mb
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif|max:2048', // Validación más específica para imágenes
             //el campo sku es requerido y debe ser unico, pero se excluye pasando el id del producto en el caso de editar
-            'productEdit.sku' => 'required|unique:products,sku,'.$this->product->id,
+            'productEdit.sku' => 'required|unique:products,sku,' . $this->product->id,
             'productEdit.name' => 'required|max:255', //el campo name es requerido
             'productEdit.description' => 'nullable', //el campo description puede ser nulo
             'productEdit.price' => 'required|numeric|min:0', //el campo price es requerido y debe ser numerico
@@ -105,11 +132,23 @@ class ProductEdit extends Component
         ]);
 
         if ($this->image) {//si la imagen es diferente de nulo o sea si se subio una nueva imagen
+            // Validar que la imagen temporal tenga una extensión válida
+            if (method_exists($this->image, 'getClientOriginalExtension')) {
+                $extension = $this->image->getClientOriginalExtension();
+                if (empty($extension)) {
+                    $this->addError('image', 'La imagen debe tener una extensión válida.');
+                    return;
+                }
+            }
+
             Storage::delete($this->productEdit['image_path']); //elimina la imagen anterior
-            $this->productEdit['image_path'] = $this->image->store('products'); //almacena la nueva imagen en la carpeta products
+            $this->productEdit['image_path'] = $this->image->store('products', 'public'); //almacena la nueva imagen en el disco público
         }
 
         $this->product->update($this->productEdit); //actualiza el producto con los nuevos datos referenciados en productEdit
+
+        // Resetear la imagen para que desaparezca el spinner
+        $this->reset('image');
 
         $this->dispatch('swal', [ //se utiliza el metodo dispatch para mostrar una alerta de SweetAlert
             'icon' => 'success',

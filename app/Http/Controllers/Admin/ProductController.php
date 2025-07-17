@@ -127,38 +127,66 @@ class ProductController extends Controller
         //se pasa la variante para que se pueda usar en la vista
         //se puede usar el metodo load para cargar las relaciones de la variante
 
-        return view('admin.products.variants', compact('product', 'variant')); //retorna la vista de variantes y le pasa el producto y la variante
+        return view('admin.products.variants', compact('product', 'variant'));
     }
 
     public function variantsUpdate(Request $request, Product $product, Variant $variant)
     {
-        //actualiza la variante de un producto
-        //se pasa el producto para que se pueda usar en la vista
-        //se pasa la variante para que se pueda usar en la vista
-        //se puede usar el metodo load para cargar las relaciones de la variante
-        $request->validate([
-            'image' => 'nullable|image|max:2048',
-            'sku' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'custom_price' => 'nullable|numeric|min:0',
-        ]); //valida los datos del request
+        // Intentar recuperar imagen temporal de la sesión si existe
+        $tempImageData = session('temp_variant_image');
+
+        try {
+            $request->validate([
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif|max:2048',
+                'sku' => 'required|string|max:255',
+                'stock' => 'required|integer|min:0',
+                'custom_price' => 'nullable|numeric|min:0',
+            ], [], [
+                'sku' => 'SKU',
+                'stock' => 'Stock',
+                'custom_price' => 'Precio personalizado',
+                'image' => 'Imagen'
+            ]); //valida los datos del request
+
+            // Limpiar imagen temporal de la sesión ya que la validación pasó
+            session()->forget('temp_variant_image');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Si hay errores de validación Y hay imagen temporal, activar el flag para mostrar toast
+            if ($tempImageData) {
+                session()->flash('show_variant_image_restored_toast', true);
+            }
+            throw $e; // Re-lanzar la excepción para que Laravel maneje el redirect
+        }
 
         // Inicializar el array $data con los campos del formulario
         $data = [
             'sku' => $request->sku,
             'stock' => $request->stock,
             'custom_price' => $request->custom_price ? $request->custom_price : null,
-            // Agrega aquí otros campos que necesites actualizar
         ];
 
         // Si hay una imagen nueva, procesarla y agregarla a $data
-        if ($request->image) {
+        if ($request->hasFile('image')) {
             // Asegura que la carpeta exista antes de guardar la imagen
             Storage::disk('public')->makeDirectory('products/variants');
             if ($variant->image_path) { //si la variante ya tenía una imagen
-                Storage::delete($variant->image_path); //elimina la imagen anterior
+                Storage::disk('public')->delete($variant->image_path); //elimina la imagen anterior
             }
-            $data['image_path'] = $request->image->store('products/variants', 'public'); //almacena la nueva imagen y guarda la ruta
+            $data['image_path'] = $request->file('image')->store('products/variants', 'public'); //almacena la nueva imagen y guarda la ruta
+        }
+        // Si había una imagen temporal guardada en sesión, usarla
+        elseif ($tempImageData && Storage::disk('public')->exists('temp_uploads/' . $tempImageData['filename'])) {
+            // Asegura que la carpeta exista
+            Storage::disk('public')->makeDirectory('products/variants');
+            if ($variant->image_path) {
+                Storage::disk('public')->delete($variant->image_path);
+            }
+
+            // Mover imagen temporal a ubicación final
+            $finalPath = 'products/variants/' . $tempImageData['filename'];
+            Storage::disk('public')->move('temp_uploads/' . $tempImageData['filename'], $finalPath);
+
+            $data['image_path'] = $finalPath;
         }
 
         $variant->update($data); //actualiza la variante con los datos
@@ -171,5 +199,77 @@ class ProductController extends Controller
         ]);
 
         return redirect()->route('admin.products.variants', [$product, $variant]); //redirecciona a la vista de variantes
+    }
+
+    /**
+     * Maneja la subida temporal de imágenes para variantes
+     */
+    public function uploadTempVariantImage(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'image' => [
+                    'required',
+                    'image',
+                    'mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif',
+                    'max:2048',
+                    // Validación simplificada solo para longitud de nombre
+                    function ($attribute, $value, $fail) {
+                        if ($value && mb_strlen($value->getClientOriginalName()) > 100) {
+                            $fail('El nombre del archivo es demasiado largo (máximo 100 caracteres).');
+                        }
+                    }
+                ]
+            ]);
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $filename = uniqid('variant_') . '.' . $image->getClientOriginalExtension();
+
+                // Crear directorio temporal en disco público
+                Storage::disk('public')->makeDirectory('temp_uploads');
+
+                // Guardar imagen temporalmente en disco público
+                $path = $image->storeAs('temp_uploads', $filename, 'public');
+
+                session([
+                    'temp_variant_image' => [
+                        'filename' => $filename,
+                        'original_name' => $image->getClientOriginalName(),
+                        'path' => $path,
+                        'url' => asset('storage/' . $path) // URL pública correcta
+                    ]
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'preview_url' => asset('storage/' . $path),
+                    'filename' => $filename
+                ]);
+            }
+
+            return response()->json(['success' => false, 'message' => 'No se pudo subir la imagen'], 400);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación: ' . implode(', ', $e->validator->errors()->all())
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Error uploading variant image: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor al subir la imagen'
+            ], 500);
+        }
+    }
+
+    /**
+     * Limpia el flag de sesión para el toast de imagen recuperada
+     */
+    public function clearToastFlag(Request $request)
+    {
+        session()->forget('show_variant_image_restored_toast');
+        return response()->json(['success' => true]);
     }
 }

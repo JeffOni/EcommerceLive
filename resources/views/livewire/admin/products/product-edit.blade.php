@@ -33,18 +33,52 @@
                                 <span
                                     class="font-semibold text-indigo-700 group-hover:text-indigo-800 transition-colors">Actualizar
                                     Imagen</span>
-                                <input type="file" wire:model="image" class="hidden" accept="image/*" />
+                                <input type="file" wire:model="image" class="hidden" accept="image/*" name="image"
+                                    onchange="previewImageWithAnimationLivewire(event, '.aspect-square img', 'portada')" />
                             </x-label>
                         </div>
+
                         <div
                             class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($image)
                             <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-                                src="{{ $image ? $image->temporaryUrl() : Storage::url($productEdit['image_path']) }}"
-                                alt="Imagen de Productos">
+                                src="{{ $image->temporaryUrl() }}" alt="Nueva imagen de producto">
+                            @elseif($productEdit['image_path'])
+                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ Storage::url($productEdit['image_path']) }}" alt="Imagen actual del producto">
+                            @else
+                            <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                                <div class="text-center">
+                                    <i class="fas fa-image text-gray-400 text-6xl mb-4"></i>
+                                    <p class="text-gray-500 font-medium">Sin imagen</p>
+                                </div>
+                            </div>
+                            @endif
+                            <!-- Spinner con estilos originales bonitos -->
+                            <div id="cover-image-spinner" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                         </div>
+
+                        <!-- Error específico para imagen -->
+                        @error('image')
+                        <div class="mt-3 p-3 bg-red-100 border border-red-300 rounded-lg">
+                            <p class="text-red-700 text-sm font-medium">{{ $message }}</p>
+                        </div>
+                        @enderror
+
                         <figcaption class="font-semibold text-center text-gray-700 mt-4 text-lg">Imagen de Producto
                         </figcaption>
                     </figure>
@@ -63,8 +97,7 @@
                                 </x-label>
                                 <x-input
                                     class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
-                                    type="text" wire:model.defer="productEdit.sku"
-                                    placeholder="Código del Producto" />
+                                    type="text" wire:model.defer="productEdit.sku" placeholder="Código del Producto" />
                             </div>
 
                             <!-- Price Field -->
@@ -89,8 +122,7 @@
                                 </x-label>
                                 <x-input
                                     class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
-                                    type="text" wire:model.defer="productEdit.name"
-                                    placeholder="Nombre del Producto" />
+                                    type="text" wire:model.defer="productEdit.name" placeholder="Nombre del Producto" />
                             </div>
 
                             <div class="space-y-3">
@@ -105,16 +137,16 @@
                             </div>
 
                             @empty($product->variants->count() > 0)
-                                <div class="space-y-3">
-                                    <x-label class="text-slate-700 font-semibold flex items-center text-lg"
-                                        value="{{ __('Stock') }}">
-                                        <i class="fas fa-boxes mr-2 text-amber-500"></i>
-                                    </x-label>
-                                    <x-input
-                                        class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
-                                        type="number" wire:model.defer="productEdit.stock"
-                                        placeholder="Stock del Producto" />
-                                </div>
+                            <div class="space-y-3">
+                                <x-label class="text-slate-700 font-semibold flex items-center text-lg"
+                                    value="{{ __('Stock') }}">
+                                    <i class="fas fa-boxes mr-2 text-amber-500"></i>
+                                </x-label>
+                                <x-input
+                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                    type="number" wire:model.defer="productEdit.stock"
+                                    placeholder="Stock del Producto" />
+                            </div>
                             @endempty
                         </div>
 
@@ -130,7 +162,7 @@
                                     name="family_id" id="family_id">
                                     <option value="" disabled>Seleccione una familia</option>
                                     @foreach ($families as $family)
-                                        <option value="{{ $family->id }}">{{ $family->name }}</option>
+                                    <option value="{{ $family->id }}">{{ $family->name }}</option>
                                     @endforeach
                                 </x-select>
                             </div>
@@ -145,7 +177,7 @@
                                     name="category_id" id="category_id">
                                     <option value="" disabled>Seleccione una categoría</option>
                                     @foreach ($this->categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </x-select>
                             </div>
@@ -160,7 +192,7 @@
                                     name="subcategory_id" id="subcategory_id">
                                     <option value="" disabled>Seleccione una subcategoría</option>
                                     @foreach ($this->subcategories as $subcategory)
-                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                    <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
                                     @endforeach
                                 </x-select>
                             </div>
@@ -182,15 +214,15 @@
 
     </form>
 
-    {{-- formulario para eliminar  --}}
+    {{-- formulario para eliminar --}}
     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" id="delete-form">
         @csrf
         @method('DELETE')
     </form>
 
     @push('js')
-        <script>
-            let confirmDelete = () => {
+    <script>
+        let confirmDelete = () => {
                 // Sweet Alert 2
                 Swal.fire({
                     title: "Estás Seguro?",
@@ -212,7 +244,44 @@
                     }
                 });
             }
-        </script>
+
+            // CÓDIGO EXACTAMENTE IGUAL QUE COVER - CERO CAMBIOS
+            document.addEventListener('livewire:init', () => {
+                Livewire.on('image-uploaded', () => {
+                    if (typeof showImageUploadToast === 'function') {
+                        showImageUploadToast('imagen del producto');
+                    }
+                });
+            });
+
+            // Función de emergencia si la global no funciona
+            function previewImageWithAnimationLivewire(event, querySelector, imageType) {
+                const input = event.target;
+                const imgPreview = document.querySelector(querySelector);
+                const spinner = document.getElementById('cover-image-spinner');
+
+                if (!input.files.length) return;
+
+                const file = input.files[0];
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Archivo no válido');
+                    input.value = '';
+                    return;
+                }
+
+                if (spinner) spinner.style.display = 'flex';
+
+                const objectURL = URL.createObjectURL(file);
+                imgPreview.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    imgPreview.src = objectURL;
+                    imgPreview.style.opacity = '1';
+                    if (spinner) spinner.style.display = 'none';
+                }, 500);
+            }
+    </script>
     @endpush
 
 </div>

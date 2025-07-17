@@ -67,12 +67,26 @@
                                     <i class="fas fa-camera mr-3 text-white"></i>
                                     <span class="font-medium text-white">Seleccionar Imagen</span>
                                     <input type="file" class="hidden" accept="image/*" name="image"
-                                        onchange="previewImage(event, '#imgPreview')" />
+                                        onchange="previewImageWithAnimation(event, '#imgPreview', 'portada')" />
                                 </label>
                             </div>
 
+                            <!-- Overlay spinner FUERA del contenedor de imagen (consistente con Livewire) -->
                             {{-- Imagen de vista previa mejorada --}}
                             <div class="relative overflow-hidden rounded-2xl shadow-xl border-4 border-white">
+                                <!-- Spinner DENTRO del contenedor relativo -->
+                                <div id="cover-image-spinner" style="display:none;"
+                                    class="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-auto">
+                                    <div class="absolute inset-0 bg-black bg-opacity-60 rounded-2xl"></div>
+                                    <div class="relative z-10 flex flex-col items-center justify-center">
+                                        <div
+                                            class="animate-spin rounded-full h-14 w-14 border-4 border-orange-200 border-t-orange-600 mb-4">
+                                        </div>
+                                        <p class="text-white font-semibold text-base text-center drop-shadow">Subiendo
+                                            portada...</p>
+                                        <p class="text-white text-xs mt-1 text-center drop-shadow">Por favor espera</p>
+                                    </div>
+                                </div>
                                 <img id="imgPreview" src="{{ asset('img/no-image-horizontal.png') }}" alt="Portada"
                                     class="w-full aspect-[3/1] object-cover object-center transition-transform duration-500 group-hover:scale-105">
                                 <div
@@ -115,8 +129,7 @@
                                     <i class="fas fa-calendar-plus text-green-500 mr-2"></i>
                                     Fecha de Inicio
                                 </label>
-                                <input type="date" name="start_at"
-                                    value="{{ old('start_at', now()->format('Y-m-d')) }}"
+                                <input type="date" name="start_at" value="{{ old('start_at', now()->format('Y-m-d')) }}"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg">
                             </div>
 
@@ -176,33 +189,9 @@
     {{-- Scripts JavaScript --}}
     {{-- Sección push añade el script al stack 'js' definido en el layout principal --}}
     @push('js')
-        <script>
-            /**
-             * Función para mostrar la vista previa de una imagen antes de subirla
-             * @param {Event} event - El evento de cambio del input file
-             * @param {String} querySelector - Selector CSS del elemento img donde se mostrará la vista previa
-             */
-            function previewImage(event, querySelector) {
-
-                //Recuperamos el input que desencadeno la acción
-                let input = event.target;
-
-                //Recuperamos la etiqueta img donde cargaremos la imagen
-                let imgPreview = document.querySelector(querySelector);
-
-                // Verificamos si existe una imagen seleccionada
-                if (!input.files.length) return
-
-                //Recuperamos el archivo subido
-                let file = input.files[0];
-
-                //Creamos la url temporal para la vista previa
-                let objectURL = URL.createObjectURL(file);
-
-                //Modificamos el atributo src de la etiqueta img
-                imgPreview.src = objectURL;
-            }
-        </script>
+    <script>
+        // Elimina la función local y usa el sistema global
+    </script>
     @endpush
 
 </x-admin-layout>

@@ -34,19 +34,46 @@
                                 <span
                                     class="font-medium text-indigo-700 group-hover:text-indigo-800 transition-colors text-sm">Imagen
                                     1</span>
-                                <input type="file" wire:model="image" class="hidden" accept="image/*" />
+                                <input type="file" wire:model="image" class="hidden" accept="image/*"
+                                    onchange="previewImageWithAnimationLivewire(event, '#preview-image-1', 'imagen principal')" />
                             </x-label>
                         </div>
+
                         <div
-                            class="aspect-square w-full rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-md relative group">
-                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-                                src="{{ $image ? $image->temporaryUrl() : asset('/img/no-image.png') }}"
+                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($temporaryImageUrl || $image)
+                            <img id="preview-image-1"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $temporaryImageUrl ?? ($image ? $image->temporaryUrl() : asset('/img/no-image.png')) }}"
                                 alt="Imagen Principal">
+                            @else
+                            <img id="preview-image-1"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ asset('/img/no-image.png') }}" alt="Imagen Principal">
+                            @endif
+                            <!-- Spinner igual que ProductEdit que ya funciona -->
+                            <div id="cover-image-spinner" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                         </div>
-                        <figcaption class="font-medium text-center text-gray-700 mt-2">Imagen Principal *</figcaption>
+                        <figcaption class="font-medium text-center text-gray-700 mt-2">
+                            Imagen Principal *
+                            @if($imageUploaded)
+                            <i class="fas fa-check-circle text-green-500 ml-1"></i>
+                            @endif
+                        </figcaption>
                     </figure>
 
                     <!-- Segunda Imagen -->
@@ -59,19 +86,45 @@
                                 <span
                                     class="font-medium text-green-700 group-hover:text-green-800 transition-colors text-sm">Imagen
                                     2</span>
-                                <input type="file" wire:model="image2" class="hidden" accept="image/*" />
+                                <input type="file" wire:model="image2" class="hidden" accept="image/*"
+                                    onchange="handleImage2Upload(event)" />
                             </x-label>
                         </div>
+
                         <div
-                            class="aspect-square w-full rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-md relative group">
-                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-                                src="{{ $image2 ? $image2->temporaryUrl() : asset('/img/no-image.png') }}"
+                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($temporaryImageUrl2 || $image2)
+                            <img id="preview-image-2"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $temporaryImageUrl2 ?? ($image2 ? $image2->temporaryUrl() : asset('/img/no-image.png')) }}"
                                 alt="Segunda Imagen">
+                            @else
+                            <img id="preview-image-2"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ asset('/img/no-image.png') }}" alt="Segunda Imagen">
+                            @endif
+                            <!-- Spinner igual que ProductEdit -->
+                            <div id="product-image-spinner-2" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                         </div>
-                        <figcaption class="font-medium text-center text-gray-700 mt-2">Segunda Imagen (opcional)
+                        <figcaption class="font-medium text-center text-gray-700 mt-2">
+                            Segunda Imagen (opcional)
+                            @if($image2Uploaded)
+                            <i class="fas fa-check-circle text-green-500 ml-1"></i>
+                            @endif
                         </figcaption>
                     </figure>
 
@@ -85,19 +138,45 @@
                                 <span
                                     class="font-medium text-purple-700 group-hover:text-purple-800 transition-colors text-sm">Imagen
                                     3</span>
-                                <input type="file" wire:model="image3" class="hidden" accept="image/*" />
+                                <input type="file" wire:model="image3" class="hidden" accept="image/*"
+                                    onchange="handleImage3Upload(event)" />
                             </x-label>
                         </div>
+
                         <div
-                            class="aspect-square w-full rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-md relative group">
-                            <img class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-                                src="{{ $image3 ? $image3->temporaryUrl() : asset('/img/no-image.png') }}"
+                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            @if($temporaryImageUrl3 || $image3)
+                            <img id="preview-image-3"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ $temporaryImageUrl3 ?? ($image3 ? $image3->temporaryUrl() : asset('/img/no-image.png')) }}"
                                 alt="Tercera Imagen">
+                            @else
+                            <img id="preview-image-3"
+                                class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                                src="{{ asset('/img/no-image.png') }}" alt="Tercera Imagen">
+                            @endif
+                            <!-- Spinner igual que ProductEdit -->
+                            <div id="product-image-spinner-3" style="display:none;"
+                                class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
+                                <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
+                                    <div
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
+                                        <p class="text-gray-500 text-xs mt-1">Por favor espera</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                         </div>
-                        <figcaption class="font-medium text-center text-gray-700 mt-2">Tercera Imagen (opcional)
+                        <figcaption class="font-medium text-center text-gray-700 mt-2">
+                            Tercera Imagen (opcional)
+                            @if($image3Uploaded)
+                            <i class="fas fa-check-circle text-green-500 ml-1"></i>
+                            @endif
                         </figcaption>
                     </figure>
                 </div>
@@ -240,3 +319,113 @@
         </div>
     </form>
 </div>
+
+@push('js')
+<script>
+    // Escuchar evento de imagen cargada desde Livewire
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('imageUploaded', (event) => {
+            const data = event[0] || event;
+            if (typeof showImageUploadToast === 'function') {
+                showImageUploadToast(data.type);
+            }
+        });
+    });
+
+    // Función específica para imagen 2
+    function handleImage2Upload(event) {
+        const input = event.target;
+        const spinner = document.getElementById('product-image-spinner-2');
+        const imgPreview = document.querySelector('#preview-image-2');
+
+        if (!input.files.length) return;
+
+        const file = input.files[0];
+
+        // Validación básica
+        if (!file.type.startsWith('image/')) {
+            alert('El archivo seleccionado no es una imagen válida');
+            input.value = '';
+            return;
+        }
+
+        // Validación de tamaño (1MB)
+        if (file.size > 1024 * 1024) {
+            alert('La imagen no puede ser mayor a 1MB');
+            input.value = '';
+            return;
+        }
+
+        // Mostrar spinner
+        if (spinner) {
+            spinner.style.display = 'flex';
+        }
+
+        // Crear preview
+        const objectURL = URL.createObjectURL(file);
+        
+        // Cambiar imagen con animación simple
+        if (imgPreview) {
+            imgPreview.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                imgPreview.src = objectURL;
+                imgPreview.style.opacity = '1';
+                
+                // Ocultar spinner
+                if (spinner) {
+                    spinner.style.display = 'none';
+                }
+            }, 500);
+        }
+    }
+
+    // Función específica para imagen 3
+    function handleImage3Upload(event) {
+        const input = event.target;
+        const spinner = document.getElementById('product-image-spinner-3');
+        const imgPreview = document.querySelector('#preview-image-3');
+
+        if (!input.files.length) return;
+
+        const file = input.files[0];
+
+        // Validación básica
+        if (!file.type.startsWith('image/')) {
+            alert('El archivo seleccionado no es una imagen válida');
+            input.value = '';
+            return;
+        }
+
+        // Validación de tamaño (1MB)
+        if (file.size > 1024 * 1024) {
+            alert('La imagen no puede ser mayor a 1MB');
+            input.value = '';
+            return;
+        }
+
+        // Mostrar spinner
+        if (spinner) {
+            spinner.style.display = 'flex';
+        }
+
+        // Crear preview
+        const objectURL = URL.createObjectURL(file);
+        
+        // Cambiar imagen con animación simple
+        if (imgPreview) {
+            imgPreview.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                imgPreview.src = objectURL;
+                imgPreview.style.opacity = '1';
+                
+                // Ocultar spinner
+                if (spinner) {
+                    spinner.style.display = 'none';
+                }
+            }, 500);
+        }
+    }
+</script>
+@endpush

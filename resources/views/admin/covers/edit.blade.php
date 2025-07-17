@@ -68,12 +68,25 @@
                                     <i class="fas fa-camera mr-3 text-white"></i>
                                     <span class="font-medium text-white">Cambiar Imagen</span>
                                     <input type="file" class="hidden" accept="image/*" name="image"
-                                        onchange="previewImage(event, '#imgPreview')" />
+                                        onchange="previewImageWithAnimation(event, '#imgPreview', 'portada')" />
                                 </label>
                             </div>
 
                             {{-- Imagen de vista previa mejorada --}}
                             <div class="relative overflow-hidden rounded-2xl shadow-xl border-4 border-white">
+                                <!-- Spinner DENTRO del contenedor relativo -->
+                                <div id="cover-image-spinner" style="display:none;"
+                                    class="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-auto">
+                                    <div class="absolute inset-0 bg-black bg-opacity-60 rounded-2xl"></div>
+                                    <div class="relative z-10 flex flex-col items-center justify-center">
+                                        <div
+                                            class="animate-spin rounded-full h-14 w-14 border-4 border-orange-200 border-t-orange-600 mb-4">
+                                        </div>
+                                        <p class="text-white font-semibold text-base text-center drop-shadow">Subiendo
+                                            portada...</p>
+                                        <p class="text-white text-xs mt-1 text-center drop-shadow">Por favor espera</p>
+                                    </div>
+                                </div>
                                 <img id="imgPreview" src="{{ $cover->image }}" alt="Portada"
                                     class="w-full aspect-[3/1] object-cover object-center transition-transform duration-500 group-hover:scale-105">
                                 <div
@@ -141,9 +154,9 @@
                             </label>
                             <div class="flex space-x-6">
                                 <label class="flex items-center group cursor-pointer">
-                                    <input type="radio" name="is_active" value="1"
-                                        {{ $cover->is_active == 1 ? 'checked' : '' }}
-                                        class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                    <input type="radio" name="is_active" value="1" {{ $cover->is_active == 1 ? 'checked'
+                                    : '' }}
+                                    class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
                                     <span
                                         class="ml-3 text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-200 flex items-center">
                                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
@@ -151,9 +164,9 @@
                                     </span>
                                 </label>
                                 <label class="flex items-center group cursor-pointer">
-                                    <input type="radio" name="is_active" value="0"
-                                        {{ $cover->is_active == 0 ? 'checked' : '' }}
-                                        class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                    <input type="radio" name="is_active" value="0" {{ $cover->is_active == 0 ? 'checked'
+                                    : '' }}
+                                    class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
                                     <span
                                         class="ml-3 text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-200 flex items-center">
                                         <i class="fas fa-times-circle text-gray-400 mr-2"></i>
@@ -178,34 +191,5 @@
     </div>
 
     {{-- Scripts JavaScript --}}
-    {{-- Sección push añade el script al stack 'js' definido en el layout principal --}}
-    @push('js')
-        <script>
-            /**
-             * Función para mostrar la vista previa de una imagen antes de subirla
-             * @param {Event} event - El evento de cambio del input file
-             * @param {String} querySelector - Selector CSS del elemento img donde se mostrará la vista previa
-             */
-            function previewImage(event, querySelector) {
-
-                //Recuperamos el input que desencadeno la acción
-                let input = event.target;
-
-                //Recuperamos la etiqueta img donde cargaremos la imagen
-                let imgPreview = document.querySelector(querySelector);
-
-                // Verificamos si existe una imagen seleccionada
-                if (!input.files.length) return
-
-                //Recuperamos el archivo subido
-                let file = input.files[0];
-
-                //Creamos la url temporal para la vista previa
-                let objectURL = URL.createObjectURL(file);
-
-                //Modificamos el atributo src de la etiqueta img
-                imgPreview.src = objectURL;
-            }
-        </script>
-    @endpush
+    {{-- La función previewImageWithAnimation está disponible globalmente desde image-upload-handler.js --}}
 </x-admin-layout>

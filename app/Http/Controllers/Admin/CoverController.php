@@ -16,7 +16,7 @@ class CoverController extends Controller
     {
         //
         $covers = Cover::orderBy('order')->get();
-        return view('admin.covers.index' , compact('covers'));
+        return view('admin.covers.index', compact('covers'));
     }
 
     /**
@@ -35,7 +35,25 @@ class CoverController extends Controller
     {
         //
         $data = $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => [
+                'required',
+                'image',
+                'mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif',
+                'max:2048',
+                // Validación personalizada de nombre de archivo (máx 100 chars)
+                function ($attribute, $value, $fail) use ($request) {
+                    $file = $request->file('image');
+                    if ($file) {
+                        $original = $file->getClientOriginalName();
+                        if (mb_strlen($original) > 100) {
+                            return $fail('El nombre del archivo es demasiado largo. Máximo 100 caracteres.');
+                        }
+                        if (!preg_match('/^[a-zA-Z0-9._\-\s]{1,100}\.(jpg|jpeg|png|gif|bmp|webp|svg|avif)$/i', $original)) {
+                            return $fail('El nombre del archivo contiene caracteres no permitidos o extensión inválida.');
+                        }
+                    }
+                }
+            ],
 
             // Título: regla de validación para el título de la portada
             // - required: campo obligatorio
@@ -120,7 +138,25 @@ class CoverController extends Controller
         // - La imagen es opcional (nullable) ya que el usuario puede mantener la imagen existente
         // - Se verifican los mismos criterios de validación para los demás campos
         $data = $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,gif,bmp,webp,svg,avif',
+                'max:2048',
+                // Validación personalizada de nombre de archivo (máx 100 chars)
+                function ($attribute, $value, $fail) use ($request) {
+                    $file = $request->file('image');
+                    if ($file) {
+                        $original = $file->getClientOriginalName();
+                        if (mb_strlen($original) > 100) {
+                            return $fail('El nombre del archivo es demasiado largo. Máximo 100 caracteres.');
+                        }
+                        if (!preg_match('/^[a-zA-Z0-9._\-\s]{1,100}\.(jpg|jpeg|png|gif|bmp|webp|svg|avif)$/i', $original)) {
+                            return $fail('El nombre del archivo contiene caracteres no permitidos o extensión inválida.');
+                        }
+                    }
+                }
+            ],
             'title' => 'required|string|max:255',
             'start_at' => 'required|date',
             'end_at' => 'nullable|date|after_or_equal:start_at',
