@@ -125,11 +125,16 @@ class ShipmentService
     /**
      * Calcular tarifa de envío
      */
-    private function calculateDeliveryFee(Order $order): float
+    private function calculateDeliveryFee(Order $order, ?DeliveryDriver $driver = null): float
     {
         $province = $order->shipping_address['province'] ?? '';
 
-        // Tarifas por provincia
+        // Si hay un repartidor asignado, usar sus tarifas personalizadas
+        if ($driver) {
+            return $driver->getRateForOrder($order);
+        }
+
+        // Tarifas por defecto del sistema por provincia
         return match ($province) {
             'Pichincha' => 3.00,
             'Manabí' => 5.00,
@@ -142,6 +147,20 @@ class ShipmentService
      */
     private function getStoreAddress(): array
     {
+        // Intentar obtener la oficina principal desde la base de datos
+        $mainOffice = \App\Models\OfficeAddress::getMainOffice();
+
+        if ($mainOffice) {
+            return [
+                'address' => $mainOffice->address,
+                'province' => $mainOffice->province,
+                'canton' => $mainOffice->canton,
+                'parish' => $mainOffice->parish,
+                'reference' => $mainOffice->reference ?? 'Oficina principal'
+            ];
+        }
+
+        // Dirección por defecto si no hay oficina configurada
         return [
             'address' => 'Dirección de tu tienda',
             'province' => 'Pichincha',
@@ -189,5 +208,46 @@ class ShipmentService
     {
         return $order->shipping_address &&
             $this->isDeliveryAllowed($order->shipping_address);
+    }
+
+    /**
+     * Crear envío para una orden con repartidor asignado directamente
+     */
+    public function createShipmentForOrderWithDriver(Order $order, DeliveryDriver $driver): ?Shipment
+    {
+        // Verificar que la orden tenga dirección de envío
+        if (!$order->shipping_address) {
+            return null;
+        }
+
+        // Verificar que esté en zona de cobertura
+        if (!$this->isDeliveryAllowed($order->shipping_address)) {
+            return null;
+        }
+
+        // Verificar que no tenga ya un envío
+        if ($order->hasShipment()) {
+            $shipment = $order->shipment()->first();
+            // Si ya tiene envío, solo asignar el repartidor
+            $this->assignDriverToShipment($shipment, $driver);
+            return $shipment;
+        }
+
+        // Crear el envío con repartidor asignado
+        $shipment = Shipment::create([
+            'tracking_number' => Shipment::generateTrackingNumber(),
+            'order_id' => $order->id,
+            'status' => ShipmentStatus::ASSIGNED,
+            'pickup_address' => $this->getStoreAddress(),
+            'delivery_address' => $order->shipping_address,
+            'delivery_fee' => $this->calculateDeliveryFee($order, $driver),
+            'driver_id' => $driver->id,
+            'assigned_at' => now(),
+        ]);
+
+        // Actualizar estado de la orden a "Asignado"
+        $order->update(['status' => 4]);
+
+        return $shipment;
     }
 }

@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ShipmentService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $shipmentService;
+
+    public function __construct(ShipmentService $shipmentService)
+    {
+        $this->shipmentService = $shipmentService;
+    }
     //
     public function index(Request $request)
     {
@@ -169,25 +176,18 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Usar el ShipmentService para crear/asignar envío
-            $shipmentService = app(\App\Services\ShipmentService::class);
+            // Usar el ShipmentService para crear y asignar envío en una sola operación
             $driver = \App\Models\DeliveryDriver::findOrFail($request->delivery_driver_id);
 
-            // Si no tiene envío, crearlo primero
-            if (!$order->hasShipment()) {
-                $shipment = $shipmentService->createShipmentForOrder($order);
-                if (!$shipment) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'No se pudo crear el envío para esta orden. Verifica que la dirección sea válida.'
-                    ]);
-                }
+            // Si ya tiene envío sin repartidor, asignar el repartidor
+            if ($order->hasShipment()) {
+                $shipment = $order->shipment()->first();
+                $success = $this->shipmentService->assignDriverToShipment($shipment, $driver);
             } else {
-                $shipment = $order->shipment;
+                // Crear envío Y asignar repartidor en una sola operación
+                $shipment = $this->shipmentService->createShipmentForOrderWithDriver($order, $driver);
+                $success = $shipment ? true : false;
             }
-
-            // Asignar el repartidor
-            $success = $shipmentService->assignDriverToShipment($shipment, $driver);
 
             if ($success) {
                 // Actualizar el estado de la orden a "Asignado" (4)

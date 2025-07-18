@@ -11,7 +11,9 @@
         'name' => 'Detalle #' . $order->id,
     ],
 ]">
-
+    <x-slot name="action">
+        <x-link href="{{ route('admin.orders.index') }}" type="secondary" name="Regresar" />
+    </x-slot>
     <!-- Fondo con gradiente y elementos decorativos -->
     <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <!-- Elementos decorativos de fondo -->
@@ -47,12 +49,12 @@
 
                 <!-- Contenido -->
                 <div class="p-8 bg-white">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                         <!-- Información del Cliente -->
                         <div class="lg:col-span-1">
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                    <i class="fas fa-user mr-2 text-blue-500"></i>
+                            <div class="p-6 rounded-lg bg-gray-50">
+                                <h3 class="mb-4 text-lg font-semibold text-gray-900">
+                                    <i class="mr-2 text-blue-500 fas fa-user"></i>
                                     Información del Cliente
                                 </h3>
                                 <div class="space-y-3">
@@ -72,44 +74,44 @@
                             </div>
 
                             <!-- Estado del Pedido -->
-                            <div class="bg-gray-50 rounded-lg p-6 mt-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                    <i class="fas fa-info-circle mr-2 text-green-500"></i>
+                            <div class="p-6 mt-6 rounded-lg bg-gray-50">
+                                <h3 class="mb-4 text-lg font-semibold text-gray-900">
+                                    <i class="mr-2 text-green-500 fas fa-info-circle"></i>
                                     Estado del Pedido
                                 </h3>
                                 @php
-                                    $statusClass = match ($order->status) {
-                                        1 => 'status-pendiente',
-                                        2 => 'status-verificado',
-                                        3 => 'status-preparando',
-                                        4 => 'status-asignado',
-                                        5 => 'status-en-camino',
-                                        6 => 'status-entregado',
-                                        7 => 'status-cancelado',
-                                        default => 'status-pendiente',
-                                    };
+                                $statusClass = match ($order->status) {
+                                1 => 'status-pendiente',
+                                2 => 'status-verificado',
+                                3 => 'status-preparando',
+                                4 => 'status-asignado',
+                                5 => 'status-en-camino',
+                                6 => 'status-entregado',
+                                7 => 'status-cancelado',
+                                default => 'status-pendiente',
+                                };
 
-                                    $statusText = match ($order->status) {
-                                        1 => 'Pendiente',
-                                        2 => 'Pago Verificado',
-                                        3 => 'Preparando',
-                                        4 => 'Asignado',
-                                        5 => 'En Camino',
-                                        6 => 'Entregado',
-                                        7 => 'Cancelado',
-                                        default => 'Pendiente',
-                                    };
+                                $statusText = match ($order->status) {
+                                1 => 'Pendiente',
+                                2 => 'Pago Verificado',
+                                3 => 'Preparando',
+                                4 => 'Asignado',
+                                5 => 'En Camino',
+                                6 => 'Entregado',
+                                7 => 'Cancelado',
+                                default => 'Pendiente',
+                                };
                                 @endphp
                                 <div class="flex items-center justify-between">
                                     <span class="status-badge {{ $statusClass }} text-sm">
                                         {{ $statusText }}
                                     </span>
                                     @if ($order->pdf_path)
-                                        <a href="{{ route('admin.orders.downloadPDF', $order) }}"
-                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
-                                            <i class="fas fa-download mr-2"></i>
-                                            Descargar PDF
-                                        </a>
+                                    <a href="{{ route('admin.orders.downloadPDF', $order) }}"
+                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+                                        <i class="mr-2 fas fa-download"></i>
+                                        Descargar PDF
+                                    </a>
                                     @endif
                                 </div>
                             </div>
@@ -118,179 +120,178 @@
                         <!-- Detalles del Pedido -->
                         <div class="lg:col-span-2">
                             <!-- Dirección de Envío -->
-                            <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                    <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
+                            <div class="p-6 mb-6 bg-white border border-gray-200 rounded-lg">
+                                <h3 class="mb-4 text-lg font-semibold text-gray-900">
+                                    <i class="mr-2 text-red-500 fas fa-map-marker-alt"></i>
                                     Dirección de Envío
                                 </h3>
                                 @if ($shippingAddress && $shippingAddress['address'])
-                                    <div class="space-y-3">
-                                        <!-- Destinatario -->
-                                        @if ($shippingAddress['recipient_name'])
-                                            <div class="flex items-center space-x-2">
-                                                <i class="fas fa-user text-gray-400"></i>
-                                                <span
-                                                    class="font-medium text-gray-900">{{ $shippingAddress['recipient_name'] }}</span>
-                                                @if ($shippingAddress['recipient_document'])
-                                                    <span class="text-gray-500 text-sm">(CI:
-                                                        {{ $shippingAddress['recipient_document'] }})</span>
+                                <div class="space-y-3">
+                                    <!-- Destinatario -->
+                                    @if ($shippingAddress['recipient_name'])
+                                    <div class="flex items-center space-x-2">
+                                        <i class="text-gray-400 fas fa-user"></i>
+                                        <span class="font-medium text-gray-900">{{ $shippingAddress['recipient_name']
+                                            }}</span>
+                                        @if ($shippingAddress['recipient_document'])
+                                        <span class="text-sm text-gray-500">(CI:
+                                            {{ $shippingAddress['recipient_document'] }})</span>
+                                        @endif
+                                    </div>
+                                    @endif
+
+                                    <!-- Teléfono -->
+                                    @if ($shippingAddress['phone'])
+                                    <div class="flex items-center space-x-2">
+                                        <i class="text-gray-400 fas fa-phone"></i>
+                                        <span class="text-gray-900">{{ $shippingAddress['phone'] }}</span>
+                                    </div>
+                                    @endif
+
+                                    <!-- Dirección completa -->
+                                    <div class="p-4 rounded-lg bg-gray-50">
+                                        <div class="flex items-start space-x-2">
+                                            <i class="mt-1 text-gray-400 fas fa-map-marker-alt"></i>
+                                            <div class="flex-1">
+                                                <p class="font-medium text-gray-900">
+                                                    {{ $shippingAddress['address'] }}
+                                                </p>
+
+                                                <!-- Ubicación geográfica -->
+                                                @php
+                                                $parish = $shippingAddress['parish'] ?? '';
+                                                $canton = $shippingAddress['canton'] ?? '';
+                                                $province = $shippingAddress['province'] ?? '';
+                                                $postal = $shippingAddress['postal_code'] ?? '';
+                                                $hasLocation =
+                                                ($parish && $parish !== 'Sin parroquia') ||
+                                                ($canton && $canton !== 'Sin cantón') ||
+                                                ($province && $province !== 'Sin provincia') ||
+                                                $postal;
+                                                @endphp
+                                                @if ($hasLocation)
+                                                <p class="mt-1 text-sm text-gray-600">
+                                                    @if ($parish && $parish !== 'Sin parroquia')
+                                                    {{ $parish }}
+                                                    @endif
+                                                    @if ($canton && $canton !== 'Sin cantón')
+                                                    , {{ $canton }}
+                                                    @endif
+                                                    @if ($province && $province !== 'Sin provincia')
+                                                    , {{ $province }}
+                                                    @endif
+                                                    @if ($postal)
+                                                    - CP: {{ $postal }}
+                                                    @endif
+                                                </p>
+                                                @endif
+
+                                                <!-- Referencia -->
+                                                @if ($shippingAddress['reference'])
+                                                <div class="p-2 mt-2 border-l-4 border-blue-200 rounded bg-blue-50">
+                                                    <p class="text-sm text-blue-800">
+                                                        <i class="mr-1 fas fa-info-circle"></i>
+                                                        <strong>Referencia:</strong>
+                                                        {{ $shippingAddress['reference'] }}
+                                                    </p>
+                                                </div>
+                                                @endif
+
+                                                <!-- Dirección completa formateada (si existe) -->
+                                                @if ($shippingAddress['full_address'])
+                                                <div class="p-2 mt-2 border-l-4 border-green-200 rounded bg-green-50">
+                                                    <p class="text-sm text-green-800">
+                                                        <i class="mr-1 fas fa-map"></i>
+                                                        <strong>Dirección completa:</strong>
+                                                        {{ $shippingAddress['full_address'] }}
+                                                    </p>
+                                                </div>
                                                 @endif
                                             </div>
-                                        @endif
-
-                                        <!-- Teléfono -->
-                                        @if ($shippingAddress['phone'])
-                                            <div class="flex items-center space-x-2">
-                                                <i class="fas fa-phone text-gray-400"></i>
-                                                <span class="text-gray-900">{{ $shippingAddress['phone'] }}</span>
-                                            </div>
-                                        @endif
-
-                                        <!-- Dirección completa -->
-                                        <div class="bg-gray-50 rounded-lg p-4">
-                                            <div class="flex items-start space-x-2">
-                                                <i class="fas fa-map-marker-alt text-gray-400 mt-1"></i>
-                                                <div class="flex-1">
-                                                    <p class="text-gray-900 font-medium">
-                                                        {{ $shippingAddress['address'] }}
-                                                    </p>
-
-                                                    <!-- Ubicación geográfica -->
-                                                    @php
-                                                        $parish = $shippingAddress['parish'] ?? '';
-                                                        $canton = $shippingAddress['canton'] ?? '';
-                                                        $province = $shippingAddress['province'] ?? '';
-                                                        $postal = $shippingAddress['postal_code'] ?? '';
-                                                        $hasLocation =
-                                                            ($parish && $parish !== 'Sin parroquia') ||
-                                                            ($canton && $canton !== 'Sin cantón') ||
-                                                            ($province && $province !== 'Sin provincia') ||
-                                                            $postal;
-                                                    @endphp
-                                                    @if ($hasLocation)
-                                                        <p class="text-gray-600 text-sm mt-1">
-                                                            @if ($parish && $parish !== 'Sin parroquia')
-                                                                {{ $parish }}
-                                                            @endif
-                                                            @if ($canton && $canton !== 'Sin cantón')
-                                                                , {{ $canton }}
-                                                            @endif
-                                                            @if ($province && $province !== 'Sin provincia')
-                                                                , {{ $province }}
-                                                            @endif
-                                                            @if ($postal)
-                                                                - CP: {{ $postal }}
-                                                            @endif
-                                                        </p>
-                                                    @endif
-
-                                                    <!-- Referencia -->
-                                                    @if ($shippingAddress['reference'])
-                                                        <div
-                                                            class="mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-200">
-                                                            <p class="text-blue-800 text-sm">
-                                                                <i class="fas fa-info-circle mr-1"></i>
-                                                                <strong>Referencia:</strong>
-                                                                {{ $shippingAddress['reference'] }}
-                                                            </p>
-                                                        </div>
-                                                    @endif
-
-                                                    <!-- Dirección completa formateada (si existe) -->
-                                                    @if ($shippingAddress['full_address'])
-                                                        <div
-                                                            class="mt-2 p-2 bg-green-50 rounded border-l-4 border-green-200">
-                                                            <p class="text-green-800 text-sm">
-                                                                <i class="fas fa-map mr-1"></i>
-                                                                <strong>Dirección completa:</strong>
-                                                                {{ $shippingAddress['full_address'] }}
-                                                            </p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Tipo de dirección -->
-                                        @if ($shippingAddress['type'])
-                                            <div class="flex items-center space-x-2">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $shippingAddress['type'] === 'home' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
-                                                    @if ($shippingAddress['type'] === 'home')
-                                                        <i class="fas fa-home mr-1"></i> Casa
-                                                    @else
-                                                        <i class="fas fa-briefcase mr-1"></i> Trabajo
-                                                    @endif
-                                                </span>
-                                            </div>
-                                        @endif
+                                    <!-- Tipo de dirección -->
+                                    @if ($shippingAddress['type'])
+                                    <div class="flex items-center space-x-2">
+                                        <span
+                                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $shippingAddress['type'] === 'home' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                            @if ($shippingAddress['type'] === 'home')
+                                            <i class="mr-1 fas fa-home"></i> Casa
+                                            @else
+                                            <i class="mr-1 fas fa-briefcase"></i> Trabajo
+                                            @endif
+                                        </span>
                                     </div>
+                                    @endif
+                                </div>
                                 @else
-                                    <div class="text-center py-8">
-                                        <i class="fas fa-exclamation-triangle text-yellow-500 text-3xl mb-2"></i>
-                                        <p class="text-gray-500">No se especificó dirección de envío</p>
-                                        <p class="text-gray-400 text-sm">Esta orden fue creada antes del sistema de
-                                            direcciones</p>
-                                    </div>
+                                <div class="py-8 text-center">
+                                    <i class="mb-2 text-3xl text-yellow-500 fas fa-exclamation-triangle"></i>
+                                    <p class="text-gray-500">No se especificó dirección de envío</p>
+                                    <p class="text-sm text-gray-400">Esta orden fue creada antes del sistema de
+                                        direcciones</p>
+                                </div>
                                 @endif
                             </div>
 
                             <!-- Productos del Pedido -->
-                            <div class="bg-white border border-gray-200 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                    <i class="fas fa-shopping-bag mr-2 text-purple-500"></i>
+                            <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                                <h3 class="mb-4 text-lg font-semibold text-gray-900">
+                                    <i class="mr-2 text-purple-500 fas fa-shopping-bag"></i>
                                     Productos del Pedido
                                 </h3>
 
                                 @if ($order->content)
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th
-                                                        class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                                                        Producto</th>
-                                                    <th
-                                                        class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">
-                                                        Cantidad</th>
-                                                    <th
-                                                        class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
-                                                        Precio</th>
-                                                    <th
-                                                        class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
-                                                        Subtotal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="divide-y divide-gray-200">
-                                                @foreach ($order->content as $item)
-                                                    <tr>
-                                                        <td class="px-4 py-3">
-                                                            <div class="font-medium text-gray-900">
-                                                                {{ $item['name'] ?? 'Producto' }}</div>
-                                                        </td>
-                                                        <td class="px-4 py-3 text-center">{{ $item['quantity'] ?? 1 }}
-                                                        </td>
-                                                        <td class="px-4 py-3 text-right">
-                                                            ${{ number_format($item['price'] ?? 0, 2) }}</td>
-                                                        <td class="px-4 py-3 text-right font-medium">
-                                                            ${{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1), 2) }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                            <tfoot class="bg-gray-50">
-                                                <tr>
-                                                    <td colspan="3"
-                                                        class="px-4 py-3 text-right font-semibold text-gray-900">Total:
-                                                    </td>
-                                                    <td class="px-4 py-3 text-right font-bold text-lg text-green-600">
-                                                        ${{ number_format($order->total, 2) }}</td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th
+                                                    class="px-4 py-2 text-xs font-medium text-left text-gray-500 uppercase">
+                                                    Producto</th>
+                                                <th
+                                                    class="px-4 py-2 text-xs font-medium text-center text-gray-500 uppercase">
+                                                    Cantidad</th>
+                                                <th
+                                                    class="px-4 py-2 text-xs font-medium text-right text-gray-500 uppercase">
+                                                    Precio</th>
+                                                <th
+                                                    class="px-4 py-2 text-xs font-medium text-right text-gray-500 uppercase">
+                                                    Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200">
+                                            @foreach ($order->content as $item)
+                                            <tr>
+                                                <td class="px-4 py-3">
+                                                    <div class="font-medium text-gray-900">
+                                                        {{ $item['name'] ?? 'Producto' }}</div>
+                                                </td>
+                                                <td class="px-4 py-3 text-center">{{ $item['quantity'] ?? 1 }}
+                                                </td>
+                                                <td class="px-4 py-3 text-right">
+                                                    ${{ number_format($item['price'] ?? 0, 2) }}</td>
+                                                <td class="px-4 py-3 font-medium text-right">
+                                                    ${{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),
+                                                    2) }}
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot class="bg-gray-50">
+                                            <tr>
+                                                <td colspan="3"
+                                                    class="px-4 py-3 font-semibold text-right text-gray-900">Total:
+                                                </td>
+                                                <td class="px-4 py-3 text-lg font-bold text-right text-green-600">
+                                                    ${{ number_format($order->total, 2) }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                                 @else
-                                    <p class="text-gray-500">No hay información de productos disponible</p>
+                                <p class="text-gray-500">No hay información de productos disponible</p>
                                 @endif
                             </div>
                         </div>
@@ -301,45 +302,45 @@
     </div>
 
     @push('css')
-        <style>
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-            .status-badge {
-                @apply px-3 py-1 text-xs font-medium rounded-full;
-            }
+        .status-badge {
+            @apply px-3 py-1 text-xs font-medium rounded-full;
+        }
 
-            .status-pendiente {
-                @apply bg-yellow-100 text-yellow-800;
-            }
+        .status-pendiente {
+            @apply bg-yellow-100 text-yellow-800;
+        }
 
-            .status-verificado {
-                @apply bg-blue-100 text-blue-800;
-            }
+        .status-verificado {
+            @apply bg-blue-100 text-blue-800;
+        }
 
-            .status-preparando {
-                @apply bg-purple-100 text-purple-800;
-            }
+        .status-preparando {
+            @apply bg-purple-100 text-purple-800;
+        }
 
-            .status-asignado {
-                @apply bg-indigo-100 text-indigo-800;
-            }
+        .status-asignado {
+            @apply bg-indigo-100 text-indigo-800;
+        }
 
-            .status-en-camino {
-                @apply bg-orange-100 text-orange-800;
-            }
+        .status-en-camino {
+            @apply bg-orange-100 text-orange-800;
+        }
 
-            .status-entregado {
-                @apply bg-green-100 text-green-800;
-            }
+        .status-entregado {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .status-cancelado {
-                @apply bg-red-100 text-red-800;
-            }
-        </style>
+        .status-cancelado {
+            @apply bg-red-100 text-red-800;
+        }
+    </style>
     @endpush
 
 </x-admin-layout>

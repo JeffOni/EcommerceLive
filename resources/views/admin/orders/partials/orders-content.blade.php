@@ -147,23 +147,32 @@
                                         </button>
                                         @endif
                                         @if ($order->status == 3)
-                                        {{-- Preparando: Asignar o En Camino --}}
+                                        {{-- Preparando: Solo Asignar Repartidor si no tiene envío --}}
                                         @if (!$order->hasShipment())
                                         <button onclick="openAssignDriverModal({{ $order->id }})"
                                             class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
                                             <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
                                         </button>
-                                        @endif
-                                        <button onclick="updateOrderStatus({{ $order->id }}, 5)"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-truck mr-2 text-orange-500"></i>En Camino
+                                        @else
+                                        <button onclick="redirectToShipment({{ $order->id }})"
+                                            class="block w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50">
+                                            <i class="fas fa-truck mr-2 text-blue-500"></i>Ver Envío
                                         </button>
+                                        @endif
                                         @endif
                                         @if (in_array($order->status, [4]))
+                                        {{-- Estado Asignado: Solo En Camino si tiene repartidor --}}
+                                        @if ($order->hasShipment() && $order->shipment->delivery_driver_id)
                                         <button onclick="updateOrderStatus({{ $order->id }}, 5)"
                                             class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
                                             <i class="fas fa-truck mr-2 text-orange-500"></i>En Camino
                                         </button>
+                                        @else
+                                        <button onclick="openAssignDriverModal({{ $order->id }})"
+                                            class="block w-full px-4 py-2 text-left text-sm text-yellow-600 hover:bg-yellow-50">
+                                            <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
+                                        </button>
+                                        @endif
                                         @endif
                                         @if ($order->status == 5)
                                         <button onclick="updateOrderStatus({{ $order->id }}, 6)"
@@ -377,19 +386,31 @@
                     return;
                 }
 
-                const driversOptions = drivers.map(driver => 
-                    `<option value="${driver.id}">${driver.name} - ${driver.phone}</option>`
-                ).join('');
+                const driversOptions = drivers.map(driver => {
+                    const photoUrl = driver.profile_photo_url || `https://www.gravatar.com/avatar/${driver.email}?d=mp&s=40`;
+                    return `<option value="${driver.id}" data-photo="${photoUrl}">${driver.name} - ${driver.phone} (${driver.vehicle_type})</option>`;
+                }).join('');
 
                 Swal.fire({
                     title: 'Asignar Repartidor',
                     html: `
                         <div class="text-left">
                             <p class="mb-4 text-sm text-gray-600">Selecciona un repartidor para la orden #${orderId}</p>
-                            <select id="driverSelect" class="w-full p-3 border border-gray-300 rounded-md">
-                                <option value="">Seleccionar repartidor...</option>
-                                ${driversOptions}
-                            </select>
+                            <div class="mb-4">
+                                <select id="driverSelect" class="w-full p-3 border border-gray-300 rounded-md">
+                                    <option value="">Seleccionar repartidor...</option>
+                                    ${driversOptions}
+                                </select>
+                            </div>
+                            <div id="driverInfo" class="hidden p-3 bg-gray-50 rounded-md">
+                                <div class="flex items-center space-x-3">
+                                    <img id="driverPhoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover">
+                                    <div>
+                                        <p id="driverName" class="font-medium"></p>
+                                        <p id="driverDetails" class="text-sm text-gray-600"></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     `,
                     showCancelButton: true,
@@ -397,6 +418,28 @@
                     cancelButtonColor: '#6B7280',
                     confirmButtonText: 'Asignar',
                     cancelButtonText: 'Cancelar',
+                    didOpen: () => {
+                        const select = document.getElementById('driverSelect');
+                        const driverInfo = document.getElementById('driverInfo');
+                        const driverPhoto = document.getElementById('driverPhoto');
+                        const driverName = document.getElementById('driverName');
+                        const driverDetails = document.getElementById('driverDetails');
+
+                        select.addEventListener('change', function() {
+                            const selectedOption = this.options[this.selectedIndex];
+                            if (selectedOption.value) {
+                                const driver = drivers.find(d => d.id == selectedOption.value);
+                                if (driver) {
+                                    driverPhoto.src = driver.profile_photo_url || `https://www.gravatar.com/avatar/${btoa(driver.email)}?d=mp&s=80`;
+                                    driverName.textContent = driver.name;
+                                    driverDetails.textContent = `${driver.phone} - ${driver.vehicle_type}`;
+                                    driverInfo.classList.remove('hidden');
+                                }
+                            } else {
+                                driverInfo.classList.add('hidden');
+                            }
+                        });
+                    },
                     preConfirm: () => {
                         const driverId = document.getElementById('driverSelect').value;
                         if (!driverId) {
@@ -478,5 +521,10 @@
                 text: 'Ocurrió un error al asignar el repartidor'
             });
         });
+    }
+
+    // Función para redirigir al panel de envíos
+    function redirectToShipment(orderId) {
+        window.location.href = `/admin/shipments?search=${orderId}`;
     }
 </script>

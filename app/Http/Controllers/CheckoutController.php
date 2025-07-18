@@ -109,17 +109,20 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar método de pago
+        // Validar método de pago y tipo de entrega
         $request->validate([
             'payment_method' => 'required|in:2,3,4', // Solo métodos permitidos actualmente
+            'delivery_type' => 'required|in:delivery,pickup',
         ], [
             'payment_method.required' => 'Debes seleccionar un método de pago.',
             'payment_method.in' => 'El método de pago seleccionado no es válido.',
+            'delivery_type.required' => 'Debes seleccionar un tipo de entrega.',
+            'delivery_type.in' => 'El tipo de entrega seleccionado no es válido.',
         ]);
 
         try {
             // Usar el método centralizado para crear la orden
-            $order = $this->createOrderFromCart((int) $request->payment_method);
+            $order = $this->createOrderFromCart((int) $request->payment_method, $request->delivery_type);
 
             if (!$order) {
                 if ($request->expectsJson()) {
@@ -343,7 +346,7 @@ class CheckoutController extends Controller
     /**
      * Método privado para crear orden desde el carrito (centralizado)
      */
-    private function createOrderFromCart(int $paymentMethod): ?\App\Models\Order
+    private function createOrderFromCart(int $paymentMethod, string $deliveryType = 'delivery'): ?\App\Models\Order
     {
         Cart::instance('shopping');
 
@@ -353,43 +356,54 @@ class CheckoutController extends Controller
             return null;
         }
 
-        // Obtener la dirección por defecto del usuario
-        \Log::info('Buscando dirección por defecto para usuario: ' . auth()->id());
-        $address = \App\Models\Address::where('user_id', auth()->id())
-            ->where('default', true)
-            ->with(['province', 'canton', 'parish'])
-            ->first();
+        // Solo verificar dirección si es envío a domicilio
+        $address = null;
+        if ($deliveryType === 'delivery') {
+            // Obtener la dirección por defecto del usuario
+            \Log::info('Buscando dirección por defecto para usuario: ' . auth()->id());
+            $address = \App\Models\Address::where('user_id', auth()->id())
+                ->where('default', true)
+                ->with(['province', 'canton', 'parish'])
+                ->first();
 
-        if (!$address) {
-            \Log::error('No se encontró dirección por defecto para el usuario: ' . auth()->id());
-            return null;
+            if (!$address) {
+                \Log::error('No se encontró dirección por defecto para el usuario: ' . auth()->id());
+                return null;
+            }
         }
 
         \Log::info('Dirección encontrada - ID: ' . $address->id);
 
-        $shipping_address = [
-            'address' => $address->address,
-            'reference' => $address->reference,
-            'province' => $address->province->name ?? '',
-            'canton' => $address->canton->name ?? '',
-            'parish' => $address->parish->name ?? '',
-            'postal_code' => $address->postal_code,
-            'notes' => $address->notes,
-            'receiver_type' => $address->receiver,
-            'receiver_name' => $address->receiver_name,
-            'receiver_last_name' => $address->receiver_last_name,
-            'receiver_full_name' => $address->receiver_full_name,
-            'receiver_phone' => $address->receiver_phone,
-            'receiver_email' => $address->receiver_email,
-            'receiver_document_type' => $address->receiver_document_type,
-            'receiver_document_number' => $address->receiver_document_number,
-        ];
-
+        // Calcular costos según tipo de entrega
         $subtotal = (float) Cart::subtotal(2, '.', '');
         $tax = (float) Cart::tax(2, '.', '');
         $total = (float) Cart::total(2, '.', '');
-        $shipping = 5.00;
+
+        // Shipping depende del tipo de entrega
+        $shipping = $deliveryType === 'pickup' ? 0.00 : 5.00;
         $totalWithShipping = $total + $shipping;
+
+        // Dirección de envío (solo para delivery)
+        $shipping_address = null;
+        if ($deliveryType === 'delivery' && $address) {
+            $shipping_address = [
+                'address' => $address->address,
+                'reference' => $address->reference,
+                'province' => $address->province->name ?? '',
+                'canton' => $address->canton->name ?? '',
+                'parish' => $address->parish->name ?? '',
+                'postal_code' => $address->postal_code,
+                'notes' => $address->notes,
+                'receiver_type' => $address->receiver,
+                'receiver_name' => $address->receiver_name,
+                'receiver_last_name' => $address->receiver_last_name,
+                'receiver_full_name' => $address->receiver_full_name,
+                'receiver_phone' => $address->receiver_phone,
+                'receiver_email' => $address->receiver_email,
+                'receiver_document_type' => $address->receiver_document_type,
+                'receiver_document_number' => $address->receiver_document_number,
+            ];
+        }
 
         $cartContent = Cart::content()->map(function ($item) {
             return [
@@ -414,6 +428,7 @@ class CheckoutController extends Controller
             'user_id' => auth()->id(),
             'status' => 1,
             'payment_method' => $paymentMethod,
+            'delivery_type' => $deliveryType,
             'subtotal' => $subtotal,
             'shipping_cost' => $shipping,
             'total' => $totalWithShipping,
@@ -423,13 +438,17 @@ class CheckoutController extends Controller
 
         \Log::info('Orden creada exitosamente con ID: ' . $order->id);
 
-        // Crear envío automáticamente para la orden
-        try {
-            $this->shipmentService->createShipmentForOrder($order);
-            \Log::info('Envío creado para orden: ' . $order->id);
-        } catch (\Exception $e) {
-            // Log el error pero no falla la orden
-            \Log::error('Error creando envío para orden ' . $order->id . ': ' . $e->getMessage());
+        // Crear envío automáticamente solo para órdenes con delivery
+        if ($deliveryType === 'delivery') {
+            try {
+                $this->shipmentService->createShipmentForOrder($order);
+                \Log::info('Envío creado para orden: ' . $order->id);
+            } catch (\Exception $e) {
+                // Log el error pero no falla la orden
+                \Log::error('Error creando envío para orden ' . $order->id . ': ' . $e->getMessage());
+            }
+        } else {
+            \Log::info('Orden de retiro en tienda, no se crea envío: ' . $order->id);
         }
 
         return $order;

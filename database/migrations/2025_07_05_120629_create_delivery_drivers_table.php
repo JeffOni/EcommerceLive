@@ -20,7 +20,10 @@ return new class extends Migration {
             $table->string('vehicle_plate')->nullable(); // Placa del vehículo
             $table->string('identification_number')->unique(); // Cédula o documento de identidad
             $table->text('address')->nullable(); // Dirección del repartidor
-            $table->decimal('delivery_fee', 8, 2)->default(0.00); // Tarifa por entrega
+            $table->string('profile_photo')->nullable(); // Foto de perfil del repartidor
+            $table->decimal('delivery_fee', 8, 2)->default(0.00); // Tarifa por entrega (deprecated - usar tarifas por provincia)
+            $table->decimal('intra_province_rate', 8, 2)->default(3.00); // Tarifa dentro de la misma provincia
+            $table->decimal('inter_province_rate', 8, 2)->default(5.00); // Tarifa entre provincias diferentes
             $table->boolean('is_active')->default(true); // Estado activo/inactivo
             $table->integer('total_deliveries')->default(0); // Total de entregas realizadas
             $table->decimal('rating', 3, 2)->default(5.00); // Calificación promedio (1-5)

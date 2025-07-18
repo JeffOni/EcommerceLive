@@ -78,11 +78,22 @@ class DeliveryDriverController extends Controller
             'identification_number' => 'required|string|unique:delivery_drivers,identification_number',
             'address' => 'nullable|string',
             'delivery_fee' => 'required|numeric|min:0',
+            'intra_province_rate' => 'required|numeric|min:0',
+            'inter_province_rate' => 'required|numeric|min:0',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'emergency_contact.name' => 'nullable|string|max:255',
             'emergency_contact.phone' => 'nullable|string|max:20',
         ]);
 
         $data = $request->all();
+
+        // Manejar la subida de foto de perfil
+        if ($request->hasFile('profile_photo')) {
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('delivery_drivers/photos', $filename, 'public');
+            $data['profile_photo'] = $path;
+        }
 
         // Preparar contacto de emergencia
         if ($request->filled('emergency_contact.name') || $request->filled('emergency_contact.phone')) {
@@ -130,48 +141,53 @@ class DeliveryDriverController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:delivery_drivers,email,' . $deliveryDriver->id,
             'phone' => 'required|string|max:20',
-            'license_number' => 'nullable|string|unique:delivery_drivers,license_number,' . $deliveryDriver->id,
-            'vehicle_type' => 'nullable|string|in:motorcycle,bicycle,car,van,truck,walking',
+            'license_number' => 'required|string|unique:delivery_drivers,license_number,' . $deliveryDriver->id,
+            'vehicle_type' => 'required|string|in:moto,auto,bicicleta,camion,furgoneta',
             'vehicle_plate' => 'nullable|string|max:10',
-            'zone' => 'nullable|string|max:255',
-            'notes' => 'nullable|string',
+            'identification_number' => 'required|string|unique:delivery_drivers,identification_number,' . $deliveryDriver->id,
+            'address' => 'nullable|string',
+            'delivery_fee' => 'required|numeric|min:0',
+            'intra_province_rate' => 'required|numeric|min:0',
+            'inter_province_rate' => 'required|numeric|min:0',
             'is_active' => 'sometimes|boolean',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'emergency_contact.name' => 'nullable|string|max:255',
+            'emergency_contact.phone' => 'nullable|string|max:20',
         ]);
 
-        $data = $request->only([
-            'name',
-            'email',
-            'phone',
-            'license_number',
-            'vehicle_type',
-            'vehicle_plate',
-            'zone',
-            'notes',
-            'is_active'
-        ]);
+        $data = $request->except(['profile_photo', 'emergency_contact']);
 
-        // Manejar avatar si se subió uno nuevo
-        if ($request->hasFile('avatar')) {
-            // Eliminar avatar anterior si existe
-            if ($deliveryDriver->avatar) {
-                Storage::delete('public/' . $deliveryDriver->avatar);
+        // Manejar la subida de foto de perfil
+        if ($request->hasFile('profile_photo')) {
+            // Eliminar foto anterior si existe
+            if ($deliveryDriver->profile_photo) {
+                Storage::delete('public/' . $deliveryDriver->profile_photo);
             }
 
-            $avatarPath = $request->file('avatar')->store('delivery-drivers/avatars', 'public');
-            $data['avatar'] = $avatarPath;
+            $file = $request->file('profile_photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('delivery_drivers/photos', $filename, 'public');
+            $data['profile_photo'] = $path;
+        }
+
+        // Preparar contacto de emergencia
+        if ($request->filled('emergency_contact.name') || $request->filled('emergency_contact.phone')) {
+            $data['emergency_contact'] = [
+                'name' => $request->input('emergency_contact.name'),
+                'phone' => $request->input('emergency_contact.phone'),
+            ];
+        } else {
+            $data['emergency_contact'] = null;
         }
 
         $deliveryDriver->update($data);
 
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => '¡Bien hecho!',
-            'text' => 'Repartidor actualizado correctamente',
-            'timeout' => 3000
-        ]);
-
-        return redirect()->route('admin.delivery-drivers.show', $deliveryDriver);
+        return redirect()->route('admin.delivery-drivers.index')
+            ->with('swal', [
+                'title' => '¡Éxito!',
+                'text' => 'Repartidor actualizado correctamente.',
+                'icon' => 'success'
+            ]);
     }
 
     /**
@@ -209,9 +225,19 @@ class DeliveryDriverController extends Controller
     public function getActiveDrivers()
     {
         $drivers = DeliveryDriver::active()
-            ->select('id', 'name', 'phone')
+            ->select('id', 'name', 'phone', 'email', 'vehicle_type', 'profile_photo')
             ->orderBy('name')
-            ->get();
+            ->get()
+            ->map(function ($driver) {
+                return [
+                    'id' => $driver->id,
+                    'name' => $driver->name,
+                    'phone' => $driver->phone,
+                    'email' => $driver->email,
+                    'vehicle_type' => $driver->vehicle_type,
+                    'profile_photo_url' => $driver->profile_photo_url
+                ];
+            });
 
         return response()->json($drivers);
     }

@@ -16,7 +16,10 @@ class DeliveryDriver extends Model
         'vehicle_plate',
         'identification_number',
         'address',
+        'profile_photo',
         'delivery_fee',
+        'intra_province_rate',
+        'inter_province_rate',
         'is_active',
         'total_deliveries',
         'rating',
@@ -27,6 +30,8 @@ class DeliveryDriver extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'delivery_fee' => 'decimal:2',
+        'intra_province_rate' => 'decimal:2',
+        'inter_province_rate' => 'decimal:2',
         'rating' => 'decimal:2',
         'total_deliveries' => 'integer',
         'last_delivery_at' => 'datetime',
@@ -73,6 +78,20 @@ class DeliveryDriver extends Model
         return $stars;
     }
 
+    /**
+     * Obtener URL de la foto de perfil
+     */
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        if ($this->profile_photo && file_exists(storage_path('app/public/' . $this->profile_photo))) {
+            return asset('storage/' . $this->profile_photo);
+        }
+
+        // Foto por defecto usando Gravatar o una imagen predeterminada
+        $gravatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?d=mp&s=200';
+        return $gravatar;
+    }
+
     // Métodos de utilidad
     public function incrementDeliveries(): void
     {
@@ -85,6 +104,31 @@ class DeliveryDriver extends Model
         // Lógica simple para actualizar rating
         // En una implementación real, podrías promediar todas las calificaciones
         $this->update(['rating' => $newRating]);
+    }
+
+    /**
+     * Calcular tarifa de envío según las provincias de origen y destino
+     */
+    public function calculateDeliveryRate(string $fromProvince, string $toProvince): float
+    {
+        // Si es la misma provincia, usar tarifa intra-provincial
+        if ($fromProvince === $toProvince) {
+            return (float) $this->intra_province_rate;
+        }
+
+        // Si son provincias diferentes, usar tarifa inter-provincial
+        return (float) $this->inter_province_rate;
+    }
+
+    /**
+     * Obtener tarifa para una orden específica
+     */
+    public function getRateForOrder(\App\Models\Order $order): float
+    {
+        $storeProvince = 'Pichincha'; // Provincia por defecto de la tienda
+        $deliveryProvince = $order->shipping_address['province'] ?? '';
+
+        return $this->calculateDeliveryRate($storeProvince, $deliveryProvince);
     }
 
     // Relaciones

@@ -4,9 +4,11 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CoverController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeliveryDriverController;
+use App\Http\Controllers\Admin\OfficeAddressController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentVerificationController;
 use App\Http\Controllers\Admin\ShipmentController;
+use App\Http\Controllers\Admin\SystemSettingsController;
 use App\Http\Controllers\Admin\VerifiedOrderController;
 use App\Models\Family;
 use App\Models\Order;
@@ -53,7 +55,7 @@ Route::post('orders/{order}/assign-driver', [OrderController::class, 'assignDriv
 
 // Rutas de repartidores
 Route::get('delivery-drivers/active', [DeliveryDriverController::class, 'getActiveDrivers'])->name('delivery-drivers.active');
-Route::patch('delivery-drivers/{deliveryDriver}/toggle-status', [DeliveryDriverController::class, 'toggleStatus'])->name('delivery-drivers.toggleStatus');
+Route::patch('delivery-drivers/{deliveryDriver}/toggle-status', [DeliveryDriverController::class, 'toggleStatus'])->name('delivery-drivers.toggle-status');
 Route::resource('delivery-drivers', DeliveryDriverController::class);
 
 // Rutas de envíos
@@ -68,3 +70,12 @@ Route::patch('shipments/{shipment}/update-location', [ShipmentController::class,
 Route::get('payments/verification', [PaymentVerificationController::class, 'index'])->name('payments.verification');
 Route::patch('payments/{payment}/verify', [PaymentVerificationController::class, 'verify'])->name('payments.verify');
 Route::get('payments/stats', [PaymentVerificationController::class, 'getStats'])->name('payments.stats');
+
+// Rutas de configuraciones del sistema
+Route::get('settings', [SystemSettingsController::class, 'index'])->name('settings.index');
+Route::put('settings', [SystemSettingsController::class, 'update'])->name('settings.update');
+Route::get('api/settings/public', [SystemSettingsController::class, 'getPublicSettings'])->name('settings.public');
+
+// Rutas de direcciones de oficinas
+Route::patch('office-addresses/{officeAddress}/toggle-status', [OfficeAddressController::class, 'toggleStatus'])->name('office-addresses.toggleStatus');
+Route::resource('office-addresses', OfficeAddressController::class);

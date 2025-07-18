@@ -55,19 +55,19 @@
                             <select id="status-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">Todos los estados</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Pendiente
+                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Pendiente
                                 </option>
-                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Pago Verificado
+                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
                                 </option>
-                                <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>Preparando
+                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando
                                 </option>
-                                <option value="4" {{ request('status') == '4' ? 'selected' : '' }}>Asignado
+                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Asignado
                                 </option>
-                                <option value="5" {{ request('status') == '5' ? 'selected' : '' }}>En Camino
+                                <option value="5" {{ request('status')=='5' ? 'selected' : '' }}>En Camino
                                 </option>
-                                <option value="6" {{ request('status') == '6' ? 'selected' : '' }}>Entregado
+                                <option value="6" {{ request('status')=='6' ? 'selected' : '' }}>Entregado
                                 </option>
-                                <option value="7" {{ request('status') == '7' ? 'selected' : '' }}>Cancelado
+                                <option value="7" {{ request('status')=='7' ? 'selected' : '' }}>Cancelado
                                 </option>
                             </select>
                         </div>
@@ -82,13 +82,13 @@
                             </div>
                             <select id="items-per-page"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <option value="15" {{ request('per_page') == '15' ? 'selected' : '' }}>15 por página
+                                <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por página
                                 </option>
-                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25 por
+                                <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por
                                     página</option>
-                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50 por
+                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
                                     página</option>
-                                <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100 por
+                                <option value="100" {{ request('per_page')=='100' ? 'selected' : '' }}>100 por
                                     página</option>
                             </select>
                         </div>
@@ -104,8 +104,8 @@
     </div>
 
     @push('js')
-        <script>
-            let searchTimeout;
+    <script>
+        let searchTimeout;
 
             document.addEventListener('DOMContentLoaded', function() {
                 // Configurar búsqueda con debounce
@@ -230,49 +230,49 @@
             function downloadPDF(orderId) {
                 window.open(`/admin/orders/${orderId}/download-pdf`, '_blank');
             }
-        </script>
+    </script>
     @endpush
 
     @push('css')
-        <style>
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-            .status-badge {
-                @apply px-2 py-1 text-xs font-medium rounded-full;
-            }
+        .status-badge {
+            @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
 
-            .status-pendiente {
-                @apply bg-yellow-100 text-yellow-800;
-            }
+        .status-pendiente {
+            @apply bg-yellow-100 text-yellow-800;
+        }
 
-            .status-verificado {
-                @apply bg-blue-100 text-blue-800;
-            }
+        .status-verificado {
+            @apply bg-blue-100 text-blue-800;
+        }
 
-            .status-preparando {
-                @apply bg-purple-100 text-purple-800;
-            }
+        .status-preparando {
+            @apply bg-purple-100 text-purple-800;
+        }
 
-            .status-asignado {
-                @apply bg-indigo-100 text-indigo-800;
-            }
+        .status-asignado {
+            @apply bg-indigo-100 text-indigo-800;
+        }
 
-            .status-en-camino {
-                @apply bg-orange-100 text-orange-800;
-            }
+        .status-en-camino {
+            @apply bg-orange-100 text-orange-800;
+        }
 
-            .status-entregado {
-                @apply bg-green-100 text-green-800;
-            }
+        .status-entregado {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .status-cancelado {
-                @apply bg-red-100 text-red-800;
-            }
-        </style>
+        .status-cancelado {
+            @apply bg-red-100 text-red-800;
+        }
+    </style>
     @endpush
 
 </x-admin-layout>

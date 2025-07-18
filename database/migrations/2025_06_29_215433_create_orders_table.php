@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->json('content')->nullable(); // Contenido del carrito (productos, cantidades, etc.)
             $table->tinyInteger('status')->default(1); // 1=pending, 2=paid, 3=processing, 4=shipped, 5=delivered, 6=cancelled, 7=confirmed_cash_delivery
             $table->integer('payment_method')->nullable(); // 1=payphone, 2=transfer, 3=cash, 4=qr
+            $table->string('delivery_type')->default('delivery'); // delivery=envío a domicilio, pickup=retiro en tienda
             $table->unsignedBigInteger('payment_id')->nullable(); // Relación opcional con tabla payments
             $table->decimal('subtotal', 10, 2);
             $table->decimal('shipping_cost', 10, 2)->default(0);

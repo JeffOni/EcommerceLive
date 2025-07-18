@@ -77,6 +77,75 @@
                         @endif
                     </div>
 
+                    <!-- Tipo de Entrega -->
+                    <div class="mb-8">
+                        <h2 class="mb-4 text-xl font-bold">Tipo de Entrega</h2>
+                        <div class="space-y-3">
+                            <!-- Envío a domicilio -->
+                            <label
+                                class="flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                                :class="deliveryType === 'delivery' ? 'border-blue-500 bg-blue-50' : ''">
+                                <input type="radio" name="deliveryType" value="delivery" x-model="deliveryType"
+                                    class="mt-1 mr-3 text-blue-600 focus:ring-blue-500">
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="mr-2 text-blue-600 fas fa-truck"></i>
+                                            <span class="font-semibold text-gray-900">Envío a domicilio</span>
+                                        </div>
+                                        <span class="text-sm font-medium text-green-600">$3.00</span>
+                                    </div>
+                                    <p class="mt-1 text-sm text-gray-600">Tu pedido será entregado en la dirección
+                                        especificada</p>
+                                    <p class="text-xs text-gray-500">Tiempo estimado: 24-48 horas</p>
+                                </div>
+                            </label>
+
+                            <!-- Retiro en tienda -->
+                            <label
+                                class="flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                                :class="deliveryType === 'pickup' ? 'border-blue-500 bg-blue-50' : ''">
+                                <input type="radio" name="deliveryType" value="pickup" x-model="deliveryType"
+                                    class="mt-1 mr-3 text-blue-600 focus:ring-blue-500">
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="mr-2 text-blue-600 fas fa-store"></i>
+                                            <span class="font-semibold text-gray-900">Retiro en tienda</span>
+                                        </div>
+                                        <span class="text-sm font-medium text-green-600">Gratis</span>
+                                    </div>
+                                    <p class="mt-1 text-sm text-gray-600">Retira tu pedido en nuestra tienda física</p>
+                                    <div class="mt-2 text-xs text-gray-500 space-y-1"
+                                        x-show="deliveryType === 'pickup'">
+                                        <p><i class="mr-1 fas fa-map-marker-alt"></i> Av. Principal #123, Sector Centro,
+                                            Quito</p>
+                                        <p><i class="mr-1 fas fa-phone"></i> +593 99 999 9999</p>
+                                        <p><i class="mr-1 fas fa-clock"></i> Lunes a Viernes: 9:00 AM - 6:00 PM,
+                                            Sábados: 9:00 AM - 1:00 PM</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Mensaje informativo para retiro en tienda -->
+                        <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg"
+                            x-show="deliveryType === 'pickup'">
+                            <div class="flex items-start">
+                                <i class="mr-2 mt-0.5 text-blue-600 fas fa-info-circle"></i>
+                                <div class="text-sm text-blue-800">
+                                    <p class="font-medium">Instrucciones para retiro:</p>
+                                    <ul class="mt-1 space-y-1 text-xs">
+                                        <li>• Presenta tu documento de identidad</li>
+                                        <li>• Menciona el número de pedido: #<span
+                                                x-text="orderNumber || 'XXXX'"></span></li>
+                                        <li>• El pedido estará listo en 2-4 horas después de confirmar el pago</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <h1 class="mb-4 text-2xl font-bold">Método de Pago</h1>
                     <div class="overflow-hidden border border-gray-200 rounded-lg shadow">
                         <ul class="divide-y divide-gray-200">
@@ -483,6 +552,7 @@
         window.checkoutData = function() {
             return {
                 payment: 2, // Por defecto transferencia
+                deliveryType: 'delivery', // Por defecto envío a domicilio
                 showPaymentModal: false,
                 showTransferModal: false,
                 showQrModal: false,
@@ -498,10 +568,28 @@
                 init() {
                     this.orderNumber = this.generateOrderNumber();
                     this.validateShippingProvince();
+                    this.updateTotal();
+                },
+
+                // Actualizar total según tipo de entrega
+                updateTotal() {
+                    this.$watch('deliveryType', (value) => {
+                        if (value === 'pickup') {
+                            this.shipping = 0;
+                        } else {
+                            this.shipping = {{ $shipping ?? 0 }};
+                        }
+                        this.total = this.subtotal + this.shipping;
+                    });
                 },
                 
                 // Validar provincia de envío
                 validateShippingProvince() {
+                    // Si es retiro en tienda, no validar provincia
+                    if (this.deliveryType === 'pickup') {
+                        return true;
+                    }
+
                     const allowedProvinces = ['Pichincha', 'Manabí'];
                     
                     if (this.shippingProvince && !allowedProvinces.includes(this.shippingProvince)) {
@@ -518,7 +606,7 @@
                                 <p style="margin-top: 15px;">Puedes:</p>
                                 <ul style="text-align: left;">
                                     <li>• Cambiar tu dirección si tienes una en zona de cobertura</li>
-                                    <li>• Contactarnos para coordinar un retiro en tienda</li>
+                                    <li>• Seleccionar "Retiro en tienda" como tipo de entrega</li>
                                 </ul>
                             `,
                             showCancelButton: true,
