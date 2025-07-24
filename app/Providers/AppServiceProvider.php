@@ -34,5 +34,18 @@ class AppServiceProvider extends ServiceProvider
         Cover::observe(CoverObserver::class);
         Order::observe(OrderObserver::class);
         Payment::observe(PaymentObserver::class);
+
+        // Listener para redirección tras login según el rol
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Authenticated::class,
+            function ($event) {
+                $user = $event->user;
+                if ($user && $user->hasAnyRole(['admin', 'super_admin', 'empleado'])) {
+                    session(['url.intended' => url('/admin')]);
+                } else {
+                    session(['url.intended' => url('/dashboard')]);
+                }
+            }
+        );
     }
 }

@@ -1,4 +1,6 @@
 @php
+use Illuminate\Support\Facades\Gate;
+
 $links = [
 [
 'name' => 'Dashboard',
@@ -84,17 +86,21 @@ $links = [
 'route' => route('admin.office-addresses.index'),
 'active' => request()->routeIs('admin.office-addresses.*'),
 ],
+[
+'header' => 'Gestión de Sistema',
+],
+[
+'name' => 'Usuarios',
+'icon' => 'fa-solid fa-users',
+'route' => route('admin.users.index'),
+'active' => request()->routeIs('admin.users.*'),
+'can' => 'manage-users',
+],
 // [
 // 'name' => 'Configuración',
 // 'icon' => 'fa-solid fa-gear',
 // 'route' => route('admin.settings.index'),
 // 'active' => request()->routeIs('admin.settings.*'),
-// ],
-// [
-// 'name' => 'Usuarios',
-// 'icon' => 'fa-solid fa-users',
-// 'route' => route('admin.users.index'),
-// 'active' => request()->routeIs('admin.users.*'),
 // ],
 // [
 // 'name' => 'Roles',
@@ -126,6 +132,7 @@ $links = [
                     {{ $link['header'] }}
                 </div>
                 @else
+                @if(!isset($link['can']) || Gate::check($link['can']))
                 <a href="{{ $link['route'] }}"
                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
                     <span class="inline-flex items-center justify-center w-6 h-6">
@@ -133,6 +140,7 @@ $links = [
                     </span>
                     <span class="ms-2">{{ $link['name'] }}</span>
                 </a>
+                @endif
                 @endisset
             </li>
             @endforeach

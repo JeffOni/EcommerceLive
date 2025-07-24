@@ -18,4 +18,16 @@ enum TypeOfDocuments: int
             self::DNI => 'DNI',
         };
     }
+
+    /**
+     * Obtener todos los tipos de documento como array para formularios
+     */
+    public static function toArray(): array
+    {
+        $cases = [];
+        foreach (self::cases() as $case) {
+            $cases[$case->value] = $case->label();
+        }
+        return $cases;
+    }
 }
