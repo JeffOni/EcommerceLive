@@ -221,27 +221,64 @@ class ShipmentService
         }
 
         // Verificar que esté en zona de cobertura
-        if (!$this->isDeliveryAllowed($order->shipping_address)) {
+        $shippingAddress = $order->shipping_address;
+        if (is_string($shippingAddress)) {
+            $shippingAddress = json_decode($shippingAddress, true);
+        }
+
+        if (!$this->isDeliveryAllowed($shippingAddress)) {
             return null;
         }
 
         // Verificar que no tenga ya un envío
         if ($order->hasShipment()) {
             $shipment = $order->shipment()->first();
-            // Si ya tiene envío, solo asignar el repartidor
-            $this->assignDriverToShipment($shipment, $driver);
+
+            // Si ya tiene envío, verificar si se puede asignar el nuevo conductor
+            if ($shipment->canBeAssigned()) {
+                // Solo asignar si está en estado PENDING
+                $this->assignDriverToShipment($shipment, $driver);
+            } else {
+                // Si ya está asignado, solo actualizar el conductor y la orden
+                $shipment->update([
+                    'delivery_driver_id' => $driver->getKey(),
+                    'assigned_at' => now(),
+                ]);
+
+                // Asegurar que la orden esté en estado correcto
+                if ($order->status != 4) {
+                    $order->update(['status' => 4]); // Asignado
+                }
+            }
+
+            // Si ya tiene envío pero no puede ser asignado, crear uno nuevo
+            if ($order->hasShipment() && !$order->shipment()->first()->canBeAssigned()) {
+                // Crear nuevo envío con repartidor asignado directamente
+                $newShipment = Shipment::create([
+                    'tracking_number' => Shipment::generateTrackingNumber(),
+                    'order_id' => $order->getKey(),
+                    'status' => ShipmentStatus::ASSIGNED,
+                    'pickup_address' => $this->getStoreAddress(),
+                    'delivery_address' => $order->shipping_address,
+                    'delivery_driver_id' => $driver->getKey(),
+                    'assigned_at' => now(),
+                ]);
+                $order->update(['status' => 4]); // Asignado
+                return $newShipment;
+            }
+
             return $shipment;
         }
 
         // Crear el envío con repartidor asignado
         $shipment = Shipment::create([
             'tracking_number' => Shipment::generateTrackingNumber(),
-            'order_id' => $order->id,
+            'order_id' => $order->getKey(),
             'status' => ShipmentStatus::ASSIGNED,
             'pickup_address' => $this->getStoreAddress(),
             'delivery_address' => $order->shipping_address,
             'delivery_fee' => $this->calculateDeliveryFee($order, $driver),
-            'driver_id' => $driver->id,
+            'delivery_driver_id' => $driver->getKey(),
             'assigned_at' => now(),
         ]);
 
@@ -249,5 +286,84 @@ class ShipmentService
         $order->update(['status' => 4]);
 
         return $shipment;
+    }
+
+    /**
+     * Obtener un repartidor disponible con menos de 5 envíos activos
+     */
+    public function getAvailableDriver(): ?DeliveryDriver
+    {
+        $drivers = DeliveryDriver::where('is_active', true)->get();
+
+        foreach ($drivers as $driver) {
+            $activeShipments = Shipment::where('delivery_driver_id', $driver->getKey())
+                ->whereIn('status', [
+                    \App\Enums\ShipmentStatus::PENDING->value,
+                    \App\Enums\ShipmentStatus::ASSIGNED->value,
+                    \App\Enums\ShipmentStatus::IN_TRANSIT->value
+                ])
+                ->count();
+
+            if ($activeShipments < 5) {
+                return $driver;
+            }
+        }
+
+        return null; // No hay repartidores disponibles
+    }
+
+    /**
+     * Asignar repartidor automáticamente a una orden
+     */
+    public function autoAssignDriver(Order $order): bool
+    {
+        $driver = $this->getAvailableDriver();
+
+        if (!$driver) {
+            return false; // No hay repartidores disponibles
+        }
+
+        return $this->assignDriverWithLimit($order, $driver);
+    }
+
+    /**
+     * Asignar repartidor con validación de límite mínimo de envíos
+     */
+    public function assignDriverWithLimit(Order $order, DeliveryDriver $driver): bool
+    {
+        // Verificar que el repartidor no tenga más de 5 envíos activos
+        $activeShipments = Shipment::where('delivery_driver_id', $driver->getKey())
+            ->whereIn('status', [
+                \App\Enums\ShipmentStatus::PENDING->value,
+                \App\Enums\ShipmentStatus::ASSIGNED->value,
+                \App\Enums\ShipmentStatus::IN_TRANSIT->value
+            ])
+            ->count();
+
+        if ($activeShipments >= 5) {
+            return false; // No se puede asignar más envíos
+        }
+
+        // Crear o asignar envío
+        if ($order->hasShipment()) {
+            $shipment = $order->shipment()->first();
+            $this->assignDriverToShipment($shipment, $driver);
+        } else {
+            // Crear envío directamente
+            Shipment::create([
+                'tracking_number' => Shipment::generateTrackingNumber(),
+                'order_id' => $order->getKey(),
+                'status' => \App\Enums\ShipmentStatus::ASSIGNED,
+                'pickup_address' => $this->getStoreAddress(),
+                'delivery_address' => $order->shipping_address,
+                'delivery_driver_id' => $driver->getKey(),
+                'assigned_at' => now(),
+            ]);
+        }
+
+        // Actualizar estado de la orden a ASIGNADO
+        $order->update(['status' => \App\Enums\OrderStatus::ASIGNADO->value]);
+
+        return true;
     }
 }

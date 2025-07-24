@@ -88,7 +88,7 @@ class Shipment extends Model
      */
     public function canBeAssigned(): bool
     {
-        return $this->status === ShipmentStatus::PENDING;
+        return in_array($this->status, [ShipmentStatus::PENDING, ShipmentStatus::ASSIGNED]);
     }
 
     /**
@@ -120,15 +120,25 @@ class Shipment extends Model
      */
     public function assignDriver(DeliveryDriver $driver): bool
     {
-        if (!$this->canBeAssigned()) {
+        // Permitir reasignación en cualquier estado excepto entregado o fallido
+        if (in_array($this->status, [ShipmentStatus::DELIVERED, ShipmentStatus::FAILED])) {
             return false;
         }
 
-        $this->update([
-            'delivery_driver_id' => $driver->id,
-            'status' => ShipmentStatus::ASSIGNED,
+        $updateData = [
+            'delivery_driver_id' => $driver->getKey(),
             'assigned_at' => now(),
-        ]);
+        ];
+        // Si el estado es PENDING, cambiar a ASSIGNED
+        if ($this->status === ShipmentStatus::PENDING) {
+            $updateData['status'] = ShipmentStatus::ASSIGNED;
+        }
+        $this->update($updateData);
+
+        // Actualizar estado de la orden a ASIGNADO si no lo está
+        if ($this->order->status !== \App\Enums\OrderStatus::ASIGNADO->value) {
+            $this->order->update(['status' => \App\Enums\OrderStatus::ASIGNADO->value]);
+        }
 
         return true;
     }
@@ -183,7 +193,7 @@ class Shipment extends Model
         ]);
 
         // Actualizar estado de la orden
-        $this->order->update(['status' => 4]); // Entregado
+        $this->order->update(['status' => 6]); // Entregado
 
         return true;
     }
@@ -198,6 +208,33 @@ class Shipment extends Model
             'failed_at' => now(),
             'failure_reason' => $reason,
         ]);
+
+        return true;
+    }
+
+    /**
+     * Cambiar el estado del envío
+     */
+    public function changeStatus(int $newStatus): bool
+    {
+        $validStatuses = [
+            \App\Enums\ShipmentStatus::IN_TRANSIT->value,
+            \App\Enums\ShipmentStatus::DELIVERED->value,
+            \App\Enums\ShipmentStatus::FAILED->value
+        ];
+
+        if (!in_array($newStatus, $validStatuses)) {
+            return false; // Estado no válido
+        }
+
+        $this->update(['status' => $newStatus]);
+
+        // Actualizar estado de la orden si es necesario
+        if ($newStatus === \App\Enums\ShipmentStatus::DELIVERED->value) {
+            $this->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
+        } elseif ($newStatus === \App\Enums\ShipmentStatus::FAILED->value) {
+            $this->order->update(['status' => \App\Enums\OrderStatus::DEVUELTO->value]);
+        }
 
         return true;
     }

@@ -58,7 +58,30 @@ class OrderController extends Controller
     {
         // Procesar y asegurar la estructura de la dirección de envío
         $shippingAddress = $this->formatShippingAddress($order->shipping_address);
-        return view('admin.orders.show', compact('order', 'shippingAddress'));
+
+        // Verificar si el envío es a otra persona
+        $recipientInfo = null;
+
+        // Verificar si hay información del receptor en los campos nuevos (receiver_*)
+        if (!empty($order->shipping_address['receiver_name'])) {
+            $recipientInfo = [
+                'name' => trim(($order->shipping_address['receiver_name'] ?? '') . ' ' . ($order->shipping_address['receiver_last_name'] ?? '')),
+                'document' => $order->shipping_address['receiver_document_number'] ?? 'No especificado',
+                'phone' => $order->shipping_address['receiver_phone'] ?? 'No especificado',
+                'email' => $order->shipping_address['receiver_email'] ?? null,
+            ];
+        }
+        // Compatibilidad con campos antiguos (recipient_*)
+        elseif (!empty($order->shipping_address['recipient_name'])) {
+            $recipientInfo = [
+                'name' => $order->shipping_address['recipient_name'],
+                'document' => $order->shipping_address['recipient_document'] ?? 'No especificado',
+                'phone' => $order->shipping_address['phone'] ?? 'No especificado',
+                'email' => null,
+            ];
+        }
+
+        return view('admin.orders.show', compact('order', 'shippingAddress', 'recipientInfo'));
     }
 
     /**
@@ -122,7 +145,7 @@ class OrderController extends Controller
     public function updateStatus(\App\Models\Order $order, Request $request)
     {
         $request->validate([
-            'status' => 'required|integer|in:1,2,3,4,5,6,7'
+            'status' => 'required|integer|in:1,2,3,4,5,6,7,8'
         ]);
 
         $order->update(['status' => $request->status]);
@@ -158,7 +181,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Asignar repartidor a una orden
+     * Asignar repartidor a una orden - FLUJO COMPLETO DESDE CERO
      */
     public function assignDriver(Request $request, \App\Models\Order $order)
     {
@@ -167,49 +190,115 @@ class OrderController extends Controller
         ]);
 
         try {
-            // Verificar que la orden esté en un estado válido para asignar repartidor
-            $validStates = [1, 2, 3]; // Pendiente, Verificado, Preparando
+            \Log::info("Iniciando asignación de repartidor para orden #{$order->getKey()}");
+
+            $driver = \App\Models\DeliveryDriver::findOrFail($request->input('delivery_driver_id'));
+            \Log::info("Repartidor seleccionado: {$driver->getAttribute('name')} (ID: {$driver->getKey()})");
+
+            // PASO 1: Verificar que la orden esté en estado válido
+            $validStates = [1, 2, 3]; // PENDIENTE, PAGADO, PREPARANDO
             if (!in_array($order->status, $validStates)) {
+                \Log::warning("Orden #{$order->getKey()} no está en estado válido: {$order->status}");
                 return response()->json([
                     'success' => false,
                     'message' => 'Esta orden no puede tener un repartidor asignado en su estado actual.'
                 ]);
             }
 
-            // Usar el ShipmentService para crear y asignar envío en una sola operación
-            $driver = \App\Models\DeliveryDriver::findOrFail($request->delivery_driver_id);
+            // PASO 2: Verificar límite de repartidor (máximo 5 envíos activos)
+            $activeShipments = \App\Models\Shipment::where('delivery_driver_id', $driver->getKey())
+                ->whereIn('status', [1, 2, 4]) // PENDING, ASSIGNED, IN_TRANSIT
+                ->count();
 
-            // Si ya tiene envío sin repartidor, asignar el repartidor
-            if ($order->hasShipment()) {
-                $shipment = $order->shipment()->first();
-                $success = $this->shipmentService->assignDriverToShipment($shipment, $driver);
-            } else {
-                // Crear envío Y asignar repartidor en una sola operación
-                $shipment = $this->shipmentService->createShipmentForOrderWithDriver($order, $driver);
-                $success = $shipment ? true : false;
-            }
+            \Log::info("Repartidor {$driver->getAttribute('name')} tiene {$activeShipments} envíos activos");
 
-            if ($success) {
-                // Actualizar el estado de la orden a "Asignado" (4)
-                $order->update(['status' => 4]);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => "Repartidor {$driver->name} asignado correctamente a la orden #{$order->id}"
-                ]);
-            } else {
+            if ($activeShipments >= 5) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No se pudo asignar el repartidor al envío.'
+                    'message' => 'El repartidor ya tiene 5 envíos activos. No puede recibir más asignaciones.'
                 ]);
             }
 
+            // PASO 3: Eliminar cualquier envío existente sin repartidor
+            if ($order->hasShipment()) {
+                $existingShipment = $order->shipment()->first();
+                if (!$existingShipment->getAttribute('delivery_driver_id')) {
+                    \Log::info("Eliminando envío sin repartidor: #{$existingShipment->getKey()}");
+                    $existingShipment->delete();
+                }
+            }
+
+            // PASO 4: Crear nuevo envío CON repartidor asignado desde el inicio
+            $trackingNumber = 'SHP-' . now()->format('Ymd') . '-' . strtoupper(substr(md5(uniqid()), 0, 8));
+
+            $shipment = \App\Models\Shipment::create([
+                'tracking_number' => $trackingNumber,
+                'order_id' => $order->getKey(),
+                'status' => \App\Enums\ShipmentStatus::ASSIGNED->value,
+                'pickup_address' => json_encode([
+                    'address' => 'Tienda Principal',
+                    'city' => 'Santa Cruz',
+                    'province' => 'Santa Cruz'
+                ]),
+                'delivery_address' => $order->shipping_address,
+                'delivery_driver_id' => $driver->getKey(),
+                'assigned_at' => now()
+            ]);
+
+            \Log::info("Envío creado: #{$shipment->getKey()} con repartidor asignado");
+
+            // PASO 5: Actualizar estado de la orden a ASIGNADO
+            $order->update(['status' => \App\Enums\OrderStatus::ASIGNADO->value]);
+            \Log::info("Orden #{$order->getKey()} actualizada a estado ASIGNADO");
+
+            return response()->json([
+                'success' => true,
+                'message' => "Repartidor {$driver->getAttribute('name')} asignado correctamente a la orden #{$order->getKey()}"
+            ]);
+
         } catch (\Exception $e) {
-            \Log::error('Error asignando repartidor a orden: ' . $e->getMessage());
+            \Log::error('Error en asignación completa: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
 
             return response()->json([
                 'success' => false,
-                'message' => 'Ocurrió un error al asignar el repartidor. Inténtalo de nuevo.'
+                'message' => 'Ocurrió un error al asignar el repartidor: ' . $e->getMessage()
+            ]);
+        }
+    }    /**
+         * Cambiar orden a estado "En Camino" y crear/actualizar envío
+         */
+    public function markAsInTransit(Request $request, \App\Models\Order $order)
+    {
+        try {
+            // Verificar que la orden esté en estado ASIGNADO (4)
+            if ($order->status !== 4) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'La orden debe estar asignada a un repartidor para marcarla como "En Camino".'
+                ]);
+            }
+
+            // Cambiar estado de la orden a ENVIADO (5)
+            $order->update(['status' => \App\Enums\OrderStatus::ENVIADO->value]);
+
+            // Si tiene envío, cambiar su estado a IN_TRANSIT
+            if ($order->hasShipment()) {
+                $shipment = $order->shipment()->first();
+                $shipment->changeStatus(\App\Enums\ShipmentStatus::IN_TRANSIT->value);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Orden #{$order->getKey()} marcada como 'En Camino'."
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error marcando orden como en camino: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al cambiar el estado. Inténtalo de nuevo.'
             ]);
         }
     }

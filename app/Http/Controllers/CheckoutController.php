@@ -438,18 +438,11 @@ class CheckoutController extends Controller
 
         \Log::info('Orden creada exitosamente con ID: ' . $order->id);
 
-        // Crear envío automáticamente solo para órdenes con delivery
-        if ($deliveryType === 'delivery') {
-            try {
-                $this->shipmentService->createShipmentForOrder($order);
-                \Log::info('Envío creado para orden: ' . $order->id);
-            } catch (\Exception $e) {
-                // Log el error pero no falla la orden
-                \Log::error('Error creando envío para orden ' . $order->id . ': ' . $e->getMessage());
-            }
-        } else {
-            \Log::info('Orden de retiro en tienda, no se crea envío: ' . $order->id);
-        }
+        // TODO: El envío se creará cuando se asigne un repartidor manualmente desde el admin
+        // No crear envío automáticamente aquí para evitar envíos sin repartidor
+
+        // Limpiar carrito después de crear la orden exitosamente
+        \Log::info('Orden creada sin envío automático. Envío se creará al asignar repartidor: ' . $order->getKey());
 
         return $order;
     }

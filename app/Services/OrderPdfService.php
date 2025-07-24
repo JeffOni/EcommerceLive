@@ -18,8 +18,30 @@ class OrderPdfService
             // Cargar datos necesarios para el PDF
             $order->load(['user', 'payment']);
 
+            // Procesar información del destinatario (igual que en OrderController)
+            $recipientInfo = null;
+
+            // Verificar si hay información del receptor en los campos nuevos (receiver_*)
+            if (!empty($order->shipping_address['receiver_name'])) {
+                $recipientInfo = [
+                    'name' => trim(($order->shipping_address['receiver_name'] ?? '') . ' ' . ($order->shipping_address['receiver_last_name'] ?? '')),
+                    'document' => $order->shipping_address['receiver_document_number'] ?? 'No especificado',
+                    'phone' => $order->shipping_address['receiver_phone'] ?? 'No especificado',
+                    'email' => $order->shipping_address['receiver_email'] ?? null,
+                ];
+            }
+            // Compatibilidad con campos antiguos (recipient_*)
+            elseif (!empty($order->shipping_address['recipient_name'])) {
+                $recipientInfo = [
+                    'name' => $order->shipping_address['recipient_name'],
+                    'document' => $order->shipping_address['recipient_document'] ?? 'No especificado',
+                    'phone' => $order->shipping_address['phone'] ?? 'No especificado',
+                    'email' => null,
+                ];
+            }
+
             // Generar el PDF usando la vista existente
-            $pdf = Pdf::loadView('orders.invoice', compact('order'));
+            $pdf = Pdf::loadView('orders.invoice', compact('order', 'recipientInfo'));
 
             // Configurar el PDF
             $pdf->setPaper('A4', 'portrait');

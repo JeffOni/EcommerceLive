@@ -235,6 +235,47 @@
                                 @endif
                             </div>
 
+                            <!-- Información del destinatario -->
+                            @if ($recipientInfo)
+                            <div class="p-6 mt-6 bg-white shadow-lg rounded-2xl">
+                                <h3 class="mb-4 text-xl font-bold text-gray-900">
+                                    <i class="mr-2 text-purple-500 fas fa-user-friends"></i>
+                                    Información del Destinatario
+                                </h3>
+                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Nombre completo</p>
+                                        <p class="font-medium text-gray-900">{{ $recipientInfo['name'] }}</p>
+                                    </div>
+                                    @if ($recipientInfo['document'] && $recipientInfo['document'] !== 'No especificado')
+                                    <div>
+                                        <p class="text-sm text-gray-500">Documento</p>
+                                        <p class="font-medium text-gray-900">{{ $recipientInfo['document'] }}</p>
+                                    </div>
+                                    @endif
+                                    @if ($recipientInfo['phone'] && $recipientInfo['phone'] !== 'No especificado')
+                                    <div>
+                                        <p class="text-sm text-gray-500">Teléfono</p>
+                                        <p class="font-medium text-gray-900">{{ $recipientInfo['phone'] }}</p>
+                                    </div>
+                                    @endif
+                                    @if (!empty($recipientInfo['email']))
+                                    <div>
+                                        <p class="text-sm text-gray-500">Email</p>
+                                        <p class="font-medium text-gray-900">{{ $recipientInfo['email'] }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="p-3 mt-4 border-l-4 border-purple-300 rounded bg-purple-50">
+                                    <p class="text-sm text-purple-800">
+                                        <i class="mr-1 fas fa-info-circle"></i>
+                                        <strong>Nota:</strong> Este pedido será entregado a un tercero diferente al
+                                        titular de la cuenta.
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
+
                             <!-- Productos del Pedido -->
                             <div class="p-6 bg-white border border-gray-200 rounded-lg">
                                 <h3 class="mb-4 text-lg font-semibold text-gray-900">

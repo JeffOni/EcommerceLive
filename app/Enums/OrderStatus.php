@@ -7,10 +7,11 @@ enum OrderStatus: int
     case PENDIENTE = 1;
     case PAGADO = 2;
     case PREPARANDO = 3;
-    case ENVIADO = 4;
-    case ENTREGADO = 5;
-    case CANCELADO = 6;
-    case DEVUELTO = 7;
+    case ASIGNADO = 4;
+    case ENVIADO = 5;
+    case ENTREGADO = 6;
+    case CANCELADO = 7;
+    case DEVUELTO = 8;
 
     /**
      * Obtener el nombre legible del estado
@@ -21,6 +22,7 @@ enum OrderStatus: int
             self::PENDIENTE => 'Pendiente de Pago',
             self::PAGADO => 'Pago Confirmado',
             self::PREPARANDO => 'Preparando Pedido',
+            self::ASIGNADO => 'Asignado a Repartidor',
             self::ENVIADO => 'En Camino',
             self::ENTREGADO => 'Entregado',
             self::CANCELADO => 'Cancelado',
@@ -37,7 +39,8 @@ enum OrderStatus: int
             self::PENDIENTE => 'yellow',
             self::PAGADO => 'blue',
             self::PREPARANDO => 'indigo',
-            self::ENVIADO => 'purple',
+            self::ASIGNADO => 'purple',
+            self::ENVIADO => 'orange',
             self::ENTREGADO => 'green',
             self::CANCELADO => 'red',
             self::DEVUELTO => 'orange',
@@ -53,6 +56,7 @@ enum OrderStatus: int
             self::PENDIENTE => 'fa-clock',
             self::PAGADO => 'fa-credit-card',
             self::PREPARANDO => 'fa-box',
+            self::ASIGNADO => 'fa-user-check',
             self::ENVIADO => 'fa-truck',
             self::ENTREGADO => 'fa-check-circle',
             self::CANCELADO => 'fa-times-circle',
@@ -69,6 +73,7 @@ enum OrderStatus: int
             self::PENDIENTE => 'El pedido está pendiente de confirmación de pago',
             self::PAGADO => 'El pago ha sido confirmado y verificado',
             self::PREPARANDO => 'Estamos preparando tu pedido para el envío',
+            self::ASIGNADO => 'Tu pedido ha sido asignado a un repartidor',
             self::ENVIADO => 'Tu pedido está en camino hacia la dirección de entrega',
             self::ENTREGADO => 'El pedido ha sido entregado exitosamente',
             self::CANCELADO => 'El pedido ha sido cancelado',
@@ -85,6 +90,7 @@ enum OrderStatus: int
             self::PENDIENTE,
             self::PAGADO,
             self::PREPARANDO,
+            self::ASIGNADO,
         ]);
     }
 
@@ -104,7 +110,8 @@ enum OrderStatus: int
         return match ($this) {
             self::PENDIENTE => [self::PAGADO, self::CANCELADO],
             self::PAGADO => [self::PREPARANDO, self::CANCELADO],
-            self::PREPARANDO => [self::ENVIADO, self::CANCELADO],
+            self::PREPARANDO => [self::ASIGNADO, self::CANCELADO],
+            self::ASIGNADO => [self::ENVIADO, self::CANCELADO],
             self::ENVIADO => [self::ENTREGADO],
             self::ENTREGADO => [self::DEVUELTO],
             self::CANCELADO => [],
@@ -144,6 +151,7 @@ enum OrderStatus: int
             self::PENDIENTE,
             self::PAGADO,
             self::PREPARANDO,
+            self::ASIGNADO,
             self::ENVIADO,
         ];
     }
@@ -158,5 +166,18 @@ enum OrderStatus: int
             self::CANCELADO,
             self::DEVUELTO,
         ];
+    }
+
+    /**
+     * Obtener los estados iniciales según el método de pago
+     */
+    public static function initialState(int $paymentMethod): self
+    {
+        return match ($paymentMethod) {
+            \App\Enums\PaymentMethod::EFECTIVO->value => self::PENDIENTE, // Efectivo también inicia en pendiente, luego pasa directo a asignado
+            \App\Enums\PaymentMethod::TRANSFERENCIA->value => self::PENDIENTE,
+            \App\Enums\PaymentMethod::DEUNA->value => self::PENDIENTE,
+            default => self::PENDIENTE,
+        };
     }
 }

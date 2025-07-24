@@ -52,6 +52,7 @@ Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])-
 Route::get('orders/{order}/download-pdf', [OrderController::class, 'downloadPDF'])->name('orders.downloadPDF');
 Route::get('orders/{order}/check-shipment', [OrderController::class, 'checkShipment'])->name('orders.checkShipment');
 Route::post('orders/{order}/assign-driver', [OrderController::class, 'assignDriver'])->name('orders.assignDriver');
+Route::patch('orders/{order}/mark-in-transit', [OrderController::class, 'markAsInTransit'])->name('orders.markInTransit');
 
 // Rutas de repartidores
 Route::get('delivery-drivers/active', [DeliveryDriverController::class, 'getActiveDrivers'])->name('delivery-drivers.active');

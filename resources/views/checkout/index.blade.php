@@ -562,6 +562,12 @@
                 total: {{ $totalWithShipping ?? 0 }},
                 orderNumber: '',
                 
+                // Estados de procesamiento para evitar doble envío
+                _isSubmittingTransfer: false,
+                _isSubmittingQr: false,
+                _isSubmittingCash: false,
+                _lastRedirectUrl: null,
+                
                 // Datos de dirección de envío para validación
                 shippingProvince: @if($defaultAddress) '{{ $defaultAddress->province->name ?? '' }}' @else '' @endif,
                 
@@ -730,8 +736,13 @@
                 },
 
                 async confirmCashPayment() {
+                    // Evitar doble procesamiento
+                    if (this._isSubmittingCash) return;
+                    this._isSubmittingCash = true;
+                    
                     // Validar provincia antes de procesar
                     if (!this.checkProvinceBeforePayment()) {
+                        this._isSubmittingCash = false;
                         return;
                     }
                     
@@ -741,6 +752,7 @@
                             this.showErrorMessage(
                                 'No tienes una dirección de envío configurada. Por favor, configura una dirección antes de continuar.'
                             );
+                            this._isSubmittingCash = false;
                             return;
                         @endif
 
@@ -754,7 +766,8 @@
                                 'Accept': 'application/json',
                             },
                             body: JSON.stringify({
-                                payment_method: 3 // Pago en efectivo contra entrega
+                                payment_method: 3, // Pago en efectivo contra entrega
+                                delivery_type: this.deliveryType
                             })
                         });
 
@@ -772,6 +785,8 @@
                     } catch (error) {
                         console.error('Error completo:', error);
                         this.showErrorMessage('Error al confirmar el pedido: ' + error.message);
+                    } finally {
+                        this._isSubmittingCash = false;
                     }
                 },
 

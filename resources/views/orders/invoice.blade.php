@@ -167,8 +167,7 @@
                 <strong>Número:</strong> #{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}<br>
                 <strong>Fecha:</strong> {{ $order->created_at->format('d/m/Y') }}<br>
                 <strong>Estado:</strong>
-                <span
-                    class="status-badge {{ $order->status == 6
+                <span class="status-badge {{ $order->status == 6
                         ? 'status-entregado'
                         : ($order->status == 5
                             ? 'status-en-camino'
@@ -191,7 +190,7 @@
             <strong>{{ $order->user->name }}</strong><br>
             Email: {{ $order->user->email }}<br>
             @if ($order->user->phone)
-                Teléfono: {{ $order->user->phone }}<br>
+            Teléfono: {{ $order->user->phone }}<br>
             @endif
             Fecha de registro: {{ $order->user->created_at->format('d/m/Y') }}
         </div>
@@ -202,143 +201,114 @@
         <div class="section-title">Dirección de Entrega</div>
         <div class="shipping-info">
             @if ($order->shipping_address)
-                <!-- Destinatario -->
-                @if (isset($order->shipping_address['receiver_full_name']) || isset($order->shipping_address['receiver_name']))
-                    <strong>
-                        {{ is_array($order->shipping_address['receiver_full_name'] ?? '')
-                            ? implode(' ', $order->shipping_address['receiver_full_name'])
-                            : $order->shipping_address['receiver_full_name'] ??
-                                ((is_array($order->shipping_address['receiver_name'] ?? '')
-                                    ? implode(' ', $order->shipping_address['receiver_name'])
-                                    : $order->shipping_address['receiver_name']) .
-                                    ' ' .
-                                    (is_array($order->shipping_address['receiver_last_name'] ?? '')
-                                        ? implode(' ', $order->shipping_address['receiver_last_name'])
-                                        : $order->shipping_address['receiver_last_name'] ?? '') ??
-                                    (is_array($order->shipping_address['recipient_name'] ?? '')
-                                        ? implode(' ', $order->shipping_address['recipient_name'])
-                                        : $order->shipping_address['recipient_name'] ?? 'Destinatario')) }}
-                    </strong>
-                    @if (isset($order->shipping_address['receiver_document_number']) && $order->shipping_address['receiver_document_number'])
-                        <span style="color: #666;">
-                            ({{ is_array($order->shipping_address['receiver_document_type'] ?? '') ? implode(', ', $order->shipping_address['receiver_document_type']) : $order->shipping_address['receiver_document_type'] ?? 'CI' }}:
-                            {{ is_array($order->shipping_address['receiver_document_number']) ? implode(', ', $order->shipping_address['receiver_document_number']) : $order->shipping_address['receiver_document_number'] }})
-                        </span>
-                    @elseif (isset($order->shipping_address['recipient_document']) && $order->shipping_address['recipient_document'])
-                        <span style="color: #666;">(CI:
-                            {{ is_array($order->shipping_address['recipient_document']) ? implode(', ', $order->shipping_address['recipient_document']) : $order->shipping_address['recipient_document'] }})</span>
-                    @endif
-                    <br>
-                @endif
+            <!-- Destinatario (nueva lógica simplificada) -->
+            @if ($recipientInfo)
+            <strong>Destinatario:</strong> {{ $recipientInfo['name'] }}
+            @if ($recipientInfo['document'] && $recipientInfo['document'] !== 'No especificado')
+            <span style="color: #666;">({{ $recipientInfo['document'] }})</span>
+            @endif
+            <br>
 
-                <!-- Teléfono -->
-                @if (isset($order->shipping_address['receiver_phone']))
-                    <strong>Teléfono:</strong>
-                    {{ is_array($order->shipping_address['receiver_phone']) ? implode(', ', $order->shipping_address['receiver_phone']) : $order->shipping_address['receiver_phone'] }}<br>
-                @elseif (isset($order->shipping_address['phone']))
-                    <strong>Teléfono:</strong>
-                    {{ is_array($order->shipping_address['phone']) ? implode(', ', $order->shipping_address['phone']) : $order->shipping_address['phone'] }}<br>
-                @endif
+            @if ($recipientInfo['phone'] && $recipientInfo['phone'] !== 'No especificado')
+            <strong>Teléfono:</strong> {{ $recipientInfo['phone'] }}<br>
+            @endif
 
-                <!-- Email del receptor -->
-                @if (isset($order->shipping_address['receiver_email']) && $order->shipping_address['receiver_email'])
-                    <strong>Email:</strong>
-                    {{ is_array($order->shipping_address['receiver_email']) ? implode(', ', $order->shipping_address['receiver_email']) : $order->shipping_address['receiver_email'] }}<br>
-                @endif
+            @if (!empty($recipientInfo['email']))
+            <strong>Email:</strong> {{ $recipientInfo['email'] }}<br>
+            @endif
 
-                <!-- Dirección completa -->
-                <strong>Dirección:</strong>
-                @if (isset($order->shipping_address['address']))
-                    {{ is_array($order->shipping_address['address']) ? implode(', ', $order->shipping_address['address']) : $order->shipping_address['address'] }}
-                @else
-                    No especificada
-                @endif
-                <br>
+            <div
+                style="background-color: #fef3c7; padding: 8px; margin: 8px 0; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                <small style="color: #92400e;"><strong>Nota:</strong> Este pedido será entregado a un tercero diferente
+                    al titular de la cuenta.</small>
+            </div>
+            @endif
 
-                <!-- Ubicación geográfica -->
-                @if (isset($order->shipping_address['parish']) ||
-                        isset($order->shipping_address['canton']) ||
-                        isset($order->shipping_address['province']))
-                    <strong>Ubicación:</strong>
-                    @if (isset($order->shipping_address['parish']))
-                        {{ is_array($order->shipping_address['parish']) ? $order->shipping_address['parish']['name'] ?? '' : $order->shipping_address['parish'] }}
-                    @endif
-                    @if (isset($order->shipping_address['canton']))
-                        ,
-                        {{ is_array($order->shipping_address['canton']) ? $order->shipping_address['canton']['name'] ?? '' : $order->shipping_address['canton'] }}
-                    @endif
-                    @if (isset($order->shipping_address['province']))
-                        ,
-                        {{ is_array($order->shipping_address['province']) ? $order->shipping_address['province']['name'] ?? '' : $order->shipping_address['province'] }}
-                    @endif
-                    @if (isset($order->shipping_address['postal_code']) && $order->shipping_address['postal_code'])
-                        - CP:
-                        {{ is_array($order->shipping_address['postal_code']) ? $order->shipping_address['postal_code']['code'] ?? '' : $order->shipping_address['postal_code'] }}
-                    @endif
-                    <br>
-                @endif
-
-                <!-- Referencia -->
-                @if (isset($order->shipping_address['reference']) && $order->shipping_address['reference'])
-                    <strong>Referencia:</strong>
-                    {{ is_array($order->shipping_address['reference']) ? implode(', ', $order->shipping_address['reference']) : $order->shipping_address['reference'] }}
-                    <br>
-                @endif
-
-                <!-- Tipo de receptor -->
-                @if (isset($order->shipping_address['receiver_type']))
-                    <strong>Tipo de receptor:</strong>
-                    @if ($order->shipping_address['receiver_type'] === 'me' || $order->shipping_address['receiver_type'] == 1)
-                        Yo mismo
-                    @elseif ($order->shipping_address['receiver_type'] === 'other' || $order->shipping_address['receiver_type'] == 2)
-                        Otra persona
-                    @else
-                        {{ is_array($order->shipping_address['receiver_type']) ? implode(', ', $order->shipping_address['receiver_type']) : (string) $order->shipping_address['receiver_type'] }}
-                    @endif
-                    <br>
-                @elseif (isset($order->shipping_address['type']))
-                    <strong>Tipo:</strong> {{ $order->shipping_address['type'] === 'home' ? 'Casa' : 'Trabajo' }}<br>
-                @endif
-
-                <!-- Notas adicionales -->
-                @if (isset($order->shipping_address['notes']) && $order->shipping_address['notes'])
-                    <strong>Notas:</strong>
-                    {{ is_array($order->shipping_address['notes']) ? implode(', ', $order->shipping_address['notes']) : $order->shipping_address['notes'] }}<br>
-                @endif
-
-                <!-- Dirección completa formateada (si existe) -->
-                @if (isset($order->shipping_address['full_address']) && $order->shipping_address['full_address'])
-                    <div
-                        style="margin-top: 10px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #007bff;">
-                        <strong>Dirección completa:</strong>
-                        {{ is_array($order->shipping_address['full_address']) ? implode(', ', $order->shipping_address['full_address']) : $order->shipping_address['full_address'] }}
-                    </div>
-                @endif
+            <!-- Dirección completa -->
+            <strong>Dirección:</strong>
+            @if (isset($order->shipping_address['address']))
+            {{ is_array($order->shipping_address['address']) ? implode(', ', $order->shipping_address['address']) :
+            $order->shipping_address['address'] }}
             @else
-                <em style="color: #666;">No se especificó dirección de envío</em>
+            No especificada
+            @endif
+            <br>
+
+            <!-- Ubicación geográfica -->
+            @if (isset($order->shipping_address['parish']) ||
+            isset($order->shipping_address['canton']) ||
+            isset($order->shipping_address['province']))
+            <strong>Ubicación:</strong>
+            @if (isset($order->shipping_address['parish']))
+            {{ is_array($order->shipping_address['parish']) ? $order->shipping_address['parish']['name'] ?? '' :
+            $order->shipping_address['parish'] }}
+            @endif
+            @if (isset($order->shipping_address['canton']))
+            ,
+            {{ is_array($order->shipping_address['canton']) ? $order->shipping_address['canton']['name'] ?? '' :
+            $order->shipping_address['canton'] }}
+            @endif
+            @if (isset($order->shipping_address['province']))
+            ,
+            {{ is_array($order->shipping_address['province']) ? $order->shipping_address['province']['name'] ?? '' :
+            $order->shipping_address['province'] }}
+            @endif
+            @if (isset($order->shipping_address['postal_code']) && $order->shipping_address['postal_code'])
+            - CP:
+            {{ is_array($order->shipping_address['postal_code']) ? $order->shipping_address['postal_code']['code'] ?? ''
+            : $order->shipping_address['postal_code'] }}
+            @endif
+            <br>
+            @endif
+
+            <!-- Referencia -->
+            @if (isset($order->shipping_address['reference']) && $order->shipping_address['reference'])
+            <strong>Referencia:</strong>
+            {{ is_array($order->shipping_address['reference']) ? implode(', ', $order->shipping_address['reference']) :
+            $order->shipping_address['reference'] }}
+            <br>
+            @endif
+
+            <!-- Notas adicionales -->
+            @if (isset($order->shipping_address['notes']) && $order->shipping_address['notes'])
+            <strong>Notas:</strong>
+            {{ is_array($order->shipping_address['notes']) ? implode(', ', $order->shipping_address['notes']) :
+            $order->shipping_address['notes'] }}<br>
+            @endif
+
+            <!-- Dirección completa formateada (si existe) -->
+            @if (isset($order->shipping_address['full_address']) && $order->shipping_address['full_address'])
+            <div style="margin-top: 10px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #007bff;">
+                <strong>Dirección completa:</strong>
+                {{ is_array($order->shipping_address['full_address']) ? implode(', ',
+                $order->shipping_address['full_address']) : $order->shipping_address['full_address'] }}
+            </div>
+            @endif
+            @else
+            <em style="color: #666;">No se especificó dirección de envío</em>
             @endif
         </div>
     </div>
 
     <!-- Información de Envío -->
     @if ($order->shipment)
-        <div class="section">
-            <div class="section-title">Información de Envío</div>
-            <div class="tracking-info">
-                <strong>Número de Seguimiento:</strong> {{ $order->shipment->tracking_number }}<br>
-                @if ($order->shipment->deliveryDriver)
-                    <strong>Repartidor:</strong> {{ $order->shipment->deliveryDriver->name }}<br>
-                    <strong>Teléfono del Repartidor:</strong> {{ $order->shipment->deliveryDriver->phone }}<br>
-                @endif
-                @if ($order->shipment->estimated_delivery_date)
-                    <strong>Fecha Estimada de Entrega:</strong>
-                    {{ $order->shipment->estimated_delivery_date->format('d/m/Y') }}<br>
-                @endif
-                @if ($order->shipment->delivered_at)
-                    <strong>Fecha de Entrega:</strong> {{ $order->shipment->delivered_at->format('d/m/Y H:i') }}
-                @endif
-            </div>
+    <div class="section">
+        <div class="section-title">Información de Envío</div>
+        <div class="tracking-info">
+            <strong>Número de Seguimiento:</strong> {{ $order->shipment->tracking_number }}<br>
+            @if ($order->shipment->deliveryDriver)
+            <strong>Repartidor:</strong> {{ $order->shipment->deliveryDriver->name }}<br>
+            <strong>Teléfono del Repartidor:</strong> {{ $order->shipment->deliveryDriver->phone }}<br>
+            @endif
+            @if ($order->shipment->estimated_delivery_date)
+            <strong>Fecha Estimada de Entrega:</strong>
+            {{ $order->shipment->estimated_delivery_date->format('d/m/Y') }}<br>
+            @endif
+            @if ($order->shipment->delivered_at)
+            <strong>Fecha de Entrega:</strong> {{ $order->shipment->delivered_at->format('d/m/Y H:i') }}
+            @endif
         </div>
+    </div>
     @endif
 
     <!-- Productos -->
@@ -355,31 +325,32 @@
             </thead>
             <tbody>
                 @if (isset($order->content) && is_array($order->content))
-                    @foreach ($order->content as $item)
-                        <tr>
-                            <td>
-                                <strong>{{ is_array($item['name'] ?? '') ? implode(' ', $item['name']) : $item['name'] ?? 'Producto' }}</strong>
-                                @if (isset($item['options']) && !empty($item['options']))
-                                    <br><small style="color: #666;">
-                                        @foreach ($item['options'] as $key => $value)
-                                            {{ is_array($key) ? implode(' ', $key) : ucfirst($key) }}:
-                                            {{ is_array($value) ? implode(', ', $value) : $value }}
-                                        @endforeach
-                                    </small>
-                                @endif
-                            </td>
-                            <td style="text-align: center;">{{ $item['qty'] ?? 1 }}</td>
-                            <td style="text-align: right;">${{ number_format($item['price'] ?? 0, 2) }}</td>
-                            <td style="text-align: right;">
-                                ${{ number_format(($item['price'] ?? 0) * ($item['qty'] ?? 1), 2) }}</td>
-                        </tr>
-                    @endforeach
+                @foreach ($order->content as $item)
+                <tr>
+                    <td>
+                        <strong>{{ is_array($item['name'] ?? '') ? implode(' ', $item['name']) : $item['name'] ??
+                            'Producto' }}</strong>
+                        @if (isset($item['options']) && !empty($item['options']))
+                        <br><small style="color: #666;">
+                            @foreach ($item['options'] as $key => $value)
+                            {{ is_array($key) ? implode(' ', $key) : ucfirst($key) }}:
+                            {{ is_array($value) ? implode(', ', $value) : $value }}
+                            @endforeach
+                        </small>
+                        @endif
+                    </td>
+                    <td style="text-align: center;">{{ $item['qty'] ?? 1 }}</td>
+                    <td style="text-align: right;">${{ number_format($item['price'] ?? 0, 2) }}</td>
+                    <td style="text-align: right;">
+                        ${{ number_format(($item['price'] ?? 0) * ($item['qty'] ?? 1), 2) }}</td>
+                </tr>
+                @endforeach
                 @else
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: #666;">
-                            Información de productos no disponible
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #666;">
+                        Información de productos no disponible
+                    </td>
+                </tr>
                 @endif
             </tbody>
         </table>
@@ -389,14 +360,14 @@
     <div class="clear"></div>
     <div class="totals">
         @php
-            $subtotal = 0;
-            if (isset($order->content) && is_array($order->content)) {
-                foreach ($order->content as $item) {
-                    $subtotal += ($item['price'] ?? 0) * ($item['qty'] ?? 1);
-                }
-            }
-            $shipping = 5.0; // Costo de envío fijo
-            $discount = 0; // Descuentos si aplican
+        $subtotal = 0;
+        if (isset($order->content) && is_array($order->content)) {
+        foreach ($order->content as $item) {
+        $subtotal += ($item['price'] ?? 0) * ($item['qty'] ?? 1);
+        }
+        }
+        $shipping = 5.0; // Costo de envío fijo
+        $discount = 0; // Descuentos si aplican
         @endphp
 
         <div class="total-row">
@@ -410,10 +381,10 @@
         </div>
 
         @if ($discount > 0)
-            <div class="total-row">
-                <span>Descuento:</span>
-                <span style="color: #dc3545;">-${{ number_format($discount, 2) }}</span>
-            </div>
+        <div class="total-row">
+            <span>Descuento:</span>
+            <span style="color: #dc3545;">-${{ number_format($discount, 2) }}</span>
+        </div>
         @endif
 
         <div class="total-row grand-total">
@@ -428,13 +399,13 @@
         <div class="section-title">Método de Pago</div>
         <p><strong>{{ $order->payment_method_label }}</strong></p>
         @if ($order->payment)
-            @if ($order->payment->transaction_id)
-                <p><small><strong>ID de Transacción:</strong> {{ $order->payment->transaction_id }}</small></p>
-            @endif
-            @if ($order->payment->verified_at)
-                <p><small><strong>Pago Verificado el:</strong>
-                        {{ $order->payment->verified_at->format('d/m/Y H:i') }}</small></p>
-            @endif
+        @if ($order->payment->transaction_id)
+        <p><small><strong>ID de Transacción:</strong> {{ $order->payment->transaction_id }}</small></p>
+        @endif
+        @if ($order->payment->verified_at)
+        <p><small><strong>Pago Verificado el:</strong>
+                {{ $order->payment->verified_at->format('d/m/Y H:i') }}</small></p>
+        @endif
         @endif
     </div>
 
