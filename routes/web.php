@@ -29,7 +29,12 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $user = auth()->user();
+        if ($user && $user->hasAnyRole(['admin', 'super_admin', 'empleado'])) {
+            return redirect('/admin');
+        }
+        // Si es cliente, redirigir a la página principal
+        return redirect()->route('welcome.index');
     })->name('dashboard');
 
     // Rutas protegidas que requieren autenticación
@@ -62,6 +67,9 @@ Route::get('/subcategories/{subcategory}', [SubcategoryController::class, 'show'
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->name('products.show')
     ->scopeBindings();
+
+// Listado público de productos
+Route::get('/productos', [ProductController::class, 'index'])->name('products.index');
 
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');

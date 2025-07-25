@@ -4,118 +4,25 @@
         <table class="w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-50                form.appendChild(methodInput);
-                form.appendChild(tokenInput);
-                document.body.appendChild(form);
-                form.submit();
-            });
-        }
-    }
-
-    // Nueva función para abrir modal de asignación de repartidor
-    function openAssignDriverModal(shipmentId) {
-        Swal.fire({
-            title: 'Asignar Repartidor',
-            html: `
-                <select id=" driverSelect" class="swal2-select">
-                        <option value="">Seleccionar repartidor...</option>
-                        @foreach($drivers as $driver)
-                        <option value="{{ $driver->id }}">{{ $driver->name }} - {{ $driver->phone }}</option>
-                        @endforeach
-                        </select>
-                        `,
-                        showCancelButton: true,
-                        confirmButtonColor: '#10B981',
-                        cancelButtonColor: '#6B7280',
-                        confirmButtonText: 'Asignar',
-                        cancelButtonText: 'Cancelar',
-                        preConfirm: () => {
-                        const driverId = document.getElementById('driverSelect').value;
-                        if (!driverId) {
-                        Swal.showValidationMessage('Por favor selecciona un repartidor');
-                        return false;
-                        }
-                        return driverId;
-                        }
-                        }).then((result) => {
-                        if (result.isConfirmed) {
-                        assignDriverToShipment(shipmentId, result.value);
-                        }
-                        });
-                        }
-
-                        // Función para asignar repartidor via AJAX
-                        function assignDriverToShipment(shipmentId, driverId) {
-                        fetch(`/admin/shipments/${shipmentId}/assign-driver`, {
-                        method: 'PATCH',
-                        headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                        delivery_driver_id: driverId
-                        })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                        if (data.success) {
-                        Swal.fire({
-                        icon: 'success',
-                        title: '¡Éxito!',
-                        text: data.message,
-                        timer: 2000,
-                        showConfirmButton: false
-                        }).then(() => {
-                        location.reload(); // Recargar la página para mostrar los cambios
-                        });
-                        } else {
-                        Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'No se pudo asignar el repartidor'
-                        });
-                        }
-                        })
-                        .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Ocurrió un error al asignar el repartidor'
-                        });
-                        });
-                        }case">
-                        <input type="checkbox"
-                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">#</th>
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Tracking
+                    </th>
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Orden
                     </th>
                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Tracking
+                        Repartidor</th>
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Estado
                     </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Orden
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Repartidor
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Estado
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Fecha Estimada
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                        Acciones
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Fecha
+                        Estimada</th>
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Acciones
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse ($shipments as $shipment)
                 <tr class="transition-colors hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <input type="checkbox"
-                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                    </td>
-
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loop->iteration }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 w-10 h-10">
@@ -134,7 +41,6 @@
                             </div>
                         </div>
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
                             <a href="{{ route('admin.orders.show', $shipment->order) }}"
@@ -146,7 +52,6 @@
                             ${{ number_format($shipment->order->total, 2) }}
                         </div>
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if ($shipment->deliveryDriver)
                         <div class="flex items-center">
@@ -169,33 +74,31 @@
                         <span class="text-sm text-gray-400">Sin asignar</span>
                         @endif
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <select class="text-sm border-0 rounded-full status-badge status-{{ $shipment->status }}"
+                        <span
+                            class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $statusColors[$shipment->status->value ?? $shipment->status] ?? 'bg-gray-100 text-gray-800' }}">
+                            <i class="fas fa-circle mr-1 text-[10px] align-middle"></i>
+                            {{ ucfirst(str_replace('_', ' ', $shipment->status->value ?? $shipment->status)) }}
+                        </span>
+                        <select
+                            class="ml-2 text-xs border-0 rounded-full focus:ring-indigo-500 focus:border-indigo-500 {{ $statusColors[$shipment->status->value ?? $shipment->status] ?? 'bg-gray-100 text-gray-800' }}"
                             onchange="updateShipmentStatus({{ $shipment->id }}, this.value)">
-                            <option value="pending" {{ $shipment->status === 'pending' ? 'selected' : '' }}>
-                                Pendiente
-                            </option>
-                            <option value="assigned" {{ $shipment->status === 'assigned' ? 'selected' : '' }}>
-                                Asignado
-                            </option>
-                            <option value="in_transit" {{ $shipment->status === 'in_transit' ? 'selected' : '' }}>
-                                En Tránsito
-                            </option>
-                            <option value="delivered" {{ $shipment->status === 'delivered' ? 'selected' : '' }}>
-                                Entregado
-                            </option>
-                            <option value="failed" {{ $shipment->status === 'failed' ? 'selected' : '' }}>
-                                Fallido
-                            </option>
+                            <option value="pending" {{ ($shipment->status->value ?? $shipment->status) === 'pending' ?
+                                'selected' : '' }}>Pendiente</option>
+                            <option value="assigned" {{ ($shipment->status->value ?? $shipment->status) === 'assigned' ?
+                                'selected' : '' }}>Asignado</option>
+                            <option value="in_transit" {{ ($shipment->status->value ?? $shipment->status) ===
+                                'in_transit' ? 'selected' : '' }}>En Tránsito</option>
+                            <option value="delivered" {{ ($shipment->status->value ?? $shipment->status) === 'delivered'
+                                ? 'selected' : '' }}>Entregado</option>
+                            <option value="failed" {{ ($shipment->status->value ?? $shipment->status) === 'failed' ?
+                                'selected' : '' }}>Fallido</option>
                         </select>
                     </td>
-
                     <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
                         {{ $shipment->estimated_delivery_date ? $shipment->estimated_delivery_date->format('d/m/Y') :
                         'No definida' }}
                     </td>
-
                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
                         <div class="flex items-center space-x-2">
                             <a href="{{ route('admin.shipments.show', $shipment) }}"
@@ -264,8 +167,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="status-badge status-{{ $shipment->status }}">
-                    {{ ucfirst(str_replace('_', ' ', $shipment->status->value)) }}
+                <span
+                    class="status-badge inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $statusColors[$shipment->status->value ?? $shipment->status] ?? 'bg-gray-100 text-gray-800' }}">
+                    {{ ucfirst(str_replace('_', ' ', $shipment->status->value ?? $shipment->status)) }}
                 </span>
             </div>
 
@@ -339,19 +243,24 @@
                 </div>
                 <select class="text-xs border-gray-300 rounded-lg status-badge status-{{ $shipment->status }}"
                     onchange="updateShipmentStatus({{ $shipment->id }}, this.value)">
-                    <option value="pending" {{ $shipment->status === 'pending' ? 'selected' : '' }}>
+                    <option value="pending" {{ ($shipment->status->value ?? $shipment->status) === 'pending' ?
+                        'selected' : '' }}>
                         Pendiente
                     </option>
-                    <option value="assigned" {{ $shipment->status === 'assigned' ? 'selected' : '' }}>
+                    <option value="assigned" {{ ($shipment->status->value ?? $shipment->status) === 'assigned' ?
+                        'selected' : '' }}>
                         Asignado
                     </option>
-                    <option value="in_transit" {{ $shipment->status === 'in_transit' ? 'selected' : '' }}>
+                    <option value="in_transit" {{ ($shipment->status->value ?? $shipment->status) === 'in_transit' ?
+                        'selected' : '' }}>
                         En Tránsito
                     </option>
-                    <option value="delivered" {{ $shipment->status === 'delivered' ? 'selected' : '' }}>
+                    <option value="delivered" {{ ($shipment->status->value ?? $shipment->status) === 'delivered' ?
+                        'selected' : '' }}>
                         Entregado
                     </option>
-                    <option value="failed" {{ $shipment->status === 'failed' ? 'selected' : '' }}>
+                    <option value="failed" {{ ($shipment->status->value ?? $shipment->status) === 'failed' ? 'selected'
+                        : '' }}>
                         Fallido
                     </option>
                 </select>
