@@ -39,14 +39,12 @@ class OrderObserver
             $this->oldStatus !== $order->status &&
             $order->user
         ) {
-
             // Enviar notificación al cliente
             $order->user->notify(new OrderStatusChanged(
                 $order,
                 $this->oldStatus,
                 $order->status
             ));
-
             // Limpiar la variable
             unset($this->oldStatus);
         }
@@ -58,6 +56,38 @@ class OrderObserver
                 Log::info("PDF regenerado para la orden verificada {$order->id}");
             } catch (\Exception $e) {
                 Log::error("Error regenerando PDF para la orden {$order->id}: " . $e->getMessage());
+            }
+        }
+
+        // Reducir stock cuando la orden pasa a 'En Camino' (OrderStatus::ENVIADO o 5)
+        if (
+            isset($this->oldStatus) &&
+            $this->oldStatus != 5 && // No venía de 'En Camino'
+            $order->status == 5 // Ahora está 'En Camino'
+        ) {
+            // El contenido de la orden debe ser un array con los productos/variantes y cantidades
+            $content = $order->content;
+            if (is_array($content)) {
+                foreach ($content as $item) {
+                    // Se espera que cada $item tenga 'product_id', 'variant_id' (opcional), 'quantity'
+                    $productId = $item['product_id'] ?? null;
+                    $variantId = $item['variant_id'] ?? null;
+                    $quantity = $item['quantity'] ?? 1;
+                    if ($variantId) {
+                        $variant = \App\Models\Variant::find($variantId);
+                        if ($variant && $variant->stock >= $quantity) {
+                            $variant->stock -= $quantity;
+                            $variant->save();
+                        }
+                    } elseif ($productId) {
+                        $product = \App\Models\Product::find($productId);
+                        if ($product && $product->stock >= $quantity) {
+                            $product->stock -= $quantity;
+                            $product->save();
+                        }
+                    }
+                }
+                Log::info("Stock reducido para la orden {$order->id} al pasar a 'En Camino'.");
             }
         }
     }
