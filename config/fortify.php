@@ -73,7 +73,7 @@ return [
     |
     */
     //variable modificada originalmente era 'home' => '/dashboard',
-    'home' => '/',
+    'home' => '/dashboard',
 
     /*
     |--------------------------------------------------------------------------
@@ -146,7 +146,8 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        // Features::emailVerification(),
+        // Habilitar verificación de email en producción
+        Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([

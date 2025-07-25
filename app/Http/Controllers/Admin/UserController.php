@@ -6,9 +6,11 @@ use App\Enums\UserRole;
 use App\Enums\TypeOfDocuments;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\AdminEmailVerificationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rules\Password;
 
@@ -97,18 +99,53 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'email_verified_at' => now(), // Los usuarios admin se crean verificados
+            // En producción, NO verificar automáticamente
+            'email_verified_at' => app()->environment('production') ? null : now(),
         ]);
 
         // Asignar rol
         $user->assignRole($request->role);
 
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => '¡Usuario creado!',
-            'text' => 'El usuario administrativo ha sido creado correctamente.',
-            'timeout' => 3000
-        ]);
+        // Enviar notificación de verificación de email si estamos en producción
+        if (app()->environment('production')) {
+            try {
+                $user->notify(new AdminEmailVerificationNotification());
+
+                Log::info('Email verification sent to admin user', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'role' => $request->role,
+                    'created_by' => auth()->id()
+                ]);
+
+                session()->flash('swal', [
+                    'icon' => 'success',
+                    'title' => '¡Usuario creado!',
+                    'text' => 'El usuario administrativo ha sido creado. Se ha enviado un correo de verificación a ' . $user->email,
+                    'timeout' => 5000
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send admin email verification', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'error' => $e->getMessage()
+                ]);
+
+                session()->flash('swal', [
+                    'icon' => 'warning',
+                    'title' => 'Usuario creado con advertencia',
+                    'text' => 'El usuario fue creado pero no se pudo enviar el correo de verificación. Verifica manualmente el email.',
+                    'timeout' => 5000
+                ]);
+            }
+        } else {
+            session()->flash('swal', [
+                'icon' => 'success',
+                'title' => '¡Usuario creado!',
+                'text' => 'El usuario administrativo ha sido creado correctamente (modo desarrollo).',
+                'timeout' => 3000
+            ]);
+        }
 
         return redirect()->route('admin.users.index');
     }
