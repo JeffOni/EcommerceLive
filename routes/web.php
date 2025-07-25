@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Gate;
 
 
 // Rutas administrativas para verificación de pagos
@@ -23,6 +24,27 @@ Route::middleware(['auth', 'can:admin-panel'])->prefix('admin')->group(function 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
 
+// RUTA TEMPORAL DE DEBUG - ELIMINAR DESPUÉS DE SOLUCIONAR
+Route::get('/debug-auth', function () {
+    $user = auth()->user();
+
+    $debug = [
+        'authenticated' => auth()->check(),
+        'user_id' => $user ? $user->id : null,
+        'user_name' => $user ? $user->name : null,
+        'user_email' => $user ? $user->email : null,
+        'user_roles' => $user ? $user->roles->pluck('name')->toArray() : [],
+        'has_admin_role' => $user ? $user->hasRole('admin') : false,
+        'has_super_admin_role' => $user ? $user->hasRole('super_admin') : false,
+        'has_any_admin_role' => $user ? $user->hasAnyRole(['admin', 'super_admin']) : false,
+        'can_access_admin_panel' => auth()->check() ? Gate::allows('admin-panel') : false,
+        'session_id' => session()->getId(),
+        'csrf_token' => csrf_token()
+    ];
+
+    return response()->json($debug, 200, [], JSON_PRETTY_PRINT);
+})->middleware('web');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -30,7 +52,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
-        if ($user && $user->hasAnyRole(['admin', 'super_admin', 'empleado'])) {
+        if ($user && $user->hasAnyRole(['admin', 'super_admin'])) {
             return redirect('/admin');
         }
         // Si es cliente, redirigir a la página principal
