@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         Storage::makeDirectory('products');//Crea el directorio de productos
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $adminUser = User::factory()->create([
             'name' => 'Usuario',
             'last_name' => 'Prueba',
             'document_type' => 1, // 1 = Cédula, 2 = Pasaporte, 3 = RUC
@@ -28,9 +28,13 @@ class DatabaseSeeder extends Seeder
             'phone' => '0987654321',
             'email' => 'Admin@example.com',
             'password' => bcrypt('secreto123'),
+            'email_verified_at' => now(), // Email verificado
         ]);
 
         $this->call([
+                // Seeder de roles y permisos (DEBE IR PRIMERO)
+            RoleSeeder::class,
+
                 // Seeders geográficos (deben ir en orden por las relaciones)
             ProvinceSeeder::class,
             CantonSeeder::class,
@@ -40,6 +44,9 @@ class DatabaseSeeder extends Seeder
             FamilySeeder::class,
             OptionSeeder::class,
         ]);
+
+        // Asignar rol super_admin al usuario recién creado
+        $adminUser->assignRole('super_admin');
 
         Product::factory(50)->create();
     }

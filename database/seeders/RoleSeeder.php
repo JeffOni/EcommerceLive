@@ -26,13 +26,25 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web'
+            ]);
         }
 
         // Crear roles
-        $clienteRole = Role::firstOrCreate(['name' => UserRole::CLIENTE->value]);
-        $adminRole = Role::firstOrCreate(['name' => UserRole::ADMIN->value]);
-        $superAdminRole = Role::firstOrCreate(['name' => UserRole::SUPER_ADMIN->value]);
+        $clienteRole = Role::firstOrCreate([
+            'name' => UserRole::CLIENTE->value,
+            'guard_name' => 'web'
+        ]);
+        $adminRole = Role::firstOrCreate([
+            'name' => UserRole::ADMIN->value,
+            'guard_name' => 'web'
+        ]);
+        $superAdminRole = Role::firstOrCreate([
+            'name' => UserRole::SUPER_ADMIN->value,
+            'guard_name' => 'web'
+        ]);
 
         // Asignar permisos a roles
         $adminRole->syncPermissions([
@@ -44,11 +56,5 @@ class RoleSeeder extends Seeder
         ]);
 
         $superAdminRole->syncPermissions($permissions); // Todos los permisos
-
-        // Asignar rol super admin al usuario existente (Admin@example.com)
-        $adminUser = \App\Models\User::where('email', 'Admin@example.com')->first();
-        if ($adminUser) {
-            $adminUser->assignRole(UserRole::SUPER_ADMIN->value);
-        }
     }
 }

@@ -39,12 +39,35 @@ Route::get('/debug-auth', function () {
         'has_any_admin_role' => $user ? $user->hasAnyRole(['admin', 'super_admin']) : false,
         'can_access_admin_panel' => auth()->check() ? Gate::allows('admin-panel') : false,
         'session_id' => session()->getId(),
-        'csrf_token' => csrf_token()
+        'csrf_token' => csrf_token(),
+        'dashboard_redirect_logic' => $user && $user->hasAnyRole(['admin', 'super_admin']) ? 'Should redirect to /admin' : 'Should redirect to welcome',
+        'current_route' => request()->route() ? request()->route()->getName() : 'No route'
     ];
 
     return response()->json($debug, 200, [], JSON_PRETTY_PRINT);
 })->middleware('web');
 
+// DEBUG: Ruta para probar directamente acceso admin con middleware
+Route::get('/debug-admin-middleware', function () {
+    return response()->json([
+        'success' => true,
+        'message' => '✅ MIDDLEWARE ADMIN FUNCIONANDO',
+        'user' => auth()->user()->name,
+        'roles' => auth()->user()->roles->pluck('name')->toArray(),
+        'timestamp' => now()->format('Y-m-d H:i:s'),
+        'can_access_admin' => true
+    ]);
+})->middleware(['web', 'auth', 'can:admin-panel']);
+
+// DEBUG: Ruta para probar directamente el dashboard logic
+Route::get('/debug-dashboard', function () {
+    $user = auth()->user();
+    if ($user && $user->hasAnyRole(['admin', 'super_admin'])) {
+        return redirect('/admin');
+    }
+    // Si es cliente, redirigir a la página principal
+    return redirect()->route('welcome.index');
+})->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->name('debug.dashboard');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
