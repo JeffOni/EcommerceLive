@@ -57,6 +57,8 @@ Route::get('orders/{order}/download-pdf', [OrderController::class, 'downloadPDF'
 Route::get('orders/{order}/check-shipment', [OrderController::class, 'checkShipment'])->name('orders.checkShipment');
 Route::post('orders/{order}/assign-driver', [OrderController::class, 'assignDriver'])->name('orders.assignDriver');
 Route::patch('orders/{order}/mark-in-transit', [OrderController::class, 'markAsInTransit'])->name('orders.markInTransit');
+Route::patch('orders/{order}/mark-delivered', [OrderController::class, 'markAsDelivered'])->name('orders.markDelivered');
+Route::patch('orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 
 // Rutas de repartidores
 Route::get('delivery-drivers/active', [DeliveryDriverController::class, 'getActiveDrivers'])->name('delivery-drivers.active');

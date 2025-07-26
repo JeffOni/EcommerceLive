@@ -22,6 +22,8 @@ class Order extends Model
         'subtotal',
         'shipping_cost',
         'notes'
+        ,
+        'nota_cancelacion'
     ];
 
     protected $casts = [

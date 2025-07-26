@@ -62,15 +62,15 @@
                             <select id="status-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="">Todos los estados</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                                <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>
                                     Pendiente</option>
-                                <option value="assigned" {{ request('status') == 'assigned' ? 'selected' : '' }}>
+                                <option value="assigned" {{ request('status')=='assigned' ? 'selected' : '' }}>
                                     Asignado</option>
-                                <option value="in_transit" {{ request('status') == 'in_transit' ? 'selected' : '' }}>
+                                <option value="in_transit" {{ request('status')=='in_transit' ? 'selected' : '' }}>
                                     En Tránsito</option>
-                                <option value="delivered" {{ request('status') == 'delivered' ? 'selected' : '' }}>
+                                <option value="delivered" {{ request('status')=='delivered' ? 'selected' : '' }}>
                                     Entregado</option>
-                                <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>
+                                <option value="failed" {{ request('status')=='failed' ? 'selected' : '' }}>
                                     Fallido</option>
                             </select>
 
@@ -78,10 +78,10 @@
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="">Todos los repartidores</option>
                                 @foreach ($drivers as $driver)
-                                    <option value="{{ $driver->id }}"
-                                        {{ request('driver_id') == $driver->id ? 'selected' : '' }}>
-                                        {{ $driver->name }}
-                                    </option>
+                                <option value="{{ $driver->id }}" {{ request('driver_id')==$driver->id ? 'selected' : ''
+                                    }}>
+                                    {{ $driver->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -96,11 +96,11 @@
                             </div>
                             <select id="items-per-page"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="15" {{ request('per_page') == '15' ? 'selected' : '' }}>15 por
+                                <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por
                                     página</option>
-                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25 por
+                                <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por
                                     página</option>
-                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50 por
+                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
                                     página</option>
                             </select>
                         </div>
@@ -116,8 +116,8 @@
     </div>
 
     @push('js')
-        <script>
-            let searchTimeout;
+    <script>
+        let searchTimeout;
 
             document.addEventListener('DOMContentLoaded', function() {
                 const searchInput = document.getElementById('search-input');
@@ -247,41 +247,155 @@
             function trackShipment(trackingNumber) {
                 window.open(`/track/${trackingNumber}`, '_blank');
             }
-        </script>
+
+            // Función para marcar orden como entregada
+            function markOrderAsDelivered(orderId) {
+                Swal.fire({
+                    title: '¿Confirmar entrega?',
+                    text: '¿Está seguro que desea marcar esta orden como entregada?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10B981',
+                    cancelButtonColor: '#EF4444',
+                    confirmButtonText: 'Sí, entregar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/admin/orders/${orderId}/mark-delivered`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: '¡Entregado!',
+                                        text: data.message,
+                                        icon: 'success',
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    });
+                                    filterShipments();
+                                } else {
+                                    throw new Error(data.message || 'Error al entregar');
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'No se pudo marcar como entregada',
+                                    icon: 'error'
+                                });
+                            });
+                    }
+                });
+            }
+
+            // Función para abrir modal de cancelación
+            function openCancelOrderModal(orderId) {
+                Swal.fire({
+                    title: 'Cancelar Orden',
+                    text: 'Por favor, ingrese el motivo de la cancelación:',
+                    input: 'textarea',
+                    inputAttributes: {
+                        placeholder: 'Escriba el motivo de la cancelación...',
+                        'aria-label': 'Motivo de cancelación',
+                        rows: 4
+                    },
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Debe ingresar un motivo para la cancelación';
+                        }
+                        if (value.length < 10) {
+                            return 'El motivo debe tener al menos 10 caracteres';
+                        }
+                        if (value.length > 500) {
+                            return 'El motivo no puede exceder 500 caracteres';
+                        }
+                    },
+                    showCancelButton: true,
+                    confirmButtonColor: '#EF4444',
+                    cancelButtonColor: '#6B7280',
+                    confirmButtonText: 'Cancelar Orden',
+                    cancelButtonText: 'Cerrar',
+                    preConfirm: (motivoCancelacion) => {
+                        return fetch(`/admin/orders/${orderId}/cancel`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    nota_cancelacion: motivoCancelacion
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    throw new Error(data.message || 'Error al cancelar');
+                                }
+                                return data;
+                            })
+                            .catch(error => {
+                                Swal.showValidationMessage(
+                                    `Error: ${error.message}`
+                                );
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Cancelada!',
+                            text: result.value.message,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        filterShipments();
+                    }
+                });
+            }
+    </script>
     @endpush
 
     @push('css')
-        <style>
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-            .status-badge {
-                @apply px-2 py-1 text-xs font-medium rounded-full;
-            }
+        .status-badge {
+            @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
 
-            .status-pending {
-                @apply bg-yellow-100 text-yellow-800;
-            }
+        .status-pending {
+            @apply bg-yellow-100 text-yellow-800;
+        }
 
-            .status-assigned {
-                @apply bg-blue-100 text-blue-800;
-            }
+        .status-assigned {
+            @apply bg-blue-100 text-blue-800;
+        }
 
-            .status-in_transit {
-                @apply bg-orange-100 text-orange-800;
-            }
+        .status-in_transit {
+            @apply bg-orange-100 text-orange-800;
+        }
 
-            .status-delivered {
-                @apply bg-green-100 text-green-800;
-            }
+        .status-delivered {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .status-failed {
-                @apply bg-red-100 text-red-800;
-            }
-        </style>
+        .status-failed {
+            @apply bg-red-100 text-red-800;
+        }
+    </style>
     @endpush
 
 </x-admin-layout>

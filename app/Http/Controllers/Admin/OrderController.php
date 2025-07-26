@@ -305,4 +305,94 @@ class OrderController extends Controller
             ]);
         }
     }
+
+    /**
+     * Marcar orden como entregada
+     */
+    public function markAsDelivered(Request $request, \App\Models\Order $order)
+    {
+        try {
+            // Verificar que la orden esté en estado ENVIADO (5)
+            $orderStatusValue = $order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status;
+            if ($orderStatusValue !== 5) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'La orden debe estar "En Camino" para marcarla como entregada.'
+                ]);
+            }
+
+            // Cambiar estado de la orden a ENTREGADO (6)
+            $order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
+
+            // Si tiene envío, cambiar su estado a DELIVERED
+            if ($order->hasShipment()) {
+                $shipment = $order->shipment()->first();
+                $shipment->changeStatus(\App\Enums\ShipmentStatus::DELIVERED->value);
+                $shipment->update(['delivered_at' => now()]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Orden #{$order->getKey()} marcada como entregada exitosamente."
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error marcando orden como entregada: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al marcar como entregada. Inténtalo de nuevo.'
+            ]);
+        }
+    }
+
+    /**
+     * Cancelar orden con nota
+     */
+    public function cancelOrder(Request $request, \App\Models\Order $order)
+    {
+        $request->validate([
+            'nota_cancelacion' => 'required|string|min:10|max:500'
+        ], [
+            'nota_cancelacion.required' => 'La nota de cancelación es obligatoria.',
+            'nota_cancelacion.min' => 'La nota debe tener al menos 10 caracteres.',
+            'nota_cancelacion.max' => 'La nota no puede exceder 500 caracteres.'
+        ]);
+
+        try {
+            // Verificar que la orden se pueda cancelar
+            $orderStatus = \App\Enums\OrderStatus::from($order->status);
+            if (!$orderStatus->canBeCancelled()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Esta orden no se puede cancelar en su estado actual.'
+                ]);
+            }
+
+            // Actualizar orden con estado cancelado y nota
+            $order->update([
+                'status' => \App\Enums\OrderStatus::CANCELADO->value,
+                'nota_cancelacion' => $request->nota_cancelacion
+            ]);
+
+            // Si tiene envío, cancelarlo también
+            if ($order->hasShipment()) {
+                $shipment = $order->shipment()->first();
+                $shipment->changeStatus(\App\Enums\ShipmentStatus::FAILED->value);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Orden #{$order->getKey()} cancelada exitosamente."
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error cancelando orden: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error al cancelar la orden. Inténtalo de nuevo.'
+            ]);
+        }
+    }
 }

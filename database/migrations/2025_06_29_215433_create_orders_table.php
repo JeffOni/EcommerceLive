@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->decimal('total', 10, 2);
             $table->json('shipping_address'); // Toda la info de dirección y receptor
             $table->text('notes')->nullable();
+            $table->text('nota_cancelacion')->nullable(); // Nota del motivo de cancelación
             $table->timestamps();
 
             // Índices para mejor performance

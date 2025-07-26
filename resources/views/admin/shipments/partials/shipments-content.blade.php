@@ -11,10 +11,6 @@
                     </th>
                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Repartidor</th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Estado
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Fecha
-                        Estimada</th>
                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Acciones
                     </th>
                 </tr>
@@ -74,61 +70,46 @@
                         <span class="text-sm text-gray-400">Sin asignar</span>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span
-                            class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $statusColors[$shipment->status->value ?? $shipment->status] ?? 'bg-gray-100 text-gray-800' }}">
-                            <i class="fas fa-circle mr-1 text-[10px] align-middle"></i>
-                            {{ ucfirst(str_replace('_', ' ', $shipment->status->value ?? $shipment->status)) }}
-                        </span>
-                        <select
-                            class="ml-2 text-xs border-0 rounded-full focus:ring-indigo-500 focus:border-indigo-500 {{ $statusColors[$shipment->status->value ?? $shipment->status] ?? 'bg-gray-100 text-gray-800' }}"
-                            onchange="updateShipmentStatus({{ $shipment->id }}, this.value)">
-                            <option value="pending" {{ ($shipment->status->value ?? $shipment->status) === 'pending' ?
-                                'selected' : '' }}>Pendiente</option>
-                            <option value="assigned" {{ ($shipment->status->value ?? $shipment->status) === 'assigned' ?
-                                'selected' : '' }}>Asignado</option>
-                            <option value="in_transit" {{ ($shipment->status->value ?? $shipment->status) ===
-                                'in_transit' ? 'selected' : '' }}>En Tránsito</option>
-                            <option value="delivered" {{ ($shipment->status->value ?? $shipment->status) === 'delivered'
-                                ? 'selected' : '' }}>Entregado</option>
-                            <option value="failed" {{ ($shipment->status->value ?? $shipment->status) === 'failed' ?
-                                'selected' : '' }}>Fallido</option>
-                        </select>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                        {{ $shipment->estimated_delivery_date ? $shipment->estimated_delivery_date->format('d/m/Y') :
-                        'No definida' }}
-                    </td>
                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
                         <div class="flex items-center space-x-2">
-                            <a href="{{ route('admin.shipments.show', $shipment) }}"
-                                class="text-indigo-600 hover:text-indigo-900" title="Ver detalles">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('admin.shipments.edit', $shipment) }}"
-                                class="text-green-600 hover:text-green-900" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            @if(!$shipment->deliveryDriver)
-                            <button onclick="openAssignDriverModal({{ $shipment->id }})"
-                                class="text-yellow-600 hover:text-yellow-900" title="Asignar Repartidor">
-                                <i class="fas fa-user-plus"></i>
+                            @php
+                            $orderStatus = \App\Enums\OrderStatus::from($shipment->order->status);
+                            @endphp
+
+                            @if($orderStatus === \App\Enums\OrderStatus::ENVIADO)
+                            <!-- Botón Entregado -->
+                            <button onclick="markOrderAsDelivered({{ $shipment->order->id }})"
+                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors"
+                                title="Marcar como Entregado">
+                                <i class="fas fa-check mr-1"></i>
+                                Entregado
                             </button>
+
+                            <!-- Botón Cancelado -->
+                            <button onclick="openCancelOrderModal({{ $shipment->order->id }})"
+                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition-colors"
+                                title="Cancelar Orden">
+                                <i class="fas fa-times mr-1"></i>
+                                Cancelar
+                            </button>
+                            @else
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold 
+                                    @if($orderStatus === \App\Enums\OrderStatus::ENTREGADO)
+                                        bg-green-100 text-green-800
+                                    @elseif($orderStatus === \App\Enums\OrderStatus::CANCELADO)
+                                        bg-red-100 text-red-800
+                                    @else
+                                        bg-gray-100 text-gray-800
+                                    @endif">
+                                {{ $orderStatus->label() }}
+                            </span>
                             @endif
-                            <button onclick="trackShipment('{{ $shipment->tracking_number }}')"
-                                class="text-blue-600 hover:text-blue-900" title="Rastrear">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </button>
-                            <button onclick="deleteShipment({{ $shipment->id }})"
-                                class="text-red-600 hover:text-red-900" title="Eliminar">
-                                <i class="fas fa-trash"></i>
-                            </button>
                         </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-12 text-center">
+                    <td colspan="5" class="px-6 py-12 text-center">
                         <div class="flex flex-col items-center justify-center">
                             <i class="mb-4 text-4xl text-gray-300 fas fa-shipping-fast"></i>
                             <h3 class="text-lg font-medium text-gray-900">No hay envíos</h3>
