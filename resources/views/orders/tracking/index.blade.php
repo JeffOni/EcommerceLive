@@ -40,10 +40,14 @@
                                 </p>
                             </div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if ($order->status->value == 6) bg-green-100 text-green-800
-                                    @elseif($order->status->value == 7) bg-red-100 text-red-800
-                                    @elseif($order->status->value >= 4) bg-blue-100 text-blue-800
-                                    @elseif($order->status->value >= 2) bg-yellow-100 text-yellow-800
+                                    @if ($order->status instanceof \App\Enums\OrderStatus && $order->status->value == 6) bg-green-100 text-green-800
+                                    @elseif($order->status instanceof \App\Enums\OrderStatus && $order->status->value == 7) bg-red-100 text-red-800
+                                    @elseif($order->status instanceof \App\Enums\OrderStatus && $order->status->value >= 4) bg-blue-100 text-blue-800
+                                    @elseif($order->status instanceof \App\Enums\OrderStatus && $order->status->value >= 2) bg-yellow-100 text-yellow-800
+                                    @elseif(is_int($order->status) && $order->status == 6) bg-green-100 text-green-800
+                                    @elseif(is_int($order->status) && $order->status == 7) bg-red-100 text-red-800
+                                    @elseif(is_int($order->status) && $order->status >= 4) bg-blue-100 text-blue-800
+                                    @elseif(is_int($order->status) && $order->status >= 2) bg-yellow-100 text-yellow-800
                                     @else bg-gray-100 text-gray-800 @endif">
                                 {{ $order->status_text }}
                             </span>
@@ -83,7 +87,9 @@
                         </div>
 
                         <!-- Información del repartidor -->
-                        @if ($order->shipment && $order->shipment->deliveryDriver && $order->status->value >= 4)
+                        @if ($order->shipment && $order->shipment->deliveryDriver && (($order->status instanceof
+                        \App\Enums\OrderStatus && $order->status->value >= 4) || (is_int($order->status) &&
+                        $order->status >= 4)))
                         <div class="bg-blue-50 rounded-lg p-3 mb-4">
                             <div class="flex items-center">
                                 <div class="bg-blue-100 rounded-full p-2 mr-3">
@@ -178,7 +184,8 @@
     6 => 100, // Entregado
     7 => 0, // Cancelado
     ];
-    return $statusProgress[$order->status->value] ?? 0;
+    return $statusProgress[($order->status instanceof \App\Enums\OrderStatus) ? $order->status->value : $order->status]
+    ?? 0;
     }
     @endphp
 </x-app-layout>

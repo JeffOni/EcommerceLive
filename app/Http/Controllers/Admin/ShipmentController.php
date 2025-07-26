@@ -275,6 +275,30 @@ class ShipmentController extends Controller
     }
 
     /**
+     * Mark shipment as in transit
+     */
+    public function markInTransit(Request $request, Shipment $shipment)
+    {
+        $request->validate([
+            'notes' => 'nullable|string'
+        ]);
+
+        $success = $shipment->markAsInTransit($request->notes);
+
+        if ($success) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Envío marcado como en tránsito'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No se pudo marcar el envío como en tránsito'
+        ]);
+    }
+
+    /**
      * Mark shipment as delivered
      */
     public function markDelivered(Request $request, Shipment $shipment)

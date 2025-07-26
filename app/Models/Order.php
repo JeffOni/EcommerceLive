@@ -25,13 +25,11 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'shipping_address' => 'array',
-        'content' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'status' => 'integer',
-        'payment_method' => 'integer',
-        'total' => 'decimal:2',
-        'subtotal' => 'decimal:2',
-        'shipping_cost' => 'decimal:2'
+        'content' => 'array',
+        'shipping_address' => 'array',
     ];
 
     protected $hidden = [
@@ -92,5 +90,21 @@ class Order extends Model
             7 => 'Cancelado',
             default => 'Pendiente'
         };
+    }
+
+    /**
+     * Obtener el texto del estado para compatibilidad
+     */
+    public function getStatusTextAttribute()
+    {
+        return OrderStatus::from($this->status)->label();
+    }
+
+    /**
+     * Obtener el enum del estado
+     */
+    public function getStatusEnumAttribute()
+    {
+        return OrderStatus::from($this->status);
     }
 }

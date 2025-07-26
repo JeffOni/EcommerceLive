@@ -52,51 +52,49 @@
 
                             <div class="relative">
                                 @foreach ($timeline as $index => $event)
-                                    <div class="flex items-start mb-8 last:mb-0">
-                                        <!-- Icono y línea -->
-                                        <div class="flex flex-col items-center mr-4">
-                                            <div
-                                                class="flex items-center justify-center w-10 h-10 rounded-full
+                                <div class="flex items-start mb-8 last:mb-0">
+                                    <!-- Icono y línea -->
+                                    <div class="flex flex-col items-center mr-4">
+                                        <div class="flex items-center justify-center w-10 h-10 rounded-full
                                                 @if ($event['status'] === 'completed') bg-green-100 text-green-600
                                                 @elseif($event['status'] === 'current') bg-blue-100 text-blue-600 ring-4 ring-blue-50
                                                 @elseif($event['status'] === 'cancelled') bg-red-100 text-red-600
                                                 @else bg-gray-100 text-gray-400 @endif">
-                                                <i class="{{ $event['icon'] }} text-sm"></i>
-                                            </div>
-                                            @if (!$loop->last)
-                                                <div
-                                                    class="w-0.5 h-16 mt-2
+                                            <i class="{{ $event['icon'] }} text-sm"></i>
+                                        </div>
+                                        @if (!$loop->last)
+                                        <div class="w-0.5 h-16 mt-2
                                                     @if ($event['status'] === 'completed') bg-green-200
                                                     @elseif($event['status'] === 'current') bg-blue-200
                                                     @elseif($event['status'] === 'cancelled') bg-red-200
                                                     @else bg-gray-200 @endif">
-                                                </div>
-                                            @endif
                                         </div>
-
-                                        <!-- Contenido del evento -->
-                                        <div class="flex-1 pb-8">
-                                            <div class="flex items-center justify-between">
-                                                <h4 class="text-sm font-medium text-gray-900">{{ $event['title'] }}</h4>
-                                                @if ($event['date'])
-                                                    <span class="text-xs text-gray-500">
-                                                        {{ $event['date']->format('d/m/Y H:i') }}
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <p class="text-sm text-gray-600 mt-1">{{ $event['description'] }}</p>
-
-                                            @if ($event['status'] === 'current' && $event['title'] === 'En Camino')
-                                                <div class="mt-3 bg-blue-50 rounded-lg p-3">
-                                                    <p class="text-sm text-blue-800">
-                                                        <i class="fas fa-info-circle mr-1"></i>
-                                                        Tu pedido está en camino. El repartidor se pondrá en contacto
-                                                        contigo.
-                                                    </p>
-                                                </div>
-                                            @endif
-                                        </div>
+                                        @endif
                                     </div>
+
+                                    <!-- Contenido del evento -->
+                                    <div class="flex-1 pb-8">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-gray-900">{{ $event['title'] }}</h4>
+                                            @if ($event['date'])
+                                            <span class="text-xs text-gray-500">
+                                                {{ $event['date']->format('d/m/Y H:i') }}
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">{{ $event['description'] }}</p>
+
+                                        @if ($event['status'] === 'current' && $event['title'] === 'En Camino')
+                                        <div class="mt-3 bg-blue-50 rounded-lg p-3">
+                                            <p class="text-sm text-blue-800">
+                                                <i class="fas fa-info-circle mr-1"></i>
+                                                Tu pedido está en camino. El repartidor se pondrá en contacto
+                                                contigo.
+                                            </p>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -109,32 +107,30 @@
 
                             <div class="space-y-4">
                                 @foreach ($order->orderDetails as $detail)
-                                    <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                                        @if ($detail->product->cover)
-                                            <img src="{{ Storage::url($detail->product->cover->image_path) }}"
-                                                alt="{{ $detail->product->name }}"
-                                                class="w-16 h-16 object-cover rounded-lg">
-                                        @else
-                                            <div
-                                                class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                                <i class="fas fa-image text-gray-400"></i>
-                                            </div>
-                                        @endif
-
-                                        <div class="flex-1">
-                                            <h4 class="font-medium text-gray-900">{{ $detail->product->name }}</h4>
-                                            <p class="text-sm text-gray-600">
-                                                Cantidad: {{ $detail->quantity }} ×
-                                                ${{ number_format($detail->price, 2) }}
-                                            </p>
-                                        </div>
-
-                                        <div class="text-right">
-                                            <p class="font-semibold text-gray-900">
-                                                ${{ number_format($detail->quantity * $detail->price, 2) }}
-                                            </p>
-                                        </div>
+                                <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
+                                    @if ($detail->product->cover)
+                                    <img src="{{ Storage::url($detail->product->cover->image_path) }}"
+                                        alt="{{ $detail->product->name }}" class="w-16 h-16 object-cover rounded-lg">
+                                    @else
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-image text-gray-400"></i>
                                     </div>
+                                    @endif
+
+                                    <div class="flex-1">
+                                        <h4 class="font-medium text-gray-900">{{ $detail->product->name }}</h4>
+                                        <p class="text-sm text-gray-600">
+                                            Cantidad: {{ $detail->quantity }} ×
+                                            ${{ number_format($detail->price, 2) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <p class="font-semibold text-gray-900">
+                                            ${{ number_format($detail->quantity * $detail->price, 2) }}
+                                        </p>
+                                    </div>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -145,44 +141,44 @@
                 <div class="space-y-6">
                     <!-- Información del envío -->
                     @if ($order->shipment)
-                        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                            <div class="p-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Información de Envío</h3>
+                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información de Envío</h3>
 
-                                <div class="space-y-3">
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">Número de seguimiento:</span>
-                                        <span
-                                            class="text-sm font-mono text-blue-600">{{ $order->shipment->tracking_number }}</span>
-                                    </div>
-
-                                    @if ($order->shipment->estimated_delivery_date)
-                                        <div class="flex justify-between">
-                                            <span class="text-sm text-gray-600">Entrega estimada:</span>
-                                            <span class="text-sm font-medium text-gray-900">
-                                                {{ $order->shipment->estimated_delivery_date->format('d/m/Y') }}
-                                            </span>
-                                        </div>
-                                    @endif
-
-                                    @if ($order->shipment->deliveryDriver)
-                                        <div class="border-t pt-3 mt-3">
-                                            <h4 class="text-sm font-medium text-gray-900 mb-2">Repartidor Asignado</h4>
-                                            <div class="bg-blue-50 rounded-lg p-3">
-                                                <p class="text-sm font-medium text-blue-900">
-                                                    {{ $order->shipment->deliveryDriver->name }}</p>
-                                                <p class="text-xs text-blue-600">
-                                                    {{ $order->shipment->deliveryDriver->phone }}</p>
-                                                @if ($order->shipment->deliveryDriver->vehicle_info)
-                                                    <p class="text-xs text-blue-600 mt-1">
-                                                        {{ $order->shipment->deliveryDriver->vehicle_info }}</p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endif
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Número de seguimiento:</span>
+                                    <span class="text-sm font-mono text-blue-600">{{ $order->shipment->tracking_number
+                                        }}</span>
                                 </div>
+
+                                @if ($order->shipment->estimated_delivery_date)
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Entrega estimada:</span>
+                                    <span class="text-sm font-medium text-gray-900">
+                                        {{ $order->shipment->estimated_delivery_date->format('d/m/Y') }}
+                                    </span>
+                                </div>
+                                @endif
+
+                                @if ($order->shipment->deliveryDriver)
+                                <div class="border-t pt-3 mt-3">
+                                    <h4 class="text-sm font-medium text-gray-900 mb-2">Repartidor Asignado</h4>
+                                    <div class="bg-blue-50 rounded-lg p-3">
+                                        <p class="text-sm font-medium text-blue-900">
+                                            {{ $order->shipment->deliveryDriver->name }}</p>
+                                        <p class="text-xs text-blue-600">
+                                            {{ $order->shipment->deliveryDriver->phone }}</p>
+                                        @if ($order->shipment->deliveryDriver->vehicle_info)
+                                        <p class="text-xs text-blue-600 mt-1">
+                                            {{ $order->shipment->deliveryDriver->vehicle_info }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
+                    </div>
                     @endif
 
                     <!-- Resumen del pedido -->
@@ -193,29 +189,28 @@
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span class="text-sm text-gray-600">Subtotal:</span>
-                                    <span
-                                        class="text-sm text-gray-900">${{ number_format($order->subtotal, 2) }}</span>
+                                    <span class="text-sm text-gray-900">${{ number_format($order->subtotal, 2) }}</span>
                                 </div>
 
                                 <div class="flex justify-between">
                                     <span class="text-sm text-gray-600">Envío:</span>
-                                    <span
-                                        class="text-sm text-gray-900">${{ number_format($order->shipping_cost ?? 0, 2) }}</span>
+                                    <span class="text-sm text-gray-900">${{ number_format($order->shipping_cost ?? 0, 2)
+                                        }}</span>
                                 </div>
 
                                 @if ($order->discount > 0)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">Descuento:</span>
-                                        <span
-                                            class="text-sm text-green-600">-${{ number_format($order->discount, 2) }}</span>
-                                    </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Descuento:</span>
+                                    <span class="text-sm text-green-600">-${{ number_format($order->discount, 2)
+                                        }}</span>
+                                </div>
                                 @endif
 
                                 <div class="border-t pt-3">
                                     <div class="flex justify-between">
                                         <span class="text-base font-semibold text-gray-900">Total:</span>
-                                        <span
-                                            class="text-base font-semibold text-gray-900">${{ number_format($order->total, 2) }}</span>
+                                        <span class="text-base font-semibold text-gray-900">${{
+                                            number_format($order->total, 2) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -229,34 +224,43 @@
 
                             <div class="text-sm text-gray-600 space-y-1">
                                 <p class="font-medium text-gray-900">
-                                    {{ $order->shipping_address['receiver_full_name'] ?? ($order->shipping_address['name'] ?? $order->user->name) }}
+                                    {{ $order->shipping_address['receiver_full_name'] ??
+                                    ($order->shipping_address['name'] ?? $order->user->name) }}
                                 </p>
-                                <p>{{ $order->shipping_address['address'] ?? ($order->shipping_address['street'] ?? 'Dirección no especificada') }}
+                                <p>{{ $order->shipping_address['address'] ?? ($order->shipping_address['street'] ??
+                                    'Dirección no especificada') }}
                                 </p>
                                 <p>
-                                    {{ $order->shipping_address['parish'] ?? ($order->shipping_address['city'] ?? 'N/A') }},
+                                    {{ $order->shipping_address['parish'] ?? ($order->shipping_address['city'] ?? 'N/A')
+                                    }},
                                     {{ $order->shipping_address['canton'] ?? '' }}
-                                    @if (isset($order->shipping_address['province']) || isset($order->shipping_address['state']))
-                                        ,
-                                        {{ $order->shipping_address['province'] ?? $order->shipping_address['state'] }}
+                                    @if (isset($order->shipping_address['province']) ||
+                                    isset($order->shipping_address['state']))
+                                    ,
+                                    {{ $order->shipping_address['province'] ?? $order->shipping_address['state'] }}
                                     @endif
                                 </p>
-                                @if (isset($order->shipping_address['postal_code']) && $order->shipping_address['postal_code'])
-                                    <p>CP: {{ $order->shipping_address['postal_code'] }}</p>
-                                @elseif(isset($order->shipping_address['zip_code']) && $order->shipping_address['zip_code'])
-                                    <p>CP: {{ $order->shipping_address['zip_code'] }}</p>
+                                @if (isset($order->shipping_address['postal_code']) &&
+                                $order->shipping_address['postal_code'])
+                                <p>CP: {{ $order->shipping_address['postal_code'] }}</p>
+                                @elseif(isset($order->shipping_address['zip_code']) &&
+                                $order->shipping_address['zip_code'])
+                                <p>CP: {{ $order->shipping_address['zip_code'] }}</p>
                                 @endif
-                                @if ($order->shipping_address['receiver_phone'] ?? ($order->shipping_address['phone'] ?? null))
-                                    <p class="pt-2">
-                                        <i class="fas fa-phone mr-1"></i>
-                                        {{ $order->shipping_address['receiver_phone'] ?? $order->shipping_address['phone'] }}
-                                    </p>
+                                @if ($order->shipping_address['receiver_phone'] ?? ($order->shipping_address['phone'] ??
+                                null))
+                                <p class="pt-2">
+                                    <i class="fas fa-phone mr-1"></i>
+                                    {{ $order->shipping_address['receiver_phone'] ?? $order->shipping_address['phone']
+                                    }}
+                                </p>
                                 @endif
-                                @if (isset($order->shipping_address['reference']) && $order->shipping_address['reference'])
-                                    <p class="text-gray-500 text-xs mt-2">
-                                        <i class="fas fa-info-circle mr-1"></i>
-                                        Ref: {{ $order->shipping_address['reference'] }}
-                                    </p>
+                                @if (isset($order->shipping_address['reference']) &&
+                                $order->shipping_address['reference'])
+                                <p class="text-gray-500 text-xs mt-2">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Ref: {{ $order->shipping_address['reference'] }}
+                                </p>
                                 @endif
                             </div>
                         </div>
@@ -264,12 +268,13 @@
 
                     <!-- Botones de acción -->
                     <div class="space-y-3">
-                        @if ($order->status->value >= 2)
-                            <a href="{{ route('orders.invoice', $order->id) }}" target="_blank"
-                                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 block">
-                                <i class="fas fa-file-pdf mr-2"></i>
-                                Descargar Factura
-                            </a>
+                        @if (($order->status instanceof \App\Enums\OrderStatus && $order->status->value >= 2) ||
+                        (is_int($order->status) && $order->status >= 2))
+                        <a href="{{ route('orders.invoice', $order->id) }}" target="_blank"
+                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 block">
+                            <i class="fas fa-file-pdf mr-2"></i>
+                            Descargar Factura
+                        </a>
                         @endif
 
                         <button onclick="refreshOrderStatus()"
@@ -313,7 +318,7 @@
         }
 
         // Auto-refresh cada 30 segundos si el pedido está en proceso
-        @if ($order->status->value >= 2 && $order->status->value < 6)
+        @if ((($order->status instanceof \App\Enums\OrderStatus && $order->status->value >= 2) || (is_int($order->status) && $order->status >= 2)) && (($order->status instanceof \App\Enums\OrderStatus && $order->status->value < 6) || (is_int($order->status) && $order->status < 6)))
             setInterval(() => {
                 fetch(`{{ route('orders.tracking.status', $order->id) }}`)
                     .then(response => response.json())

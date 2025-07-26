@@ -93,7 +93,7 @@
                                             <i class="mr-2 text-blue-600 fas fa-truck"></i>
                                             <span class="font-semibold text-gray-900">Envío a domicilio</span>
                                         </div>
-                                        <span class="text-sm font-medium text-green-600">$3.00</span>
+                                        <span class="text-sm font-medium text-green-600">$5.00</span>
                                     </div>
                                     <p class="mt-1 text-sm text-gray-600">Tu pedido será entregado en la dirección
                                         especificada</p>
@@ -265,6 +265,10 @@
                                 <span x-text="'$' + subtotal.toFixed(2)"></span>
                             </div>
                             <div class="flex justify-between text-sm">
+                                <span>Impuestos (15%):</span>
+                                <span x-text="'$' + (subtotal * 0.15).toFixed(2)"></span>
+                            </div>
+                            <div class="flex justify-between text-sm">
                                 <span>Envío:</span>
                                 <span x-text="'$' + shipping.toFixed(2)"></span>
                             </div>
@@ -391,6 +395,15 @@
                             <p class="text-sm text-blue-800">Cuenta: 123456789</p>
                             <p class="text-sm text-blue-800">Monto: <span x-text="'$' + total.toFixed(2)"></span></p>
                             <p class="text-sm text-blue-800">Referencia: <span x-text="orderNumber"></span></p>
+                            <div class="pt-2 mt-2 border-t border-blue-200">
+                                <p class="text-xs text-blue-700">Desglose:</p>
+                                <p class="text-xs text-blue-700">• Subtotal: $<span x-text="subtotal.toFixed(2)"></span>
+                                </p>
+                                <p class="text-xs text-blue-700">• Impuestos (15%): $<span
+                                        x-text="(subtotal * 0.15).toFixed(2)"></span></p>
+                                <p class="text-xs text-blue-700">• Envío: $<span x-text="shipping.toFixed(2)"></span>
+                                </p>
+                            </div>
                         </div>
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-700">
@@ -478,6 +491,11 @@
                                 class="w-32 h-32 mx-auto mb-2">
                             <p class="text-sm text-gray-600">Monto: <span class="font-bold"
                                     x-text="'$' + total.toFixed(2)"></span></p>
+                            <div class="p-2 mt-2 text-xs text-gray-600 rounded bg-gray-50">
+                                <p>Subtotal: $<span x-text="subtotal.toFixed(2)"></span></p>
+                                <p>Impuestos (15%): $<span x-text="(subtotal * 0.15).toFixed(2)"></span></p>
+                                <p>Envío: $<span x-text="shipping.toFixed(2)"></span></p>
+                            </div>
                         </div>
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-700">
@@ -560,6 +578,7 @@
                 subtotal: {{ $subtotal ?? 0 }},
                 shipping: {{ $shipping ?? 0 }},
                 total: {{ $totalWithShipping ?? 0 }},
+                taxRate: 0.15, // 15% de impuestos
                 orderNumber: '',
                 
                 // Estados de procesamiento para evitar doble envío
@@ -574,6 +593,9 @@
                 init() {
                     this.orderNumber = this.generateOrderNumber();
                     this.validateShippingProvince();
+                    // Calcular total inicial con impuestos
+                    const subtotalWithTax = this.subtotal * (1 + this.taxRate);
+                    this.total = subtotalWithTax + this.shipping;
                     this.updateTotal();
                 },
 
@@ -585,7 +607,9 @@
                         } else {
                             this.shipping = {{ $shipping ?? 0 }};
                         }
-                        this.total = this.subtotal + this.shipping;
+                        // Calcular total con subtotal + impuestos + envío
+                        const subtotalWithTax = this.subtotal * (1 + this.taxRate);
+                        this.total = subtotalWithTax + this.shipping;
                     });
                 },
                 

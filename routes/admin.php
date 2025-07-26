@@ -67,6 +67,7 @@ Route::resource('delivery-drivers', DeliveryDriverController::class);
 Route::resource('shipments', ShipmentController::class);
 Route::patch('shipments/{shipment}/assign-driver', [ShipmentController::class, 'assignDriver'])->name('shipments.assignDriver');
 Route::patch('shipments/{shipment}/mark-picked-up', [ShipmentController::class, 'markPickedUp'])->name('shipments.markPickedUp');
+Route::patch('shipments/{shipment}/mark-in-transit', [ShipmentController::class, 'markInTransit'])->name('shipments.markInTransit');
 Route::patch('shipments/{shipment}/mark-delivered', [ShipmentController::class, 'markDelivered'])->name('shipments.markDelivered');
 Route::patch('shipments/{shipment}/mark-failed', [ShipmentController::class, 'markFailed'])->name('shipments.markFailed');
 Route::patch('shipments/{shipment}/update-location', [ShipmentController::class, 'updateLocation'])->name('shipments.updateLocation');

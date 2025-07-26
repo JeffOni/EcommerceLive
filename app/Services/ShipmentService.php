@@ -68,7 +68,7 @@ class ShipmentService
 
         if ($success) {
             // Actualizar estado de la orden
-            $shipment->order->update(['status' => 4]); // Asignado
+            $shipment->order->update(['status' => \App\Enums\OrderStatus::ASIGNADO]); // Asignado
         }
 
         return $success;
@@ -176,7 +176,7 @@ class ShipmentService
     public function processOrderAfterPaymentVerification(Order $order): bool
     {
         // Cambiar estado a "Preparando"
-        $order->update(['status' => 3]);
+        $order->update(['status' => \App\Enums\OrderStatus::PREPARANDO]);
 
         // Crear envío si está en zona de cobertura
         $shipment = $this->createShipmentForOrder($order);
@@ -194,7 +194,7 @@ class ShipmentService
 
         if ($shipment) {
             // Cambiar estado a "Preparando" (listo para asignar repartidor)
-            $order->update(['status' => 3]);
+            $order->update(['status' => \App\Enums\OrderStatus::PREPARANDO]);
             return true;
         }
 
@@ -246,8 +246,8 @@ class ShipmentService
                 ]);
 
                 // Asegurar que la orden esté en estado correcto
-                if ($order->status != 4) {
-                    $order->update(['status' => 4]); // Asignado
+                if ($order->status != \App\Enums\OrderStatus::ASIGNADO->value) {
+                    $order->update(['status' => \App\Enums\OrderStatus::ASIGNADO]); // Asignado
                 }
             }
 
@@ -263,7 +263,7 @@ class ShipmentService
                     'delivery_driver_id' => $driver->getKey(),
                     'assigned_at' => now(),
                 ]);
-                $order->update(['status' => 4]); // Asignado
+                $order->update(['status' => \App\Enums\OrderStatus::ASIGNADO]); // Asignado
                 return $newShipment;
             }
 
@@ -283,7 +283,7 @@ class ShipmentService
         ]);
 
         // Actualizar estado de la orden a "Asignado"
-        $order->update(['status' => 4]);
+        $order->update(['status' => \App\Enums\OrderStatus::ASIGNADO]);
 
         return $shipment;
     }

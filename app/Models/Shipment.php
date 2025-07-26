@@ -146,16 +146,22 @@ class Shipment extends Model
     /**
      * Marcar como recogido
      */
-    public function markAsPickedUp(): bool
+    public function markAsPickedUp(?string $notes = null): bool
     {
         if (!$this->canBePickedUp()) {
             return false;
         }
 
-        $this->update([
+        $updateData = [
             'status' => ShipmentStatus::PICKED_UP,
             'picked_up_at' => now(),
-        ]);
+        ];
+
+        if ($notes) {
+            $updateData['notes'] = $notes;
+        }
+
+        $this->update($updateData);
 
         return true;
     }
@@ -163,16 +169,22 @@ class Shipment extends Model
     /**
      * Marcar como en tránsito
      */
-    public function markAsInTransit(): bool
+    public function markAsInTransit(?string $notes = null): bool
     {
         if (!$this->canBeInTransit()) {
             return false;
         }
 
-        $this->update([
+        $updateData = [
             'status' => ShipmentStatus::IN_TRANSIT,
             'in_transit_at' => now(),
-        ]);
+        ];
+
+        if ($notes) {
+            $updateData['notes'] = $notes;
+        }
+
+        $this->update($updateData);
 
         return true;
     }
@@ -180,20 +192,29 @@ class Shipment extends Model
     /**
      * Marcar como entregado
      */
-    public function markAsDelivered(?array $proof = null): bool
+    public function markAsDelivered(?array $proof = null, ?string $notes = null): bool
     {
         if (!$this->canBeDelivered()) {
             return false;
         }
 
-        $this->update([
+        $updateData = [
             'status' => ShipmentStatus::DELIVERED,
             'delivered_at' => now(),
-            'delivery_proof' => $proof,
-        ]);
+        ];
+
+        if ($proof) {
+            $updateData['delivery_proof'] = $proof;
+        }
+
+        if ($notes) {
+            $updateData['notes'] = $notes;
+        }
+
+        $this->update($updateData);
 
         // Actualizar estado de la orden
-        $this->order->update(['status' => 6]); // Entregado
+        $this->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO]);
 
         return true;
     }

@@ -148,6 +148,7 @@ class OrderController extends Controller
             'status' => 'required|integer|in:1,2,3,4,5,6,7,8'
         ]);
 
+        // Actualizar directamente con el valor integer
         $order->update(['status' => $request->status]);
 
         return response()->json([
@@ -197,8 +198,9 @@ class OrderController extends Controller
 
             // PASO 1: Verificar que la orden esté en estado válido
             $validStates = [1, 2, 3]; // PENDIENTE, PAGADO, PREPARANDO
-            if (!in_array($order->status, $validStates)) {
-                \Log::warning("Orden #{$order->getKey()} no está en estado válido: {$order->status}");
+            $orderStatusValue = $order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status;
+            if (!in_array($orderStatusValue, $validStates)) {
+                \Log::warning("Orden #{$order->getKey()} no está en estado válido: {$orderStatusValue}");
                 return response()->json([
                     'success' => false,
                     'message' => 'Esta orden no puede tener un repartidor asignado en su estado actual.'
@@ -272,7 +274,8 @@ class OrderController extends Controller
     {
         try {
             // Verificar que la orden esté en estado ASIGNADO (4)
-            if ($order->status !== 4) {
+            $orderStatusValue = $order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status;
+            if ($orderStatusValue !== 4) {
                 return response()->json([
                     'success' => false,
                     'message' => 'La orden debe estar asignada a un repartidor para marcarla como "En Camino".'

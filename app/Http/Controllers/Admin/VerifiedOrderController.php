@@ -84,7 +84,7 @@ class VerifiedOrderController extends Controller
 
         $updated = Order::whereIn('id', $request->order_ids)
             ->whereIn('status', [2, 3]) // Solo órdenes verificadas o preparándose
-            ->update(['status' => 4]); // Listo para envío
+            ->update(['status' => \App\Enums\OrderStatus::ASIGNADO]); // Listo para envío
 
         return response()->json([
             'success' => true,
