@@ -83,7 +83,7 @@
                         <div class="space-y-3">
                             <!-- Envío a domicilio -->
                             <label
-                                class="flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                                class="flex items-start p-4 transition-colors border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
                                 :class="deliveryType === 'delivery' ? 'border-blue-500 bg-blue-50' : ''">
                                 <input type="radio" name="deliveryType" value="delivery" x-model="deliveryType"
                                     class="mt-1 mr-3 text-blue-600 focus:ring-blue-500">
@@ -103,7 +103,7 @@
 
                             <!-- Retiro en tienda -->
                             <label
-                                class="flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                                class="flex items-start p-4 transition-colors border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
                                 :class="deliveryType === 'pickup' ? 'border-blue-500 bg-blue-50' : ''">
                                 <input type="radio" name="deliveryType" value="pickup" x-model="deliveryType"
                                     class="mt-1 mr-3 text-blue-600 focus:ring-blue-500">
@@ -116,7 +116,7 @@
                                         <span class="text-sm font-medium text-green-600">Gratis</span>
                                     </div>
                                     <p class="mt-1 text-sm text-gray-600">Retira tu pedido en nuestra tienda física</p>
-                                    <div class="mt-2 text-xs text-gray-500 space-y-1"
+                                    <div class="mt-2 space-y-1 text-xs text-gray-500"
                                         x-show="deliveryType === 'pickup'">
                                         <p><i class="mr-1 fas fa-map-marker-alt"></i> Av. Principal #123, Sector Centro,
                                             Quito</p>
@@ -129,7 +129,7 @@
                         </div>
 
                         <!-- Mensaje informativo para retiro en tienda -->
-                        <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg"
+                        <div class="p-3 mt-3 border border-blue-200 rounded-lg bg-blue-50"
                             x-show="deliveryType === 'pickup'">
                             <div class="flex items-start">
                                 <i class="mr-2 mt-0.5 text-blue-600 fas fa-info-circle"></i>
@@ -196,7 +196,7 @@
                                         indicada.</p>
                                 </div>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <label class="flex items-center p-4" for="">
                                     <input type="radio" name="payment" value="4" x-model="payment" class="mr-2">
                                     <span class="ml-2 text-lg font-semibold">Pago con QR De Una (Banco Pichincha)</span>
@@ -211,7 +211,7 @@
                                     <p class="mt-2 text-xs text-gray-500">Asegúrate de completar el pago y confirmar en
                                         el resumen.</p>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <!-- PayPhone y PayPal: lógica preparada y comentada para futura integración -->
                             <!--
