@@ -37,8 +37,7 @@ class OrderTrackingController extends Controller
 
         $order = Order::with([
             'payment',
-            'shipment.deliveryDriver',
-            'orderDetails.product'
+            'shipment.deliveryDriver'
         ])
             ->where('user_id', $user->id)
             ->findOrFail($id);

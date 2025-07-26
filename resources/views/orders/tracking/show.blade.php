@@ -105,34 +105,40 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Productos del Pedido</h3>
 
+                            @if ($order->content && is_array($order->content))
                             <div class="space-y-4">
-                                @foreach ($order->orderDetails as $detail)
+                                @foreach ($order->content as $item)
                                 <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                                    @if ($detail->product->cover)
-                                    <img src="{{ Storage::url($detail->product->cover->image_path) }}"
-                                        alt="{{ $detail->product->name }}" class="w-16 h-16 object-cover rounded-lg">
-                                    @else
                                     <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-image text-gray-400"></i>
+                                        <i class="fas fa-shopping-bag text-gray-400"></i>
                                     </div>
-                                    @endif
 
                                     <div class="flex-1">
-                                        <h4 class="font-medium text-gray-900">{{ $detail->product->name }}</h4>
+                                        <h4 class="font-medium text-gray-900">{{ $item['name'] ?? 'Producto' }}</h4>
                                         <p class="text-sm text-gray-600">
-                                            Cantidad: {{ $detail->quantity }} ×
-                                            ${{ number_format($detail->price, 2) }}
+                                            Cantidad: {{ $item['quantity'] ?? $item['qty'] ?? 1 }} ×
+                                            ${{ number_format($item['price'] ?? 0, 2) }}
                                         </p>
+                                        @if (!empty($item['sku']))
+                                        <p class="text-xs text-gray-500">SKU: {{ $item['sku'] }}</p>
+                                        @endif
                                     </div>
 
                                     <div class="text-right">
                                         <p class="font-semibold text-gray-900">
-                                            ${{ number_format($detail->quantity * $detail->price, 2) }}
+                                            ${{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? $item['qty']
+                                            ?? 1), 2) }}
                                         </p>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
+                            @else
+                            <div class="text-center py-8">
+                                <i class="fas fa-exclamation-triangle text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-gray-500">No hay información de productos disponible</p>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

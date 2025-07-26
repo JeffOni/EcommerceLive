@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
+use App\Models\OrderDetail;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -101,6 +102,7 @@ class Order extends Model
     {
         return OrderStatus::from($this->status)->label();
     }
+
 
     /**
      * Obtener el enum del estado
