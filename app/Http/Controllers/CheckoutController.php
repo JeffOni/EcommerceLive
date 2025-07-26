@@ -98,9 +98,26 @@ class CheckoutController extends Controller
             abort(403);
         }
 
-        // Generar el PDF de la factura
-        $pdf = Pdf::loadView('orders.invoice', compact('order'));
+        // Calcular destinatario
+        $recipientInfo = null;
+        if (!empty($order->shipping_address['receiver_name'])) {
+            $recipientInfo = [
+                'name' => trim(($order->shipping_address['receiver_name'] ?? '') . ' ' . ($order->shipping_address['receiver_last_name'] ?? '')),
+                'document' => $order->shipping_address['receiver_document_number'] ?? 'No especificado',
+                'phone' => $order->shipping_address['receiver_phone'] ?? 'No especificado',
+                'email' => $order->shipping_address['receiver_email'] ?? null,
+            ];
+        } elseif (!empty($order->shipping_address['recipient_name'])) {
+            $recipientInfo = [
+                'name' => $order->shipping_address['recipient_name'],
+                'document' => $order->shipping_address['recipient_document'] ?? 'No especificado',
+                'phone' => $order->shipping_address['phone'] ?? 'No especificado',
+                'email' => null,
+            ];
+        }
 
+        // Generar el PDF de la factura
+        $pdf = Pdf::loadView('orders.invoice', compact('order', 'recipientInfo'));
         return $pdf->download("factura-pedido-{$order->id}.pdf");
     }
 

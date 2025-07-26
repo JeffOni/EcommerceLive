@@ -5,37 +5,37 @@
         <table class="w-full">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Pedido
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Cliente
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Total
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Método de Pago
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Estado
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Fecha
                     </th>
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                         Acciones
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($orders as $order)
-                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                <tr class="transition-colors duration-200 hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="font-medium text-gray-900">#{{ $order->id }}</div>
                         @if ($order->pdf_path)
                         <div class="text-xs text-green-600">
-                            <i class="fas fa-file-pdf mr-1"></i>PDF disponible
+                            <i class="mr-1 fas fa-file-pdf"></i>PDF disponible
                         </div>
                         @endif
                     </td>
@@ -52,21 +52,22 @@
                             @case(0)
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                <i class="fas fa-university mr-1"></i>Transferencia
+                                <i class="mr-1 fas fa-money-bill"></i>Efectivo
                             </span>
                             @break
 
                             @case(1)
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                <i class="fas fa-credit-card mr-1"></i>Tarjeta
+                                <i class="mr-1 fas fa-credit-card"></i>Tarjeta
+
                             </span>
                             @break
 
                             @case(2)
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-money-bill mr-1"></i>Efectivo
+                                <i class="mr-1 fas fa-university"></i>Transferencia
                             </span>
                             @break
 
@@ -106,18 +107,18 @@
                             {{ $statusText }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                         <div>{{ $order->created_at->format('d/m/Y') }}</div>
                         <div class="text-xs">{{ $order->created_at->format('H:i') }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
                         <div class="flex items-center justify-center space-x-2">
                             <!-- Cambiar Estado -->
                             <div class="relative inline-block text-left">
                                 <button type="button"
                                     class="inline-flex items-center px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                     onclick="toggleStatusDropdown({{ $order->id }})">
-                                    <i class="fas fa-edit mr-1"></i>
+                                    <i class="mr-1 fas fa-edit"></i>
                                     Estado
                                     <i class="ml-1 fas fa-chevron-down"></i>
                                 </button>
@@ -128,35 +129,35 @@
                                         @if ($order->payment_method == 2)
                                         {{-- Efectivo: de Pendiente directo a Asignar Repartidor --}}
                                         <button onclick="openAssignDriverModal({{ $order->id }})"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-yellow-500 fas fa-user-plus"></i>Asignar Repartidor
                                         </button>
                                         @else
                                         {{-- Transferencia/QR: de Pendiente a Verificado --}}
                                         <button onclick="updateOrderStatus({{ $order->id }}, 2)"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-check mr-2 text-blue-500"></i>Marcar como Verificado
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-blue-500 fas fa-check"></i>Marcar como Verificado
                                         </button>
                                         @endif
                                         @endif
                                         @if ($order->status == 2)
                                         {{-- Pago Verificado: Asignar Repartidor --}}
                                         <button onclick="openAssignDriverModal({{ $order->id }})"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-yellow-500 fas fa-user-plus"></i>Asignar Repartidor
                                         </button>
                                         @endif
                                         @if ($order->status == 3)
                                         {{-- Preparando: Solo Asignar Repartidor si no tiene envío --}}
                                         @if (!$order->hasShipment())
                                         <button onclick="openAssignDriverModal({{ $order->id }})"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-yellow-500 fas fa-user-plus"></i>Asignar Repartidor
                                         </button>
                                         @else
                                         <button onclick="redirectToShipment({{ $order->id }})"
-                                            class="block w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50">
-                                            <i class="fas fa-truck mr-2 text-blue-500"></i>Ver Envío
+                                            class="block w-full px-4 py-2 text-sm text-left text-blue-600 hover:bg-blue-50">
+                                            <i class="mr-2 text-blue-500 fas fa-truck"></i>Ver Envío
                                         </button>
                                         @endif
                                         @endif
@@ -164,27 +165,27 @@
                                         {{-- Estado Asignado: Solo En Camino si tiene repartidor --}}
                                         @if ($order->hasShipment() && $order->shipment->delivery_driver_id)
                                         <button onclick="updateOrderStatus({{ $order->id }}, 5)"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-truck mr-2 text-orange-500"></i>En Camino
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-orange-500 fas fa-truck"></i>En Camino
                                         </button>
                                         @else
                                         <button onclick="openAssignDriverModal({{ $order->id }})"
-                                            class="block w-full px-4 py-2 text-left text-sm text-yellow-600 hover:bg-yellow-50">
-                                            <i class="fas fa-user-plus mr-2 text-yellow-500"></i>Asignar Repartidor
+                                            class="block w-full px-4 py-2 text-sm text-left text-yellow-600 hover:bg-yellow-50">
+                                            <i class="mr-2 text-yellow-500 fas fa-user-plus"></i>Asignar Repartidor
                                         </button>
                                         @endif
                                         @endif
                                         @if ($order->status == 5)
                                         <button onclick="updateOrderStatus({{ $order->id }}, 6)"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                            <i class="fas fa-check-circle mr-2 text-green-500"></i>Entregado
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                            <i class="mr-2 text-green-500 fas fa-check-circle"></i>Entregado
                                         </button>
                                         @endif
                                         @if ($order->status != 7 && $order->status != 6)
                                         <hr class="my-1">
                                         <button onclick="updateOrderStatus({{ $order->id }}, 7)"
-                                            class="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
-                                            <i class="fas fa-times mr-2"></i>Cancelar
+                                            class="block w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50">
+                                            <i class="mr-2 fas fa-times"></i>Cancelar
                                         </button>
                                         @endif
                                     </div>
@@ -195,7 +196,7 @@
                             @if ($order->pdf_path)
                             <button onclick="downloadPDF({{ $order->id }})"
                                 class="inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                <i class="fas fa-download mr-1"></i>
+                                <i class="mr-1 fas fa-download"></i>
                                 PDF
                             </button>
                             @endif
@@ -203,7 +204,7 @@
                             <!-- Ver Detalles -->
                             <a href="{{ route('admin.orders.show', $order) }}"
                                 class="inline-flex items-center px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                <i class="fas fa-eye mr-1"></i>
+                                <i class="mr-1 fas fa-eye"></i>
                                 Ver
                             </a>
                         </div>
@@ -229,7 +230,7 @@
 <div class="lg:hidden">
     <div class="space-y-4">
         @forelse($orders as $order)
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm">
             <div class="p-4">
                 <div class="flex items-center justify-between mb-3">
                     <div class="font-medium text-gray-900">#{{ $order->id }}</div>
@@ -276,29 +277,29 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200">
                     <div class="flex space-x-2">
                         @if ($order->pdf_path)
                         <button onclick="downloadPDF({{ $order->id }})"
                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-red-600 border border-transparent rounded hover:bg-red-700">
-                            <i class="fas fa-download mr-1"></i>PDF
+                            <i class="mr-1 fas fa-download"></i>PDF
                         </button>
                         @endif
                         <a href="{{ route('admin.orders.show', $order) }}"
                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50">
-                            <i class="fas fa-eye mr-1"></i>Ver
+                            <i class="mr-1 fas fa-eye"></i>Ver
                         </a>
                     </div>
 
                     <button type="button" onclick="toggleStatusDropdown({{ $order->id }})"
                         class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50">
-                        <i class="fas fa-edit mr-1"></i>Estado
+                        <i class="mr-1 fas fa-edit"></i>Estado
                     </button>
                 </div>
             </div>
         </div>
         @empty
-        <div class="text-center py-12">
+        <div class="py-12 text-center">
             <i class="mb-4 text-6xl text-gray-300 fas fa-shopping-cart"></i>
             <h3 class="mb-2 text-lg font-medium text-gray-900">No hay pedidos</h3>
             <p class="text-gray-500">No se encontraron pedidos con los filtros aplicados.</p>
@@ -309,7 +310,7 @@
 
 <!-- Paginación -->
 @if ($orders->hasPages())
-<div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+<div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
     {{ $orders->links() }}
 </div>
 @endif
@@ -402,9 +403,9 @@
                                     ${driversOptions}
                                 </select>
                             </div>
-                            <div id="driverInfo" class="hidden p-3 bg-gray-50 rounded-md">
+                            <div id="driverInfo" class="hidden p-3 rounded-md bg-gray-50">
                                 <div class="flex items-center space-x-3">
-                                    <img id="driverPhoto" src="" alt="Foto" class="w-12 h-12 rounded-full object-cover">
+                                    <img id="driverPhoto" src="" alt="Foto" class="object-cover w-12 h-12 rounded-full">
                                     <div>
                                         <p id="driverName" class="font-medium"></p>
                                         <p id="driverDetails" class="text-sm text-gray-600"></p>

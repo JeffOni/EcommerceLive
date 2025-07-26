@@ -20,7 +20,12 @@ class OrderTrackingController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('orders.tracking.index', compact('orders'));
+        // Calcular el progreso para cada pedido
+        $progressList = [];
+        foreach ($orders as $order) {
+            $progressList[$order->id] = $this->calculateOrderProgress($order);
+        }
+        return view('orders.tracking.index', compact('orders', 'progressList'));
     }
 
     /**
