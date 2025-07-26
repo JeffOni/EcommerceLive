@@ -65,6 +65,7 @@ class AddToCart extends Component
             'options' => [
                 'image' => $this->product->image, // Imagen del producto
                 'sku' => $this->product->sku, // SKU para identificación
+                'stock' => $this->product->stock ?? 0, // SOLUCIÓN: Agregar stock del producto
                 'features' => [] // Array vacío para productos sin variantes
             ],
         ]);

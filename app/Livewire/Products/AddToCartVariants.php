@@ -148,8 +148,10 @@ class AddToCartVariants extends Component
             'price' => $this->product->price,
             // 'weight' => 0, // Peso opcional, si no se usa puede ser 0
             'options' => [
+                'variant_id' => $this->variant->id,  // SOLUCIÓN: Agregar variant_id para el stock
                 'image' => $this->currentImage, // Suponiendo que el producto tiene una imagen
                 'sku' => $this->variant->sku, // SKU del producto
+                'stock' => $this->variant->stock ?? 0, // Stock de la variante
                 'features' => Feature::whereIn('id', $this->selectedFeatures)// Características seleccionadas
                     ->pluck('description', 'id')// Puedes agregar más opciones si es necesario
                     ->toArray(),

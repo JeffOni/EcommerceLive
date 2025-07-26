@@ -1,4 +1,22 @@
 <x-app-layout>
+    {{-- SOLUCIÓN: Script para actualizar contador del carrito después de compra --}}
+    @if(session('cartCleared'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar el contador del carrito a 0
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                cartCount.textContent = '0';
+            }
+            
+            // También disparar el evento Livewire si existe
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('cartUpdated', {count: 0});
+            }
+        });
+    </script>
+    @endif
+
     <div class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen py-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header de agradecimiento -->
@@ -81,8 +99,7 @@
                 <div class="bg-white rounded-2xl shadow-lg p-8">
                     <div class="flex items-center mb-6">
                         <div class="bg-purple-100 rounded-full p-3 mr-4">
-                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                                 </path>
@@ -129,8 +146,7 @@
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="text-center">
                         <div class="bg-yellow-100 rounded-full p-4 w-16 h-16 mx-auto mb-4">
-                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -141,8 +157,7 @@
 
                     <div class="text-center">
                         <div class="bg-green-100 rounded-full p-4 w-16 h-16 mx-auto mb-4">
-                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -153,8 +168,7 @@
 
                     <div class="text-center">
                         <div class="bg-blue-100 rounded-full p-4 w-16 h-16 mx-auto mb-4">
-                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z">
                                 </path>

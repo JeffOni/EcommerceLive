@@ -48,11 +48,15 @@ class PaymentController extends Controller
             Cart::instance('shopping');
             $cartData = Cart::content()->map(function ($item) {
                 return [
-                    'id' => $item->id,
+                    'id' => $item->id,                     // ID del producto
+                    'product_id' => $item->id,              // Para el observer
+                    'variant_id' => $item->options->variant_id ?? null, // Si es variante
                     'name' => $item->name,
                     'price' => $item->price,
                     'quantity' => $item->qty,
                     'subtotal' => $item->price * $item->qty,
+                    'sku' => $item->options->sku ?? null,
+                    'features' => $item->options->features ?? [],
                 ];
             })->toArray();
 
@@ -90,6 +94,10 @@ class PaymentController extends Controller
 
             // Limpiar el carrito
             Cart::destroy();
+
+            // SOLUCIÓN: Forzar la actualización del contador del carrito
+            // Disparar evento JavaScript para actualizar el contador en la navegación
+            session()->flash('cartCleared', true);
 
             // Log para depuración
             \Log::info('PaymentController - Transferencia procesada:', [
@@ -157,11 +165,15 @@ class PaymentController extends Controller
             Cart::instance('shopping');
             $cartData = Cart::content()->map(function ($item) {
                 return [
-                    'id' => $item->id,
+                    'id' => $item->id,                     // ID del producto
+                    'product_id' => $item->id,              // Para el observer
+                    'variant_id' => $item->options->variant_id ?? null, // Si es variante
                     'name' => $item->name,
                     'price' => $item->price,
                     'quantity' => $item->qty,
                     'subtotal' => $item->price * $item->qty,
+                    'sku' => $item->options->sku ?? null,
+                    'features' => $item->options->features ?? [],
                 ];
             })->toArray();
 
@@ -199,6 +211,9 @@ class PaymentController extends Controller
 
             // Limpiar el carrito
             Cart::destroy();
+
+            // SOLUCIÓN: Forzar la actualización del contador del carrito
+            session()->flash('cartCleared', true);
 
             // Log para depuración
             \Log::info('PaymentController - QR De Una procesado:', [
@@ -269,11 +284,15 @@ class PaymentController extends Controller
 
             $cartData = Cart::content()->map(function ($item) {
                 return [
-                    'id' => $item->id,
+                    'id' => $item->id,                     // ID del producto
+                    'product_id' => $item->id,              // Para el observer
+                    'variant_id' => $item->options->variant_id ?? null, // Si es variante
                     'name' => $item->name,
                     'price' => $item->price,
                     'quantity' => $item->qty,
                     'subtotal' => $item->price * $item->qty,
+                    'sku' => $item->options->sku ?? null,
+                    'features' => $item->options->features ?? [],
                 ];
             })->toArray();
 
@@ -321,6 +340,9 @@ class PaymentController extends Controller
 
             // Limpiar el carrito
             Cart::destroy();
+
+            // SOLUCIÓN: Forzar la actualización del contador del carrito
+            session()->flash('cartCleared', true);
 
             return response()->json([
                 'success' => true,
