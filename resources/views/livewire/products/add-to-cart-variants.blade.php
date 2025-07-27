@@ -11,15 +11,7 @@
                     const availableImages = @js($this->availableImages);
                     const variantImage = availableImages.find(img => img.type === 'variant');
                     if (variantImage) {
-                        currentI                        </div>
-                    </div>
-                    <p class=" mt-3 text-xs text-gray-500 ">
-                    <svg class=" inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 616 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                    Transacciones 100% segurasriantImage.url;
+                        currentImage = variantImage.url;
                     }
                     " wire:key="image-gallery-{{ md5(json_encode($this->selectedFeatures)) }}">
                     {{-- Imagen Principal --}}
@@ -28,7 +20,6 @@
                             class="overflow-hidden bg-white border border-gray-100 shadow-2xl aspect-square rounded-3xl dark:border-gray-700 dark:bg-gray-800">
                             <img :src="currentImage" alt="{{ $product->name }}"
                                 class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105">
-
                             {{-- Badge de Variant Info --}}
                             <div class="absolute space-y-2 top-4 left-4">
                                 @if ($this->variant)
@@ -52,7 +43,6 @@
                                 </span>
                                 @endif
                             </div>
-
                             {{-- SKU Badge --}}
                             @if ($this->variantInfo['sku'])
                             <div class="absolute top-4 right-4">
@@ -62,7 +52,6 @@
                                 </span>
                             </div>
                             @endif
-
                             {{-- Botón de Zoom --}}
                             <div
                                 class="absolute transition-opacity duration-300 opacity-0 bottom-4 right-4 group-hover:opacity-100">
@@ -77,7 +66,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
                     <div class="mt-6 space-y-3">
                         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
@@ -89,7 +77,6 @@
                                     class="relative w-20 h-20 overflow-hidden transition-all duration-200 border-2 rounded-xl">
                                     <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
                                         class="object-cover w-full h-full">
-
                                     {{-- Badge de tipo de imagen --}}
                                     <div class="absolute bottom-1 left-1">
                                         @if ($image['type'] === 'variant')
@@ -98,7 +85,6 @@
                                         <div class="w-2 h-2 bg-green-500 rounded-full"></div>
                                         @endif
                                     </div>
-
                                     {{-- Label de imagen --}}
                                     <div
                                         class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 text-center">
@@ -114,7 +100,6 @@
                             </div>
                             @endforeach
                         </div>
-
                         {{-- Leyenda --}}
                         <div class="flex items-center space-x-4 text-xs text-gray-500">
                             <div class="flex items-center space-x-1">
@@ -127,6 +112,106 @@
                             </div>
                             <span>{{ count($this->availableImages) }} imagen{{ count($this->availableImages) > 1 ? 's' :
                                 '' }} disponible{{ count($this->availableImages) > 1 ? 's' : '' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Sección de Servicios Premium --}}
+                <div
+                    class="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-6">
+                        <div class="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-4"></div>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Servicios Premium</h3>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                        {{-- Entrega Express --}}
+                        <div
+                            class="group relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-emerald-100 dark:border-emerald-800">
+                            <div
+                                class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-400/20 to-green-500/20 rounded-bl-3xl">
+                            </div>
+                            <div class="relative">
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl flex items-center justify-center shadow-lg">
+                                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Entrega
+                                            Express</h4>
+                                        <p class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">24-48
+                                            horas</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Envío prioritario
+                                            garantizado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Calidad Premium --}}
+                        <div
+                            class="group relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-blue-100 dark:border-blue-800">
+                            <div
+                                class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-indigo-500/20 rounded-bl-3xl">
+                            </div>
+                            <div class="relative">
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Calidad
+                                            Premium</h4>
+                                        <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">100% Garantizada
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Productos seleccionados
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Atención al Cliente --}}
+                    <div
+                        class="mt-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Atención 24/7</h4>
+                                    <p class="text-sm text-purple-600 dark:text-purple-400">Soporte personalizado</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                </svg>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">WhatsApp</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -595,69 +680,6 @@
                     </div>
                 </div>
 
-                {{-- Información de Entrega y Garantías --}}
-                <div class="grid gap-6 md:grid-cols-2">
-                    {{-- Entrega --}}
-                    <div
-                        class="p-6 space-y-4 border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl dark:border-green-700">
-                        <div class="flex items-center space-x-3">
-                            <div
-                                class="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-800 rounded-xl">
-                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-green-800 dark:text-green-200">Entrega Rápida</h4>
-                                <p class="text-sm text-green-700 dark:text-green-300">2-3 días hábiles</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-green-700 dark:text-green-300">Envío estándar</span>
-                            <span class="font-semibold text-green-800 dark:text-green-200">Fast Delivery</span>
-                        </div>
-                    </div>
-
-                    {{-- Garantía --}}
-                    <div
-                        class="p-6 space-y-4 border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl dark:border-blue-700">
-                        <div class="flex items-center space-x-3">
-                            <div
-                                class="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-xl">
-                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Productos Frescos</h4>
-                                <p class="text-sm text-blue-700 dark:text-blue-300">Calidad garantizada</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex items-center text-sm text-blue-700 dark:text-blue-300">
-                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                Productos seleccionados diariamente
-                            </div>
-                            <div class="flex items-center text-sm text-blue-700 dark:text-blue-300">
-                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                Conservación y manipulación adecuada
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {{-- Métodos de Pago --}}
                 <div
                     class="p-6 bg-white border border-gray-200 shadow-sm dark:bg-gray-800 rounded-2xl dark:border-gray-700">
@@ -688,6 +710,7 @@
                         Transacciones 100% seguras con encriptación SSL
                     </p>
                 </div>
+
             </div>
         </div>
     </div>
