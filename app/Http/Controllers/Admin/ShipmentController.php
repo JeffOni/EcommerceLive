@@ -311,7 +311,7 @@ class ShipmentController extends Controller
         $shipment->markAsDelivered($request->proof, $request->notes);
 
         // Actualizar el estado de la orden asociada
-        $shipment->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO]);
+        $shipment->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
 
         return response()->json([
             'success' => true,

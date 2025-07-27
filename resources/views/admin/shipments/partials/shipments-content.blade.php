@@ -19,7 +19,7 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse ($shipments as $shipment)
                 <tr id="shipment-row-{{ $shipment->id }}" class="transition-colors hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loop->iteration }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $loop->iteration }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 w-10 h-10">
@@ -129,7 +129,7 @@
 <div class="lg:hidden">
     <div class="space-y-4">
         @forelse ($shipments as $shipment)
-        <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div class="p-6 bg-white border border-gray-200 shadow-sm rounded-xl">
             <!-- Header de la card -->
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">

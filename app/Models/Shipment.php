@@ -218,7 +218,7 @@ class Shipment extends Model
         $this->update($updateData);
 
         // Actualizar estado de la orden
-        $this->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO]);
+        $this->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
 
         return true;
     }
@@ -378,6 +378,16 @@ class Shipment extends Model
 
             // Aquí necesitarías un método en el modelo User para actualizar rating
             // $this->deliveryDriver->updateRating($avgRating);
+        }
+    }
+
+    /**
+     * Liberar espacio en el límite de envíos activos del repartidor
+     */
+    public function releaseDriverLimit(): void
+    {
+        if ($this->deliveryDriver) {
+            $this->deliveryDriver->decrementActiveShipments();
         }
     }
 }
