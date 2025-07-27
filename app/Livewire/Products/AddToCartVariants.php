@@ -145,7 +145,7 @@ class AddToCartVariants extends Component
             'id' => $this->product->id,
             'name' => $this->product->name,
             'qty' => $this->quantity,
-            'price' => $this->product->price,
+            'price' => $this->variant->current_price, // Usar precio de variante con descuento si hay oferta
             // 'weight' => 0, // Peso opcional, si no se usa puede ser 0
             'options' => [
                 'variant_id' => $this->variant->id,  // SOLUCIÓN: Agregar variant_id para el stock
@@ -155,6 +155,10 @@ class AddToCartVariants extends Component
                 'features' => Feature::whereIn('id', $this->selectedFeatures)// Características seleccionadas
                     ->pluck('description', 'id')// Puedes agregar más opciones si es necesario
                     ->toArray(),
+                'original_price' => $this->variant->price, // Precio original de la variante
+                'is_on_offer' => $this->variant->is_on_valid_offer, // Si está en oferta
+                'offer_name' => $this->product->offer_name ?? null, // Nombre de la oferta
+                'discount_percentage' => $this->variant->discount_percentage ?? 0, // Porcentaje de descuento
             ],
         ]);
 
@@ -189,7 +193,7 @@ class AddToCartVariants extends Component
         if (!$this->variant) {
             return [
                 'available' => false,
-                'price' => $this->product->price,
+                'price' => $this->product->current_price, // Usar precio con descuento
                 'stock' => 0,
                 'sku' => $this->product->sku,
                 'image' => $this->product->image,
@@ -201,7 +205,7 @@ class AddToCartVariants extends Component
 
         return [
             'available' => true,
-            'price' => $this->variant->price ?? $this->product->price,
+            'price' => $this->variant->current_price, // Usar precio de variante con descuento
             'stock' => $stock,
             'sku' => $this->variant->sku,
             'image' => $this->variant->image,

@@ -20,12 +20,7 @@ class OrderTrackingController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // Calcular el progreso para cada pedido
-        $progressList = [];
-        foreach ($orders as $order) {
-            $progressList[$order->id] = $this->calculateOrderProgress($order);
-        }
-        return view('orders.tracking.index', compact('orders', 'progressList'));
+        return view('orders.tracking.index', compact('orders'));
     }
 
     /**
@@ -37,7 +32,8 @@ class OrderTrackingController extends Controller
 
         $order = Order::with([
             'payment',
-            'shipment.deliveryDriver'
+            'shipment.deliveryDriver',
+            'orderDetails.product'
         ])
             ->where('user_id', $user->id)
             ->findOrFail($id);

@@ -91,7 +91,6 @@ enum OrderStatus: int
             self::PAGADO,
             self::PREPARANDO,
             self::ASIGNADO,
-            self::ENVIADO,
         ]);
     }
 
@@ -113,7 +112,7 @@ enum OrderStatus: int
             self::PAGADO => [self::PREPARANDO, self::CANCELADO],
             self::PREPARANDO => [self::ASIGNADO, self::CANCELADO],
             self::ASIGNADO => [self::ENVIADO, self::CANCELADO],
-            self::ENVIADO => [self::ENTREGADO, self::CANCELADO],
+            self::ENVIADO => [self::ENTREGADO],
             self::ENTREGADO => [self::DEVUELTO],
             self::CANCELADO => [],
             self::DEVUELTO => [],

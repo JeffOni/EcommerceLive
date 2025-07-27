@@ -272,4 +272,35 @@ class ProductController extends Controller
         session()->forget('show_variant_image_restored_toast');
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Toggle del estado is_active del producto
+     */
+    public function toggleStatus(Request $request, Product $product)
+    {
+        try {
+            $request->validate([
+                'is_active' => 'required|boolean'
+            ]);
+
+            $product->is_active = $request->is_active;
+            $product->save();
+
+            $status = $product->is_active ? 'activado' : 'desactivado';
+            $message = "El producto ha sido {$status} exitosamente.";
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'new_status' => $product->is_active
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error toggling product status: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el estado del producto'
+            ], 500);
+        }
+    }
 }

@@ -19,6 +19,17 @@ use Illuminate\Support\Facades\Gate;
 Route::middleware(['auth', 'can:admin-panel'])->prefix('admin')->group(function () {
     Route::get('/payments/verification', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'index'])->name('admin.payments.verification');
     Route::patch('/payments/{payment}/verify', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'verify'])->name('admin.payments.verify');
+
+    // Rutas para gestión de ofertas
+    Route::prefix('offers')->name('admin.offers.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\OfferController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\OfferController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Admin\OfferController::class, 'store'])->name('store');
+        Route::get('/{product}/edit', [\App\Http\Controllers\Admin\OfferController::class, 'edit'])->name('edit');
+        Route::put('/{product}', [\App\Http\Controllers\Admin\OfferController::class, 'update'])->name('update');
+        Route::delete('/{product}', [\App\Http\Controllers\Admin\OfferController::class, 'destroy'])->name('destroy');
+        Route::post('/clean-expired', [\App\Http\Controllers\Admin\OfferController::class, 'cleanExpired'])->name('clean-expired');
+    });
 });
 
 

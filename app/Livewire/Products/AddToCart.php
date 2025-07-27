@@ -61,12 +61,16 @@ class AddToCart extends Component
             'id' => $this->product->id,
             'name' => $this->product->name,
             'qty' => $this->quantity,
-            'price' => $this->product->price,
+            'price' => $this->product->current_price, // Usar precio con descuento si hay oferta
             'options' => [
                 'image' => $this->product->image, // Imagen del producto
                 'sku' => $this->product->sku, // SKU para identificación
                 'stock' => $this->product->stock ?? 0, // SOLUCIÓN: Agregar stock del producto
-                'features' => [] // Array vacío para productos sin variantes
+                'features' => [], // Array vacío para productos sin variantes
+                'original_price' => $this->product->price, // Precio original
+                'is_on_offer' => $this->product->is_on_valid_offer, // Si está en oferta
+                'offer_name' => $this->product->offer_name ?? null, // Nombre de la oferta
+                'discount_percentage' => $this->product->discount_percentage ?? 0, // Porcentaje de descuento
             ],
         ]);
 

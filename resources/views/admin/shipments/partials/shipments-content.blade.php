@@ -11,13 +11,14 @@
                     </th>
                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Repartidor</th>
-                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Acciones
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                        Acciones
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse ($shipments as $shipment)
-                <tr class="transition-colors hover:bg-gray-50">
+                <tr id="shipment-row-{{ $shipment->id }}" class="transition-colors hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loop->iteration }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
@@ -70,50 +71,46 @@
                         <span class="text-sm text-gray-400">Sin asignar</span>
                         @endif
                     </td>
-                    <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                        <div class="flex items-center space-x-2">
-                            @php
-                            $orderStatus = \App\Enums\OrderStatus::from($shipment->order->status);
-                            @endphp
-
-                            @if($orderStatus === \App\Enums\OrderStatus::ENVIADO)
-                            <!-- Botón Entregado -->
-                            <button onclick="markOrderAsDelivered({{ $shipment->order->id }})"
-                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors"
-                                title="Marcar como Entregado">
-                                <i class="fas fa-check mr-1"></i>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        @php
+                        $shipmentStatus = $shipment->status->value ?? $shipment->status;
+                        @endphp
+                        @if($shipmentStatus === 'delivered')
+                        <span
+                            class="inline-flex items-center px-3 py-2 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                            <i class="mr-1 fas fa-check-circle"></i>
+                            Entregado
+                        </span>
+                        @elseif($shipmentStatus === 'failed')
+                        <span
+                            class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                            <i class="mr-1 fas fa-times-circle"></i>
+                            Cancelado
+                        </span>
+                        @else
+                        <div class="flex items-center justify-center space-x-2">
+                            <button onclick="markOrderAsDelivered({{ $shipment->id }})"
+                                class="inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <i class="mr-1 fas fa-check"></i>
                                 Entregado
                             </button>
-
-                            <!-- Botón Cancelado -->
-                            <button onclick="openCancelOrderModal({{ $shipment->order->id }})"
-                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition-colors"
-                                title="Cancelar Orden">
-                                <i class="fas fa-times mr-1"></i>
+                            <button onclick="cancelShipment({{ $shipment->id }})"
+                                class="inline-flex items-center px-3 py-2 text-xs font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <i class="mr-1 fas fa-times"></i>
                                 Cancelar
                             </button>
-                            @else
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold 
-                                    @if($orderStatus === \App\Enums\OrderStatus::ENTREGADO)
-                                        bg-green-100 text-green-800
-                                    @elseif($orderStatus === \App\Enums\OrderStatus::CANCELADO)
-                                        bg-red-100 text-red-800
-                                    @else
-                                        bg-gray-100 text-gray-800
-                                    @endif">
-                                {{ $orderStatus->label() }}
-                            </span>
-                            @endif
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @empty
                 <tr>
                     <td colspan="5" class="px-6 py-12 text-center">
                         <div class="flex flex-col items-center justify-center">
-                            <i class="mb-4 text-4xl text-gray-300 fas fa-shipping-fast"></i>
-                            <h3 class="text-lg font-medium text-gray-900">No hay envíos</h3>
-                            <p class="mt-1 text-sm text-gray-500">Comienza creando tu primer envío.</p>
+                            <i class="mb-4 text-4xl text-gray-300 fas fa-check-circle"></i>
+                            <h3 class="text-lg font-medium text-gray-900">No hay envíos pendientes</h3>
+                            <p class="mt-1 text-sm text-gray-500">Todos los envíos han sido procesados o no hay envíos
+                                creados.</p>
                             <a href="{{ route('admin.shipments.create') }}"
                                 class="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">
                                 <i class="mr-2 fas fa-plus"></i>
@@ -222,36 +219,40 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </button>
                 </div>
-                <select class="text-xs border-gray-300 rounded-lg status-badge status-{{ $shipment->status }}"
-                    onchange="updateShipmentStatus({{ $shipment->id }}, this.value)">
-                    <option value="pending" {{ ($shipment->status->value ?? $shipment->status) === 'pending' ?
-                        'selected' : '' }}>
-                        Pendiente
-                    </option>
-                    <option value="assigned" {{ ($shipment->status->value ?? $shipment->status) === 'assigned' ?
-                        'selected' : '' }}>
-                        Asignado
-                    </option>
-                    <option value="in_transit" {{ ($shipment->status->value ?? $shipment->status) === 'in_transit' ?
-                        'selected' : '' }}>
-                        En Tránsito
-                    </option>
-                    <option value="delivered" {{ ($shipment->status->value ?? $shipment->status) === 'delivered' ?
-                        'selected' : '' }}>
+
+                @if(($shipment->status->value ?? $shipment->status) === 'delivered')
+                <span
+                    class="inline-flex items-center px-3 py-2 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                    <i class="mr-1 fas fa-check-circle"></i>
+                    Entregado
+                </span>
+                @elseif(($shipment->status->value ?? $shipment->status) === 'failed')
+                <span
+                    class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                    <i class="mr-1 fas fa-times-circle"></i>
+                    Cancelado
+                </span>
+                @else
+                <div class="flex space-x-2">
+                    <button onclick="markOrderAsDelivered({{ $shipment->id }})"
+                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-green-600 border border-transparent rounded hover:bg-green-700">
+                        <i class="mr-1 fas fa-check"></i>
                         Entregado
-                    </option>
-                    <option value="failed" {{ ($shipment->status->value ?? $shipment->status) === 'failed' ? 'selected'
-                        : '' }}>
-                        Fallido
-                    </option>
-                </select>
+                    </button>
+                    <button onclick="cancelShipment({{ $shipment->id }})"
+                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-red-600 border border-transparent rounded hover:bg-red-700">
+                        <i class="mr-1 fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+                @endif
             </div>
         </div>
         @empty
         <div class="py-12 text-center">
-            <i class="mb-4 text-4xl text-gray-300 fas fa-shipping-fast"></i>
-            <h3 class="text-lg font-medium text-gray-900">No hay envíos</h3>
-            <p class="mt-1 text-sm text-gray-500">Comienza creando tu primer envío.</p>
+            <i class="mb-4 text-4xl text-gray-300 fas fa-check-circle"></i>
+            <h3 class="text-lg font-medium text-gray-900">No hay envíos pendientes</h3>
+            <p class="mt-1 text-sm text-gray-500">Todos los envíos han sido procesados o no hay envíos creados.</p>
             <a href="{{ route('admin.shipments.create') }}"
                 class="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">
                 <i class="mr-2 fas fa-plus"></i>
@@ -308,6 +309,148 @@
                 form.appendChild(tokenInput);
                 document.body.appendChild(form);
                 form.submit();
+            }
+        });
+    }
+
+    function cancelShipment(shipmentId) {
+        Swal.fire({
+            title: 'Cancelar envío',
+            text: 'Por favor, indica el motivo de la cancelación:',
+            input: 'textarea',
+            inputPlaceholder: 'Escribe el motivo de la cancelación...',
+            inputAttributes: {
+                'aria-label': 'Motivo de cancelación',
+                'maxlength': 255
+            },
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: 'Cancelar envío',
+            cancelButtonText: 'Cerrar',
+            inputValidator: (value) => {
+                if (!value || value.trim() === '') {
+                    return 'Debes proporcionar un motivo para la cancelación';
+                }
+                if (value.length < 10) {
+                    return 'El motivo debe tener al menos 10 caracteres';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/shipments/${shipmentId}/cancel`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        reason: result.value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: '¡Cancelado!',
+                            text: data.message,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        // Actualizar la celda de acciones con el badge
+                        const row = document.querySelector(`#shipment-row-${shipmentId}`);
+                        if (row) {
+                            const actionsCell = row.querySelector('td:last-child');
+                            if (actionsCell) {
+                                actionsCell.innerHTML = `
+                                    <span class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-800 bg-red-100 rounded-full">
+                                        <i class="mr-1 fas fa-times-circle"></i>
+                                        Cancelado
+                                    </span>
+                                `;
+                            }
+                        }
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error al cancelar el envío.',
+                        icon: 'error'
+                    });
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+
+    function markOrderAsDelivered(shipmentId) {
+        Swal.fire({
+            title: '¿Confirmar entrega?',
+            text: '¿Está seguro que desea marcar este envío como entregado?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#10B981',
+            cancelButtonColor: '#EF4444',
+            confirmButtonText: 'Sí, entregar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/shipments/${shipmentId}/mark-delivered`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: '¡Entregado!',
+                            text: data.message,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        // Actualizar la celda de acciones con el badge
+                        const row = document.querySelector(`#shipment-row-${shipmentId}`);
+                        if (row) {
+                            const actionsCell = row.querySelector('td:last-child');
+                            if (actionsCell) {
+                                actionsCell.innerHTML = `
+                                    <span class="inline-flex items-center px-3 py-2 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                                        <i class="mr-1 fas fa-check-circle"></i>
+                                        Entregado
+                                    </span>
+                                `;
+                            }
+                        }
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error al marcar como entregado.',
+                        icon: 'error'
+                    });
+                    console.error('Error:', error);
+                });
             }
         });
     }

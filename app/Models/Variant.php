@@ -43,6 +43,60 @@ class Variant extends Model
         return $this->custom_price ?? $this->product->price;
     }
 
+    /**
+     * Accessor para obtener el precio actual (considerando ofertas)
+     */
+    protected function currentPrice(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->product->is_on_valid_offer
+            ? $this->product->current_price
+            : $this->getEffectivePrice()
+        );
+    }
+
+    /**
+     * Accessor para verificar si la variante está en oferta válida
+     */
+    protected function isOnValidOffer(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->product->is_on_valid_offer
+        );
+    }
+
+    /**
+     * Accessor para obtener el porcentaje de descuento
+     */
+    protected function discountPercentage(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->product->discount_percentage ?? 0
+        );
+    }
+
+    /**
+     * Accessor para obtener el monto de ahorro
+     */
+    protected function savingsAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->product->is_on_valid_offer
+            ? $this->getEffectivePrice() - $this->product->current_price
+            : 0
+        );
+    }
+
+    /**
+     * Accessor para obtener el precio original de la variante
+     */
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->getEffectivePrice()
+        );
+    }
+
     //Relacion muchos a muchos con Feature
 
     public function features()

@@ -112,7 +112,11 @@ class Shipment extends Model
      */
     public function canBeDelivered(): bool
     {
-        return $this->status === ShipmentStatus::IN_TRANSIT;
+        return in_array($this->status, [
+            ShipmentStatus::ASSIGNED,
+            ShipmentStatus::PICKED_UP,
+            ShipmentStatus::IN_TRANSIT
+        ]);
     }
 
     /**

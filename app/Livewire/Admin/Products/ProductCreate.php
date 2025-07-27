@@ -215,6 +215,9 @@ class ProductCreate extends Component
             // Resetear las imágenes para que desaparezcan los spinners
             $this->reset(['image', 'image2', 'image3']);
 
+            // Limpiar cualquier mensaje de error anterior antes de mostrar el de éxito
+            session()->forget('swal');
+
             session()->flash('swal', [ //se almacena un mensaje en la session para mostrar una alerta de SweetAlert]
                 'icon' => 'success',
                 'title' => '¡Producto creado!',

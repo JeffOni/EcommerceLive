@@ -78,11 +78,11 @@
                         <div class="mb-4">
                             <div class="flex justify-between text-xs text-gray-600 mb-1">
                                 <span>Progreso</span>
-                                <span>{{ $progressList[$order->id] ?? 0 }}%</span>
+                                <span>{{ $this->calculateProgress($order) }}%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
                                 <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
-                                    style="width: {{ $progressList[$order->id] ?? 0 }}%"></div>
+                                    style="width: {{ $this->calculateProgress($order) }}%"></div>
                             </div>
                         </div>
 

@@ -289,7 +289,7 @@ class ShipmentService
     }
 
     /**
-     * Obtener un repartidor disponible con menos de 5 envíos activos
+     * Obtener un repartidor disponible con menos de 7 envíos activos
      */
     public function getAvailableDriver(): ?DeliveryDriver
     {
@@ -304,7 +304,7 @@ class ShipmentService
                 ])
                 ->count();
 
-            if ($activeShipments < 5) {
+            if ($activeShipments < 7) {
                 return $driver;
             }
         }
@@ -331,7 +331,7 @@ class ShipmentService
      */
     public function assignDriverWithLimit(Order $order, DeliveryDriver $driver): bool
     {
-        // Verificar que el repartidor no tenga más de 5 envíos activos
+        // Verificar que el repartidor no tenga más de 7 envíos activos
         $activeShipments = Shipment::where('delivery_driver_id', $driver->getKey())
             ->whereIn('status', [
                 \App\Enums\ShipmentStatus::PENDING->value,
@@ -340,7 +340,7 @@ class ShipmentService
             ])
             ->count();
 
-        if ($activeShipments >= 5) {
+        if ($activeShipments >= 7) {
             return false; // No se puede asignar más envíos
         }
 

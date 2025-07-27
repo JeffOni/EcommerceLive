@@ -52,10 +52,24 @@
                         <div class="flex-1 min-w-0">
                             <h4 class="font-semibold text-gray-900 line-clamp-1">{{ $item->name }}</h4>
                             <div class="flex items-center justify-between mt-1">
-                                <span class="text-sm text-gray-600">${{ number_format($item->price, 2) }}
-                                    c/u</span>
-                                <span class="font-bold text-green-600">${{ number_format($item->price *
-                                    $item->qty, 2) }}</span>
+                                @if(isset($item->options['is_on_offer']) && $item->options['is_on_offer'])
+                                <div class="flex flex-col">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-red-600 font-medium">${{ number_format($item->price,
+                                            2) }}</span>
+                                        <span class="text-xs bg-red-500 text-white px-1 py-0.5 rounded">
+                                            {{ $item->options['discount_percentage'] }}% OFF
+                                        </span>
+                                    </div>
+                                    <span class="text-xs text-gray-500 line-through">
+                                        ${{ number_format($item->options['original_price'], 2) }} c/u
+                                    </span>
+                                </div>
+                                @else
+                                <span class="text-sm text-gray-600">${{ number_format($item->price, 2) }} c/u</span>
+                                @endif
+                                <span class="font-bold text-green-600">${{ number_format($item->price * $item->qty, 2)
+                                    }}</span>
                             </div>
                         </div>
                     </div>

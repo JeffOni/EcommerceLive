@@ -47,6 +47,10 @@ Route::post('products/variants/upload-temp-image', [ProductController::class, 'u
 Route::post('products/variants/clear-toast-flag', [ProductController::class, 'clearToastFlag'])
     ->name('products.variants.clear-toast-flag');
 
+// Ruta para toggle status is_active de productos
+Route::post('products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])
+    ->name('products.toggle-status');
+
 Route::resource('covers', CoverController::class);
 
 // Rutas de órdenes
@@ -57,8 +61,6 @@ Route::get('orders/{order}/download-pdf', [OrderController::class, 'downloadPDF'
 Route::get('orders/{order}/check-shipment', [OrderController::class, 'checkShipment'])->name('orders.checkShipment');
 Route::post('orders/{order}/assign-driver', [OrderController::class, 'assignDriver'])->name('orders.assignDriver');
 Route::patch('orders/{order}/mark-in-transit', [OrderController::class, 'markAsInTransit'])->name('orders.markInTransit');
-Route::patch('orders/{order}/mark-delivered', [OrderController::class, 'markAsDelivered'])->name('orders.markDelivered');
-Route::patch('orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 
 // Rutas de repartidores
 Route::get('delivery-drivers/active', [DeliveryDriverController::class, 'getActiveDrivers'])->name('delivery-drivers.active');
@@ -67,11 +69,13 @@ Route::resource('delivery-drivers', DeliveryDriverController::class);
 
 // Rutas de envíos
 Route::resource('shipments', ShipmentController::class);
+Route::patch('shipments/{shipment}/status', [ShipmentController::class, 'updateStatus'])->name('shipments.updateStatus');
 Route::patch('shipments/{shipment}/assign-driver', [ShipmentController::class, 'assignDriver'])->name('shipments.assignDriver');
 Route::patch('shipments/{shipment}/mark-picked-up', [ShipmentController::class, 'markPickedUp'])->name('shipments.markPickedUp');
 Route::patch('shipments/{shipment}/mark-in-transit', [ShipmentController::class, 'markInTransit'])->name('shipments.markInTransit');
 Route::patch('shipments/{shipment}/mark-delivered', [ShipmentController::class, 'markDelivered'])->name('shipments.markDelivered');
 Route::patch('shipments/{shipment}/mark-failed', [ShipmentController::class, 'markFailed'])->name('shipments.markFailed');
+Route::patch('shipments/{shipment}/cancel', [ShipmentController::class, 'cancelShipment'])->name('shipments.cancel');
 Route::patch('shipments/{shipment}/update-location', [ShipmentController::class, 'updateLocation'])->name('shipments.updateLocation');
 
 // Rutas de verificación de pagos

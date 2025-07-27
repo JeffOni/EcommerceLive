@@ -196,9 +196,19 @@
             }
 
             function updateShipmentStatus(shipmentId, status) {
+                let statusText = '';
+                switch(status) {
+                    case 'pending': statusText = 'pendiente'; break;
+                    case 'assigned': statusText = 'asignado'; break;
+                    case 'in_transit': statusText = 'en tránsito'; break;
+                    case 'delivered': statusText = 'entregado'; break;
+                    case 'failed': statusText = 'fallido'; break;
+                    default: statusText = status;
+                }
+
                 Swal.fire({
                     title: '¿Estás seguro?',
-                    text: `¿Deseas cambiar el estado de este envío?`,
+                    text: `¿Deseas cambiar el estado de este envío a "${statusText}"?`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#6366F1',
@@ -207,16 +217,23 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/admin/shipments/${shipmentId}/status`, {
+                        // Usar ruta específica para marcar como entregado o ruta general para otros estados
+                        const url = status === 'delivered' 
+                            ? `/admin/shipments/${shipmentId}/mark-delivered`
+                            : `/admin/shipments/${shipmentId}/status`;
+                        
+                        const body = status === 'delivered' 
+                            ? JSON.stringify({})
+                            : JSON.stringify({ status: status });
+
+                        fetch(url, {
                                 method: 'PATCH',
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                                     'Accept': 'application/json'
                                 },
-                                body: JSON.stringify({
-                                    status: status
-                                })
+                                body: body
                             })
                             .then(response => response.json())
                             .then(data => {
@@ -228,7 +245,16 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     });
-                                    filterShipments();
+                                    
+                                    // Si se marcó como entregado, eliminar la fila
+                                    if (status === 'delivered') {
+                                        const row = document.querySelector(`#shipment-row-${shipmentId}`);
+                                        if (row) {
+                                            row.remove();
+                                        }
+                                    } else {
+                                        filterShipments();
+                                    }
                                 } else {
                                     throw new Error(data.message || 'Error al actualizar');
                                 }
@@ -248,11 +274,10 @@
                 window.open(`/track/${trackingNumber}`, '_blank');
             }
 
-            // Función para marcar orden como entregada
-            function markOrderAsDelivered(orderId) {
+            function markOrderAsDelivered(shipmentId) {
                 Swal.fire({
                     title: '¿Confirmar entrega?',
-                    text: '¿Está seguro que desea marcar esta orden como entregada?',
+                    text: '¿Está seguro que desea marcar este envío como entregado?',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#10B981',
@@ -261,103 +286,53 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/admin/orders/${orderId}/mark-delivered`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
+                        fetch(`/admin/shipments/${shipmentId}/mark-delivered`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: '¡Entregado!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                // Actualizar la celda de acciones con el badge
+                                const row = document.querySelector(`#shipment-row-${shipmentId}`);
+                                if (row) {
+                                    const actionsCell = row.querySelector('td:last-child');
+                                    if (actionsCell) {
+                                        actionsCell.innerHTML = `
+                                            <span class="inline-flex items-center px-3 py-2 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                                                <i class="mr-1 fas fa-check-circle"></i>
+                                                Entregado
+                                            </span>
+                                        `;
+                                    }
                                 }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: '¡Entregado!',
-                                        text: data.message,
-                                        icon: 'success',
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                    filterShipments();
-                                } else {
-                                    throw new Error(data.message || 'Error al entregar');
-                                }
-                            })
-                            .catch(error => {
+                            } else {
                                 Swal.fire({
                                     title: 'Error',
-                                    text: 'No se pudo marcar como entregada',
+                                    text: data.message,
                                     icon: 'error'
                                 });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Ocurrió un error al marcar como entregado.',
+                                icon: 'error'
                             });
-                    }
-                });
-            }
-
-            // Función para abrir modal de cancelación
-            function openCancelOrderModal(orderId) {
-                Swal.fire({
-                    title: 'Cancelar Orden',
-                    text: 'Por favor, ingrese el motivo de la cancelación:',
-                    input: 'textarea',
-                    inputAttributes: {
-                        placeholder: 'Escriba el motivo de la cancelación...',
-                        'aria-label': 'Motivo de cancelación',
-                        rows: 4
-                    },
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'Debe ingresar un motivo para la cancelación';
-                        }
-                        if (value.length < 10) {
-                            return 'El motivo debe tener al menos 10 caracteres';
-                        }
-                        if (value.length > 500) {
-                            return 'El motivo no puede exceder 500 caracteres';
-                        }
-                    },
-                    showCancelButton: true,
-                    confirmButtonColor: '#EF4444',
-                    cancelButtonColor: '#6B7280',
-                    confirmButtonText: 'Cancelar Orden',
-                    cancelButtonText: 'Cerrar',
-                    preConfirm: (motivoCancelacion) => {
-                        return fetch(`/admin/orders/${orderId}/cancel`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    nota_cancelacion: motivoCancelacion
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (!data.success) {
-                                    throw new Error(data.message || 'Error al cancelar');
-                                }
-                                return data;
-                            })
-                            .catch(error => {
-                                Swal.showValidationMessage(
-                                    `Error: ${error.message}`
-                                );
-                            });
-                    },
-                    allowOutsideClick: () => !Swal.isLoading()
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: '¡Cancelada!',
-                            text: result.value.message,
-                            icon: 'success',
-                            timer: 2000,
-                            showConfirmButton: false
+                            console.error('Error:', error);
                         });
-                        filterShipments();
                     }
                 });
             }

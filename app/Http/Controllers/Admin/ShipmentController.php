@@ -310,9 +310,12 @@ class ShipmentController extends Controller
 
         $shipment->markAsDelivered($request->proof, $request->notes);
 
+        // Actualizar el estado de la orden asociada
+        $shipment->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO]);
+
         return response()->json([
             'success' => true,
-            'message' => 'Envío marcado como entregado'
+            'message' => 'Envío marcado como entregado y orden actualizada'
         ]);
     }
 
@@ -334,6 +337,32 @@ class ShipmentController extends Controller
     }
 
     /**
+     * Update shipment status
+     */
+    public function updateStatus(Request $request, Shipment $shipment)
+    {
+        $request->validate([
+            'status' => 'required|string|in:pending,assigned,in_transit,delivered,failed'
+        ]);
+
+        $oldStatus = $shipment->status;
+        $newStatus = $request->status;
+
+        // Actualizar el estado del envío
+        $shipment->update(['status' => $newStatus]);
+
+        // Si se marca como entregado, también actualizar la orden relacionada
+        if ($newStatus === 'delivered' && $oldStatus !== 'delivered') {
+            $shipment->order->update(['status' => 6]); // 6 = Entregado en órdenes
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Estado del envío actualizado correctamente'
+        ]);
+    }
+
+    /**
      * Update shipment location
      */
     public function updateLocation(Request $request, Shipment $shipment)
@@ -348,6 +377,30 @@ class ShipmentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ubicación actualizada'
+        ]);
+    }
+
+    /**
+     * Cancel a shipment
+     */
+    public function cancelShipment(Request $request, Shipment $shipment)
+    {
+        $request->validate([
+            'reason' => 'required|string|min:10|max:255'
+        ]);
+
+        // Actualizar el estado del envío a cancelado
+        $shipment->update([
+            'status' => \App\Enums\ShipmentStatus::FAILED,
+            'notes' => 'Cancelado: ' . $request->reason
+        ]);
+
+        // Actualizar el estado de la orden asociada
+        $shipment->order->update(['status' => \App\Enums\OrderStatus::CANCELADO]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Envío cancelado correctamente'
         ]);
     }
 }

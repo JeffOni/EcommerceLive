@@ -142,6 +142,71 @@
                                         number_format($product->price, 2) }}
                                     </p>
                                 </div>
+
+                                <!-- Divider -->
+                                <div class="border-t border-gray-200 my-6"></div>
+
+                                <!-- Offer Information Display -->
+                                <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                                    <h3 class="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        Información de Ofertas
+                                    </h3>
+                                    @if($product->is_on_valid_offer)
+                                    <div class="space-y-2">
+                                        <p class="text-sm text-blue-700">
+                                            <strong>Esta variante hereda la oferta del producto:</strong>
+                                        </p>
+                                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-sm font-medium text-gray-700">Oferta:</span>
+                                                <span
+                                                    class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                                                    {{ $product->discount_percentage }}% OFF
+                                                </span>
+                                            </div>
+                                            @if($product->offer_name)
+                                            <p class="text-sm text-gray-600 mb-1">
+                                                <strong>Nombre:</strong> {{ $product->offer_name }}
+                                            </p>
+                                            @endif
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-600">Precio original:</span>
+                                                <span class="text-gray-800 font-medium">${{
+                                                    number_format($variant->price ?? $product->price, 2) }}</span>
+                                            </div>
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-green-600">Precio con oferta:</span>
+                                                <span class="text-green-800 font-bold">${{
+                                                    number_format($product->current_price, 2) }}</span>
+                                            </div>
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-blue-600">Ahorro:</span>
+                                                <span class="text-blue-800 font-medium">${{
+                                                    number_format(($variant->price ?? $product->price) -
+                                                    $product->current_price, 2) }}</span>
+                                            </div>
+                                            <div class="mt-2 text-xs text-gray-500">
+                                                <i class="fas fa-clock mr-1"></i>
+                                                Válida desde {{ $product->offer_starts_at ?
+                                                $product->offer_starts_at->format('d/m/Y') : 'N/A' }}
+                                                hasta {{ $product->offer_ends_at ?
+                                                $product->offer_ends_at->format('d/m/Y') : 'N/A' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-tag text-gray-400 text-3xl mb-2"></i>
+                                        <p class="text-sm text-gray-600">
+                                            El producto principal no tiene ofertas activas.
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            Las variantes heredan las ofertas del producto principal.
+                                        </p>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
 
                             <!-- Action Button -->

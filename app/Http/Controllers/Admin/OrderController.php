@@ -197,28 +197,36 @@ class OrderController extends Controller
             \Log::info("Repartidor seleccionado: {$driver->getAttribute('name')} (ID: {$driver->getKey()})");
 
             // PASO 1: Verificar que la orden esté en estado válido
-            $validStates = [1, 2, 3]; // PENDIENTE, PAGADO, PREPARANDO
+            $validStates = [
+                \App\Enums\OrderStatus::PENDIENTE->value,
+                \App\Enums\OrderStatus::PAGADO->value,
+                \App\Enums\OrderStatus::PREPARANDO->value
+            ];
             $orderStatusValue = $order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status;
             if (!in_array($orderStatusValue, $validStates)) {
                 \Log::warning("Orden #{$order->getKey()} no está en estado válido: {$orderStatusValue}");
                 return response()->json([
                     'success' => false,
                     'message' => 'Esta orden no puede tener un repartidor asignado en su estado actual.'
-                ]);
+                ], 400);
             }
 
-            // PASO 2: Verificar límite de repartidor (máximo 5 envíos activos)
+            // PASO 2: Verificar límite de repartidor (máximo 7 envíos activos)
             $activeShipments = \App\Models\Shipment::where('delivery_driver_id', $driver->getKey())
-                ->whereIn('status', [1, 2, 4]) // PENDING, ASSIGNED, IN_TRANSIT
+                ->whereIn('status', [
+                    \App\Enums\ShipmentStatus::PENDING->value,
+                    \App\Enums\ShipmentStatus::ASSIGNED->value,
+                    \App\Enums\ShipmentStatus::IN_TRANSIT->value
+                ])
                 ->count();
 
             \Log::info("Repartidor {$driver->getAttribute('name')} tiene {$activeShipments} envíos activos");
 
-            if ($activeShipments >= 5) {
+            if ($activeShipments >= 7) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'El repartidor ya tiene 5 envíos activos. No puede recibir más asignaciones.'
-                ]);
+                    'message' => 'El repartidor ya tiene 7 envíos activos. No puede recibir más asignaciones.'
+                ], 400);
             }
 
             // PASO 3: Eliminar cualquier envío existente sin repartidor

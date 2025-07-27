@@ -287,16 +287,30 @@
                             </button>
                             -->
                             <button x-show="payment == 2" x-cloak @click="showTransferModal = true"
-                                class="w-full px-4 py-3 font-semibold text-white transition bg-green-600 rounded-lg hover:bg-green-700">
-                                Ya Transferí - Subir Comprobante
+                                :disabled="transferProcessing"
+                                :class="transferProcessing ? 'opacity-50 cursor-not-allowed' : ''"
+                                class="w-full px-4 py-3 font-semibold text-white transition bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50">
+                                <span x-show="!transferProcessing">Ya Transferí - Subir Comprobante</span>
+                                <span x-show="transferProcessing" class="flex items-center justify-center">
+                                    <div
+                                        class="w-5 h-5 border-2 border-white border-dashed rounded-full animate-spin mr-2">
+                                    </div>
+                                    Procesando...
+                                </span>
                             </button>
 
                             <button x-show="payment == 3" x-cloak @click="confirmCashPayment()"
-                                class="w-full px-4 py-3 font-semibold text-white transition bg-orange-600 rounded-lg hover:bg-orange-700">
-                                Confirmar Pedido (Pago Contra Entrega)
-                            </button>
-
-                            <button x-show="payment == 4" x-cloak @click="showQrModal = true"
+                                :disabled="cashProcessing"
+                                :class="cashProcessing ? 'opacity-50 cursor-not-allowed' : ''"
+                                class="w-full px-4 py-3 font-semibold text-white transition bg-orange-600 rounded-lg hover:bg-orange-700 disabled:opacity-50">
+                                <span x-show="!cashProcessing">Confirmar Pedido (Pago Contra Entrega)</span>
+                                <span x-show="cashProcessing" class="flex items-center justify-center">
+                                    <div
+                                        class="w-5 h-5 border-2 border-white border-dashed rounded-full animate-spin mr-2">
+                                    </div>
+                                    Procesando...
+                                </span>
+                            </button> <button x-show="payment == 4" x-cloak @click="showQrModal = true"
                                 class="w-full px-4 py-3 font-semibold text-white transition bg-purple-600 rounded-lg hover:bg-purple-700">
                                 Ya Pagué con QR - Subir Comprobante
                             </button>
@@ -464,9 +478,15 @@
                             class="flex-1 px-4 py-2 text-gray-700 transition bg-gray-300 rounded-md hover:bg-gray-400">
                             Cancelar
                         </button>
-                        <button type="submit"
-                            class="flex-1 px-4 py-2 text-white transition bg-green-600 rounded-md hover:bg-green-700">
-                            Enviar Comprobante
+                        <button type="submit" :disabled="transferSubmitting"
+                            :class="transferSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
+                            class="flex-1 px-4 py-2 text-white transition bg-green-600 rounded-md hover:bg-green-700 disabled:opacity-50">
+                            <span x-show="!transferSubmitting">Enviar Comprobante</span>
+                            <span x-show="transferSubmitting" class="flex items-center justify-center">
+                                <div class="w-4 h-4 border-2 border-white border-dashed rounded-full animate-spin mr-2">
+                                </div>
+                                Enviando...
+                            </span>
                         </button>
                     </div>
                 </form>
@@ -556,9 +576,15 @@
                             class="flex-1 px-4 py-2 text-gray-700 transition bg-gray-300 rounded-md hover:bg-gray-400">
                             Cancelar
                         </button>
-                        <button type="submit"
-                            class="flex-1 px-4 py-2 text-white transition bg-purple-600 rounded-md hover:bg-purple-700">
-                            Confirmar Pago
+                        <button type="submit" :disabled="qrSubmitting"
+                            :class="qrSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
+                            class="flex-1 px-4 py-2 text-white transition bg-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50">
+                            <span x-show="!qrSubmitting">Confirmar Pago</span>
+                            <span x-show="qrSubmitting" class="flex items-center justify-center">
+                                <div class="w-4 h-4 border-2 border-white border-dashed rounded-full animate-spin mr-2">
+                                </div>
+                                Confirmando...
+                            </span>
                         </button>
                     </div>
                 </form>
@@ -586,6 +612,12 @@
                 _isSubmittingQr: false,
                 _isSubmittingCash: false,
                 _lastRedirectUrl: null,
+                
+                // Estados para UI de loading
+                transferProcessing: false,
+                cashProcessing: false,
+                transferSubmitting: false,
+                qrSubmitting: false,
                 
                 // Datos de dirección de envío para validación
                 shippingProvince: @if($defaultAddress) '{{ $defaultAddress->province->name ?? '' }}' @else '' @endif,
@@ -658,9 +690,14 @@
                 
                 // Verificar provincia antes de cualquier pago
                 checkProvinceBeforePayment() {
-                    if (!this.validateShippingProvince()) {
+                    console.log('Validando provincia antes del pago...');
+                    const isValid = this.validateShippingProvince();
+                    console.log('Provincia válida:', isValid);
+                    if (!isValid) {
+                        console.log('Validación de provincia falló, deteniendo proceso');
                         return false;
                     }
+                    console.log('Provincia válida, continuando proceso');
                     return true;
                 },
                 generateOrderNumber() {
@@ -674,18 +711,27 @@
 
                 // Métodos de pago unificados - usando CheckoutController
                 async submitTransferReceipt(event) {
+                    console.log('=== INICIANDO TRANSFER RECEIPT ===');
                     // Validar provincia antes de procesar
                     if (!this.checkProvinceBeforePayment()) {
+                        console.log('Validación de provincia falló, saliendo de submitTransferReceipt');
                         return;
                     }
+                    console.log('Validación de provincia exitosa, continuando...');
                     // Evitar doble envío
-                    if (this._isSubmittingTransfer) return;
+                    if (this._isSubmittingTransfer) {
+                        console.log('Ya se está procesando una transferencia, saliendo...');
+                        return;
+                    }
+                    console.log('Iniciando procesamiento de transferencia...');
                     this._isSubmittingTransfer = true;
+                    this.transferSubmitting = true;
                     const submitBtn = event.target.querySelector('button[type="submit"]');
                     if (submitBtn) submitBtn.disabled = true;
                     try {
                         console.log('Iniciando envío de comprobante de transferencia...');
                         const formData = new FormData(event.target);
+                        console.log('FormData creado, enviando fetch a checkout.transfer-payment...');
 
                         const response = await fetch('{{ route('checkout.transfer-payment') }}', {
                             method: 'POST',
@@ -696,34 +742,46 @@
                             body: formData
                         });
 
+                        console.log('Response recibida, status:', response.status);
                         const result = await response.json();
                         console.log('Resultado de transfer payment:', result);
 
                         if (result.success) {
-                            this.showTransferModal = false;
-                            this._lastRedirectUrl = result.redirect_url;
+                            console.log('Transfer payment exitoso, mostrando animación...');
+                            this._lastRedirectUrl = result.redirect_url || '{{ route('checkout.thank-you') }}';
                             this.showSuccessAnimation();
                         } else {
                             console.error('Error en respuesta:', result);
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
-                        console.error('Error completo:', error);
+                        console.error('Error completo en transfer:', error);
+                        console.log('Tipo de error:', error.constructor.name);
+                        console.log('Stack trace:', error.stack);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
                     } finally {
                         this._isSubmittingTransfer = false;
+                        this.transferSubmitting = false;
                         if (submitBtn) submitBtn.disabled = false;
                     }
                 },
 
                 async submitQrReceipt(event) {
+                    console.log('=== INICIANDO QR RECEIPT ===');
                     // Validar provincia antes de procesar
                     if (!this.checkProvinceBeforePayment()) {
+                        console.log('Validación de provincia falló, saliendo de submitQrReceipt');
                         return;
                     }
+                    console.log('Validación de provincia exitosa para QR, continuando...');
                     // Evitar doble envío
-                    if (this._isSubmittingQr) return;
+                    if (this._isSubmittingQr) {
+                        console.log('Ya se está procesando un QR, saliendo...');
+                        return;
+                    }
+                    console.log('Iniciando procesamiento de QR...');
                     this._isSubmittingQr = true;
+                    this.qrSubmitting = true;
                     const submitBtn = event.target.querySelector('button[type="submit"]');
                     if (submitBtn) submitBtn.disabled = true;
                     try {
@@ -743,8 +801,8 @@
                         console.log('Resultado de QR payment:', result);
 
                         if (result.success) {
-                            this.showQrModal = false;
-                            this._lastRedirectUrl = result.redirect_url;
+                            console.log('QR payment exitoso, mostrando animación...');
+                            this._lastRedirectUrl = result.redirect_url || '{{ route('checkout.thank-you') }}';
                             this.showSuccessAnimation();
                         } else {
                             console.error('Error en respuesta QR:', result);
@@ -752,20 +810,29 @@
                         }
                     } catch (error) {
                         console.error('Error completo QR:', error);
+                        console.log('Tipo de error QR:', error.constructor.name);
+                        console.log('Stack trace QR:', error.stack);
                         this.showErrorMessage('Error al subir el comprobante: ' + error.message);
                     } finally {
                         this._isSubmittingQr = false;
+                        this.qrSubmitting = false;
                         if (submitBtn) submitBtn.disabled = false;
                     }
                 },
 
                 async confirmCashPayment() {
+                    console.log('=== INICIANDO CASH PAYMENT ===');
                     // Evitar doble procesamiento
-                    if (this._isSubmittingCash) return;
+                    if (this._isSubmittingCash) {
+                        console.log('Ya se está procesando un pago en efectivo, saliendo...');
+                        return;
+                    }
                     this._isSubmittingCash = true;
+                    console.log('Marcado como procesando pago en efectivo...');
                     
                     // Validar provincia antes de procesar
                     if (!this.checkProvinceBeforePayment()) {
+                        console.log('Validación de provincia falló, saliendo de confirmCashPayment');
                         this._isSubmittingCash = false;
                         return;
                     }
@@ -799,6 +866,7 @@
                         console.log('Respuesta del servidor:', result);
 
                         if (result.success) {
+                            console.log('Pago en efectivo exitoso, mostrando animación...');
                             console.log('Pedido creado exitosamente');
                             this._lastRedirectUrl = result.redirect_url || '{{ route('checkout.thank-you') }}';
                             this.showSuccessAnimation();
@@ -807,7 +875,9 @@
                             this.showErrorMessage('Error: ' + result.message);
                         }
                     } catch (error) {
-                        console.error('Error completo:', error);
+                        console.error('Error completo en cash:', error);
+                        console.log('Tipo de error cash:', error.constructor.name);
+                        console.log('Stack trace cash:', error.stack);
                         this.showErrorMessage('Error al confirmar el pedido: ' + error.message);
                     } finally {
                         this._isSubmittingCash = false;
@@ -815,6 +885,8 @@
                 },
 
                 showSuccessAnimation() {
+                    console.log('Iniciando showSuccessAnimation...');
+                    console.log('URL de redirección:', this._lastRedirectUrl);
                     // Crear overlay de bloqueo y animación de éxito (ahora cumple función de loader también)
                     const overlay = document.createElement('div');
                     overlay.className = 'fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-60'; // Fondo negro sólido

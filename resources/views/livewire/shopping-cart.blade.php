@@ -228,11 +228,35 @@ ESTRUCTURA:
                                             </a>
                                         </h3>
                                     </div>
-                                    {{-- Precio por unidad --}}
+                                    {{-- Precio por unidad con información de ofertas --}}
                                     <div class="flex items-center mb-3 space-x-4">
+                                        @if(isset($item->options['is_on_offer']) && $item->options['is_on_offer'])
+                                        <div class="flex flex-col space-y-1">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xl font-bold text-red-600">
+                                                    ${{ number_format($item->price, 2) }}
+                                                </span>
+                                                <span class="text-sm bg-red-500 text-white px-2 py-1 rounded-full">
+                                                    {{ $item->options['discount_percentage'] }}% OFF
+                                                </span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-sm text-gray-500 line-through">
+                                                    ${{ number_format($item->options['original_price'], 2) }}
+                                                </span>
+                                                <span class="text-xs text-gray-500">precio original</span>
+                                            </div>
+                                            @if($item->options['offer_name'])
+                                            <span class="text-xs text-green-600 font-medium">
+                                                🎯 {{ $item->options['offer_name'] }}
+                                            </span>
+                                            @endif
+                                        </div>
+                                        @else
                                         <span class="text-xl font-bold text-green-600">
                                             ${{ number_format($item->price, 2) }}
                                         </span>
+                                        @endif
                                         <span class="text-sm text-gray-500">por unidad</span>
                                     </div>
                                     {{-- Botón para eliminar producto del carrito --}}

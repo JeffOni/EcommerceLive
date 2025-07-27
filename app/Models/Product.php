@@ -34,7 +34,27 @@ class Product extends Model
         'image_3',      // Ruta a la tercera imagen del producto
         'price',        // Precio base del producto
         'stock',        // Cantidad disponible en inventario
-        'subcategory_id' // ID de la subcategoría a la que pertenece
+        'is_active',    // Control de visibilidad del producto
+        'subcategory_id', // ID de la subcategoría a la que pertenece
+        // Campos para sistema de ofertas
+        'is_on_offer',    // Si el producto está en oferta
+        'offer_price',    // Precio con oferta aplicada
+        'offer_percentage', // Porcentaje de descuento
+        'offer_starts_at', // Fecha de inicio de la oferta
+        'offer_ends_at',   // Fecha de fin de la oferta
+        'offer_name'      // Nombre de la oferta
+    ];
+
+    /**
+     * Los atributos que deben ser casteados.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_on_offer' => 'boolean',
+        'offer_starts_at' => 'datetime',
+        'offer_ends_at' => 'datetime',
     ];
 
     protected function image(): Attribute
@@ -56,6 +76,115 @@ class Product extends Model
         return Attribute::make(
             get: fn() => $this->image_3 ? Storage::url($this->image_3) : null,
         );
+    }
+
+    // ========================================
+    // ACCESSORS Y MÉTODOS PARA OFERTAS
+    // ========================================
+
+    /**
+     * Verifica si el producto está en una oferta válida
+     * Considera las fechas de inicio y fin de la oferta
+     */
+    protected function isOnValidOffer(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->is_on_offer) {
+                    return false;
+                }
+
+                $now = now();
+                $hasStarted = !$this->offer_starts_at || $now >= $this->offer_starts_at;
+                $hasNotEnded = !$this->offer_ends_at || $now <= $this->offer_ends_at;
+
+                return $hasStarted && $hasNotEnded;
+            }
+        );
+    }
+
+    /**
+     * Obtiene el precio actual (con oferta si aplica, sin oferta si no)
+     */
+    protected function currentPrice(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->is_on_valid_offer) {
+                    return $this->price;
+                }
+
+                // Si hay precio fijo de oferta, usarlo
+                if ($this->offer_price && $this->offer_price > 0) {
+                    return $this->offer_price;
+                }
+
+                // Si hay porcentaje de descuento, calcularlo
+                if ($this->offer_percentage && $this->offer_percentage > 0) {
+                    return $this->price * (1 - ($this->offer_percentage / 100));
+                }
+
+                return $this->price;
+            }
+        );
+    }
+
+    /**
+     * Calcula el porcentaje de descuento automáticamente
+     */
+    protected function discountPercentage(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->is_on_valid_offer) {
+                    return 0;
+                }
+
+                // Si ya hay porcentaje definido, usarlo
+                if ($this->offer_percentage && $this->offer_percentage > 0) {
+                    return $this->offer_percentage;
+                }
+
+                // Si hay precio fijo, calcular el porcentaje
+                if ($this->offer_price && $this->offer_price > 0) {
+                    return round((($this->price - $this->offer_price) / $this->price) * 100);
+                }
+
+                return 0;
+            }
+        );
+    }
+
+    /**
+     * Calcula el ahorro en dinero
+     */
+    protected function savingsAmount(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->is_on_valid_offer) {
+                    return 0;
+                }
+
+                return $this->price - $this->current_price;
+            }
+        );
+    }
+
+    /**
+     * Scope para filtrar solo productos en oferta válida
+     */
+    public function scopeOnValidOffer($query)
+    {
+        return $query->where('is_on_offer', true)
+            ->where(function ($q) {
+                $q->whereNull('offer_starts_at')
+                    ->orWhere('offer_starts_at', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('offer_ends_at')
+                    ->orWhere('offer_ends_at', '>=', now());
+            });
     }
 
 

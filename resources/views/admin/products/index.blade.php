@@ -79,13 +79,13 @@
                             </div>
                             <select id="items-per-page"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12 por
+                                <option value="12" {{ request('per_page', 12)==12 ? 'selected' : '' }}>12 por
                                     página</option>
-                                <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24 por página
+                                <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>24 por página
                                 </option>
-                                <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48 por página
+                                <option value="48" {{ request('per_page')==48 ? 'selected' : '' }}>48 por página
                                 </option>
-                                <option value="96" {{ request('per_page') == 96 ? 'selected' : '' }}>96 por página
+                                <option value="96" {{ request('per_page')==96 ? 'selected' : '' }}>96 por página
                                 </option>
                             </select>
                         </div>
@@ -94,23 +94,23 @@
 
                 <div class="p-8" id="products-container">
                     @if ($products->count())
-                        @include('admin.products.partials.products-content')
+                    @include('admin.products.partials.products-content')
                     @else
-                        <!-- Estado vacío mejorado -->
-                        <div class="py-16 text-center">
-                            <div
-                                class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-blue-100 to-purple-100">
-                                <i class="text-4xl text-blue-500 fas fa-box"></i>
-                            </div>
-                            <h3 class="mb-4 text-2xl font-semibold text-gray-800">No hay productos registrados</h3>
-                            <p class="max-w-md mx-auto mb-8 text-gray-600">Todavía no has creado ningún producto. Los
-                                productos son el corazón de tu tienda online.</p>
-                            <a href="{{ route('admin.products.create') }}"
-                                class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl hover:shadow-xl hover:scale-105">
-                                <i class="mr-3 text-white fas fa-plus"></i>
-                                <span class="text-white">Crear Primer Producto</span>
-                            </a>
+                    <!-- Estado vacío mejorado -->
+                    <div class="py-16 text-center">
+                        <div
+                            class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-blue-100 to-purple-100">
+                            <i class="text-4xl text-blue-500 fas fa-box"></i>
                         </div>
+                        <h3 class="mb-4 text-2xl font-semibold text-gray-800">No hay productos registrados</h3>
+                        <p class="max-w-md mx-auto mb-8 text-gray-600">Todavía no has creado ningún producto. Los
+                            productos son el corazón de tu tienda online.</p>
+                        <a href="{{ route('admin.products.create') }}"
+                            class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl hover:shadow-xl hover:scale-105">
+                            <i class="mr-3 text-white fas fa-plus"></i>
+                            <span class="text-white">Crear Primer Producto</span>
+                        </a>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -119,8 +119,8 @@
 
     {{-- JavaScript para funcionalidad avanzada --}}
     @push('js')
-        <script>
-            // Estado de la vista actual
+    <script>
+        // Estado de la vista actual
             let currentView = 'cards';
 
             // Función para cambiar entre vistas
@@ -232,7 +232,65 @@
             document.getElementById('items-per-page').addEventListener('change', function(e) {
                 loadData();
             });
-        </script>
+
+            // Función para toggle del estado is_active del producto
+            window.toggleProductStatus = function(productId, newStatus) {
+                // Mostrar confirmación
+                const action = newStatus === 'true' ? 'activar' : 'desactivar';
+                const actionColor = newStatus === 'true' ? 'success' : 'warning';
+                
+                Swal.fire({
+                    title: `¿${action.charAt(0).toUpperCase() + action.slice(1)} producto?`,
+                    text: `¿Estás seguro de que quieres ${action} este producto?`,
+                    icon: actionColor,
+                    showCancelButton: true,
+                    confirmButtonColor: newStatus === 'true' ? '#10b981' : '#f59e0b',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: `Sí, ${action}`,
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Realizar la petición AJAX
+                        fetch(`/admin/products/${productId}/toggle-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                is_active: newStatus === 'true'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Recargar los datos para actualizar la vista
+                                loadData();
+                                
+                                // Mostrar mensaje de éxito
+                                Swal.fire({
+                                    title: '¡Éxito!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                throw new Error(data.message || 'Error desconocido');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Hubo un problema al actualizar el estado del producto',
+                                icon: 'error'
+                            });
+                        });
+                    }
+                });
+            };
+    </script>
     @endpush
 
 </x-admin-layout>

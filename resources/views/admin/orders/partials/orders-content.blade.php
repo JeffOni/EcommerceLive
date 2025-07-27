@@ -51,8 +51,8 @@
                             @switch($order->payment_method)
                             @case(0)
                             <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                <i class="mr-1 fas fa-money-bill"></i>Efectivo
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                Otro
                             </span>
                             @break
 
@@ -72,9 +72,10 @@
                             @break
 
                             @default
+
                             <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                Otro
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <i class="mr-1 fas fa-money-bill"></i>Efectivo
                             </span>
                             @endswitch
                         </div>

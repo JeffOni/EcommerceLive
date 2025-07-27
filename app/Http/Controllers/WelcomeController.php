@@ -24,7 +24,8 @@ class WelcomeController extends Controller
             ->orderBy('order')
             ->get();
 
-            $lastProducts = Product::orderBy('created_at', 'desc')
+        $lastProducts = Product::where('is_active', true)
+            ->orderBy('created_at', 'desc')
             ->with('subcategory.category.family')
             ->take(12)
             ->get();

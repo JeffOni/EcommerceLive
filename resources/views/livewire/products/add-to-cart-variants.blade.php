@@ -11,9 +11,17 @@
                     const availableImages = @js($this->availableImages);
                     const variantImage = availableImages.find(img => img.type === 'variant');
                     if (variantImage) {
-                        currentImage = variantImage.url;
+                        currentI                        </div>
+                    </div>
+                    <p class=" mt-3 text-xs text-gray-500 ">
+                    <svg class=" inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 616 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    Transacciones 100% segurasriantImage.url;
                     }
-                " wire:key="image-gallery-{{ md5(json_encode($this->selectedFeatures)) }}">
+                    " wire:key="image-gallery-{{ md5(json_encode($this->selectedFeatures)) }}">
                     {{-- Imagen Principal --}}
                     <div class="relative group">
                         <div
@@ -71,14 +79,14 @@
                     </div>
 
                     {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
-                    <div class="space-y-3 mt-6">
+                    <div class="mt-6 space-y-3">
                         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
                         <div class="flex pb-2 space-x-3 overflow-x-auto">
                             @foreach ($this->availableImages as $index => $image)
                             <div class="flex-shrink-0">
                                 <button type="button" @click="currentImage = '{{ $image['url'] }}'"
                                     :class="currentImage === '{{ $image['url'] }}' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300'"
-                                    class="relative w-20 h-20 overflow-hidden border-2 rounded-xl transition-all duration-200">
+                                    class="relative w-20 h-20 overflow-hidden transition-all duration-200 border-2 rounded-xl">
                                     <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
                                         class="object-cover w-full h-full">
 
@@ -160,25 +168,35 @@
                 {{-- Precio Dinámico --}}
                 <div class="space-y-3">
                     <div class="flex items-baseline space-x-3">
+                        @if($this->variant && $this->variant->is_on_valid_offer)
+                        <span class="text-4xl font-bold text-red-600">
+                            ${{ number_format($this->variant->current_price, 2) }}
+                        </span>
+                        <span
+                            class="px-3 py-1 ml-2 text-base font-semibold text-white bg-red-500 rounded-full animate-pulse">
+                            <i class="mr-1 fas fa-fire"></i>{{ $this->variant->discount_percentage }}% OFF
+                        </span>
+                        @else
                         <span class="text-4xl font-bold text-gray-900 dark:text-white">
                             ${{ number_format($this->variantInfo['price'], 2) }}
                         </span>
-                        @if ($this->variant && $this->variantInfo['price'] != $product->price)
-                        {{-- Mostrar precio base cuando hay diferencia --}}
-                        <span class="text-xl text-gray-500 line-through">
-                            ${{ number_format($product->price, 2) }}
-                        </span>
-                        @php
-                        $discount = (($product->price - $this->variantInfo['price']) / $product->price) * 100;
-                        @endphp
-                        @if ($discount > 0)
-                        <span
-                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                            -{{ number_format($discount, 0) }}%
-                        </span>
-                        @endif
                         @endif
                     </div>
+                    @if($this->variant && $this->variant->is_on_valid_offer)
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-lg text-gray-500 line-through">
+                            ${{ number_format($this->variant->price, 2) }}
+                        </span>
+                        <span class="px-2 py-1 text-xs font-semibold text-red-600 bg-red-100 rounded-full">
+                            -${{ number_format($this->variant->savings_amount, 2) }} ahorro
+                        </span>
+                        @if($this->product->offer_name)
+                        <span class="px-2 py-1 text-xs font-semibold text-green-600 bg-green-100 rounded-full">
+                            🎯 {{ $this->product->offer_name }}
+                        </span>
+                        @endif
+                    </div>
+                    @endif
 
                     {{-- Estado del variant --}}
                     <div class="flex items-center space-x-3">
@@ -554,7 +572,7 @@
                         @endif
                         @endif
 
-                        {{-- Botones Secundarios --}}
+                        {{-- Botones Secundarios - COMENTADOS (NO IMPLEMENTADOS)
                         <div class="grid grid-cols-2 gap-3">
                             <button
                                 class="flex items-center justify-center px-4 py-3 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border border-gray-300 dark:text-gray-300 dark:bg-gray-800 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -573,6 +591,7 @@
                                 Compartir
                             </button>
                         </div>
+                        --}}
                     </div>
                 </div>
 
@@ -597,7 +616,7 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-green-700 dark:text-green-300">Envío estándar</span>
-                            <span class="font-semibold text-green-800 dark:text-green-200">GRATIS</span>
+                            <span class="font-semibold text-green-800 dark:text-green-200">Fast Delivery</span>
                         </div>
                     </div>
 
@@ -614,8 +633,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Garantía Extendida</h4>
-                                <p class="text-sm text-blue-700 dark:text-blue-300">30 días de devolución</p>
+                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Productos Frescos</h4>
+                                <p class="text-sm text-blue-700 dark:text-blue-300">Calidad garantizada</p>
                             </div>
                         </div>
                         <div class="space-y-2">
@@ -625,7 +644,7 @@
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Protección contra defectos
+                                Productos seleccionados diariamente
                             </div>
                             <div class="flex items-center text-sm text-blue-700 dark:text-blue-300">
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -633,7 +652,7 @@
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Soporte técnico gratuito
+                                Conservación y manipulación adecuada
                             </div>
                         </div>
                     </div>
@@ -646,26 +665,17 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center px-3 py-2 space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
                             <svg class="w-8 h-5" viewBox="0 0 38 24" fill="none">
-                                <rect width="38" height="24" rx="4" fill="#1A1F71" />
-                                <path d="M10 8h4v8h-4V8zm6 0h4v8h-4V8zm6 0h4v8h-4V8z" fill="white" />
+                                <rect width="38" height="24" rx="4" fill="#22C55E" />
+                                <path d="M8 8h4v8H8V8zm6 2h4v6h-4v-6zm6-2h4v8h-4V8z" fill="white" />
                             </svg>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Visa</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Pago en Efectivo</span>
                         </div>
                         <div class="flex items-center px-3 py-2 space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
                             <svg class="w-8 h-5" viewBox="0 0 38 24" fill="none">
-                                <rect width="38" height="24" rx="4" fill="#EB001B" />
-                                <circle cx="15" cy="12" r="7" fill="#FF5F00" />
-                                <circle cx="23" cy="12" r="7" fill="#F79E1B" />
+                                <rect width="38" height="24" rx="4" fill="#3B82F6" />
+                                <path d="M6 10h26v4H6v-4zm0-2h26v2H6V8zm0 8h26v2H6v-2z" fill="white" />
                             </svg>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Mastercard</span>
-                        </div>
-                        <div class="flex items-center px-3 py-2 space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <svg class="w-8 h-5" viewBox="0 0 38 24" fill="none">
-                                <rect width="38" height="24" rx="4" fill="#003087" />
-                                <path d="M8 8h8v8H8V8z" fill="#0070BA" />
-                                <path d="M22 8h8v8h-8V8z" fill="#FFC439" />
-                            </svg>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">PayPal</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Transferencia</span>
                         </div>
                         <span class="text-sm text-gray-500">y más...</span>
                     </div>

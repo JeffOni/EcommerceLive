@@ -15,16 +15,13 @@ return new class extends Migration {
             $table->string('tracking_number')->unique(); // Número de seguimiento único
             $table->foreignId('order_id')->constrained()->onDelete('cascade'); // Relación con orden
             $table->foreignId('delivery_driver_id')->nullable()->constrained()->onDelete('set null'); // Repartidor asignado
-
-            // Estados del envío
-            $table->integer('status')->default(1); // 1:Pendiente, 2:Asignado, 3:En camino, 4:Entregado, 5:Fallido
+            $table->integer('status')->default(1); // Estado del envío (1=PENDING, 2=ASSIGNED, 3=PICKED_UP, 4=IN_TRANSIT, 5=DELIVERED, 6=FAILED)
 
             // Información de entrega
             $table->json('pickup_address'); // Dirección de recogida (tienda)
             $table->json('delivery_address'); // Dirección de entrega (cliente)
             $table->decimal('delivery_fee', 8, 2)->default(0.00); // Costo de envío
             $table->decimal('distance_km', 8, 2)->nullable(); // Distancia estimada en KM
-            $table->integer('estimated_time_minutes')->nullable(); // Tiempo estimado en minutos
 
             // Fechas importantes
             $table->timestamp('assigned_at')->nullable(); // Cuando se asignó al repartidor
@@ -49,8 +46,8 @@ return new class extends Migration {
 
             // Índices para mejorar performance
             $table->index('tracking_number');
+            $table->index('delivery_driver_id');
             $table->index('status');
-            $table->index(['delivery_driver_id', 'status']);
             $table->index('delivered_at');
         });
     }

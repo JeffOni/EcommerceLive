@@ -45,6 +45,12 @@ $links = [
 'active' => request()->routeIs('admin.products.*'),
 ],
 [
+'name' => 'Gestión de Ofertas',
+'icon' => 'fa-solid fa-percentage',
+'route' => route('admin.offers.index'),
+'active' => request()->routeIs('admin.offers.*'),
+],
+[
 'name' => 'Portadas',
 'icon' => 'fa-solid fa-image',
 'route' => route('admin.covers.index'),

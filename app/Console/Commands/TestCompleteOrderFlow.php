@@ -65,8 +65,8 @@ class TestCompleteOrderFlow extends Command
             $shipment = $order->shipment()->first();
 
             $this->info("✅ Repartidor asignado:");
-            $this->info("   - Estado orden: {$order->status} (esperado: 4)");
-            $this->info("   - Estado envío: {$shipment->status->value} (esperado: 2)");
+            $this->info("   - Estado orden: " . ($order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status) . " (esperado: 4)");
+            $this->info("   - Estado envío: " . ($shipment->status instanceof \App\Enums\ShipmentStatus ? $shipment->status->value : $shipment->status) . " (esperado: 2)");
             $this->info("   - Repartidor: {$shipment->getAttribute('delivery_driver_id')}");
 
             // Marcar como en tránsito
@@ -79,8 +79,8 @@ class TestCompleteOrderFlow extends Command
                 $order->refresh();
                 $shipment->refresh();
                 $this->info("✅ Marcado como en tránsito:");
-                $this->info("   - Estado orden: {$order->status} (esperado: 5)");
-                $this->info("   - Estado envío: {$shipment->status->value} (esperado: 4)");
+                $this->info("   - Estado orden: " . ($order->status instanceof \App\Enums\OrderStatus ? $order->status->value : $order->status) . " (esperado: 5)");
+                $this->info("   - Estado envío: " . ($shipment->status instanceof \App\Enums\ShipmentStatus ? $shipment->status->value : $shipment->status) . " (esperado: 4)");
             }
         } else {
             $this->error("❌ Error asignando repartidor");
@@ -143,8 +143,8 @@ class TestCompleteOrderFlow extends Command
 
         $this->info("📊 Repartidor {$driver->getAttribute('name')} tiene {$activeShipments} envíos activos");
 
-        if ($activeShipments < 5) {
-            $this->info("✅ Puede recibir más envíos (límite: 5)");
+        if ($activeShipments < 7) {
+            $this->info("✅ Puede recibir más envíos (límite: 7)");
         } else {
             $this->info("⚠️  Ha alcanzado el límite máximo de envíos");
         }
