@@ -87,7 +87,7 @@
             @if (count($products))
 
             <div
-                class="grid grid-cols-1 gap-8 transition-all duration-300 ease-out sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                class="grid grid-cols-1 gap-8 transition-all duration-300 ease-out sm:grid-cols-2 {{ count($options) > 0 ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4' }}">
                 @foreach ($products as $product)
                 <article
                     class="flex flex-col h-full overflow-hidden transition-all duration-300 bg-white/90 backdrop-blur-sm border border-secondary-200 shadow-lg product-card group rounded-2xl hover:shadow-2xl hover:border-coral-200">
