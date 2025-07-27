@@ -25,7 +25,7 @@ ESTRUCTURA:
 --}}
 
 <!-- Fondo moderno con gradiente y elementos decorativos -->
-<div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
+<div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-cream-50 via-secondary-50 to-primary-50">
     {{--
     ELEMENTOS DECORATIVOS DE FONDO
     =============================
@@ -36,18 +36,18 @@ ESTRUCTURA:
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         {{-- Círculo decorativo superior derecho --}}
         <div
-            class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-indigo-400/20 to-purple-500/10 blur-3xl animate-pulse">
+            class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-brand-coral/20 to-coral-400/10 blur-3xl animate-pulse">
         </div>
         {{-- Círculo decorativo inferior izquierdo --}}
         <div
-            class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-400/20 to-pink-500/10 blur-3xl animate-pulse">
+            class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-400/20 to-secondary-500/10 blur-3xl animate-pulse">
         </div>
         {{-- Elementos decorativos medianos para dar profundidad --}}
         <div
-            class="absolute w-32 h-32 rounded-full top-1/3 right-1/4 bg-gradient-to-r from-blue-300/30 to-indigo-400/20 blur-2xl">
+            class="absolute w-32 h-32 rounded-full top-1/3 right-1/4 bg-gradient-to-r from-secondary-300/30 to-primary-400/20 blur-2xl">
         </div>
         <div
-            class="absolute w-24 h-24 rounded-full bottom-1/3 left-1/4 bg-gradient-to-r from-emerald-300/30 to-blue-400/20 blur-xl">
+            class="absolute w-24 h-24 rounded-full bottom-1/3 left-1/4 bg-gradient-to-r from-coral-300/30 to-brand-coral/20 blur-xl">
         </div>
     </div>
 
@@ -64,12 +64,12 @@ ESTRUCTURA:
         <div class="mb-12 text-center">
             {{-- Icono principal con gradiente y sombra --}}
             <div
-                class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl">
+                class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg bg-gradient-to-r from-primary-600 to-brand-coral rounded-2xl">
                 <i class="text-2xl text-white fas fa-shopping-cart"></i>
             </div>
             {{-- Título principal con efecto degradado en el texto --}}
             <h1
-                class="mb-3 text-5xl font-bold text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text">
+                class="mb-3 text-5xl font-bold text-transparent bg-gradient-to-r from-primary-600 via-brand-coral to-coral-600 bg-clip-text">
                 Carrito de Compras
             </h1>
             {{-- Badge informativo con contador de productos --}}

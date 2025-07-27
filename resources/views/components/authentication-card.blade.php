@@ -1,92 +1,93 @@
-{{-- 
-    COMPONENTE DE TARJETA DE AUTENTICACIÓN
-    =====================================
-    
-    Este componente proporciona un layout consistente para todas las páginas
-    de autenticación (login, registro, recuperación de contraseña, etc.)
-    
-    CARACTERÍSTICAS:
-    - Layout centrado responsive para formularios de auth
-    - Soporte para diferentes tamaños de tarjeta (sm, md, lg, xl, 2xl)
-    - Diseño adaptable para móvil y desktop
-    - Slots para logo personalizable y contenido del formulario
-    - Tema oscuro/claro integrado
-    
-    PROPS DISPONIBLES:
-    @param string $maxWidth - Tamaño máximo de la tarjeta (sm|md|lg|xl|2xl)
-                             Por defecto: 'md'
-    
-    SLOTS:
-    - $logo: Contenido del logo (generalmente imagen o SVG)
-    - $slot: Contenido principal del formulario de autenticación
-    
-    @author Tu Nombre
-    @version 1.0
+{{--
+COMPONENTE DE TARJETA DE AUTENTICACIÓN REDISEÑADO
+================================================
+
+Diseño moderno y elegante para las páginas de autenticación con:
+- Gradientes y efectos visuales modernos
+- Diseño glassmorphism
+- Animaciones suaves
+- Layout responsive mejorado
+
+@author GitHub Copilot
+@version 2.0
 --}}
 
-{{-- Definir las propiedades que acepta el componente --}}
 @props(['maxWidth' => null])
 
-{{-- 
-    CONFIGURACIÓN DE TAMAÑOS RESPONSIVOS
-    ===================================
-    
-    Array que mapea los nombres de tamaño a clases de Tailwind CSS.
-    Esto permite controlar el ancho máximo de la tarjeta de autenticación
-    de forma responsive, aplicándose solo en pantallas sm (640px) y superiores.
---}}
 @php
-    $maxWidth = [
-        'sm' => 'sm:max-w-sm', // ~384px en pantallas >= 640px
-        'md' => 'sm:max-w-md', // ~448px en pantallas >= 640px (por defecto)
-        'lg' => 'sm:max-w-lg', // ~512px en pantallas >= 640px
-        'xl' => 'sm:max-w-xl', // ~576px en pantallas >= 640px
-        '2xl' => 'sm:max-w-2xl', // ~672px en pantallas >= 640px
-    ][$maxWidth ?? 'md']; // Si no se especifica, usar 'md' como valor por defecto
+$maxWidth = [
+'sm' => 'sm:max-w-sm',
+'md' => 'sm:max-w-md',
+'lg' => 'sm:max-w-lg',
+'xl' => 'sm:max-w-xl',
+'2xl' => 'sm:max-w-2xl',
+'4xl' => 'sm:max-w-4xl',
+][$maxWidth ?? 'md'];
 @endphp
 
-{{-- 
-    CONTENEDOR PRINCIPAL DE LA PÁGINA DE AUTENTICACIÓN
-    ================================================
-    
-    Estructura el layout principal de la página con las siguientes características:
-    - min-h-screen: Altura mínima de toda la pantalla (100vh)
-    - flex flex-col: Layout flexbox en columna
-    - sm:justify-center: Centra verticalmente en pantallas >= 640px
-    - items-center: Centra horizontalmente siempre
-    - pt-6 sm:pt-0: Padding superior adaptable (24px móvil, 0 desktop)
-    - bg-gray-100 dark:bg-gray-900: Fondo adaptable al tema claro/oscuro
---}}
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+{{-- Contenedor principal con fondo gradiente --}}
+<div class="relative flex flex-col items-center min-h-screen pt-6 overflow-hidden sm:justify-center sm:pt-0">
+    {{-- Fondo gradiente usando colores del logo --}}
+    <div class="absolute inset-0 bg-gradient-ocean"></div>
 
-    {{-- 
-        SECCIÓN DEL LOGO
-        ===============
-        
-        Contenedor para el logo de la aplicación que se muestra encima
-        del formulario de autenticación. Se renderiza desde el slot $logo.
-    --}}
-    <div>
-        {{ $logo }}
+    {{-- Elementos decorativos animados con colores del logo --}}
+    <div class="absolute inset-0">
+        <div class="absolute rounded-full top-1/4 left-1/4 w-72 h-72 bg-secondary-300/20 blur-3xl animate-pulse"></div>
+        <div
+            class="absolute delay-1000 rounded-full bottom-1/4 right-1/4 w-96 h-96 bg-coral-400/15 blur-3xl animate-pulse">
+        </div>
+        <div
+            class="absolute delay-500 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 w-80 h-80 bg-brand-steel/20 blur-3xl animate-pulse">
+        </div>
     </div>
 
-    {{-- 
-        TARJETA DE CONTENIDO PRINCIPAL
-        =============================
-        
-        Contenedor principal que aloja el formulario de autenticación con:
-        - w-full {{ $maxWidth }}: Ancho completo hasta el máximo configurado
-        - mt-6: Margen superior de 24px (separación del logo)
-        - px-6 py-4: Padding interno (24px horizontal, 16px vertical)
-        - bg-white dark:bg-gray-800: Fondo blanco/gris oscuro según tema
-        - shadow-md: Sombra media para efecto de elevación
-        - overflow-hidden: Oculta cualquier contenido que se desborde
-        - sm:rounded-lg: Bordes redondeados en pantallas >= 640px
-        
-        El contenido del formulario se inyecta através del slot principal ($slot)
-    --}}
-    <div
-        class="w-full {{ $maxWidth }} mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-        {{ $slot }}
+    {{-- Contenido principal --}}
+    <div class="relative z-10 w-full {{ $maxWidth }} px-6">
+        {{-- Logo Section con efecto de elevación --}}
+        <div class="flex justify-center mb-8">
+            <div
+                class="p-4 transition-all duration-300 transform border shadow-2xl bg-cream-50/20 backdrop-blur-lg rounded-2xl border-secondary-200/30 hover:scale-105">
+                {{ $logo }}
+            </div>
+        </div>
+
+        {{-- Tarjeta principal con glassmorphism usando colores del logo --}}
+        <div
+            class="bg-cream-50/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-secondary-200/20 p-8 transform hover:scale-[1.01] transition-all duration-300">
+            {{-- Contenido del formulario --}}
+            <div class="space-y-6">
+                {{ $slot }}
+            </div>
+        </div>
+
+        {{-- Elementos decorativos inferiores con colores del logo --}}
+        <div class="flex justify-center mt-8">
+            <div class="flex space-x-2">
+                <div class="w-2 h-2 rounded-full bg-secondary-300/60 animate-pulse"></div>
+                <div class="w-2 h-2 delay-200 rounded-full bg-coral-400/80 animate-pulse"></div>
+                <div class="w-2 h-2 rounded-full bg-secondary-300/60 animate-pulse delay-400"></div>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    /* Animación personalizada para el fondo */
+    @keyframes gradient-shift {
+
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .auth-gradient {
+        background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+    }
+</style>

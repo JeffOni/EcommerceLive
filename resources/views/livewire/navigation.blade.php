@@ -1,5 +1,5 @@
-<div x-data="{ sidebarOpen: false }" x-on:click.away="sidebarOpen = false" x-on:keydown.escape.window="sidebarOpen = false"
-    x-bind:class="{ 'overflow-hidden': sidebarOpen }">
+<div x-data="{ sidebarOpen: false }" x-on:click.away="sidebarOpen = false"
+    x-on:keydown.escape.window="sidebarOpen = false" x-bind:class="{ 'overflow-hidden': sidebarOpen }">
 
     {{-- Este componente representa un contenedor que puede ser utilizado para agrupar otros elementos --}}
     {{-- Se utiliza para mantener la consistencia de diseño y facilitar el uso de clases comunes --}}
@@ -10,12 +10,13 @@
     {{-- Because she competes with no one, no one can compete with her. --}}
     {{-- header --}}
 
-    <header class="bg-blue-900 shadow-lg">
+    <header class="shadow-lg bg-primary-900">
 
         <x-container class="px-4 py-4">
             <div class="flex items-center justify-between space-x-8">
 
-                <button class="text-2xl transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none"
+                <button
+                    class="transition duration-300 ease-in-out transform text-2xl hover:scale-110 focus:outline-none"
                     x-on:click="sidebarOpen = !sidebarOpen">
                     {{-- Icono de menu --}}
                     <i class="text-white fas fa-bars"></i>
@@ -31,11 +32,11 @@
                         {{-- Logo de la tienda --}}
 
                         <span class="text-2xl font-bold leading-5 md:text-4xl">
-                            Pescaderia
+                            LagoFish
                         </span>
 
                         <span class="text-xs font-bold">
-                            Tienda Online
+                            Pescadería Online
                         </span>
 
                     </a>
@@ -46,26 +47,26 @@
                 <div class="flex-1 hidden md:block">
                     <div class="relative">
                         {{--
-                            CAMBIO: Campo de búsqueda para escritorio con sincronización
-                            - Agregado ID único "search-desktop" para identificación en JavaScript
-                            - Agregado pr-10 para espacio del botón de limpiar a la derecha
-                            - Cambiado oninput a searchSync() para sincronizar con campo móvil
-                            - Agregado parámetro 'desktop' para identificar origen de la búsqueda
+                        CAMBIO: Campo de búsqueda para escritorio con sincronización
+                        - Agregado ID único "search-desktop" para identificación en JavaScript
+                        - Agregado pr-10 para espacio del botón de limpiar a la derecha
+                        - Cambiado oninput a searchSync() para sincronizar con campo móvil
+                        - Agregado parámetro 'desktop' para identificar origen de la búsqueda
                         --}}
                         <x-input id="search-desktop"
-                            class="w-full pl-10 pr-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                            class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-500 focus:border-brand-coral focus:ring focus:ring-brand-coral/30 focus:ring-opacity-50"
                             type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'desktop')"
                             onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'desktop');}" />
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="text-gray-500 fas fa-search"></i>
                         </div>
                         {{--
-                            CAMBIO: Botón de limpiar búsqueda para escritorio
-                            - Posicionado absolutamente a la derecha del input
-                            - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
-                            - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
-                            - Hover effect para mejor UX
-                            - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
+                        CAMBIO: Botón de limpiar búsqueda para escritorio
+                        - Posicionado absolutamente a la derecha del input
+                        - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
+                        - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
+                        - Hover effect para mejor UX
+                        - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                         --}}
                         <button type="button" id="clear-search-desktop" onclick="clearSearch()"
                             class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
@@ -82,84 +83,84 @@
                         <x-slot name="trigger">
 
                             @auth
-                                <button
-                                    class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
-                                    <img class="object-cover rounded-full size-8"
-                                        src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                </button>
+                            <button
+                                class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
+                                <img class="object-cover rounded-full size-8"
+                                    src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                            </button>
                             @else
-                                <button
-                                    class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
-                                    <i class="text-white fas fa-user"></i>
-                                </button>
+                            <button
+                                class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
+                                <i class="text-white fas fa-user"></i>
+                            </button>
                             @endauth
 
                         </x-slot>
                         <x-slot name="content">
 
                             @guest
-                                <div class="px-4 py-2">
+                            <div class="px-4 py-2">
 
-                                    <div class="flex justify-center">
+                                <div class="flex justify-center">
 
-                                        <x-link href="{{ route('login') }}" name="Iniciar Sesión" />
-
-                                    </div>
-
-                                    <p class="mt-4 text-sm text-center text-gray-500">
-                                        ¿No tienes cuenta? <a href="{{ route('register') }}"
-                                            class="font-semibold text-blue-600 hover:text-blue-500 hover:underline">Regístrate</a>
-
-                                    </p>
+                                    <x-link href="{{ route('login') }}" name="Iniciar Sesión" />
 
                                 </div>
+
+                                <p class="mt-4 text-sm text-center text-gray-500">
+                                    ¿No tienes cuenta? <a href="{{ route('register') }}"
+                                        class="font-semibold text-blue-600 hover:text-blue-500 hover:underline">Regístrate</a>
+
+                                </p>
+
+                            </div>
                             @else
-                                <!-- Account Management -->
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Account') }}
-                                </div>
+                            <!-- Account Management -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Manage Account') }}
+                            </div>
 
-                                <x-dropdown-link href="{{ route('profile.show') }}">
-                                    {{ __('Profile') }}
-                                </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('profile.show') }}">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
 
-                                <x-dropdown-link href="{{ route('orders.tracking.index') }}">
-                                    <i class="fas fa-shopping-bag mr-2"></i>
-                                    Mis Pedidos
-                                </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('orders.tracking.index') }}">
+                                <i class="fas fa-shopping-bag mr-2"></i>
+                                Mis Pedidos
+                            </x-dropdown-link>
 
-                                <x-dropdown-link href="{{ route('notifications.index') }}">
-                                    <i class="fas fa-bell mr-2"></i>
-                                    Notificaciones
-                                    @if (auth()->user() && auth()->user()->unreadNotifications()->count() > 0)
-                                        <span
-                                            class="ml-2 inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                                            {{ auth()->user()->unreadNotifications()->count() }}
-                                        </span>
-                                    @endif
-                                </x-dropdown-link>
-
-                                <x-dropdown-link href="{{ route('shipping.index') }}">
-                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                    Mis Direcciones
-                                </x-dropdown-link>
-
-                                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                        {{ __('API Tokens') }}
-                                    </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('notifications.index') }}">
+                                <i class="fas fa-bell mr-2"></i>
+                                Notificaciones
+                                @if (auth()->user() && auth()->user()->unreadNotifications()->count() > 0)
+                                <span
+                                    class="ml-2 inline-flex items-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                    {{ auth()->user()->unreadNotifications()->count() }}
+                                </span>
                                 @endif
+                            </x-dropdown-link>
 
-                                <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                            <x-dropdown-link href="{{ route('shipping.index') }}">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                Mis Direcciones
+                            </x-dropdown-link>
 
-                                <!-- Authentication -->
-                                <form method="POST" action="{{ route('logout') }}" x-data>
-                                    @csrf
+                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                {{ __('API Tokens') }}
+                            </x-dropdown-link>
+                            @endif
 
-                                    <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                        {{ __('Log Out') }}
-                                    </x-dropdown-link>
-                                </form>
+                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
+
+                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
 
                             @endguest
 
@@ -175,7 +176,8 @@
                         class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
                         <i class="text-white fas fa-shopping-cart"></i>
                         <span id="cart-count"
-                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">{{ Cart::instance('shopping')->count() }}</span>
+                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">{{
+                            Cart::instance('shopping')->count() }}</span>
                     </a>
 
                 </div>
@@ -183,29 +185,29 @@
             </div>
 
             {{--
-                CAMBIO: Buscador en móvil (debajo de todo) con sincronización
-                - Agregado ID único "search-mobile" para identificación en JavaScript
-                - Agregado pr-10 para espacio del botón de limpiar a la derecha
-                - Cambiado oninput a searchSync() para sincronizar con campo desktop
-                - Agregado parámetro 'mobile' para identificar origen de la búsqueda
-                - Agregado manejo de tecla Escape para limpiar búsqueda
+            CAMBIO: Buscador en móvil (debajo de todo) con sincronización
+            - Agregado ID único "search-mobile" para identificación en JavaScript
+            - Agregado pr-10 para espacio del botón de limpiar a la derecha
+            - Cambiado oninput a searchSync() para sincronizar con campo desktop
+            - Agregado parámetro 'mobile' para identificar origen de la búsqueda
+            - Agregado manejo de tecla Escape para limpiar búsqueda
             --}}
             <div class="mt-4 md:hidden">
                 <div class="relative">
                     <x-input id="search-mobile"
-                        class="w-full pl-10 pr-10 border-2 border-blue-500 rounded-full focus:border-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                        class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-500 focus:border-brand-coral focus:ring focus:ring-brand-coral/30 focus:ring-opacity-50"
                         type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'mobile')"
                         onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'mobile');}" />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <i class="text-gray-500 fas fa-search"></i>
                     </div>
                     {{--
-                        CAMBIO: Botón de limpiar búsqueda para móvil
-                        - Posicionado absolutamente a la derecha del input
-                        - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
-                        - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
-                        - Mismo comportamiento que el botón desktop para consistencia
-                        - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
+                    CAMBIO: Botón de limpiar búsqueda para móvil
+                    - Posicionado absolutamente a la derecha del input
+                    - Oculto por defecto (clase 'hidden'), se muestra cuando hay texto
+                    - Ejecuta clearSearch() que limpia ambos campos sincronizadamente
+                    - Mismo comportamiento que el botón desktop para consistencia
+                    - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                     --}}
                     <button type="button" id="clear-search-mobile" onclick="clearSearch()"
                         class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
@@ -220,11 +222,11 @@
 
     {{-- Sidebar y fondo oscuro juntos para capturar el click correctamente --}}
     {{--
-        Cambios realizados para solucionar el cierre del sidebar al hacer clic en el fondo oscuro:
-        - Se reestructuró el contenedor del sidebar y el fondo oscuro para que ambos estén dentro de un mismo div fixed.
-        - El fondo oscuro (div con bg-gray-900/50) tiene z-index:40 para permitir que reciba clics en toda su área.
-        - Se usa pointer-events-none en el contenedor flex y pointer-events-auto solo en los elementos interactivos.
-        - El evento x-on:click="sidebarOpen = false" en el fondo oscuro permite cerrar el sidebar al hacer clic fuera de él.
+    Cambios realizados para solucionar el cierre del sidebar al hacer clic en el fondo oscuro:
+    - Se reestructuró el contenedor del sidebar y el fondo oscuro para que ambos estén dentro de un mismo div fixed.
+    - El fondo oscuro (div con bg-gray-900/50) tiene z-index:40 para permitir que reciba clics en toda su área.
+    - Se usa pointer-events-none en el contenedor flex y pointer-events-auto solo en los elementos interactivos.
+    - El evento x-on:click="sidebarOpen = false" en el fondo oscuro permite cerrar el sidebar al hacer clic fuera de él.
     --}}
     <template x-if="sidebarOpen">
         <div class="fixed inset-0 z-40 flex">
@@ -247,14 +249,14 @@
                     <div class="h-[calc(100vh-3.25rem)] overflow-y-auto">
                         <ul>
                             @foreach ($families as $family)
-                                <li wire:mouseover="$set('familyId', {{ $family->id }})"
-                                    class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
-                                    <a href="{{ route('families.show', $family) }}"
-                                        class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
-                                        <span>{{ $family->name }}</span>
-                                        <i class="fa-solid fa-angle-right"></i>
-                                    </a>
-                                </li>
+                            <li wire:mouseover="$set('familyId', {{ $family->id }})"
+                                class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
+                                <a href="{{ route('families.show', $family) }}"
+                                    class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+                                    <span>{{ $family->name }}</span>
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </a>
+                            </li>
                             @endforeach
                         </ul>
                     </div>
@@ -267,27 +269,27 @@
                                 {{ $this->familyName }}
                             </p>
                             @if ($this->familyId)
-                                <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
+                            <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
                             @endif
                         </div>
                         <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
                             @foreach ($this->categories as $category)
-                                <li wire:mouseover="">
-                                    <a href="{{ route('categories.show', $category) }}"
-                                        class="flex items-center justify-between text-blue-600 ">
-                                        {{ $category->name }}
-                                    </a>
-                                    <ul class="mt-4 space-y-2">
-                                        @foreach ($category->subcategories as $subcategory)
-                                            <li>
-                                                <a href="{{ route('subcategories.show', $subcategory) }}"
-                                                    class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
-                                                    {{ $subcategory->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
+                            <li wire:mouseover="">
+                                <a href="{{ route('categories.show', $category) }}"
+                                    class="flex items-center justify-between text-blue-600 ">
+                                    {{ $category->name }}
+                                </a>
+                                <ul class="mt-4 space-y-2">
+                                    @foreach ($category->subcategories as $subcategory)
+                                    <li>
+                                        <a href="{{ route('subcategories.show', $subcategory) }}"
+                                            class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+                                            {{ $subcategory->name }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
                             @endforeach
                         </ul>
                     </div>
@@ -300,15 +302,15 @@
 
     </div>
     {{--
-        SECCIÓN: Scripts JavaScript para funcionalidad de búsqueda sincronizada
-        Esta sección contiene todas las funciones JavaScript necesarias para:
-        - Sincronizar campos de búsqueda entre desktop y móvil
-        - Manejar botones de limpiar búsqueda
-        - Comunicación con componentes Livewire
+    SECCIÓN: Scripts JavaScript para funcionalidad de búsqueda sincronizada
+    Esta sección contiene todas las funciones JavaScript necesarias para:
+    - Sincronizar campos de búsqueda entre desktop y móvil
+    - Manejar botones de limpiar búsqueda
+    - Comunicación con componentes Livewire
     --}}
     @push('js')
-        <script>
-            Livewire.on('cartUpdated', (count) => {
+    <script>
+        Livewire.on('cartUpdated', (count) => {
                 document.getElementById('cart-count').innerText = count;
             });
             {{--
@@ -476,6 +478,6 @@
                     clearSearch();
                 });
             }
-        </script>
+    </script>
     @endpush
 </div>
