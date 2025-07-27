@@ -19,7 +19,7 @@
                     class="transition duration-300 ease-in-out transform text-2xl hover:scale-110 focus:outline-none"
                     x-on:click="sidebarOpen = !sidebarOpen">
                     {{-- Icono de menu --}}
-                    <i class="text-white fas fa-bars"></i>
+                    <i class="text-cream-100 fas fa-bars hover:text-coral-300 transition-colors"></i>
                 </button>
 
                 {{-- Logo de la tienda --}}
@@ -27,15 +27,16 @@
                 <h1 class="text-white">
 
                     <a href="/"
-                        class="inline-flex flex-col items-end transition duration-300 ease-in-out hover:text-blue-200">
+                        class="inline-flex flex-col items-end transition duration-300 ease-in-out hover:text-coral-200">
 
                         {{-- Logo de la tienda --}}
 
-                        <span class="text-2xl font-bold leading-5 md:text-4xl">
+                        <span
+                            class="text-2xl font-bold leading-5 md:text-4xl bg-gradient-to-r from-cream-100 to-coral-200 bg-clip-text text-transparent">
                             LagoFish
                         </span>
 
-                        <span class="text-xs font-bold">
+                        <span class="text-xs font-bold text-secondary-300">
                             Pescadería Online
                         </span>
 
@@ -54,11 +55,11 @@
                         - Agregado parámetro 'desktop' para identificar origen de la búsqueda
                         --}}
                         <x-input id="search-desktop"
-                            class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-500 focus:border-brand-coral focus:ring focus:ring-brand-coral/30 focus:ring-opacity-50"
+                            class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-400 bg-white/95 focus:border-coral-400 focus:ring focus:ring-coral-400/30 focus:ring-opacity-50 text-slate-700 placeholder-slate-500"
                             type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'desktop')"
                             onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'desktop');}" />
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="text-gray-500 fas fa-search"></i>
+                            <i class="text-slate-500 fas fa-search"></i>
                         </div>
                         {{--
                         CAMBIO: Botón de limpiar búsqueda para escritorio
@@ -69,7 +70,7 @@
                         - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                         --}}
                         <button type="button" id="clear-search-desktop" onclick="clearSearch()"
-                            class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                            class="absolute inset-y-0 right-0 items-center pr-3 text-slate-400 hover:text-coral-500 focus:outline-none hidden transition-colors">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -84,14 +85,14 @@
 
                             @auth
                             <button
-                                class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
+                                class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-coral-300 hover:border-secondary-300">
                                 <img class="object-cover rounded-full size-8"
                                     src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
                             @else
                             <button
-                                class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
-                                <i class="text-white fas fa-user"></i>
+                                class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-coral-300 focus:outline-none">
+                                <i class="text-cream-100 fas fa-user"></i>
                             </button>
                             @endauth
 
@@ -107,16 +108,16 @@
 
                                 </div>
 
-                                <p class="mt-4 text-sm text-center text-gray-500">
+                                <p class="mt-4 text-sm text-center text-slate-600">
                                     ¿No tienes cuenta? <a href="{{ route('register') }}"
-                                        class="font-semibold text-blue-600 hover:text-blue-500 hover:underline">Regístrate</a>
+                                        class="font-semibold text-coral-600 hover:text-coral-500 hover:underline">Regístrate</a>
 
                                 </p>
 
                             </div>
                             @else
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            <div class="block px-4 py-2 text-xs text-slate-500">
                                 {{ __('Manage Account') }}
                             </div>
 
@@ -173,10 +174,10 @@
 
 
                     <a href="{{ route('cart.index') }}"
-                        class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-blue-200 focus:outline-none">
-                        <i class="text-white fas fa-shopping-cart"></i>
+                        class="relative p-2 text-lg transition duration-300 ease-in-out transform md:text-3xl hover:scale-110 hover:text-coral-300 focus:outline-none">
+                        <i class="text-cream-100 fas fa-shopping-cart"></i>
                         <span id="cart-count"
-                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">{{
+                            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-coral-500 rounded-full border-2 border-primary-900">{{
                             Cart::instance('shopping')->count() }}</span>
                     </a>
 
@@ -195,11 +196,11 @@
             <div class="mt-4 md:hidden">
                 <div class="relative">
                     <x-input id="search-mobile"
-                        class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-500 focus:border-brand-coral focus:ring focus:ring-brand-coral/30 focus:ring-opacity-50"
+                        class="w-full pl-10 pr-10 border-2 rounded-full border-secondary-400 bg-white/95 focus:border-coral-400 focus:ring focus:ring-coral-400/30 focus:ring-opacity-50 text-slate-700 placeholder-slate-500"
                         type="text" placeholder="Buscar productos" oninput="searchSync(this.value, 'mobile')"
                         onkeydown="if(event.key==='Escape'){this.value='';searchSync('', 'mobile');}" />
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <i class="text-gray-500 fas fa-search"></i>
+                        <i class="text-slate-500 fas fa-search"></i>
                     </div>
                     {{--
                     CAMBIO: Botón de limpiar búsqueda para móvil
@@ -210,7 +211,7 @@
                     - CORRECCIÓN: Separadas clases 'flex' y 'hidden' para evitar conflicto CSS
                     --}}
                     <button type="button" id="clear-search-mobile" onclick="clearSearch()"
-                        class="absolute inset-y-0 right-0 items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none hidden">
+                        class="absolute inset-y-0 right-0 items-center pr-3 text-slate-400 hover:text-coral-500 focus:outline-none hidden transition-colors">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -237,12 +238,12 @@
                 <!-- Sidebar principal: pointer-events-auto para permitir interacción -->
                 <div
                     class="w-screen h-screen transition-all duration-300 bg-white shadow-lg pointer-events-auto md:w-80">
-                    <div class="px-4 py-3 font-semibold text-white bg-blue-400">
+                    <div class="px-4 py-3 font-semibold text-white bg-primary-900">
                         <div class="flex items-center justify-between px-2">
-                            <h1 class="text-2xl font-bold">Hola Peresona</h1>
+                            <h1 class="text-2xl font-bold text-cream-100">LagoFish</h1>
                             <button x-on:click="sidebarOpen = !sidebarOpen">
                                 <i
-                                    class="p-2 text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times"></i>
+                                    class="p-2 text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times text-cream-100 hover:text-coral-300"></i>
                             </button>
                         </div>
                     </div>
@@ -250,11 +251,11 @@
                         <ul>
                             @foreach ($families as $family)
                             <li wire:mouseover="$set('familyId', {{ $family->id }})"
-                                class="flex items-center justify-between px-4 py-3 text-gray-700 transition duration-300 ease-in-out transform hover:bg-blue-100">
+                                class="flex items-center justify-between px-4 py-3 text-slate-700 transition duration-300 ease-in-out transform hover:bg-secondary-50 border-b border-secondary-100/50">
                                 <a href="{{ route('families.show', $family) }}"
-                                    class="flex items-center justify-between w-full text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
+                                    class="flex items-center justify-between w-full text-slate-700 transition duration-300 ease-in-out transform hover:text-coral-600">
                                     <span>{{ $family->name }}</span>
-                                    <i class="fa-solid fa-angle-right"></i>
+                                    <i class="fa-solid fa-angle-right text-coral-400"></i>
                                 </a>
                             </li>
                             @endforeach
@@ -265,7 +266,7 @@
                 <div class="w-80 xl:w-[57rem] pt-[3.25rem] hidden md:block z-30 pointer-events-auto">
                     <div class="h-[calc(100vh-3.25rem)] overflow-y-auto bg-white shadow-lg px-6 py-8">
                         <div class="flex items-center justify-between mb-8">
-                            <p class="border-b-[3px] border-lime-600 text-xl pb-1 uppercase font-bold text-gray-700">
+                            <p class="border-b-[3px] border-coral-500 text-xl pb-1 uppercase font-bold text-slate-700">
                                 {{ $this->familyName }}
                             </p>
                             @if ($this->familyId)
@@ -276,7 +277,7 @@
                             @foreach ($this->categories as $category)
                             <li wire:mouseover="">
                                 <a href="{{ route('categories.show', $category) }}"
-                                    class="flex items-center justify-between text-blue-600 ">
+                                    class="flex items-center justify-between text-coral-600 hover:text-coral-700 font-medium transition-colors">
                                     {{ $category->name }}
                                 </a>
                                 <ul class="mt-4 space-y-2">

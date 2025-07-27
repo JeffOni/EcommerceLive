@@ -84,17 +84,17 @@
                             <div class="flex items-end justify-center h-full pb-20">
                                 <div class="flex flex-col gap-4 sm:flex-row">
                                     <a href="{{ route('products.index') }}"
-                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 transform shadow-xl bg-purple-600/90 backdrop-blur-sm rounded-xl hover:bg-purple-700 hover:shadow-2xl hover:-translate-y-1">
+                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 transform shadow-xl bg-gradient-to-r from-primary-600 to-coral-500 backdrop-blur-sm rounded-xl hover:from-primary-700 hover:to-coral-600 hover:shadow-2xl hover:-translate-y-1">
                                         <i class="mr-2 fas fa-shopping-bag"></i>Explorar Productos
                                     </a>
                                     @guest
                                     <a href="{{ route('register') }}"
-                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 border-2 border-white/90 backdrop-blur-sm rounded-xl hover:bg-white hover:text-gray-800">
+                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 border-2 border-white/90 backdrop-blur-sm rounded-xl hover:bg-white hover:text-primary-800">
                                         <i class="mr-2 fas fa-user-plus"></i>Crear Cuenta
                                     </a>
                                     @else
                                     <a href="{{ route('dashboard') }}"
-                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 border-2 border-white/90 backdrop-blur-sm rounded-xl hover:bg-white hover:text-gray-800">
+                                        class="inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition duration-300 border-2 border-white/90 backdrop-blur-sm rounded-xl hover:bg-white hover:text-primary-800">
                                         <i class="mr-2 fas fa-user"></i>Mi Cuenta
                                     </a>
                                     @endguest
@@ -187,17 +187,19 @@
     @if(isset($lastProducts) && $lastProducts->count() > 0)
     <div class="py-20 bg-white">
         <x-container>
+            {{-- Título de sección actualizado --}}
             <div class="mb-16 text-center">
-                <h2 class="mb-6 text-4xl font-bold text-gray-800">Productos Destacados</h2>
-                <p class="max-w-3xl mx-auto text-xl text-gray-600">Descubre nuestra selección exclusiva de productos más
+                <h2 class="mb-6 text-4xl font-bold text-primary-800">Productos Destacados</h2>
+                <p class="max-w-3xl mx-auto text-xl text-secondary-600">Descubre nuestra selección exclusiva de
+                    productos más
                     populares y recientes, cuidadosamente elegidos para ti</p>
-                <div class="w-24 h-1 mx-auto mt-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                <div class="w-24 h-1 mx-auto mt-8 rounded-full bg-gradient-to-r from-coral-500 to-secondary-500"></div>
             </div>
 
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 @foreach ($lastProducts as $product)
                 <article
-                    class="flex flex-col h-full overflow-hidden transition-all duration-300 bg-white border border-gray-100 shadow-lg product-card group rounded-2xl hover:shadow-2xl">
+                    class="flex flex-col h-full overflow-hidden transition-all duration-300 bg-white/90 backdrop-blur-sm border border-secondary-200 shadow-lg product-card group rounded-2xl hover:shadow-2xl hover:border-coral-200">
                     <div class="relative overflow-hidden">
                         <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                             class="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110">
@@ -205,11 +207,11 @@
                         {{-- Badge de ofertas o nuevo --}}
                         @if($product->is_on_valid_offer)
                         <div
-                            class="absolute px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full top-4 left-4 animate-pulse">
+                            class="absolute px-3 py-1 text-sm font-semibold text-white bg-coral-500 rounded-full top-4 left-4 animate-pulse shadow-lg">
                             <i class="mr-1 fas fa-fire"></i>{{ $product->discount_percentage }}% OFF
                         </div>
                         @elseif($loop->index < 3) <div
-                            class="absolute px-3 py-1 text-sm font-bold text-white rounded-full shadow-lg badge-new top-4 left-4">
+                            class="absolute px-3 py-1 text-sm font-bold text-white bg-gradient-to-r from-coral-500 to-coral-600 rounded-full shadow-lg top-4 left-4">
                             <i class="mr-1 fas fa-star"></i>Nuevo
                     </div>
                     @endif
@@ -218,15 +220,16 @@
                         class="absolute transition-all duration-300 transform translate-y-2 opacity-0 top-4 right-4 group-hover:opacity-100 group-hover:translate-y-0">
                         <button
                             class="p-3 transition-all duration-200 rounded-full shadow-lg bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110">
-                            <i class="text-gray-600 transition-colors duration-200 fas fa-heart hover:text-red-500"></i>
+                            <i
+                                class="text-secondary-600 transition-colors duration-200 fas fa-heart hover:text-coral-500"></i>
                         </button>
                     </div>
 
                     {{-- Quick view overlay --}}
                     <div
-                        class="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0 bg-black/60 group-hover:opacity-100">
+                        class="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0 bg-primary-900/60 group-hover:opacity-100">
                         <a href="{{ route('products.show', $product) }}"
-                            class="px-6 py-3 font-semibold text-gray-800 transition-all duration-200 transform scale-90 bg-white rounded-full hover:bg-gray-100 group-hover:scale-100">
+                            class="px-6 py-3 font-semibold text-primary-800 transition-all duration-200 transform scale-90 bg-white rounded-full hover:bg-cream-50 group-hover:scale-100 shadow-xl">
                             <i class="mr-2 fas fa-eye"></i>Vista Rápida
                         </a>
                     </div>
@@ -234,18 +237,18 @@
 
             <div class="flex flex-col flex-grow p-6">
                 <div class="mb-2">
-                    <span class="px-2 py-1 text-sm font-medium text-purple-600 rounded-full bg-purple-50">
+                    <span class="px-2 py-1 text-sm font-medium text-secondary-700 rounded-full bg-secondary-100">
                         {{ $product->subcategory->category->family->name ?? 'Producto' }}
                     </span>
                 </div>
 
                 <h3
-                    class="text-lg font-bold text-gray-800 mb-3 line-clamp-2 min-h-[56px] group-hover:text-purple-600 transition-colors duration-200">
+                    class="text-lg font-bold text-primary-800 mb-3 line-clamp-2 min-h-[56px] group-hover:text-coral-600 transition-colors duration-200">
                     {{ $product->name }}
                 </h3>
 
                 @if($product->description)
-                <p class="flex-grow mb-4 text-sm leading-relaxed text-gray-600 line-clamp-2">
+                <p class="flex-grow mb-4 text-sm leading-relaxed text-secondary-600 line-clamp-2">
                     {{ Str::limit($product->description, 80) }}
                 </p>
                 @endif
@@ -254,40 +257,40 @@
                     {{-- Precios con ofertas --}}
                     @if($product->is_on_valid_offer)
                     <div class="flex flex-col">
-                        <div class="text-2xl font-bold text-red-600">
+                        <div class="text-2xl font-bold text-coral-600">
                             ${{ number_format($product->current_price, 2) }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-lg text-gray-500 line-through">
+                            <span class="text-lg text-secondary-500 line-through">
                                 ${{ number_format($product->price, 2) }}
                             </span>
-                            <span class="px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded-full">
+                            <span class="px-2 py-1 text-xs font-semibold text-white bg-coral-500 rounded-full">
                                 -${{ number_format($product->savings_amount, 2) }}
                             </span>
                         </div>
                     </div>
                     @else
-                    <div class="text-2xl font-bold text-gray-800">
-                        <span class="text-lg text-gray-500">$</span>{{ number_format($product->price, 2) }}
+                    <div class="text-2xl font-bold text-coral-600">
+                        ${{ number_format($product->price, 2) }}
                     </div>
                     @endif
 
                     <div class="flex items-center text-yellow-400">
                         @for($i = 1; $i <= 5; $i++) <i class="text-sm fas fa-star"></i>
                             @endfor
-                            <span class="ml-2 text-sm text-gray-500">(4.8)</span>
+                            <span class="ml-2 text-sm text-secondary-500">(4.8)</span>
                     </div>
                 </div>
 
                 {{-- Stock indicator --}}
                 @if($product->stock > 0)
-                <div class="flex items-center mb-4 text-sm text-green-600">
-                    <i class="mr-2 fas fa-check-circle"></i>
+                <div class="flex items-center mb-4 text-sm text-secondary-600">
+                    <i class="mr-2 fas fa-check-circle text-secondary-500"></i>
                     <span>{{ $product->stock }} disponibles</span>
                 </div>
                 @else
-                <div class="flex items-center mb-4 text-sm text-red-600">
-                    <i class="mr-2 fas fa-times-circle"></i>
+                <div class="flex items-center mb-4 text-sm text-coral-600">
+                    <i class="mr-2 fas fa-times-circle text-coral-500"></i>
                     <span>Agotado</span>
                 </div>
                 @endif
@@ -295,7 +298,7 @@
                 <!-- Botones fijos en la parte inferior -->
                 <div class="flex gap-3 mt-auto">
                     <a href="{{ route('products.show', $product) }}"
-                        class="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-center py-3 px-4 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        class="flex-1 bg-coral-500 text-white text-center py-3 px-4 rounded-xl font-semibold hover:bg-coral-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         <i class="mr-2 fas fa-eye"></i>Ver Detalles
                     </a>
                     <livewire:quick-add-to-cart :product="$product" :key="'welcome-cart-'.$product->id" />
@@ -307,7 +310,7 @@
 
     <div class="mt-16 text-center">
         <a href="{{ route('products.index') }}"
-            class="inline-flex items-center px-10 py-4 text-lg font-bold text-white transition-all duration-300 transform shadow-xl bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:from-purple-700 hover:to-blue-700 hover:shadow-2xl hover:-translate-y-1">
+            class="inline-flex items-center px-10 py-4 text-lg font-bold text-white transition-all duration-300 transform shadow-xl bg-gradient-to-r from-primary-600 to-coral-500 rounded-xl hover:from-primary-700 hover:to-coral-600 hover:shadow-2xl hover:-translate-y-1">
             <i class="mr-3 fas fa-th-large"></i>Ver Todos los Productos
             <i class="ml-3 fas fa-arrow-right"></i>
         </a>
@@ -317,13 +320,14 @@
     @endif
 
     {{-- Contact Form Section --}}
-    <div class="relative py-20 overflow-hidden text-white bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div
+        class="relative py-20 overflow-hidden text-white bg-gradient-to-br from-primary-900 via-secondary-800 to-primary-800">
         {{-- Background decoration --}}
         <div class="absolute inset-0 opacity-10">
             <div
-                class="absolute bg-white rounded-full top-10 left-10 w-72 h-72 mix-blend-overlay filter blur-xl animate-pulse">
+                class="absolute bg-coral-300 rounded-full top-10 left-10 w-72 h-72 mix-blend-overlay filter blur-xl animate-pulse">
             </div>
-            <div class="absolute bg-purple-300 rounded-full bottom-10 right-10 w-72 h-72 mix-blend-overlay filter blur-xl animate-pulse"
+            <div class="absolute bg-secondary-300 rounded-full bottom-10 right-10 w-72 h-72 mix-blend-overlay filter blur-xl animate-pulse"
                 style="animation-delay: 2s;"></div>
         </div>
 
@@ -331,11 +335,11 @@
             <div class="max-w-4xl mx-auto text-center">
                 <div class="mb-12">
                     <div
-                        class="inline-flex items-center justify-center w-20 h-20 mb-6 bg-white/10 backdrop-blur-sm rounded-2xl">
-                        <i class="text-3xl text-white fas fa-envelope"></i>
+                        class="inline-flex items-center justify-center w-20 h-20 mb-6 bg-coral-500/20 backdrop-blur-sm rounded-2xl border border-coral-300/30">
+                        <i class="text-3xl text-coral-200 fas fa-envelope"></i>
                     </div>
                     <h2 class="mb-6 text-4xl font-bold lg:text-5xl">¡Contáctanos!</h2>
-                    <p class="max-w-2xl mx-auto mb-8 text-xl leading-relaxed text-gray-200">
+                    <p class="max-w-2xl mx-auto mb-8 text-xl leading-relaxed text-cream-200">
                         ¿Tienes alguna pregunta o necesitas ayuda? Nuestro equipo de atención al cliente está aquí para
                         ayudarte.
                     </p>
@@ -345,34 +349,34 @@
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div>
                             <input type="text" name="name" placeholder="Tu nombre completo" required
-                                class="w-full px-6 py-4 text-lg text-gray-800 placeholder-gray-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-white focus:bg-white">
+                                class="w-full px-6 py-4 text-lg text-primary-800 placeholder-secondary-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-coral-400 focus:bg-white">
                         </div>
                         <div>
                             <input type="email" name="email" placeholder="tu@correo.com" required
-                                class="w-full px-6 py-4 text-lg text-gray-800 placeholder-gray-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-white focus:bg-white">
+                                class="w-full px-6 py-4 text-lg text-primary-800 placeholder-secondary-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-coral-400 focus:bg-white">
                         </div>
                     </div>
 
                     <div>
                         <input type="text" name="subject" placeholder="Asunto del mensaje" required
-                            class="w-full px-6 py-4 text-lg text-gray-800 placeholder-gray-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-white focus:bg-white">
+                            class="w-full px-6 py-4 text-lg text-primary-800 placeholder-secondary-500 transition-all duration-300 rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-coral-400 focus:bg-white">
                     </div>
 
                     <div>
                         <textarea name="message" rows="6" placeholder="Escribe tu mensaje aquí..." required
-                            class="w-full px-6 py-4 text-lg text-gray-800 placeholder-gray-500 transition-all duration-300 resize-none rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-white focus:bg-white"></textarea>
+                            class="w-full px-6 py-4 text-lg text-primary-800 placeholder-secondary-500 transition-all duration-300 resize-none rounded-xl bg-white/90 focus:outline-none focus:ring-2 focus:ring-coral-400 focus:bg-white"></textarea>
                     </div>
 
                     <div class="text-center">
                         <button type="submit"
-                            class="px-10 py-4 text-lg font-bold transition-all duration-300 transform shadow-xl bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:from-purple-700 hover:to-blue-700 hover:shadow-2xl hover:-translate-y-1">
+                            class="px-10 py-4 text-lg font-bold transition-all duration-300 transform shadow-xl bg-gradient-to-r from-coral-500 to-coral-600 rounded-xl hover:from-coral-600 hover:to-coral-700 hover:shadow-2xl hover:-translate-y-1">
                             <i class="mr-2 fas fa-paper-plane"></i>Enviar Mensaje
                         </button>
                     </div>
                 </form>
 
-                <p class="flex items-center justify-center gap-2 mt-6 text-sm text-gray-300">
-                    <i class="fas fa-shield-alt"></i>
+                <p class="flex items-center justify-center gap-2 mt-6 text-sm text-cream-300">
+                    <i class="fas fa-shield-alt text-secondary-300"></i>
                     Tus datos están seguros. Responderemos en menos de 24 horas.
                 </p>
 
