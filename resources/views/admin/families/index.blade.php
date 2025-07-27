@@ -9,17 +9,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-indigo-200/30 to-purple-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-200/30 to-indigo-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-indigo-100/40 to-purple-100/40 blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -39,7 +39,8 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Gestión de Familias</h2>
-                                <p class="text-sm text-indigo-100">Administra las familias de productos del sistema</p>
+                                <p class="text-sm text-secondary-100">Administra las familias de productos del sistema
+                                </p>
                             </div>
                         </div>
                         <div class="text-sm text-white/80">
@@ -58,7 +59,7 @@
                             <span class="text-sm font-medium text-gray-700">Vista:</span>
                             <div class="flex p-1 bg-gray-100 rounded-lg">
                                 <button onclick="toggleView('cards')" id="cards-btn"
-                                    class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 bg-indigo-600 rounded-md shadow-sm view-toggle">
+                                    class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 bg-primary-600 rounded-md shadow-sm view-toggle">
                                     <i class="mr-2 fas fa-th-large"></i>Tarjetas
                                 </button>
                                 <button onclick="toggleView('table')" id="table-btn"
@@ -88,23 +89,23 @@
 
                 <div class="p-8" id="families-container">
                     @if ($families->count())
-                        @include('admin.families.partials.families-content')
+                    @include('admin.families.partials.families-content')
                     @else
-                        <!-- Estado vacío mejorado -->
-                        <div class="py-16 text-center">
-                            <div
-                                class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100">
-                                <i class="text-4xl text-indigo-500 fas fa-layer-group"></i>
-                            </div>
-                            <h3 class="mb-4 text-2xl font-semibold text-gray-800">No hay familias registradas</h3>
-                            <p class="max-w-md mx-auto mb-8 text-gray-600">Todavía no has creado ninguna familia de
-                                productos. Las familias te ayudan a organizar y categorizar tus productos.</p>
-                            <a href="{{ route('admin.families.create') }}"
-                                class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl hover:shadow-xl hover:scale-105">
-                                <i class="mr-3 text-white fas fa-plus"></i>
-                                <span class="text-white">Crear Primera Familia</span>
-                            </a>
+                    <!-- Estado vacío mejorado -->
+                    <div class="py-16 text-center">
+                        <div
+                            class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100">
+                            <i class="text-4xl text-indigo-500 fas fa-layer-group"></i>
                         </div>
+                        <h3 class="mb-4 text-2xl font-semibold text-gray-800">No hay familias registradas</h3>
+                        <p class="max-w-md mx-auto mb-8 text-gray-600">Todavía no has creado ninguna familia de
+                            productos. Las familias te ayudan a organizar y categorizar tus productos.</p>
+                        <a href="{{ route('admin.families.create') }}"
+                            class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl hover:shadow-xl hover:scale-105">
+                            <i class="mr-3 text-white fas fa-plus"></i>
+                            <span class="text-white">Crear Primera Familia</span>
+                        </a>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -113,8 +114,8 @@
 
     {{-- JavaScript para funcionalidad avanzada --}}
     @push('js')
-        <script>
-            // Estado de la vista actual
+    <script>
+        // Estado de la vista actual
             let currentView = 'cards';
             let isLoading = false;
 
@@ -130,12 +131,12 @@
 
                 // Actualizar botones
                 document.querySelectorAll('.view-toggle').forEach(btn => {
-                    btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                    btn.classList.remove('bg-primary-600', 'text-white', 'shadow-sm');
                     btn.classList.add('text-gray-600', 'hover:text-gray-900');
                 });
 
                 const selectedBtn = document.getElementById(viewType + '-btn');
-                selectedBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+                selectedBtn.classList.add('bg-primary-600', 'text-white', 'shadow-sm');
                 selectedBtn.classList.remove('text-gray-600', 'hover:text-gray-900');
 
                 // Guardar preferencia
@@ -219,7 +220,7 @@
             document.getElementById('items-per-page').addEventListener('change', function(e) {
                 loadData();
             });
-        </script>
+    </script>
     @endpush
 
 </x-admin-layout>

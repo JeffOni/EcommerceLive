@@ -2,16 +2,16 @@
     <form wire:submit.prevent="store" class="h-full p-8 relative overflow-hidden">
         <!-- Decorative background elements -->
         <div
-            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full -translate-y-16 translate-x-16">
+            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-200/20 to-secondary-200/20 rounded-full -translate-y-16 translate-x-16">
         </div>
         <div
-            class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/20 to-cyan-200/20 rounded-full translate-y-12 -translate-x-12">
+            class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-secondary-200/20 to-primary-200/20 rounded-full translate-y-12 -translate-x-12">
         </div>
 
         <!-- Header -->
         <div class="text-center mb-8">
             <h1
-                class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                class="text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">
                 Crear Nuevo Producto
             </h1>
             <p class="text-gray-600 text-lg">Complete la información para agregar un nuevo producto</p>
@@ -28,11 +28,11 @@
                     <figure class="relative">
                         <div class="absolute top-4 right-4 z-20">
                             <x-label
-                                class="flex items-center px-3 py-2 bg-white rounded-lg shadow-md cursor-pointer hover:bg-indigo-50 hover:shadow-lg transition-all duration-300 border border-gray-200 group">
+                                class="flex items-center px-3 py-2 bg-white rounded-lg shadow-md cursor-pointer hover:bg-secondary-50 hover:shadow-lg transition-all duration-300 border border-gray-200 group">
                                 <i
-                                    class="mr-1 fas fa-camera text-indigo-500 group-hover:text-indigo-600 transition-colors text-sm"></i>
+                                    class="mr-1 fas fa-camera text-secondary-500 group-hover:text-secondary-600 transition-colors text-sm"></i>
                                 <span
-                                    class="font-medium text-indigo-700 group-hover:text-indigo-800 transition-colors text-sm">Imagen
+                                    class="font-medium text-primary-700 group-hover:text-primary-800 transition-colors text-sm">Imagen
                                     1</span>
                                 <input type="file" wire:model="image" class="hidden" accept="image/*"
                                     onchange="previewImageWithAnimationLivewire(event, '#preview-image-1', 'imagen principal')" />
@@ -56,7 +56,7 @@
                                 class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
                                 <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
                                     <div
-                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-secondary-200 border-t-primary-600">
                                     </div>
                                     <div class="text-center">
                                         <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
@@ -108,7 +108,7 @@
                                 class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
                                 <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
                                     <div
-                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-secondary-200 border-t-primary-600">
                                     </div>
                                     <div class="text-center">
                                         <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
@@ -160,7 +160,7 @@
                                 class="absolute inset-0 bg-black bg-opacity-50 rounded-2xl flex items-center justify-center z-50 pointer-events-auto">
                                 <div class="bg-white rounded-xl shadow-2xl p-6 flex items-center space-x-4 max-w-xs">
                                     <div
-                                        class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-200 border-t-indigo-600">
+                                        class="animate-spin rounded-full h-8 w-8 border-4 border-secondary-200 border-t-primary-600">
                                     </div>
                                     <div class="text-center">
                                         <p class="text-gray-800 font-semibold text-sm">Subiendo imagen...</p>
@@ -190,10 +190,10 @@
                             <div class="space-y-3">
                                 <x-label class="text-slate-700 font-semibold flex items-center text-lg"
                                     value="{{ __('Código de Producto') }}">
-                                    <i class="fas fa-barcode mr-2 text-indigo-500"></i>
+                                    <i class="fas fa-barcode mr-2 text-secondary-500"></i>
                                 </x-label>
                                 <x-input
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
                                     type="text" wire:model.defer="product.sku" placeholder="Código del Producto" />
                             </div>
 
@@ -204,7 +204,7 @@
                                     <i class="fas fa-dollar-sign mr-2 text-green-500"></i>
                                 </x-label>
                                 <x-input
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
                                     type="number" step="0.01" wire:model.defer="product.price"
                                     placeholder="Precio del Producto" />
                             </div>
@@ -218,7 +218,7 @@
                                     <i class="fas fa-tag mr-2 text-blue-500"></i>
                                 </x-label>
                                 <x-input
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
                                     type="text" wire:model.defer="product.name" placeholder="Nombre del Producto" />
                             </div>
 
@@ -228,7 +228,7 @@
                                     <i class="fas fa-align-left mr-2 text-purple-500"></i>
                                 </x-label>
                                 <x-textarea
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
                                     wire:model.defer="product.description" placeholder="Descripción del Producto"
                                     rows="4" />
                             </div>
@@ -239,7 +239,7 @@
                                     <i class="fas fa-list-ul mr-2 text-teal-500"></i>
                                 </x-label>
                                 <x-textarea
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
                                     wire:model.defer="product.general_features"
                                     placeholder="Características generales del producto (opcional)" rows="3" />
                             </div>
@@ -250,7 +250,7 @@
                                     <i class="fas fa-utensils mr-2 text-amber-500"></i>
                                 </x-label>
                                 <x-textarea
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg resize-none py-3 text-lg"
                                     wire:model.defer="product.recommended_preparation"
                                     placeholder="Preparación recomendada del producto (opcional)" rows="3" />
                             </div>
@@ -264,7 +264,7 @@
                                     <i class="fas fa-sitemap mr-2 text-orange-500"></i>
                                 </x-label>
                                 <x-select wire:model.live="family_id"
-                                    class="w-full border-gray-300 focus:border-indigo-400 focus:ring-indigo-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
+                                    class="w-full border-gray-300 focus:border-primary-400 focus:ring-secondary-200 rounded-xl bg-white transition-all duration-300 hover:shadow-md focus:shadow-lg py-3 text-lg"
                                     name="family_id" id="family_id">
                                     <option value="" disabled>Seleccione una familia</option>
                                     @foreach ($families as $family)
@@ -310,7 +310,7 @@
                                 class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 font-semibold transform hover:scale-105 text-lg"
                                 name="Cancelar" />
                             <x-button
-                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-lg"
+                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-lg"
                                 name="Crear Producto" />
                         </div>
                     </div>

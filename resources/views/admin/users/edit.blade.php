@@ -17,18 +17,19 @@
     </x-slot>
 
     <!-- Contenido similar al create pero con datos prellenados -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <div class="relative">
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header -->
-                <div class="px-8 py-6 bg-gradient-to-r from-green-600 to-blue-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center space-x-3">
                         <div class="p-3 glass-effect rounded-xl">
                             <i class="text-xl text-white fas fa-user-edit"></i>
                         </div>
                         <div>
                             <h2 class="text-2xl font-bold text-white">Editar Usuario</h2>
-                            <p class="text-sm text-green-100">Modifica la información del usuario: {{ $user->name }} {{
+                            <p class="text-sm text-secondary-100">Modifica la información del usuario: {{ $user->name }}
+                                {{
                                 $user->last_name }}</p>
                         </div>
                     </div>

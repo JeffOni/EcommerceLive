@@ -9,17 +9,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-blue-100/40 to-purple-100/40 blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Gestión de Envíos</h2>
-                                <p class="text-sm text-indigo-100">Administra y rastrea todos los envíos</p>
+                                <p class="text-sm text-secondary-100">Administra y rastrea todos los envíos</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">

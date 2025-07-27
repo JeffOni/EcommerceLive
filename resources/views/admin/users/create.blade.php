@@ -17,28 +17,29 @@
     </x-slot>
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-blue-200/30 to-green-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
         </div>
 
         <div class="relative">
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header -->
-                <div class="px-8 py-6 bg-gradient-to-r from-green-600 to-blue-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center space-x-3">
                         <div class="p-3 glass-effect rounded-xl">
                             <i class="text-xl text-white fas fa-user-plus"></i>
                         </div>
                         <div>
                             <h2 class="text-2xl font-bold text-white">Crear Nuevo Usuario</h2>
-                            <p class="text-sm text-green-100">Registra un nuevo usuario administrativo en el sistema</p>
+                            <p class="text-sm text-secondary-100">Registra un nuevo usuario administrativo en el sistema
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
                                     <input type="text" name="name" value="{{ old('name') }}" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('name') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('name') border-red-500 @enderror">
                                     @error('name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -78,7 +79,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Apellido *</label>
                                     <input type="text" name="last_name" value="{{ old('last_name') }}" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('last_name') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('last_name') border-red-500 @enderror">
                                     @error('last_name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -88,7 +89,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Documento
                                         *</label>
                                     <select name="document_type" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('document_type') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('document_type') border-red-500 @enderror">
                                         <option value="">Seleccionar tipo</option>
                                         @foreach($documentTypes as $value => $label)
                                         <option value="{{ $value }}" {{ old('document_type')==$value ? 'selected' : ''
@@ -107,7 +108,7 @@
                                         *</label>
                                     <input type="text" name="document_number" value="{{ old('document_number') }}"
                                         required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('document_number') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('document_number') border-red-500 @enderror">
                                     @error('document_number')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -118,7 +119,7 @@
                         <!-- Información de Contacto -->
                         <div class="bg-gray-50 p-6 rounded-lg">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-envelope text-blue-600 mr-2"></i>
+                                <i class="fas fa-envelope text-secondary-600 mr-2"></i>
                                 Información de Contacto
                             </h3>
 
@@ -127,7 +128,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico
                                         *</label>
                                     <input type="email" name="email" value="{{ old('email') }}" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('email') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('email') border-red-500 @enderror">
                                     @error('email')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -139,7 +140,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
                                     <input type="text" name="phone" value="{{ old('phone') }}" required maxlength="10"
                                         pattern="[0-9]{10}"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('phone') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('phone') border-red-500 @enderror">
                                     @error('phone')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -151,7 +152,7 @@
                         <!-- Credenciales de Acceso -->
                         <div class="bg-gray-50 p-6 rounded-lg">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-key text-purple-600 mr-2"></i>
+                                <i class="fas fa-key text-primary-600 mr-2"></i>
                                 Credenciales de Acceso
                             </h3>
 
@@ -159,7 +160,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña *</label>
                                     <input type="password" name="password" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('password') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('password') border-red-500 @enderror">
                                     @error('password')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -170,14 +171,14 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña
                                         *</label>
                                     <input type="password" name="password_confirmation" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent">
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Rol del Usuario
                                         *</label>
                                     <select name="role" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent @error('role') border-red-500 @enderror">
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent @error('role') border-red-500 @enderror">
                                         <option value="">Seleccionar rol</option>
                                         @foreach($roles as $value => $label)
                                         @if($value !== 'cliente') {{-- No permitir crear clientes desde admin --}}
@@ -202,7 +203,7 @@
                                 <i class="fas fa-times mr-2"></i>Cancelar
                             </a>
                             <button type="submit"
-                                class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
                                 <i class="fas fa-save mr-2"></i>Crear Usuario
                             </button>
                         </div>

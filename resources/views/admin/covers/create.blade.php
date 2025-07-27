@@ -13,17 +13,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 relative overflow-hidden">
+    <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 relative overflow-hidden">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-amber-300/20 rounded-full blur-3xl">
+                class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 rounded-full blur-3xl">
             </div>
             <div
-                class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-amber-200/30 to-orange-300/20 rounded-full blur-3xl">
+                class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 rounded-full blur-3xl">
             </div>
             <div
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-orange-100/40 to-amber-100/40 rounded-full blur-2xl">
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary-100/40 to-secondary-100/40 rounded-full blur-2xl">
             </div>
         </div>
 
@@ -35,14 +35,14 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
                 <!-- Header con gradiente -->
-                <div class="bg-gradient-to-r from-orange-600 to-amber-600 px-8 py-6">
+                <div class="bg-gradient-to-r from-primary-600 to-secondary-600 px-8 py-6">
                     <div class="flex items-center space-x-3">
                         <div class="p-3 glass-effect rounded-xl">
                             <i class="fas fa-image text-white text-xl"></i>
                         </div>
                         <div>
                             <h2 class="text-2xl font-bold text-white">Nueva Portada</h2>
-                            <p class="text-orange-100 text-sm">Crear una nueva portada para la página de inicio</p>
+                            <p class="text-secondary-100 text-sm">Crear una nueva portada para la página de inicio</p>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     {{-- Sección de vista previa de imagen mejorada --}}
                     <div class="mb-8">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-camera text-orange-500 mr-2"></i>
+                            <i class="fas fa-camera text-secondary-500 mr-2"></i>
                             Vista Previa de la Imagen
                         </h3>
 
@@ -63,7 +63,7 @@
                             {{-- Botón para seleccionar una nueva imagen mejorado --}}
                             <div class="absolute top-4 right-4 z-10">
                                 <label
-                                    class="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                                    class="flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                                     <i class="fas fa-camera mr-3 text-white"></i>
                                     <span class="font-medium text-white">Seleccionar Imagen</span>
                                     <input type="file" class="hidden" accept="image/*" name="image"
@@ -80,7 +80,7 @@
                                     <div class="absolute inset-0 bg-black bg-opacity-60 rounded-2xl"></div>
                                     <div class="relative z-10 flex flex-col items-center justify-center">
                                         <div
-                                            class="animate-spin rounded-full h-14 w-14 border-4 border-orange-200 border-t-orange-600 mb-4">
+                                            class="animate-spin rounded-full h-14 w-14 border-4 border-secondary-200 border-t-primary-600 mb-4">
                                         </div>
                                         <p class="text-white font-semibold text-base text-center drop-shadow">Subiendo
                                             portada...</p>
@@ -96,7 +96,7 @@
 
                             <figcaption class="mt-4 text-center">
                                 <span
-                                    class="inline-flex items-center px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-sm font-medium">
+                                    class="inline-flex items-center px-4 py-2 bg-secondary-100 text-secondary-700 rounded-lg text-sm font-medium">
                                     <i class="fas fa-info-circle mr-2"></i>
                                     Formato recomendado: 1200x400px (3:1)
                                 </span>
@@ -115,11 +115,11 @@
                             {{-- Input de Título de la portada --}}
                             <div class="lg:col-span-2">
                                 <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                    <i class="fas fa-heading text-orange-500 mr-2"></i>
+                                    <i class="fas fa-heading text-secondary-500 mr-2"></i>
                                     Título de la Portada
                                 </label>
                                 <input type="text" name="title" value="{{ old('title') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg"
                                     placeholder="Ingrese un título atractivo para la portada">
                             </div>
 
@@ -130,7 +130,7 @@
                                     Fecha de Inicio
                                 </label>
                                 <input type="date" name="start_at" value="{{ old('start_at', now()->format('Y-m-d')) }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg">
                             </div>
 
                             {{-- Input de Fecha de Fin --}}
@@ -140,7 +140,7 @@
                                     Fecha de Fin <span class="text-gray-400 text-xs ml-1">(Opcional)</span>
                                 </label>
                                 <input type="date" name="end_at" value="{{ old('end_at') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 bg-white hover:shadow-md focus:shadow-lg">
                             </div>
                         </div>
 
@@ -153,16 +153,16 @@
                             <div class="flex space-x-6">
                                 <label class="flex items-center group cursor-pointer">
                                     <input type="radio" name="is_active" value="1" checked
-                                        class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                        class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500">
                                     <span
-                                        class="ml-3 text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-200 flex items-center">
+                                        class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600 transition-colors duration-200 flex items-center">
                                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
                                         Activar Portada
                                     </span>
                                 </label>
                                 <label class="flex items-center group cursor-pointer">
                                     <input type="radio" name="is_active" value="0"
-                                        class="w-4 h-4 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                        class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500">
                                     <span
                                         class="ml-3 text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors duration-200 flex items-center">
                                         <i class="fas fa-times-circle text-gray-400 mr-2"></i>
@@ -175,7 +175,7 @@
                         {{-- Botón de envío del formulario mejorado --}}
                         <div class="flex justify-end mt-8 pt-6 border-t border-gray-200">
                             <button type="submit"
-                                class="px-8 py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                                class="px-8 py-3 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
                                 <i class="fas fa-plus mr-2 text-white"></i>
                                 <span class="text-white">Crear Portada</span>
                             </button>

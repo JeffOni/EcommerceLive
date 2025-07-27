@@ -13,21 +13,21 @@
     </x-slot>
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-blue-200/30 to-green-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-coral-300/20 blur-3xl">
             </div>
         </div>
 
         <div class="relative">
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header -->
-                <div class="px-8 py-6 bg-gradient-to-r from-green-600 to-blue-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -35,12 +35,12 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Gestión de Usuarios</h2>
-                                <p class="text-sm text-green-100">Administra los usuarios del sistema</p>
+                                <p class="text-sm text-secondary-100">Administra los usuarios del sistema</p>
                             </div>
                         </div>
                         <div class="text-right">
                             <div class="text-2xl font-bold text-white">{{ $users->total() }}</div>
-                            <div class="text-xs text-green-100">Total de usuarios</div>
+                            <div class="text-xs text-secondary-100">Total de usuarios</div>
                         </div>
                     </div>
                 </div>
@@ -52,11 +52,11 @@
                         <div class="flex-1 min-w-64">
                             <input type="text" name="search" value="{{ request('search') }}"
                                 placeholder="Buscar por nombre, email o documento..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                class="w-full px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                         </div>
                         <div>
                             <select name="role"
-                                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                class="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                                 <option value="">Todos los roles</option>
                                 @foreach(\App\Enums\UserRole::toArray() as $value => $label)
                                 <option value="{{ $value }}" {{ request('role')==$value ? 'selected' : '' }}>
@@ -66,11 +66,11 @@
                             </select>
                         </div>
                         <button type="submit"
-                            class="px-6 py-2 text-white transition-all duration-300 transform bg-green-600 rounded-lg hover:bg-green-700 hover:scale-105">
+                            class="px-6 py-2 text-white transition-all duration-300 transform bg-primary-600 rounded-lg hover:bg-primary-700 hover:scale-105">
                             <i class="fas fa-search mr-2"></i>Buscar
                         </button>
                         <a href="{{ route('admin.users.index') }}"
-                            class="px-6 py-2 text-gray-700 transition-all duration-300 transform bg-gray-200 rounded-lg hover:bg-gray-300 hover:scale-105">
+                            class="px-6 py-2 text-secondary-700 transition-all duration-300 transform bg-secondary-200 rounded-lg hover:bg-secondary-300 hover:scale-105">
                             <i class="fas fa-times mr-2"></i>Limpiar
                         </a>
                     </form>

@@ -3,23 +3,23 @@
 
     <div class="space-y-6">
         {{-- Header con estadísticas --}}
-        <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="bg-gradient-to-r from-primary-900 to-secondary-500 rounded-lg shadow-sm p-6">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">🎯 Gestión de Ofertas</h1>
-                    <p class="text-gray-600">Administra las ofertas y descuentos de tus productos</p>
+                    <h1 class="text-2xl font-bold text-white">🎯 Gestión de Ofertas</h1>
+                    <p class="text-secondary-100">Administra las ofertas y descuentos de tus productos</p>
                 </div>
                 <div class="flex gap-3">
                     <form action="{{ route('admin.offers.clean-expired') }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
-                            class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
+                            class="bg-coral-600 text-white px-4 py-2 rounded-lg hover:bg-coral-700 transition-colors"
                             onclick="return confirm('¿Estás seguro de limpiar todas las ofertas vencidas?')">
                             🧹 Limpiar Vencidas
                         </button>
                     </form>
                     <a href="{{ route('admin.offers.create') }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
                         ➕ Nueva Oferta
                     </a>
                 </div>

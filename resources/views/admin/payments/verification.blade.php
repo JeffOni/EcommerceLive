@@ -9,17 +9,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-blue-100/40 to-purple-100/40 blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-primary-100/40 to-secondary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-600 to-secondary-600">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Verificación de Pagos</h2>
-                                <p class="text-sm text-purple-100">Revisa y verifica los comprobantes de pago</p>
+                                <p class="text-sm text-secondary-100">Revisa y verifica los comprobantes de pago</p>
                             </div>
                         </div>
                         <div class="text-sm text-white/80">
@@ -53,7 +53,7 @@
                         <div class="flex items-center space-x-4">
                             <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
                             <select id="status-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="pending_verification" {{ request('status', 'pending_verification'
                                     )=='pending_verification' ? 'selected' : '' }}>
                                     🟡 Pendientes
@@ -69,7 +69,7 @@
                                 </option>
                             </select>
                             <select id="method-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="">Todos los métodos</option>
                                 <option value="bank_transfer" {{ request('method')=='bank_transfer' ? 'selected' : ''
                                     }}>
@@ -88,7 +88,7 @@
                                 <i class="fas fa-sync-alt mr-1"></i> Actualizar
                             </button>
                             <select id="items-per-page"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="12" {{ request('per_page')=='12' ? 'selected' : '' }}>12 por página
                                 </option>
                                 <option value="24" {{ request('per_page')=='24' ? 'selected' : '' }}>24 por página
@@ -379,7 +379,7 @@
         }
 
         .btn-view {
-            @apply bg-blue-100 text-blue-700 hover: bg-blue-200;
+            @apply bg-secondary-100 text-secondary-700 hover: bg-secondary-200;
         }
     </style>
     @endpush

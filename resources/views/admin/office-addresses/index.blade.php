@@ -20,7 +20,7 @@
                     <div class="flex-1">
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Buscar por nombre, dirección, provincia..."
-                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     </div>
                     <div>
                         <select name="per_page"
@@ -31,7 +31,7 @@
                         </select>
                     </div>
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                         Filtrar
                     </button>
                     @if(request()->hasAny(['search', 'per_page']))

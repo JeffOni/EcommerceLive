@@ -13,17 +13,17 @@
     </x-slot>
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-blue-100/40 to-purple-100/40 blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-orange-600 to-red-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -59,23 +59,23 @@
                             <select id="status-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                                 <option value="">Todos los estados</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Activos</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactivos
+                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Activos</option>
+                                <option value="0" {{ request('status')=='0' ? 'selected' : '' }}>Inactivos
                                 </option>
                             </select>
                             <select id="vehicle-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                                 <option value="">Todos los vehículos</option>
-                                <option value="moto" {{ request('vehicle_type') == 'moto' ? 'selected' : '' }}>Moto
+                                <option value="moto" {{ request('vehicle_type')=='moto' ? 'selected' : '' }}>Moto
                                 </option>
-                                <option value="auto" {{ request('vehicle_type') == 'auto' ? 'selected' : '' }}>Auto
+                                <option value="auto" {{ request('vehicle_type')=='auto' ? 'selected' : '' }}>Auto
                                 </option>
-                                <option value="bicicleta"
-                                    {{ request('vehicle_type') == 'bicicleta' ? 'selected' : '' }}>Bicicleta</option>
-                                <option value="camion" {{ request('vehicle_type') == 'camion' ? 'selected' : '' }}>
+                                <option value="bicicleta" {{ request('vehicle_type')=='bicicleta' ? 'selected' : '' }}>
+                                    Bicicleta</option>
+                                <option value="camion" {{ request('vehicle_type')=='camion' ? 'selected' : '' }}>
                                     Camión</option>
-                                <option value="furgoneta"
-                                    {{ request('vehicle_type') == 'furgoneta' ? 'selected' : '' }}>Furgoneta</option>
+                                <option value="furgoneta" {{ request('vehicle_type')=='furgoneta' ? 'selected' : '' }}>
+                                    Furgoneta</option>
                             </select>
                         </div>
 
@@ -89,13 +89,13 @@
                             </div>
                             <select id="items-per-page"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                                <option value="15" {{ request('per_page') == '15' ? 'selected' : '' }}>15 por
+                                <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por
                                     página</option>
-                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25 por
+                                <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por
                                     página</option>
-                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50 por
+                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
                                     página</option>
-                                <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100 por
+                                <option value="100" {{ request('per_page')=='100' ? 'selected' : '' }}>100 por
                                     página</option>
                             </select>
                         </div>
@@ -111,8 +111,8 @@
     </div>
 
     @push('js')
-        <script>
-            let searchTimeout;
+    <script>
+        let searchTimeout;
 
             document.addEventListener('DOMContentLoaded', function() {
                 // Configurar búsqueda con debounce
@@ -259,53 +259,53 @@
                     }
                 });
             }
-        </script>
+    </script>
     @endpush
 
     @push('css')
-        <style>
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-            .status-badge {
-                @apply px-2 py-1 text-xs font-medium rounded-full;
-            }
+        .status-badge {
+            @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
 
-            .status-active {
-                @apply bg-green-100 text-green-800;
-            }
+        .status-active {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .status-inactive {
-                @apply bg-red-100 text-red-800;
-            }
+        .status-inactive {
+            @apply bg-red-100 text-red-800;
+        }
 
-            .vehicle-badge {
-                @apply px-2 py-1 text-xs font-medium rounded-full;
-            }
+        .vehicle-badge {
+            @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
 
-            .vehicle-moto {
-                @apply bg-blue-100 text-blue-800;
-            }
+        .vehicle-moto {
+            @apply bg-blue-100 text-blue-800;
+        }
 
-            .vehicle-auto {
-                @apply bg-purple-100 text-purple-800;
-            }
+        .vehicle-auto {
+            @apply bg-purple-100 text-purple-800;
+        }
 
-            .vehicle-bicicleta {
-                @apply bg-green-100 text-green-800;
-            }
+        .vehicle-bicicleta {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .vehicle-camion {
-                @apply bg-orange-100 text-orange-800;
-            }
+        .vehicle-camion {
+            @apply bg-orange-100 text-orange-800;
+        }
 
-            .vehicle-furgoneta {
-                @apply bg-indigo-100 text-indigo-800;
-            }
-        </style>
+        .vehicle-furgoneta {
+            @apply bg-indigo-100 text-indigo-800;
+        }
+    </style>
     @endpush
 
 </x-admin-layout>

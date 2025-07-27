@@ -9,17 +9,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-blue-200/30 to-green-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-green-100/40 to-blue-100/40 blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-primary-100/40 to-secondary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-green-600 to-blue-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-600 to-secondary-600">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Órdenes Verificadas</h2>
-                                <p class="text-sm text-green-100">Gestiona órdenes listas para envío</p>
+                                <p class="text-sm text-secondary-100">Gestiona órdenes listas para envío</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
@@ -61,22 +61,22 @@
                             <select id="status-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">Todos los estados</option>
-                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Pago Verificado
+                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
                                 </option>
-                                <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>Preparando
+                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando
                                 </option>
-                                <option value="4" {{ request('status') == '4' ? 'selected' : '' }}>Listo para Envío
+                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Listo para Envío
                                 </option>
                             </select>
 
                             <select id="payment-method-filter"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">Todos los métodos</option>
-                                <option value="0" {{ request('payment_method') == '0' ? 'selected' : '' }}>
+                                <option value="0" {{ request('payment_method')=='0' ? 'selected' : '' }}>
                                     Transferencia</option>
-                                <option value="1" {{ request('payment_method') == '1' ? 'selected' : '' }}>Tarjeta
+                                <option value="1" {{ request('payment_method')=='1' ? 'selected' : '' }}>Tarjeta
                                 </option>
-                                <option value="2" {{ request('payment_method') == '2' ? 'selected' : '' }}>Efectivo
+                                <option value="2" {{ request('payment_method')=='2' ? 'selected' : '' }}>Efectivo
                                 </option>
                             </select>
                         </div>
@@ -91,11 +91,11 @@
                             </div>
                             <select id="items-per-page"
                                 class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <option value="15" {{ request('per_page') == '15' ? 'selected' : '' }}>15 por página
+                                <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por página
                                 </option>
-                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25 por página
+                                <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por página
                                 </option>
-                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50 por
+                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
                                     página</option>
                             </select>
                         </div>
@@ -111,8 +111,8 @@
     </div>
 
     @push('js')
-        <script>
-            let searchTimeout;
+    <script>
+        let searchTimeout;
 
             document.addEventListener('DOMContentLoaded', function() {
                 // Configurar búsqueda con debounce
@@ -270,85 +270,85 @@
             function refreshOrders() {
                 filterOrders();
             }
-        </script>
+    </script>
     @endpush
 
     @push('css')
-        <style>
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-            .order-card {
-                border: 1px solid #e5e7eb;
-                border-radius: 0.75rem;
-                transition: all 0.3s ease;
-                background: white;
-            }
+        .order-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
 
-            .order-card:hover {
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-                transform: translateY(-2px);
-            }
+        .order-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
 
-            .status-badge {
-                @apply px-3 py-1 text-xs font-medium rounded-full;
-            }
+        .status-badge {
+            @apply px-3 py-1 text-xs font-medium rounded-full;
+        }
 
-            .status-verificado {
-                @apply bg-blue-100 text-blue-800;
-            }
+        .status-verificado {
+            @apply bg-blue-100 text-blue-800;
+        }
 
-            .status-preparando {
-                @apply bg-purple-100 text-purple-800;
-            }
+        .status-preparando {
+            @apply bg-purple-100 text-purple-800;
+        }
 
-            .status-listo {
-                @apply bg-green-100 text-green-800;
-            }
+        .status-listo {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .payment-method-badge {
-                @apply px-2 py-1 text-xs rounded-full font-medium;
-            }
+        .payment-method-badge {
+            @apply px-2 py-1 text-xs rounded-full font-medium;
+        }
 
-            .method-transferencia {
-                @apply bg-yellow-100 text-yellow-800;
-            }
+        .method-transferencia {
+            @apply bg-yellow-100 text-yellow-800;
+        }
 
-            .method-tarjeta {
-                @apply bg-green-100 text-green-800;
-            }
+        .method-tarjeta {
+            @apply bg-green-100 text-green-800;
+        }
 
-            .method-efectivo {
-                @apply bg-orange-100 text-orange-800;
-            }
+        .method-efectivo {
+            @apply bg-orange-100 text-orange-800;
+        }
 
-            .action-btn {
-                @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
-            }
+        .action-btn {
+            @apply px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
+        }
 
-            .btn-prepare {
-                @apply bg-purple-100 text-purple-700 hover:bg-purple-200;
-            }
+        .btn-prepare {
+            @apply bg-purple-100 text-purple-700 hover: bg-purple-200;
+        }
 
-            .btn-ready {
-                @apply bg-green-100 text-green-700 hover:bg-green-200;
-            }
+        .btn-ready {
+            @apply bg-green-100 text-green-700 hover: bg-green-200;
+        }
 
-            .btn-ship {
-                @apply bg-blue-100 text-blue-700 hover:bg-blue-200;
-            }
+        .btn-ship {
+            @apply bg-blue-100 text-blue-700 hover: bg-blue-200;
+        }
 
-            .btn-cancel {
-                @apply bg-red-100 text-red-700 hover:bg-red-200;
-            }
+        .btn-cancel {
+            @apply bg-red-100 text-red-700 hover: bg-red-200;
+        }
 
-            .btn-view {
-                @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
-            }
-        </style>
+        .btn-view {
+            @apply bg-gray-100 text-gray-700 hover: bg-gray-200;
+        }
+    </style>
     @endpush
 
 </x-admin-layout>

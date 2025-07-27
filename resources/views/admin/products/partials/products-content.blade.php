@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @foreach ($products as $product)
         <div
-            class="relative flex flex-col h-full overflow-hidden transition-all duration-500 transform border border-blue-100 shadow-lg group bg-gradient-to-br from-white to-blue-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2">
+            class="relative flex flex-col h-full overflow-hidden transition-all duration-500 transform border border-secondary-100 shadow-lg group bg-gradient-to-br from-white to-secondary-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2">
 
             {{--
             MEJORA UI #1: Badge ID modificado
@@ -13,7 +13,7 @@
             --}}
             <div class="absolute z-10 top-3 left-3">
                 <span
-                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
+                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-secondary-800 bg-secondary-100 rounded-full">
                     #{{ $product->id }}
                 </span>
             </div>
@@ -70,7 +70,7 @@
             <div class="p-6">
                 <!-- Nombre del producto -->
                 <h3
-                    class="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 line-clamp-2">
+                    class="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover:text-primary-600 line-clamp-2">
                     {{ $product->name }}
                 </h3>
 
@@ -87,19 +87,19 @@
                 <!-- Jerarquía (Familia > Categoría > Subcategoría) -->
                 <div class="mb-4 space-y-1 text-xs">
                     <div class="flex items-center">
-                        <span class="px-2 py-1 text-indigo-700 bg-indigo-100 rounded-md">
+                        <span class="px-2 py-1 text-primary-700 bg-primary-100 rounded-md">
                             <i class="mr-1 fas fa-layer-group"></i>
                             {{ $product->subcategory->category->family->name }}
                         </span>
                     </div>
                     <div class="flex items-center">
-                        <span class="px-2 py-1 text-teal-700 bg-teal-100 rounded-md">
+                        <span class="px-2 py-1 text-secondary-700 bg-secondary-100 rounded-md">
                             <i class="mr-1 fas fa-tags"></i>
                             {{ $product->subcategory->category->name }}
                         </span>
                     </div>
                     <div class="flex items-center">
-                        <span class="px-2 py-1 text-pink-700 bg-pink-100 rounded-md">
+                        <span class="px-2 py-1 text-coral-700 bg-coral-100 rounded-md">
                             <i class="mr-1 fas fa-tag"></i>
                             {{ $product->subcategory->name }}
                         </span>
@@ -108,7 +108,7 @@
                 <div class="mb-4 space-y-2 text-sm text-gray-600">
                     @if ($product->created_at)
                     <div class="flex items-center space-x-2">
-                        <i class="text-blue-500 fas fa-calendar-plus"></i>
+                        <i class="text-secondary-500 fas fa-calendar-plus"></i>
                         <span>{{ $product->created_at->diffForHumans() }}</span>
                     </div>
                     @endif
@@ -117,7 +117,7 @@
                 <!-- Botón de acción -->
                 <div class="mt-auto">
                     <a href="{{ route('admin.products.edit', $product) }}"
-                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                         <i class="mr-2 fas fa-edit"></i>
                         Editar Producto
                     </a>
@@ -126,7 +126,7 @@
 
             <!-- Indicador de hover -->
             <div
-                class="absolute inset-x-0 bottom-0 h-1 transition-transform duration-300 transform scale-x-0 bg-gradient-to-r from-blue-500 to-purple-600 group-hover:scale-x-100">
+                class="absolute inset-x-0 bottom-0 h-1 transition-transform duration-300 transform scale-x-0 bg-gradient-to-r from-primary-500 to-secondary-600 group-hover:scale-x-100">
             </div>
         </div>
         @endforeach
@@ -145,7 +145,7 @@ MEJORA UI #2: Tabla de productos con columna ID agregada
     <div class="overflow-hidden border border-gray-200 shadow-lg rounded-2xl">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gradient-to-r from-blue-600 to-purple-600">
+                <thead class="bg-gradient-to-r from-primary-900 to-secondary-500">
                     <tr>
                         {{-- MEJORA UI #2: Nueva columna ID agregada --}}
                         <th class="px-4 py-3 text-xs font-semibold tracking-wider text-left text-white uppercase">
@@ -188,11 +188,11 @@ MEJORA UI #2: Tabla de productos con columna ID agregada
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($products as $product)
-                    <tr class="transition-colors duration-200 hover:bg-blue-50">
+                    <tr class="transition-colors duration-200 hover:bg-secondary-50">
                         {{-- MEJORA UI #2: Celda ID con badge azul consistente --}}
                         <td class="px-4 py-3 whitespace-nowrap">
                             <span
-                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
+                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-secondary-800 bg-secondary-100 rounded-full">
                                 #{{ $product->id }}
                             </span>
                         </td>
@@ -204,7 +204,7 @@ MEJORA UI #2: Tabla de productos con columna ID agregada
                                         class="object-cover w-full h-full">
                                     @else
                                     <div
-                                        class="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-purple-100">
+                                        class="flex items-center justify-center w-full h-full bg-gradient-to-br from-secondary-100 to-primary-100">
                                         <i class="text-sm text-gray-400 fas fa-image"></i>
                                     </div>
                                     @endif
@@ -246,7 +246,7 @@ MEJORA UI #2: Tabla de productos con columna ID agregada
                         </td>
                         <td class="px-4 py-3 text-center whitespace-nowrap">
                             <a href="{{ route('admin.products.edit', $product) }}"
-                                class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white text-xs font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                                 <i class="mr-2 fas fa-edit"></i>
                                 Editar
                             </a>

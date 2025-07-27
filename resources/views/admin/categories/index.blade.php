@@ -9,17 +9,17 @@
 ]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="min-h-screen bg-gradient-to-br from-teal-50 via-white to-cyan-50 relative overflow-hidden">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-teal-200/30 to-cyan-300/20 rounded-full blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-cyan-200/30 to-teal-300/20 rounded-full blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-teal-100/40 to-cyan-100/40 rounded-full blur-2xl">
+                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
             </div>
         </div>
 
@@ -29,41 +29,42 @@
             </x-slot>
 
             <!-- Contenedor principal con backdrop blur -->
-            <div class="glass-effect rounded-3xl shadow-2xl mx-4 my-8 overflow-hidden">
+            <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="bg-gradient-to-r from-teal-600 to-cyan-600 px-8 py-6">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
-                                <i class="fas fa-tags text-white text-xl"></i>
+                                <i class="text-xl text-white fas fa-tags"></i>
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-white">Gestión de Categorías</h2>
-                                <p class="text-teal-100 text-sm">Administra las categorías organizadas por familias</p>
+                                <p class="text-sm text-secondary-100">Administra las categorías organizadas por familias
+                                </p>
                             </div>
                         </div>
-                        <div class="text-white/80 text-sm">
-                            <i class="fas fa-list mr-1"></i>
+                        <div class="text-sm text-white/80">
+                            <i class="mr-1 fas fa-list"></i>
                             {{ $categories->total() ?? $categories->count() }} categorías
                         </div>
                     </div>
                 </div>
 
                 <!-- Barra de herramientas con controles de vista -->
-                <div class="bg-white border-b border-gray-200 px-8 py-4">
+                <div class="px-8 py-4 bg-white border-b border-gray-200">
                     <div
-                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                        class="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
                         <!-- Controles de vista -->
                         <div class="flex items-center space-x-4">
                             <span class="text-sm font-medium text-gray-700">Vista:</span>
-                            <div class="flex bg-gray-100 rounded-lg p-1">
+                            <div class="flex p-1 bg-gray-100 rounded-lg">
                                 <button onclick="toggleView('cards')" id="cards-btn"
-                                    class="view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-teal-600 text-white shadow-sm">
-                                    <i class="fas fa-th-large mr-2"></i>Tarjetas
+                                    class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-md shadow-sm bg-primary-600 view-toggle">
+                                    <i class="mr-2 fas fa-th-large"></i>Tarjetas
                                 </button>
                                 <button onclick="toggleView('table')" id="table-btn"
-                                    class="view-toggle px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900">
-                                    <i class="fas fa-table mr-2"></i>Tabla
+                                    class="px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-200 rounded-md view-toggle hover:text-gray-900">
+                                    <i class="mr-2 fas fa-table"></i>Tabla
                                 </button>
                             </div>
                         </div>
@@ -73,18 +74,18 @@
                             <div class="relative">
                                 <input type="text" id="search-input" placeholder="Buscar categorías..."
                                     value="{{ request('search') }}"
-                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm w-64">
-                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                    class="w-64 py-2 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500">
+                                <i class="absolute text-gray-400 fas fa-search left-3 top-3"></i>
                             </div>
                             <select id="items-per-page"
-                                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500">
-                                <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12 por
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-500">
+                                <option value="12" {{ request('per_page', 12)==12 ? 'selected' : '' }}>12 por
                                     página</option>
-                                <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24 por página
+                                <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>24 por página
                                 </option>
-                                <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48 por página
+                                <option value="48" {{ request('per_page')==48 ? 'selected' : '' }}>48 por página
                                 </option>
-                                <option value="96" {{ request('per_page') == 96 ? 'selected' : '' }}>96 por página
+                                <option value="96" {{ request('per_page')==96 ? 'selected' : '' }}>96 por página
                                 </option>
                             </select>
                         </div>
@@ -93,23 +94,23 @@
 
                 <div class="p-8" id="categories-container">
                     @if ($categories->count())
-                        @include('admin.categories.partials.categories-content')
+                    @include('admin.categories.partials.categories-content')
                     @else
-                        <!-- Estado vacío mejorado -->
-                        <div class="text-center py-16">
-                            <div
-                                class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full mb-6">
-                                <i class="fas fa-tags text-4xl text-teal-500"></i>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">No hay categorías registradas</h3>
-                            <p class="text-gray-600 mb-8 max-w-md mx-auto">Todavía no has creado ninguna categoría. Las
-                                categorías te ayudan a organizar productos dentro de cada familia.</p>
-                            <a href="{{ route('admin.categories.create') }}"
-                                class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                                <i class="fas fa-plus mr-3 text-white"></i>
-                                <span class="text-white">Crear Primera Categoría</span>
-                            </a>
+                    <!-- Estado vacío mejorado -->
+                    <div class="py-16 text-center">
+                        <div
+                            class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-secondary-100 to-primary-100">
+                            <i class="text-4xl text-secondary-500 fas fa-tags"></i>
                         </div>
+                        <h3 class="mb-4 text-2xl font-semibold text-gray-800">No hay categorías registradas</h3>
+                        <p class="max-w-md mx-auto mb-8 text-gray-600">Todavía no has creado ninguna categoría. Las
+                            categorías te ayudan a organizar productos dentro de cada familia.</p>
+                        <a href="{{ route('admin.categories.create') }}"
+                            class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 rounded-xl hover:shadow-xl hover:scale-105">
+                            <i class="mr-3 text-white fas fa-plus"></i>
+                            <span class="text-white">Crear Primera Categoría</span>
+                        </a>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -118,8 +119,8 @@
 
     {{-- JavaScript para funcionalidad avanzada --}}
     @push('js')
-        <script>
-            // Estado de la vista actual
+    <script>
+        // Estado de la vista actual
             let currentView = 'cards';
 
             // Función para cambiar entre vistas
@@ -134,14 +135,13 @@
 
                 // Actualizar botones
                 document.querySelectorAll('.view-toggle').forEach(btn => {
-                    btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+                    btn.classList.remove('bg-primary-600', 'text-white', 'shadow-sm');
                     btn.classList.add('text-gray-600', 'hover:text-gray-900');
                 });
 
                 const selectedBtn = document.getElementById(viewType + '-btn');
-                selectedBtn.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+                selectedBtn.classList.add('bg-primary-600', 'text-white', 'shadow-sm');
                 selectedBtn.classList.remove('text-gray-600', 'hover:text-gray-900');
-
                 // Guardar preferencia
                 localStorage.setItem('admin_categories_view', viewType);
                 currentView = viewType;
@@ -231,7 +231,7 @@
             document.getElementById('items-per-page').addEventListener('change', function(e) {
                 loadData();
             });
-        </script>
+    </script>
     @endpush
 
 </x-admin-layout>
