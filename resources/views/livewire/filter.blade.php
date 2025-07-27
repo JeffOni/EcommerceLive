@@ -177,7 +177,7 @@
                                 </div>
                             </div>
                             @else
-                            <div class="text-2xl font-bold text-coral-600">
+                            <div class="text-2xl font-bold text-primary-600">
                                 ${{ number_format($product->price, 2) }}
                             </div>
                             @endif
@@ -192,7 +192,7 @@
                         <!-- Botones fijos en la parte inferior -->
                         <div class="flex gap-3 mt-auto">
                             <x-link href="{{ route('products.show', $product) }}"
-                                class="flex-1 bg-coral-500 text-white text-center py-3 px-4 rounded-xl font-semibold hover:bg-coral-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                class="flex-1 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-center py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                                 name="Ver Detalles">
                             </x-link>
                             <livewire:quick-add-to-cart :product="$product" :key="'filter-cart-'.$product->id" />
