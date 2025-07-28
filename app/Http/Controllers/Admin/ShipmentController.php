@@ -160,10 +160,10 @@ class ShipmentController extends Controller
      */
     public function edit(Shipment $shipment)
     {
-        $drivers = DeliveryDriver::active()->orderBy('name')->get();
+        $deliveryDrivers = DeliveryDriver::active()->orderBy('name')->get();
         $shipment->load(['order.user', 'deliveryDriver']);
 
-        return view('admin.shipments.edit', compact('shipment', 'drivers'));
+        return view('admin.shipments.edit', compact('shipment', 'deliveryDrivers'));
     }
 
     /**
