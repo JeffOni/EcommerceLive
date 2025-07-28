@@ -8,369 +8,190 @@
     ],
 ]">
 
-    <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-50 via-white to-primary-50">
-        <!-- Elementos decorativos de fondo -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
-            </div>
-            <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
-            </div>
-            <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
+    <!-- Header -->
+    <div class="mb-6 text-center">
+        <h1 class="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+            Gestión de Envíos
+        </h1>
+        <p class="text-sm text-gray-600 sm:text-base">Administra y rastrea todos los envíos</p>
+    </div>
+
+    <!-- Stats Cards -->
+    @php
+    $totalShipments = $shipments->total() ?? $shipments->count();
+    $deliveredCount = 0;
+    $pendingCount = 0;
+    $cancelledCount = 0;
+
+    // Contar por estado de orden
+    foreach ($shipments as $shipment) {
+    $orderStatus = $shipment->order->status ?? 1;
+    try {
+    if ($orderStatus == 6) { // Entregado
+    $deliveredCount++;
+    } elseif ($orderStatus == 7) { // Cancelado
+    $cancelledCount++;
+    } else { // Pendiente o en proceso
+    $pendingCount++;
+    }
+    } catch (Exception $e) {
+    $pendingCount++;
+    }
+    }
+    @endphp
+
+    <!-- Validación de datos nulos -->
+    @if($totalShipments !== null && $deliveredCount !== null && $cancelledCount !== null && $pendingCount !== null)
+    <div class="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-4 sm:gap-4">
+        <div class="p-3 bg-white border border-blue-200 rounded-lg shadow-sm sm:p-4">
+            <div class="flex items-center">
+                <div class="p-2 text-blue-600 bg-blue-100 rounded-lg">
+                    <i class="text-sm fas fa-truck sm:text-base"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600 sm:text-sm">Total</p>
+                    <p class="text-lg font-bold text-gray-900 sm:text-xl">{{ $totalShipments }}</p>
+                </div>
             </div>
         </div>
 
-        <div class="relative">
-            <!-- Contenedor principal con backdrop blur -->
-            <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
-                <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-3 glass-effect rounded-xl">
-                                <i class="text-xl text-white fas fa-shipping-fast"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-white">Gestión de Envíos</h2>
-                                <p class="text-sm text-secondary-100">Administra y rastrea todos los envíos</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="text-sm text-white/80">
-                                <i class="mr-1 fas fa-truck"></i>
-                                {{ $shipments->total() ?? $shipments->count() }} envíos
-                            </div>
-                            <a href="{{ route('admin.shipments.create') }}"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-all duration-200 glass-effect rounded-xl hover:bg-white/20">
-                                <i class="mr-2 fas fa-plus"></i>
-                                Nuevo Envío
-                            </a>
-                        </div>
-                    </div>
+        <div class="p-3 bg-white border border-green-200 rounded-lg shadow-sm sm:p-4">
+            <div class="flex items-center">
+                <div class="p-2 text-green-600 bg-green-100 rounded-lg">
+                    <i class="text-sm fas fa-check-circle sm:text-base"></i>
                 </div>
-
-                <!-- Barra de herramientas con filtros -->
-                <div class="px-8 py-4 bg-white border-b border-gray-200">
-                    <div
-                        class="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
-                        <!-- Filtros -->
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
-                            <select id="status-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">Todos los estados</option>
-                                <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>
-                                    Pendiente</option>
-                                <option value="assigned" {{ request('status')=='assigned' ? 'selected' : '' }}>
-                                    Asignado</option>
-                                <option value="in_transit" {{ request('status')=='in_transit' ? 'selected' : '' }}>
-                                    En Tránsito</option>
-                                <option value="delivered" {{ request('status')=='delivered' ? 'selected' : '' }}>
-                                    Entregado</option>
-                                <option value="failed" {{ request('status')=='failed' ? 'selected' : '' }}>
-                                    Fallido</option>
-                            </select>
-
-                            <select id="driver-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">Todos los repartidores</option>
-                                @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}" {{ request('driver_id')==$driver->id ? 'selected' : ''
-                                    }}>
-                                    {{ $driver->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Búsqueda -->
-                        <div class="flex items-center space-x-4">
-                            <div class="relative">
-                                <input type="text" id="search-input" placeholder="Buscar envíos..."
-                                    value="{{ request('search') }}"
-                                    class="w-64 py-2 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <i class="absolute text-gray-400 fas fa-search left-3 top-3"></i>
-                            </div>
-                            <select id="items-per-page"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por
-                                    página</option>
-                                <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por
-                                    página</option>
-                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
-                                    página</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600 sm:text-sm">Entregados</p>
+                    <p class="text-lg font-bold text-gray-900 sm:text-xl">{{ $deliveredCount }}</p>
                 </div>
+            </div>
+        </div>
 
-                <!-- Contenido principal -->
-                <div class="overflow-hidden bg-white" id="shipments-content">
-                    @include('admin.shipments.partials.shipments-content')
+        <div class="p-3 bg-white border border-orange-200 rounded-lg shadow-sm sm:p-4">
+            <div class="flex items-center">
+                <div class="p-2 text-orange-600 bg-orange-100 rounded-lg">
+                    <i class="text-sm fas fa-clock sm:text-base"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600 sm:text-sm">Pendientes</p>
+                    <p class="text-lg font-bold text-gray-900 sm:text-xl">{{ $pendingCount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 bg-white border border-red-200 rounded-lg shadow-sm sm:p-4">
+            <div class="flex items-center">
+                <div class="p-2 text-red-600 bg-red-100 rounded-lg">
+                    <i class="text-sm fas fa-times sm:text-base"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600 sm:text-sm">Cancelados</p>
+                    <p class="text-lg font-bold text-gray-900 sm:text-xl">{{ $cancelledCount }}</p>
                 </div>
             </div>
         </div>
     </div>
+    @endif
 
-    @push('js')
+    <!-- Filters and Search -->
+    <div class="mb-6 bg-white rounded-lg shadow-sm">
+        <div class="p-4 border-b border-gray-200">
+            <form method="GET" action="{{ route('admin.shipments.index') }}"
+                class="flex flex-col gap-4 sm:flex-row sm:items-end">
+                <!-- Search -->
+                <div class="flex-1">
+                    <label for="search" class="block mb-1 text-sm font-medium text-gray-700">Buscar</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="Número de seguimiento, orden, cliente..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <!-- Status Filter -->
+                <div class="sm:w-48">
+                    <label for="status" class="block mb-1 text-sm font-medium text-gray-700">Estado</label>
+                    <select name="status" id="status"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Todos los estados</option>
+                        <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pendiente</option>
+                        <option value="delivered" {{ request('status')=='delivered' ? 'selected' : '' }}>Entregado
+                        </option>
+                        <option value="cancelled" {{ request('status')=='cancelled' ? 'selected' : '' }}>Cancelado
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex gap-2">
+                    <button type="submit"
+                        class="px-4 py-2 text-sm font-medium text-white transition-colors bg-indigo-600 rounded-md hover:bg-indigo-700">
+                        <i class="mr-2 fas fa-search"></i>Buscar
+                    </button>
+                    <a href="{{ route('admin.shipments.index') }}"
+                        class="px-4 py-2 text-sm font-medium text-white transition-colors bg-gray-600 rounded-md hover:bg-gray-700">
+                        <i class="mr-2 fas fa-times"></i>Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Shipments Content -->
+    <div id="shipments-content">
+        @include('admin.shipments.partials.shipments-content', compact('shipments'))
+    </div>
+
+    <!-- Scripts -->
     <script>
-        let searchTimeout;
+        // Auto-submit form on select change
+        document.getElementById('status').addEventListener('change', function() {
+            this.closest('form').submit();
+        });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const searchInput = document.getElementById('search-input');
-                const statusFilter = document.getElementById('status-filter');
-                const driverFilter = document.getElementById('driver-filter');
-                const itemsPerPage = document.getElementById('items-per-page');
-
-                if (searchInput) {
-                    searchInput.addEventListener('input', function() {
-                        clearTimeout(searchTimeout);
-                        searchTimeout = setTimeout(() => {
-                            filterShipments();
-                        }, 300);
-                    });
+        function updateContent() {
+            const url = new URL(window.location);
+            fetch(url.toString(), {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html'
                 }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('shipments-content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
-                if (statusFilter) {
-                    statusFilter.addEventListener('change', filterShipments);
+        // Handle pagination
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.pagination a')) {
+                e.preventDefault();
+                const url = e.target.closest('.pagination a').href;
+                loadShipmentsPage(url);
+            }
+        });
+
+        function loadShipmentsPage(url) {
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html'
                 }
-
-                if (driverFilter) {
-                    driverFilter.addEventListener('change', filterShipments);
-                }
-
-                if (itemsPerPage) {
-                    itemsPerPage.addEventListener('change', filterShipments);
-                }
-
-                // Manejar paginación AJAX
-                document.addEventListener('click', function(e) {
-                    if (e.target.closest('.pagination a')) {
-                        e.preventDefault();
-                        const url = e.target.closest('.pagination a').href;
-                        loadShipmentsPage(url);
-                    }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('shipments-content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al cargar los envíos',
+                    icon: 'error'
                 });
             });
-
-            function filterShipments() {
-                const search = document.getElementById('search-input').value;
-                const status = document.getElementById('status-filter').value;
-                const driverId = document.getElementById('driver-filter').value;
-                const perPage = document.getElementById('items-per-page').value;
-
-                const params = new URLSearchParams();
-                if (search) params.append('search', search);
-                if (status) params.append('status', status);
-                if (driverId) params.append('driver_id', driverId);
-                if (perPage) params.append('per_page', perPage);
-
-                const url = `{{ route('admin.shipments.index') }}?${params.toString()}`;
-                loadShipmentsPage(url);
-
-                window.history.pushState({}, '', url);
-            }
-
-            function loadShipmentsPage(url) {
-                fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'text/html'
-                        }
-                    })
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('shipments-content').innerHTML = html;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Hubo un problema al cargar los envíos',
-                            icon: 'error'
-                        });
-                    });
-            }
-
-            function updateShipmentStatus(shipmentId, status) {
-                let statusText = '';
-                switch(status) {
-                    case 'pending': statusText = 'pendiente'; break;
-                    case 'assigned': statusText = 'asignado'; break;
-                    case 'in_transit': statusText = 'en tránsito'; break;
-                    case 'delivered': statusText = 'entregado'; break;
-                    case 'failed': statusText = 'fallido'; break;
-                    default: statusText = status;
-                }
-
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: `¿Deseas cambiar el estado de este envío a "${statusText}"?`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6366F1',
-                    cancelButtonColor: '#EF4444',
-                    confirmButtonText: 'Sí, cambiar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Usar ruta específica para marcar como entregado o ruta general para otros estados
-                        const url = status === 'delivered' 
-                            ? `/admin/shipments/${shipmentId}/mark-delivered`
-                            : `/admin/shipments/${shipmentId}/status`;
-                        
-                        const body = status === 'delivered' 
-                            ? JSON.stringify({})
-                            : JSON.stringify({ status: status });
-
-                        fetch(url, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                },
-                                body: body
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: '¡Éxito!',
-                                        text: 'Estado actualizado correctamente',
-                                        icon: 'success',
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                    
-                                    // Si se marcó como entregado, eliminar la fila
-                                    if (status === 'delivered') {
-                                        const row = document.querySelector(`#shipment-row-${shipmentId}`);
-                                        if (row) {
-                                            row.remove();
-                                        }
-                                    } else {
-                                        filterShipments();
-                                    }
-                                } else {
-                                    throw new Error(data.message || 'Error al actualizar');
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'No se pudo actualizar el estado',
-                                    icon: 'error'
-                                });
-                            });
-                    }
-                });
-            }
-
-            function trackShipment(trackingNumber) {
-                window.open(`/track/${trackingNumber}`, '_blank');
-            }
-
-            function markOrderAsDelivered(shipmentId) {
-                Swal.fire({
-                    title: '¿Confirmar entrega?',
-                    text: '¿Está seguro que desea marcar este envío como entregado?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#10B981',
-                    cancelButtonColor: '#EF4444',
-                    confirmButtonText: 'Sí, entregar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/admin/shipments/${shipmentId}/mark-delivered`, {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: '¡Entregado!',
-                                    text: data.message,
-                                    icon: 'success',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                                // Actualizar la celda de acciones con el badge
-                                const row = document.querySelector(`#shipment-row-${shipmentId}`);
-                                if (row) {
-                                    const actionsCell = row.querySelector('td:last-child');
-                                    if (actionsCell) {
-                                        actionsCell.innerHTML = `
-                                            <span class="inline-flex items-center px-3 py-2 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                                                <i class="mr-1 fas fa-check-circle"></i>
-                                                Entregado
-                                            </span>
-                                        `;
-                                    }
-                                }
-                            } else {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: data.message,
-                                    icon: 'error'
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Ocurrió un error al marcar como entregado.',
-                                icon: 'error'
-                            });
-                            console.error('Error:', error);
-                        });
-                    }
-                });
-            }
+        }
     </script>
-    @endpush
-
-    @push('css')
-    <style>
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .status-badge {
-            @apply px-2 py-1 text-xs font-medium rounded-full;
-        }
-
-        .status-pending {
-            @apply bg-yellow-100 text-yellow-800;
-        }
-
-        .status-assigned {
-            @apply bg-blue-100 text-blue-800;
-        }
-
-        .status-in_transit {
-            @apply bg-orange-100 text-orange-800;
-        }
-
-        .status-delivered {
-            @apply bg-green-100 text-green-800;
-        }
-
-        .status-failed {
-            @apply bg-red-100 text-red-800;
-        }
-    </style>
-    @endpush
-
 </x-admin-layout>

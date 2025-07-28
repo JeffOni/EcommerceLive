@@ -7,6 +7,7 @@ use App\Models\Shipment;
 use App\Models\Order;
 use App\Models\DeliveryDriver;
 use Illuminate\Http\Request;
+use App\Enums\ShipmentStatus;
 
 class ShipmentController extends Controller
 {
@@ -308,15 +309,27 @@ class ShipmentController extends Controller
             'proof' => 'nullable|array'
         ]);
 
-        $shipment->markAsDelivered($request->proof, $request->notes);
+        try {
+            // Actualizar el estado del envío a entregado (2)
+            $shipment->update([
+                'status' => 2, // DELIVERED
+                'delivered_at' => now(),
+                'delivery_notes' => $request->notes
+            ]);
 
-        // Actualizar el estado de la orden asociada
-        $shipment->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
+            // Actualizar el estado de la orden asociada a entregado (6)
+            $shipment->order->update(['status' => 6]); // ENTREGADO
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Envío marcado como entregado y orden actualizada'
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Envío marcado como entregado y orden actualizada'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al marcar como entregado: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -339,21 +352,31 @@ class ShipmentController extends Controller
     /**
      * Update shipment status
      */
+    private function convertToEnum(string $status): ?ShipmentStatus
+    {
+        return \App\Enums\ShipmentStatus::fromString($status);
+    }
+
     public function updateStatus(Request $request, Shipment $shipment)
     {
         $request->validate([
-            'status' => 'required|string|in:pending,assigned,in_transit,delivered,failed'
+            'status' => 'required|string|in:pending,delivered,cancelled'
         ]);
 
-        $oldStatus = $shipment->status;
-        $newStatus = $request->status;
+        $newStatus = $this->convertToEnum($request->status);
 
-        // Actualizar el estado del envío
+        if (!$newStatus) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Estado inválido'
+            ], 400);
+        }
+
         $shipment->update(['status' => $newStatus]);
 
         // Si se marca como entregado, también actualizar la orden relacionada
-        if ($newStatus === 'delivered' && $oldStatus !== 'delivered') {
-            $shipment->order->update(['status' => 6]); // 6 = Entregado en órdenes
+        if ($newStatus === \App\Enums\ShipmentStatus::DELIVERED) {
+            $shipment->order->update(['status' => \App\Enums\OrderStatus::ENTREGADO->value]);
         }
 
         return response()->json([
@@ -389,18 +412,26 @@ class ShipmentController extends Controller
             'reason' => 'required|string|min:10|max:255'
         ]);
 
-        // Actualizar el estado del envío a cancelado
-        $shipment->update([
-            'status' => \App\Enums\ShipmentStatus::FAILED,
-            'notes' => 'Cancelado: ' . $request->reason
-        ]);
+        try {
+            // Actualizar el estado del envío a cancelado (3)
+            $shipment->update([
+                'status' => 3, // CANCELLED
+                'failed_at' => now(),
+                'failure_reason' => $request->reason
+            ]);
 
-        // Actualizar el estado de la orden asociada
-        $shipment->order->update(['status' => \App\Enums\OrderStatus::CANCELADO]);
+            // Actualizar el estado de la orden asociada a cancelado (7)
+            $shipment->order->update(['status' => 7]); // CANCELADO
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Envío cancelado correctamente'
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Envío cancelado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cancelar el envío: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
