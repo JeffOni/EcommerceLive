@@ -342,10 +342,10 @@
                 </div>
 
                 {{-- Stock indicator --}}
-                @if($product->stock > 0)
+                @if($product->hasAvailableStock())
                 <div class="flex items-center mb-3 sm:mb-4 text-xs sm:text-sm text-secondary-600">
                     <i class="mr-1 sm:mr-2 text-xs fas fa-check-circle text-secondary-500"></i>
-                    <span>{{ $product->stock }} disponibles</span>
+                    <span>{{ $product->getAvailableStock() }} disponibles</span>
                 </div>
                 @else
                 <div class="flex items-center mb-3 sm:mb-4 text-xs sm:text-sm text-coral-600">

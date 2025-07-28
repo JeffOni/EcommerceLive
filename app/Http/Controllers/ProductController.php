@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Product::with(['subcategory.category.family'])
+        $query = Product::with(['subcategory.category.family', 'variants'])
             ->where('is_active', true);
 
         // Filtro por tipo

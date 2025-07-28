@@ -280,6 +280,67 @@ class Product extends Model
         });
     }
 
+    /**
+     * Obtiene el stock disponible del producto considerando variantes
+     * Si el producto tiene variantes, retorna el stock de la primera variante disponible
+     * Si no tiene variantes, retorna el stock del producto base
+     *
+     * @return int
+     */
+    public function getAvailableStock(): int
+    {
+        // Si el producto tiene variantes, usar el stock de la primera variante con stock disponible
+        if ($this->variants->isNotEmpty()) {
+            // Intentar encontrar una variante con stock disponible
+            $firstAvailableVariant = $this->variants
+                ->where('stock', '>', 0)
+                ->first();
+
+            if ($firstAvailableVariant) {
+                return $firstAvailableVariant->stock;
+            }
+
+            // Si no hay variantes con stock, devolver el stock de la primera variante
+            $firstVariant = $this->variants->first();
+            return $firstVariant ? $firstVariant->stock : 0;
+        }
+
+        // Si no tiene variantes, usar el stock del producto base
+        return $this->stock ?? 0;
+    }
+
+    /**
+     * Verifica si el producto tiene stock disponible considerando variantes
+     *
+     * @return bool
+     */
+    public function hasAvailableStock(): bool
+    {
+        // Si el producto tiene variantes, verificar si alguna tiene stock
+        if ($this->variants->isNotEmpty()) {
+            return $this->variants->where('stock', '>', 0)->isNotEmpty();
+        }
+
+        // Si no tiene variantes, verificar el stock del producto base
+        return ($this->stock ?? 0) > 0;
+    }
+
+    /**
+     * Obtiene el stock total disponible del producto considerando todas las variantes
+     *
+     * @return int
+     */
+    public function getTotalAvailableStock(): int
+    {
+        // Si el producto tiene variantes, sumar el stock de todas las variantes
+        if ($this->variants->isNotEmpty()) {
+            return $this->variants->sum('stock');
+        }
+
+        // Si no tiene variantes, usar el stock del producto base
+        return $this->stock ?? 0;
+    }
+
     public function options()
     {
         return $this->belongsToMany(Option::class)

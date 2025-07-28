@@ -214,7 +214,7 @@
                         class="absolute top-4 left-4 bg-coral-500 text-white px-3 py-1 rounded-full text-sm font-semibold offer-badge shadow-lg">
                         <i class="fas fa-fire mr-1"></i>{{ $product->discount_percentage }}% OFF
                     </div>
-                    @elseif($product->stock > 0)
+                    @elseif($product->hasAvailableStock())
                     <div
                         class="absolute top-4 left-4 bg-secondary-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
                         <i class="fas fa-check mr-1"></i>Disponible
@@ -298,10 +298,10 @@
                     </div>
 
                     {{-- Stock info --}}
-                    @if($product->stock > 0)
+                    @if($product->hasAvailableStock())
                     <div class="flex items-center text-secondary-600 text-sm mb-4">
                         <i class="fas fa-box mr-2"></i>
-                        <span>{{ $product->stock }} en stock</span>
+                        <span>{{ $product->getAvailableStock() }} en stock</span>
                     </div>
                     @else
                     <div class="flex items-center text-coral-600 text-sm mb-4">

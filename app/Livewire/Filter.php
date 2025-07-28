@@ -101,7 +101,8 @@ class Filter extends Component
     // Renderiza la vista asociada al componente Livewire
     public function render()
     {
-        $products = Product::VerifyFamily($this->family_id)
+        $products = Product::with('variants')
+            ->VerifyFamily($this->family_id)
             ->VerifyCategory($this->category_id)
             ->VerifySubcategory($this->subcategory_id)
             ->CustomOrder($this->orderBy)

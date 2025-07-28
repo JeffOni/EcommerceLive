@@ -26,7 +26,7 @@ class WelcomeController extends Controller
 
         $lastProducts = Product::where('is_active', true)
             ->orderBy('created_at', 'desc')
-            ->with('subcategory.category.family')
+            ->with(['subcategory.category.family', 'variants'])
             ->take(12)
             ->get();
         // Aquí puedes agregar la lógica para mostrar la vista de bienvenida

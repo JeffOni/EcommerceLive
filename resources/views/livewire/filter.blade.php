@@ -109,10 +109,10 @@
                         @endif
 
                         {{-- Stock badge --}}
-                        @if($product->stock > 0)
+                        @if($product->hasAvailableStock())
                         <div
                             class="absolute top-4 right-4 px-2 py-1 bg-secondary-500/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
-                            <i class="fas fa-check mr-1"></i>{{ $product->stock }} disponibles
+                            <i class="fas fa-check mr-1"></i>{{ $product->getAvailableStock() }} disponibles
                         </div>
                         @else
                         <div

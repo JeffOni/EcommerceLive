@@ -1,6 +1,6 @@
 <x-container class="py-8">
-    <div class="mx-auto max-w-7xl">
-        <div class="grid items-start grid-cols-1 gap-12 lg:grid-cols-2">
+    <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="grid items-start grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-2">
 
             {{-- Sección de Imagen del Producto --}}
             <div class="space-y-6">
@@ -69,12 +69,12 @@
                     {{-- Galería de Imágenes Mejorada - TRES IMÁGENES --}}
                     <div class="mt-6 space-y-3">
                         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Imágenes disponibles</h4>
-                        <div class="flex pb-2 space-x-3 overflow-x-auto">
+                        <div class="flex pb-2 space-x-2 overflow-x-auto sm:space-x-3">
                             @foreach ($this->availableImages as $index => $image)
                             <div class="flex-shrink-0">
                                 <button type="button" @click="currentImage = '{{ $image['url'] }}'"
                                     :class="currentImage === '{{ $image['url'] }}' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-300'"
-                                    class="relative w-20 h-20 overflow-hidden transition-all duration-200 border-2 rounded-xl">
+                                    class="relative w-16 h-16 overflow-hidden transition-all duration-200 border-2 sm:w-20 sm:h-20 rounded-xl">
                                     <img src="{{ $image['url'] }}" alt="Vista {{ $index + 1 }}"
                                         class="object-cover w-full h-full">
                                     {{-- Badge de tipo de imagen --}}
@@ -101,14 +101,17 @@
                             @endforeach
                         </div>
                         {{-- Leyenda --}}
-                        <div class="flex items-center space-x-4 text-xs text-gray-500">
-                            <div class="flex items-center space-x-1">
-                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                <span>Variante</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                                <span>Producto</span>
+                        <div
+                            class="flex flex-col space-y-1 text-xs text-gray-500 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>Variante</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Producto</span>
+                                </div>
                             </div>
                             <span>{{ count($this->availableImages) }} imagen{{ count($this->availableImages) > 1 ? 's' :
                                 '' }} disponible{{ count($this->availableImages) > 1 ? 's' : '' }}</span>
@@ -118,16 +121,16 @@
 
                 {{-- Sección de Servicios Premium --}}
                 <div
-                    class="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 border border-gray-200 dark:border-gray-700">
+                    class="p-8 border border-gray-200 bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl dark:border-gray-700">
                     <div class="flex items-center mb-6">
-                        <div class="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-4"></div>
+                        <div class="w-2 h-8 mr-4 rounded-full bg-gradient-to-b from-blue-500 to-purple-600"></div>
                         <h3 class="text-xl font-bold text-gray-800 dark:text-white">Servicios Premium</h3>
                     </div>
 
                     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                         {{-- Entrega Express --}}
                         <div
-                            class="group relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-emerald-100 dark:border-emerald-800">
+                            class="relative p-6 overflow-hidden transition-all duration-300 bg-white border shadow-sm group dark:bg-gray-800 rounded-2xl hover:shadow-lg border-emerald-100 dark:border-emerald-800">
                             <div
                                 class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-400/20 to-green-500/20 rounded-bl-3xl">
                             </div>
@@ -135,8 +138,8 @@
                                 <div class="flex items-start space-x-4">
                                     <div class="flex-shrink-0">
                                         <div
-                                            class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl flex items-center justify-center shadow-lg">
-                                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                            class="flex items-center justify-center shadow-lg w-14 h-14 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl">
+                                            <svg class="text-white w-7 h-7" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -144,11 +147,11 @@
                                         </div>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Entrega
+                                        <h4 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Entrega
                                             Express</h4>
-                                        <p class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">24-48
+                                        <p class="text-sm font-medium text-emerald-600 dark:text-emerald-400">24-48
                                             horas</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Envío prioritario
+                                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Envío prioritario
                                             garantizado</p>
                                     </div>
                                 </div>
@@ -157,7 +160,7 @@
 
                         {{-- Calidad Premium --}}
                         <div
-                            class="group relative overflow-hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-blue-100 dark:border-blue-800">
+                            class="relative p-6 overflow-hidden transition-all duration-300 bg-white border border-blue-100 shadow-sm group dark:bg-gray-800 rounded-2xl hover:shadow-lg dark:border-blue-800">
                             <div
                                 class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-indigo-500/20 rounded-bl-3xl">
                             </div>
@@ -165,8 +168,8 @@
                                 <div class="flex items-start space-x-4">
                                     <div class="flex-shrink-0">
                                         <div
-                                            class="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
-                                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                            class="flex items-center justify-center shadow-lg w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl">
+                                            <svg class="text-white w-7 h-7" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -174,11 +177,11 @@
                                         </div>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Calidad
+                                        <h4 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Calidad
                                             Premium</h4>
-                                        <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">100% Garantizada
+                                        <p class="text-sm font-medium text-blue-600 dark:text-blue-400">100% Garantizada
                                         </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Productos seleccionados
+                                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Productos seleccionados
                                         </p>
                                     </div>
                                 </div>
@@ -188,29 +191,34 @@
 
                     {{-- Atención al Cliente --}}
                     <div
-                        class="mt-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
+                        class="p-4 mt-6 border border-purple-200 sm:p-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl dark:border-purple-800">
+                        <div
+                            class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                            <div class="flex items-center space-x-3 sm:space-x-4">
                                 <div
-                                    class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    class="flex items-center justify-center w-10 h-10 shadow-lg sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
+                                    <svg class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8z" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Atención 24/7</h4>
-                                    <p class="text-sm text-purple-600 dark:text-purple-400">Soporte personalizado</p>
+                                    <h4 class="text-base font-semibold text-gray-900 sm:text-lg dark:text-white">
+                                        Atención 24/7</h4>
+                                    <p class="text-xs text-purple-600 sm:text-sm dark:text-purple-400">Soporte
+                                        personalizado</p>
                                 </div>
                             </div>
                             <div
-                                class="flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700">
-                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                class="flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-full shadow-sm dark:bg-gray-800 dark:border-gray-700 self-start sm:self-center">
+                                <svg class="w-3 h-3 mr-1 text-green-500 sm:w-4 sm:h-4 sm:mr-2" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path
                                         d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                                 </svg>
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">WhatsApp</span>
+                                <span
+                                    class="text-xs font-medium text-gray-700 sm:text-sm dark:text-gray-300">WhatsApp</span>
                             </div>
                         </div>
                     </div>
@@ -334,12 +342,12 @@
                 - Preparación recomendada
                 --}}
                 <div class="space-y-6" x-data="{ activeTab: 'description' }">
-                    <div class="flex border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex flex-wrap overflow-x-auto border-b border-gray-200 dark:border-gray-700">
                         <button @click="activeTab = 'description'"
                             :class="activeTab === 'description' ? 
                                 'border-blue-500 text-blue-600 dark:text-blue-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
+                            class="px-3 py-2 text-xs font-medium transition-colors duration-200 border-b-2 sm:px-4 sm:text-sm whitespace-nowrap">
                             Descripción
                         </button>
 
@@ -348,9 +356,10 @@
                             :class="activeTab === 'features' ? 
                                 'border-green-500 text-green-600 dark:text-green-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
+                            class="px-2 py-2 text-xs font-medium transition-colors duration-200 border-b-2 sm:px-4 sm:text-sm whitespace-nowrap">
                             <i class="mr-1 fas fa-star"></i>
-                            Características Especiales
+                            <span class="hidden sm:inline">Características Especiales</span>
+                            <span class="sm:hidden">Características</span>
                         </button>
                         @endif
 
@@ -359,9 +368,10 @@
                             :class="activeTab === 'preparation' ? 
                                 'border-purple-500 text-purple-600 dark:text-purple-400' : 
                                 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-2">
+                            class="px-2 py-2 text-xs font-medium transition-colors duration-200 border-b-2 sm:px-4 sm:text-sm whitespace-nowrap">
                             <i class="mr-1 fas fa-utensils"></i>
-                            Preparación Recomendada
+                            <span class="hidden sm:inline">Preparación Recomendada</span>
+                            <span class="sm:hidden">Preparación</span>
                         </button>
                         @endif
                     </div>
@@ -684,22 +694,24 @@
                 <div
                     class="p-6 bg-white border border-gray-200 shadow-sm dark:bg-gray-800 rounded-2xl dark:border-gray-700">
                     <h4 class="mb-4 font-semibold text-gray-900 dark:text-white">Métodos de Pago Aceptados</h4>
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center px-3 py-2 space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <svg class="w-8 h-5" viewBox="0 0 38 24" fill="none">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <div
+                            class="flex items-center px-2 sm:px-3 py-1.5 sm:py-2 space-x-1 sm:space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                            <svg class="w-6 h-4 sm:w-8 sm:h-5" viewBox="0 0 38 24" fill="none">
                                 <rect width="38" height="24" rx="4" fill="#22C55E" />
                                 <path d="M8 8h4v8H8V8zm6 2h4v6h-4v-6zm6-2h4v8h-4V8z" fill="white" />
                             </svg>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Pago en Efectivo</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Efectivo</span>
                         </div>
-                        <div class="flex items-center px-3 py-2 space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <svg class="w-8 h-5" viewBox="0 0 38 24" fill="none">
+                        <div
+                            class="flex items-center px-2 sm:px-3 py-1.5 sm:py-2 space-x-1 sm:space-x-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                            <svg class="w-6 h-4 sm:w-8 sm:h-5" viewBox="0 0 38 24" fill="none">
                                 <rect width="38" height="24" rx="4" fill="#3B82F6" />
                                 <path d="M6 10h26v4H6v-4zm0-2h26v2H6V8zm0 8h26v2H6v-2z" fill="white" />
                             </svg>
                             <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Transferencia</span>
                         </div>
-                        <span class="text-sm text-gray-500">y más...</span>
+                        <span class="text-xs text-gray-500 sm:text-sm">y más...</span>
                     </div>
                     <p class="mt-3 text-xs text-gray-500">
                         <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

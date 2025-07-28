@@ -11,6 +11,18 @@ class QuickAddToCart extends Component
 
     public function addToCart()
     {
+        // Validar que el producto tenga stock disponible
+        if (!$this->product->hasAvailableStock()) {
+            $this->dispatch('swal', [
+                'title' => 'Producto no disponible',
+                'text' => 'Este producto no tiene stock disponible.',
+                'icon' => 'error',
+                'timer' => 3000,
+                'showConfirmButton' => false,
+            ]);
+            return;
+        }
+
         Cart::instance('shopping');
 
         Cart::add([
@@ -21,7 +33,7 @@ class QuickAddToCart extends Component
             'options' => [
                 'image' => $this->product->image,
                 'sku' => $this->product->sku,
-                'stock' => $this->product->stock ?? 0,
+                'stock' => $this->product->getAvailableStock(),
                 'features' => [],
                 'original_price' => $this->product->price,
                 'is_on_offer' => $this->product->is_on_valid_offer,
