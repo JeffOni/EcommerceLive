@@ -32,7 +32,7 @@
             <!-- Contenedor principal -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header -->
-                <div class="px-8 py-6 bg-gradient-to-r from-orange-600 to-red-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center space-x-3">
                         <div class="p-3 glass-effect rounded-xl">
                             <i class="text-xl text-white fas fa-user-plus"></i>

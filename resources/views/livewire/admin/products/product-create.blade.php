@@ -1,38 +1,32 @@
 <div class="min-h-screen bg-white">
-    <form wire:submit.prevent="store" class="h-full p-8 relative overflow-hidden">
-        <!-- Decorative background elements -->
-        <div
-            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-200/20 to-secondary-200/20 rounded-full -translate-y-16 translate-x-16">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-secondary-200/20 to-primary-200/20 rounded-full translate-y-12 -translate-x-12">
-        </div>
-
+    <form wire:submit.prevent="store" class="h-full p-3 sm:p-6 lg:p-8 relative">
         <!-- Header -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-4 sm:mb-6 lg:mb-8">
             <h1
-                class="text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">
+                class="text-lg sm:text-2xl lg:text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">
                 Crear Nuevo Producto
             </h1>
-            <p class="text-gray-600 text-lg">Complete la información para agregar un nuevo producto</p>
+            <p class="text-xs sm:text-base lg:text-lg text-gray-600">Complete la información para agregar un nuevo
+                producto</p>
         </div>
 
-        <x-validation-errors class="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl max-w-4xl mx-auto" />
+        <x-validation-errors
+            class="mb-4 sm:mb-6 lg:mb-8 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl max-w-4xl mx-auto" />
 
-        <!-- Main Content Grid: Image on Left, Form on Right -->
+        <!-- Main Content Grid: Responsive Layout -->
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
                 <!-- Left Column: Images Upload -->
-                <div class="flex flex-col space-y-6">
+                <div class="flex flex-col space-y-4 sm:space-y-6">
                     <!-- Imagen Principal -->
                     <figure class="relative">
-                        <div class="absolute top-4 right-4 z-20">
+                        <div class="absolute top-2 sm:top-4 right-2 sm:right-4 z-20">
                             <x-label
-                                class="flex items-center px-3 py-2 bg-white rounded-lg shadow-md cursor-pointer hover:bg-secondary-50 hover:shadow-lg transition-all duration-300 border border-gray-200 group">
+                                class="flex items-center px-2 py-1.5 sm:px-3 sm:py-2 bg-white rounded-lg shadow-md cursor-pointer hover:bg-secondary-50 hover:shadow-lg transition-all duration-300 border border-gray-200 group">
                                 <i
-                                    class="mr-1 fas fa-camera text-secondary-500 group-hover:text-secondary-600 transition-colors text-sm"></i>
+                                    class="mr-1 fas fa-camera text-secondary-500 group-hover:text-secondary-600 transition-colors text-xs sm:text-sm"></i>
                                 <span
-                                    class="font-medium text-primary-700 group-hover:text-primary-800 transition-colors text-sm">Imagen
+                                    class="font-medium text-primary-700 group-hover:text-primary-800 transition-colors text-xs sm:text-sm">Imagen
                                     1</span>
                                 <input type="file" wire:model="image" class="hidden" accept="image/*"
                                     onchange="previewImageWithAnimationLivewire(event, '#preview-image-1', 'imagen principal')" />
@@ -40,7 +34,7 @@
                         </div>
 
                         <div
-                            class="aspect-square w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
+                            class="aspect-square w-full rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden border-2 border-gray-200 bg-gray-50 shadow-lg relative group">
                             @if($temporaryImageUrl || $image)
                             <img id="preview-image-1"
                                 class="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
@@ -305,12 +299,13 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex justify-end gap-6 pt-6 border-t border-gray-200">
+                        <div
+                            class="flex flex-col space-y-3 sm:flex-row sm:justify-end sm:space-y-0 sm:gap-6 pt-6 border-t border-gray-200">
                             <x-danger-button
-                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 font-semibold transform hover:scale-105 text-lg"
+                                class="w-full sm:w-auto px-4 py-2 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 font-semibold transform hover:scale-105 text-sm sm:text-lg"
                                 name="Cancelar" />
                             <x-button
-                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-lg"
+                                class="w-full sm:w-auto px-4 py-2 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-sm sm:text-lg"
                                 name="Crear Producto" />
                         </div>
                     </div>

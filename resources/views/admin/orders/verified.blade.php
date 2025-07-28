@@ -8,106 +8,119 @@
     ],
 ]">
 
-    <!-- Fondo con gradiente y elementos decorativos -->
+    <!-- Fondo con gradiente y elementos decorativos responsive -->
     <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
-        <!-- Elementos decorativos de fondo -->
+        <!-- Elementos decorativos de fondo adaptativos -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 blur-3xl">
+                class="absolute rounded-full -top-20 -right-20 sm:-top-40 sm:-right-40 w-48 h-48 sm:w-96 sm:h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-20 -left-20 sm:-bottom-40 sm:-left-40 w-48 h-48 sm:w-96 sm:h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-primary-100/40 to-secondary-100/40 blur-2xl">
+                class="absolute w-32 h-32 sm:w-64 sm:h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-primary-100/40 to-secondary-100/40 blur-2xl">
             </div>
         </div>
 
         <div class="relative">
-            <!-- Contenedor principal con backdrop blur -->
-            <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
-                <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-primary-600 to-secondary-600">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-3 glass-effect rounded-xl">
-                                <i class="text-xl text-white fas fa-clipboard-check"></i>
+            <!-- Contenedor principal responsive con backdrop blur -->
+            <div
+                class="mx-2 sm:mx-4 my-4 sm:my-8 overflow-hidden shadow-lg sm:shadow-2xl glass-effect rounded-xl sm:rounded-3xl">
+                <!-- Header responsive con gradiente -->
+                <div
+                    class="px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
+                    <div class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                            <div class="p-2 sm:p-3 glass-effect rounded-lg sm:rounded-xl flex-shrink-0">
+                                <i class="text-lg sm:text-xl text-white fas fa-clipboard-check"></i>
                             </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-white">Órdenes Verificadas</h2>
-                                <p class="text-sm text-secondary-100">Gestiona órdenes listas para envío</p>
+                            <div class="min-w-0 flex-1">
+                                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">Órdenes
+                                    Verificadas</h2>
+                                <p class="text-xs sm:text-sm text-secondary-100 truncate">Gestiona órdenes listas para
+                                    envío</p>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="text-sm text-white/80">
-                                <i class="mr-1 fas fa-check-double"></i>
-                                {{ $orders->total() ?? $orders->count() }} órdenes verificadas
+                        <div class="flex items-center space-x-2 sm:space-x-4">
+                            <div class="text-xs sm:text-sm text-white/80 flex items-center">
+                                <i class="mr-1 fas fa-check-double text-xs sm:text-sm"></i>
+                                <span class="hidden sm:inline">{{ $orders->total() ?? $orders->count() }} órdenes
+                                    verificadas</span>
+                                <span class="sm:hidden">{{ $orders->total() ?? $orders->count() }} verificadas</span>
                             </div>
                             <button onclick="refreshOrders()"
-                                class="px-3 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors">
-                                <i class="fas fa-sync-alt"></i>
+                                class="px-2 py-2 sm:px-3 text-white transition-colors rounded-lg bg-white/20 hover:bg-white/30 flex-shrink-0">
+                                <i class="fas fa-sync-alt text-xs sm:text-sm"></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Barra de herramientas con filtros -->
-                <div class="px-8 py-4 bg-white border-b border-gray-200">
-                    <div
-                        class="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
-                        <!-- Filtros por estado -->
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
-                            <select id="status-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <option value="">Todos los estados</option>
-                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
-                                </option>
-                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando
-                                </option>
-                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Listo para Envío
-                                </option>
-                            </select>
+                <!-- Barra de herramientas responsive con filtros -->
+                <div class="px-3 py-3 sm:px-6 sm:py-4 lg:px-8 bg-white border-b border-gray-200">
+                    <div class="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
+                        <!-- Filtros por estado responsive -->
+                        <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                            <span class="text-sm font-medium text-gray-700 flex-shrink-0">Filtrar por:</span>
+                            <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+                                <select id="status-filter"
+                                    class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    <option value="">Todos los estados</option>
+                                    <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
+                                    </option>
+                                    <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando</option>
+                                    <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Listo para Envío
+                                    </option>
+                                </select>
 
-                            <select id="payment-method-filter"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <option value="">Todos los métodos</option>
-                                <option value="0" {{ request('payment_method')=='0' ? 'selected' : '' }}>
-                                    Transferencia</option>
-                                <option value="1" {{ request('payment_method')=='1' ? 'selected' : '' }}>Tarjeta
-                                </option>
-                                <option value="2" {{ request('payment_method')=='2' ? 'selected' : '' }}>Efectivo
-                                </option>
-                            </select>
+                                <select id="payment-method-filter"
+                                    class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    <option value="">Todos los métodos</option>
+                                    <option value="0" {{ request('payment_method')=='0' ? 'selected' : '' }}>
+                                        Transferencia</option>
+                                    <option value="1" {{ request('payment_method')=='1' ? 'selected' : '' }}>Tarjeta
+                                    </option>
+                                    <option value="2" {{ request('payment_method')=='2' ? 'selected' : '' }}>Efectivo
+                                    </option>
+                                </select>
+                            </div>
                         </div>
 
-                        <!-- Búsqueda y configuración -->
-                        <div class="flex items-center space-x-4">
+                        <!-- Búsqueda y configuración responsive -->
+                        <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
                             <div class="relative">
                                 <input type="text" id="search-input" placeholder="Buscar órdenes..."
                                     value="{{ request('search') }}"
-                                    class="w-64 py-2 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                                <i class="absolute text-gray-400 fas fa-search left-3 top-3"></i>
+                                    class="w-full sm:w-48 lg:w-64 py-2 pl-8 sm:pl-10 pr-4 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                <i
+                                    class="absolute text-gray-400 fas fa-search left-2 sm:left-3 top-2.5 sm:top-3 text-xs sm:text-sm"></i>
                             </div>
                             <select id="items-per-page"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por página
                                 </option>
                                 <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por página
                                 </option>
-                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por
-                                    página</option>
+                                <option value="50" {{ request('per_page')=='50' ? 'selected' : '' }}>50 por página
+                                </option>
+                                <option value="100" {{ request('per_page')=='100' ? 'selected' : '' }}>100 por página
+                                </option>
                             </select>
                         </div>
                     </div>
                 </div>
-
-                <!-- Contenido principal -->
-                <div class="overflow-hidden bg-white" id="orders-content">
-                    @include('admin.orders.partials.verified-orders-content')
-                </div>
+                </select>
             </div>
         </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="overflow-hidden bg-white" id="orders-content">
+        @include('admin.orders.partials.verified-orders-content')
+    </div>
+    </div>
+    </div>
     </div>
 
     @push('js')

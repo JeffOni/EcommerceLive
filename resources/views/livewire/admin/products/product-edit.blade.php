@@ -9,21 +9,22 @@
         </div>
 
         <!-- Header -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-4 sm:mb-6 lg:mb-8">
             <h1
-                class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                class="text-lg sm:text-2xl lg:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
                 Editar Producto
             </h1>
-            <p class="text-gray-600 text-lg">Modifique la información del producto</p>
+            <p class="text-xs sm:text-base lg:text-lg text-gray-600">Modifique la información del producto</p>
         </div>
 
-        <x-validation-errors class="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl max-w-4xl mx-auto" />
+        <x-validation-errors
+            class="mb-4 sm:mb-6 lg:mb-8 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl max-w-4xl mx-auto" />
 
         <!-- Main Content Grid: Images on Left, Form on Right -->
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
                 <!-- Left Column: Images Upload -->
-                <div class="flex flex-col space-y-8">
+                <div class="flex flex-col space-y-4 sm:space-y-6 lg:space-y-8">
                     <!-- Imagen Principal -->
                     <figure class="relative">
                         <div class="absolute top-6 right-6 z-20">
@@ -326,12 +327,13 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex justify-end gap-6 pt-6 border-t border-gray-200">
+                        <div
+                            class="flex flex-col space-y-3 sm:flex-row sm:justify-end sm:space-y-0 sm:gap-6 pt-6 border-t border-gray-200">
                             <x-danger-button
-                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 font-semibold transform hover:scale-105 text-lg"
+                                class="w-full sm:w-auto px-4 py-2 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 font-semibold transform hover:scale-105 text-sm sm:text-lg"
                                 onclick="confirmDelete()" name="Eliminar" />
                             <x-button
-                                class="px-8 py-3 rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-lg"
+                                class="w-full sm:w-auto px-4 py-2 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 text-sm sm:text-lg"
                                 name="Actualizar Producto" />
                         </div>
                     </div>

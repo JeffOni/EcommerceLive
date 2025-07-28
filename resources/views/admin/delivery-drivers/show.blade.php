@@ -38,11 +38,11 @@
             <!-- Contenedor principal con backdrop blur -->
             <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600">
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="p-3 glass-effect rounded-xl">
-                                <i class="fas fa-user-tie text-white text-2xl"></i>
+                                <i class="text-2xl text-white fas fa-user-tie"></i>
                             </div>
                             <div>
                                 <h1 class="text-3xl font-bold text-white">{{ $deliveryDriver->name }}</h1>
@@ -52,7 +52,7 @@
                         <div class="text-right">
                             <span
                                 class="px-4 py-2 text-sm font-bold text-white rounded-full bg-gradient-to-r 
-                                {{ $deliveryDriver->is_active ? 'from-green-400 to-emerald-500' : 'from-red-400 to-rose-500' }}">
+                                {{ $deliveryDriver->is_active ? 'from-secondary-700 to-secondary-900' : 'from-red-400 to-rose-500' }}">
                                 {{ $deliveryDriver->is_active ? 'Activo' : 'Inactivo' }}
                             </span>
                         </div>
@@ -61,86 +61,86 @@
 
                 <!-- Contenido principal -->
                 <div class="p-8 bg-white/80 backdrop-blur-sm">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                         <!-- Información Principal -->
-                        <div class="lg:col-span-2 space-y-6">
+                        <div class="space-y-6 lg:col-span-2">
                             <!-- Perfil del conductor -->
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
-                                <div class="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-6">
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
+                                <div class="flex flex-col items-start space-y-6 md:flex-row md:space-y-0 md:space-x-6">
                                     <!-- Foto del perfil -->
                                     <div class="flex-shrink-0 text-center">
                                         @if($deliveryDriver->profile_photo)
                                         <img src="{{ $deliveryDriver->profile_photo_url }}"
                                             alt="{{ $deliveryDriver->name }}"
-                                            class="w-32 h-32 rounded-full object-cover border-4 border-blue-200 shadow-lg mx-auto">
+                                            class="object-cover w-32 h-32 mx-auto border-4 border-blue-200 rounded-full shadow-lg">
                                         @else
                                         <div
-                                            class="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-lg mx-auto">
+                                            class="flex items-center justify-center w-32 h-32 mx-auto text-4xl font-bold text-white rounded-full shadow-lg bg-gradient-to-br from-blue-500 to-purple-600">
                                             {{ substr($deliveryDriver->name, 0, 1) }}
                                         </div>
                                         @endif
                                         <div class="mt-4">
                                             @if($deliveryDriver->rating_stars)
                                             <div class="mb-2">{!! $deliveryDriver->rating_stars !!}</div>
-                                            <span class="text-gray-600 text-sm">({{
+                                            <span class="text-sm text-gray-600">({{
                                                 number_format($deliveryDriver->rating, 1) }})</span>
                                             @endif
-                                            <p class="text-gray-600 mt-2 flex items-center justify-center">
-                                                <i class="fas fa-shipping-fast mr-2 text-blue-500"></i>
+                                            <p class="flex items-center justify-center mt-2 text-gray-600">
+                                                <i class="mr-2 text-blue-500 fas fa-shipping-fast"></i>
                                                 {{ $deliveryDriver->total_deliveries }} entregas realizadas
                                             </p>
                                         </div>
                                     </div>
 
                                     <!-- Información de contacto y detalles -->
-                                    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
                                         <!-- Columna izquierda -->
                                         <div class="space-y-4">
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-envelope text-blue-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-lg">
+                                                    <i class="text-sm text-blue-600 fas fa-envelope"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Email</p>
                                                     <a href="mailto:{{ $deliveryDriver->email }}"
-                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                        class="font-medium text-blue-600 hover:text-blue-800">
                                                         {{ $deliveryDriver->email }}
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-phone text-green-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-green-100 rounded-lg">
+                                                    <i class="text-sm text-green-600 fas fa-phone"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Teléfono</p>
                                                     <a href="tel:{{ $deliveryDriver->phone }}"
-                                                        class="text-green-600 hover:text-green-800 font-medium">
+                                                        class="font-medium text-green-600 hover:text-green-800">
                                                         {{ $deliveryDriver->phone }}
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-id-card text-purple-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-lg">
+                                                    <i class="text-sm text-purple-600 fas fa-id-card"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Licencia</p>
-                                                    <p class="text-gray-900 font-medium">{{
+                                                    <p class="font-medium text-gray-900">{{
                                                         $deliveryDriver->license_number ?? 'No especificada' }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-map-marker-alt text-orange-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-orange-100 rounded-lg">
+                                                    <i class="text-sm text-orange-600 fas fa-map-marker-alt"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Zona</p>
-                                                    <p class="text-gray-900 font-medium">{{ $deliveryDriver->zone ?? 'No
+                                                    <p class="font-medium text-gray-900">{{ $deliveryDriver->zone ?? 'No
                                                         especificada' }}</p>
                                                 </div>
                                             </div>
@@ -150,42 +150,42 @@
                                         <div class="space-y-4">
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-car text-indigo-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-indigo-100 rounded-lg">
+                                                    <i class="text-sm text-indigo-600 fas fa-car"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Tipo de Vehículo</p>
-                                                    <p class="text-gray-900 font-medium">{{
+                                                    <p class="font-medium text-gray-900">{{
                                                         $deliveryDriver->vehicle_type ? ucfirst(str_replace('_', ' ',
                                                         $deliveryDriver->vehicle_type)) : 'No especificado' }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-barcode text-yellow-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-lg">
+                                                    <i class="text-sm text-yellow-600 fas fa-barcode"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Placa</p>
-                                                    <p class="text-gray-900 font-medium">{{
+                                                    <p class="font-medium text-gray-900">{{
                                                         $deliveryDriver->vehicle_plate ?? 'No especificada' }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-calendar-alt text-teal-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-teal-100 rounded-lg">
+                                                    <i class="text-sm text-teal-600 fas fa-calendar-alt"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Registrado</p>
-                                                    <p class="text-gray-900 font-medium">{{
+                                                    <p class="font-medium text-gray-900">{{
                                                         $deliveryDriver->created_at->format('d/m/Y') }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-3">
                                                 <div
-                                                    class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-info-circle text-gray-600 text-sm"></i>
+                                                    class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-lg">
+                                                    <i class="text-sm text-gray-600 fas fa-info-circle"></i>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Estado</p>
@@ -201,9 +201,9 @@
                                 </div>
 
                                 @if ($deliveryDriver->notes)
-                                <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-                                    <h6 class="flex items-center text-blue-800 font-semibold mb-2">
-                                        <i class="fas fa-sticky-note mr-2"></i>
+                                <div class="p-4 mt-6 border border-blue-200 bg-blue-50 rounded-xl">
+                                    <h6 class="flex items-center mb-2 font-semibold text-blue-800">
+                                        <i class="mr-2 fas fa-sticky-note"></i>
                                         Notas:
                                     </h6>
                                     <p class="text-blue-700">{{ $deliveryDriver->notes }}</p>
@@ -212,15 +212,15 @@
                             </div>
 
                             <!-- Historial de envíos -->
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
                                 <div class="flex items-center justify-between mb-6">
-                                    <h3 class="text-xl font-bold text-gray-900 flex items-center">
-                                        <i class="fas fa-shipping-fast mr-3 text-blue-600"></i>
+                                    <h3 class="flex items-center text-xl font-bold text-gray-900">
+                                        <i class="mr-3 text-blue-600 fas fa-shipping-fast"></i>
                                         Historial de Envíos
                                     </h3>
                                     <a href="{{ route('admin.shipments.index', ['driver_id' => $deliveryDriver->id]) }}"
-                                        class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors font-medium">
-                                        <i class="fas fa-eye mr-2"></i> Ver Todos
+                                        class="px-4 py-2 font-medium text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200">
+                                        <i class="mr-2 fas fa-eye"></i> Ver Todos
                                     </a>
                                 </div>
 
@@ -229,31 +229,31 @@
                                     <table class="w-full">
                                         <thead>
                                             <tr class="border-b border-gray-200">
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Tracking
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Tracking
                                                 </th>
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Orden</th>
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Cliente</th>
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Estado</th>
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Fecha</th>
-                                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Acciones
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Orden</th>
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Cliente</th>
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Estado</th>
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Fecha</th>
+                                                <th class="px-2 py-3 font-semibold text-left text-gray-700">Acciones
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-gray-100">
                                             @foreach ($deliveryDriver->shipments->take(10) as $shipment)
-                                            <tr class="hover:bg-gray-50 transition-colors">
-                                                <td class="py-3 px-2">
+                                            <tr class="transition-colors hover:bg-gray-50">
+                                                <td class="px-2 py-3">
                                                     <span class="font-bold text-blue-600">{{ $shipment->tracking_number
                                                         }}</span>
                                                 </td>
-                                                <td class="py-3 px-2">
+                                                <td class="px-2 py-3">
                                                     <a href="{{ route('admin.orders.show', $shipment->order) }}"
-                                                        class="text-blue-600 hover:text-blue-800 font-medium">
+                                                        class="font-medium text-blue-600 hover:text-blue-800">
                                                         #{{ $shipment->order->order_number }}
                                                     </a>
                                                 </td>
-                                                <td class="py-3 px-2">{{ $shipment->order->user->name }}</td>
-                                                <td class="py-3 px-2">
+                                                <td class="px-2 py-3">{{ $shipment->order->user->name }}</td>
+                                                <td class="px-2 py-3">
                                                     <span
                                                         class="px-3 py-1 text-xs font-medium rounded-full
                                                         {{ $shipment->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 
@@ -265,10 +265,10 @@
                                                         {{ ucfirst(str_replace('_', ' ', $shipment->status->value)) }}
                                                     </span>
                                                 </td>
-                                                <td class="py-3 px-2">{{ $shipment->created_at->format('d/m/Y') }}</td>
-                                                <td class="py-3 px-2">
+                                                <td class="px-2 py-3">{{ $shipment->created_at->format('d/m/Y') }}</td>
+                                                <td class="px-2 py-3">
                                                     <a href="{{ route('admin.shipments.show', $shipment) }}"
-                                                        class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                                                        class="px-3 py-1 text-sm text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </td>
@@ -281,7 +281,7 @@
                                 @if ($deliveryDriver->shipments->count() > 10)
                                 <div class="mt-6 text-center">
                                     <a href="{{ route('admin.shipments.index', ['driver_id' => $deliveryDriver->id]) }}"
-                                        class="px-6 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors font-medium">
+                                        class="px-6 py-2 font-medium text-blue-700 transition-colors bg-blue-100 rounded-lg hover:bg-blue-200">
                                         Ver todos los {{ $deliveryDriver->shipments->count() }} envíos
                                     </a>
                                 </div>
@@ -289,13 +289,13 @@
                                 @else
                                 <div class="py-12 text-center">
                                     <div
-                                        class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                                        <i class="fas fa-inbox text-2xl text-gray-400"></i>
+                                        class="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                                        <i class="text-2xl text-gray-400 fas fa-inbox"></i>
                                     </div>
-                                    <p class="text-gray-600 mb-4">No hay envíos asignados a este repartidor</p>
+                                    <p class="mb-4 text-gray-600">No hay envíos asignados a este repartidor</p>
                                     <a href="{{ route('admin.shipments.create', ['driver_id' => $deliveryDriver->id]) }}"
-                                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                                        <i class="fas fa-plus mr-2"></i> Crear Primer Envío
+                                        class="px-6 py-3 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
+                                        <i class="mr-2 fas fa-plus"></i> Crear Primer Envío
                                     </a>
                                 </div>
                                 @endif
@@ -305,47 +305,47 @@
                         <!-- Sidebar -->
                         <div class="space-y-6">
                             <!-- Estadísticas -->
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
-                                <h3 class="text-xl font-bold text-gray-900 flex items-center mb-6">
-                                    <i class="fas fa-chart-pie mr-3 text-purple-600"></i>
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
+                                <h3 class="flex items-center mb-6 text-xl font-bold text-gray-900">
+                                    <i class="mr-3 text-purple-600 fas fa-chart-pie"></i>
                                     Estadísticas de Rendimiento
                                 </h3>
                                 <div class="grid grid-cols-2 gap-4 mb-6">
-                                    <div class="text-center p-4 bg-blue-50 rounded-xl">
-                                        <div class="text-blue-600 mb-2">
-                                            <i class="fas fa-shipping-fast text-2xl"></i>
+                                    <div class="p-4 text-center bg-blue-50 rounded-xl">
+                                        <div class="mb-2 text-blue-600">
+                                            <i class="text-2xl fas fa-shipping-fast"></i>
                                         </div>
                                         <h5 class="text-2xl font-bold text-gray-900">{{
                                             $deliveryDriver->shipments->count() }}</h5>
-                                        <span class="text-sm text-gray-600 uppercase font-medium">Total Envíos</span>
+                                        <span class="text-sm font-medium text-gray-600 uppercase">Total Envíos</span>
                                     </div>
-                                    <div class="text-center p-4 bg-green-50 rounded-xl">
-                                        <div class="text-green-600 mb-2">
-                                            <i class="fas fa-check text-2xl"></i>
+                                    <div class="p-4 text-center bg-green-50 rounded-xl">
+                                        <div class="mb-2 text-green-600">
+                                            <i class="text-2xl fas fa-check"></i>
                                         </div>
                                         <h5 class="text-2xl font-bold text-gray-900">
                                             {{ $deliveryDriver->shipments->where('status', 'delivered')->count() }}
                                         </h5>
-                                        <span class="text-sm text-gray-600 uppercase font-medium">Entregados</span>
+                                        <span class="text-sm font-medium text-gray-600 uppercase">Entregados</span>
                                     </div>
-                                    <div class="text-center p-4 bg-yellow-50 rounded-xl">
-                                        <div class="text-yellow-600 mb-2">
-                                            <i class="fas fa-clock text-2xl"></i>
+                                    <div class="p-4 text-center bg-yellow-50 rounded-xl">
+                                        <div class="mb-2 text-yellow-600">
+                                            <i class="text-2xl fas fa-clock"></i>
                                         </div>
                                         <h5 class="text-2xl font-bold text-gray-900">
                                             {{ $deliveryDriver->shipments->whereIn('status', ['pending', 'picked_up',
                                             'in_transit', 'out_for_delivery'])->count() }}
                                         </h5>
-                                        <span class="text-sm text-gray-600 uppercase font-medium">En Proceso</span>
+                                        <span class="text-sm font-medium text-gray-600 uppercase">En Proceso</span>
                                     </div>
-                                    <div class="text-center p-4 bg-red-50 rounded-xl">
-                                        <div class="text-red-600 mb-2">
-                                            <i class="fas fa-times text-2xl"></i>
+                                    <div class="p-4 text-center bg-red-50 rounded-xl">
+                                        <div class="mb-2 text-red-600">
+                                            <i class="text-2xl fas fa-times"></i>
                                         </div>
                                         <h5 class="text-2xl font-bold text-gray-900">
                                             {{ $deliveryDriver->shipments->where('status', 'failed')->count() }}
                                         </h5>
-                                        <span class="text-sm text-gray-600 uppercase font-medium">Fallidos</span>
+                                        <span class="text-sm font-medium text-gray-600 uppercase">Fallidos</span>
                                     </div>
                                 </div>
 
@@ -357,11 +357,11 @@
                                 : 0;
                                 @endphp
                                 <div class="mt-6">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-gray-700 font-medium">Tasa de Éxito</span>
-                                        <span class="text-gray-900 font-bold">{{ $successRate }}%</span>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-medium text-gray-700">Tasa de Éxito</span>
+                                        <span class="font-bold text-gray-900">{{ $successRate }}%</span>
                                     </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="w-full h-3 bg-gray-200 rounded-full">
                                         <div class="h-3 rounded-full transition-all duration-500 
                                             {{ $successRate >= 80 ? 'bg-gradient-to-r from-green-400 to-green-600' : 
                                                ($successRate >= 60 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 'bg-gradient-to-r from-red-400 to-red-600') }}"
@@ -372,26 +372,26 @@
                             </div>
 
                             <!-- Información de contacto -->
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
-                                <h3 class="text-xl font-bold text-gray-900 flex items-center mb-6">
-                                    <i class="fas fa-address-card mr-3 text-green-600"></i>
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
+                                <h3 class="flex items-center mb-6 text-xl font-bold text-gray-900">
+                                    <i class="mr-3 text-green-600 fas fa-address-card"></i>
                                     Información de Contacto
                                 </h3>
                                 <div class="space-y-3">
                                     <a href="tel:{{ $deliveryDriver->phone }}"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors font-medium">
-                                        <i class="fas fa-phone mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-green-600 rounded-xl hover:bg-green-700">
+                                        <i class="mr-2 fas fa-phone"></i>
                                         Llamar: {{ $deliveryDriver->phone }}
                                     </a>
                                     <a href="mailto:{{ $deliveryDriver->email }}"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium">
-                                        <i class="fas fa-envelope mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700">
+                                        <i class="mr-2 fas fa-envelope"></i>
                                         Enviar Email
                                     </a>
                                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $deliveryDriver->phone) }}"
                                         target="_blank"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors font-medium">
-                                        <i class="fab fa-whatsapp mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-green-500 rounded-xl hover:bg-green-600">
+                                        <i class="mr-2 fab fa-whatsapp"></i>
                                         WhatsApp
                                     </a>
                                 </div>
@@ -399,35 +399,35 @@
 
                             <!-- Información del vehículo -->
                             @if ($deliveryDriver->vehicle_type)
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
-                                <h3 class="text-xl font-bold text-gray-900 flex items-center mb-6">
-                                    <i class="fas fa-car mr-3 text-indigo-600"></i>
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
+                                <h3 class="flex items-center mb-6 text-xl font-bold text-gray-900">
+                                    <i class="mr-3 text-indigo-600 fas fa-car"></i>
                                     Información del Vehículo
                                 </h3>
                                 <div class="space-y-4">
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                        <span class="text-gray-600 font-medium">Tipo:</span>
-                                        <span class="text-gray-900 font-semibold">{{ ucfirst(str_replace('_', ' ',
+                                    <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                                        <span class="font-medium text-gray-600">Tipo:</span>
+                                        <span class="font-semibold text-gray-900">{{ ucfirst(str_replace('_', ' ',
                                             $deliveryDriver->vehicle_type)) }}</span>
                                     </div>
                                     @if ($deliveryDriver->vehicle_plate)
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                        <span class="text-gray-600 font-medium">Placa:</span>
-                                        <span class="text-gray-900 font-semibold">{{ $deliveryDriver->vehicle_plate
+                                    <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                                        <span class="font-medium text-gray-600">Placa:</span>
+                                        <span class="font-semibold text-gray-900">{{ $deliveryDriver->vehicle_plate
                                             }}</span>
                                     </div>
                                     @endif
                                     @if ($deliveryDriver->license_number)
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                        <span class="text-gray-600 font-medium">Licencia:</span>
-                                        <span class="text-gray-900 font-semibold">{{ $deliveryDriver->license_number
+                                    <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                                        <span class="font-medium text-gray-600">Licencia:</span>
+                                        <span class="font-semibold text-gray-900">{{ $deliveryDriver->license_number
                                             }}</span>
                                     </div>
                                     @endif
                                     @if ($deliveryDriver->zone)
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                        <span class="text-gray-600 font-medium">Zona:</span>
-                                        <span class="text-gray-900 font-semibold">{{ $deliveryDriver->zone }}</span>
+                                    <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                                        <span class="font-medium text-gray-600">Zona:</span>
+                                        <span class="font-semibold text-gray-900">{{ $deliveryDriver->zone }}</span>
                                     </div>
                                     @endif
                                 </div>
@@ -435,15 +435,15 @@
                             @endif
 
                             <!-- Acciones rápidas -->
-                            <div class="bg-white rounded-2xl shadow-lg p-6">
-                                <h3 class="text-xl font-bold text-gray-900 flex items-center mb-6">
-                                    <i class="fas fa-bolt mr-3 text-yellow-600"></i>
+                            <div class="p-6 bg-white shadow-lg rounded-2xl">
+                                <h3 class="flex items-center mb-6 text-xl font-bold text-gray-900">
+                                    <i class="mr-3 text-yellow-600 fas fa-bolt"></i>
                                     Acciones Rápidas
                                 </h3>
                                 <div class="space-y-3">
                                     <a href="{{ route('admin.delivery-drivers.edit', $deliveryDriver) }}"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium">
-                                        <i class="fas fa-edit mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700">
+                                        <i class="mr-2 fas fa-edit"></i>
                                         Editar Información
                                     </a>
 
@@ -462,14 +462,14 @@
                                     </form>
 
                                     <a href="{{ route('admin.shipments.create', ['driver_id' => $deliveryDriver->id]) }}"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors font-medium">
-                                        <i class="fas fa-plus mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-purple-600 rounded-xl hover:bg-purple-700">
+                                        <i class="mr-2 fas fa-plus"></i>
                                         Crear Envío
                                     </a>
 
                                     <a href="{{ route('admin.shipments.index', ['driver_id' => $deliveryDriver->id]) }}"
-                                        class="flex items-center justify-center w-full px-4 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors font-medium">
-                                        <i class="fas fa-list mr-2"></i>
+                                        class="flex items-center justify-center w-full px-4 py-3 font-medium text-white transition-colors bg-gray-600 rounded-xl hover:bg-gray-700">
+                                        <i class="mr-2 fas fa-list"></i>
                                         Ver Todos los Envíos
                                     </a>
                                 </div>

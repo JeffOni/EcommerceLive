@@ -64,7 +64,7 @@ ESTRUCTURA:
         <div class="mb-12 text-center">
             {{-- Icono principal con gradiente y sombra --}}
             <div
-                class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg bg-gradient-to-r from-primary-600 to-brand-coral rounded-2xl">
+                class="inline-flex items-center justify-center w-16 h-16 mb-4 shadow-lg bg-gradient-to-r from-primary-900 to-secondary-500 rounded-2xl">
                 <i class="text-2xl text-white fas fa-shopping-cart"></i>
             </div>
             {{-- Título principal con efecto degradado en el texto --}}
@@ -105,7 +105,7 @@ ESTRUCTURA:
                     Incluye título, descripción y botón para limpiar carrito
                     --}}
                     <!-- Header de la sección -->
-                    <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">
+                    <div class="px-6 py-4 bg-gradient-to-r from-primary-900 to-secondary-500">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 {{-- Icono con efecto glassmorphism --}}
@@ -167,13 +167,13 @@ ESTRUCTURA:
                             </div>
                             {{-- Badge premium en la esquina superior izquierda --}}
                             <!-- Badge de premium en esquina -->
-                            <div class="absolute transform -translate-y-1/2 top-5 left-6">
+                            {{-- <div class="absolute transform -translate-y-1/2 top-5 left-6">
                                 <div
                                     class="px-3 py-1 text-xs font-bold text-white rounded-full shadow-lg bg-gradient-to-r from-amber-400 to-orange-500">
                                     <i class="mr-1 fas fa-star"></i>
                                     PREMIUM
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{--
                             LAYOUT PRINCIPAL DEL PRODUCTO
@@ -236,7 +236,7 @@ ESTRUCTURA:
                                                 <span class="text-xl font-bold text-red-600">
                                                     ${{ number_format($item->price, 2) }}
                                                 </span>
-                                                <span class="text-sm bg-red-500 text-white px-2 py-1 rounded-full">
+                                                <span class="px-2 py-1 text-sm text-white bg-red-500 rounded-full">
                                                     {{ $item->options['discount_percentage'] }}% OFF
                                                 </span>
                                             </div>
@@ -247,7 +247,7 @@ ESTRUCTURA:
                                                 <span class="text-xs text-gray-500">precio original</span>
                                             </div>
                                             @if($item->options['offer_name'])
-                                            <span class="text-xs text-green-600 font-medium">
+                                            <span class="text-xs font-medium text-green-600">
                                                 🎯 {{ $item->options['offer_name'] }}
                                             </span>
                                             @endif
@@ -383,7 +383,7 @@ ESTRUCTURA:
                     Título y descripción del panel de resumen
                     --}}
                     <!-- Header del resumen -->
-                    <div class="px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600">
+                    <div class="px-6 py-4 bg-gradient-to-r from-primary-900 to-secondary-500">
                         <div class="flex items-center space-x-3">
                             {{-- Icono con efecto glassmorphism --}}
                             <div class="p-2 glass-effect rounded-xl">
@@ -440,7 +440,7 @@ ESTRUCTURA:
 
                         <!-- Total con efectos especiales -->
                         <div
-                            class="relative p-6 overflow-hidden shadow-xl bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl">
+                            class="relative p-6 overflow-hidden shadow-xl bg-gradient-to-r from-primary-900 to-secondary-500 rounded-2xl">
                             <!-- Efecto de brillo -->
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] animate-pulse">

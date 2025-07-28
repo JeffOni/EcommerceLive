@@ -13,78 +13,65 @@ MEJORA UI #4: Paginación simplificada
 
 <!-- Vista de tarjetas -->
 <div id="cards-view" class="view-content">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+    <div
+        class="grid grid-cols-1 gap-3 px-2 mb-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 lg:gap-6 sm:mb-8 sm:px-0">
         @foreach ($families as $family)
         <div
-            class="group relative bg-gradient-to-br from-white to-secondary-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-secondary-100 overflow-hidden flex flex-col h-full">
+            class="relative flex flex-col h-full overflow-hidden transition-all duration-500 transform border shadow-lg group bg-gradient-to-br from-white to-secondary-50 rounded-xl sm:rounded-2xl hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 border-secondary-100">
             <!-- Badge ID -->
-            <div class="absolute top-3 left-3 z-10">
+            <div class="absolute z-10 top-2 sm:top-3 left-2 sm:left-3">
                 <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
+                    class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-secondary-100 text-secondary-800">
                     #{{ $family->id }}
                 </span>
             </div>
 
-            {{--
-            MEJORA UI #3: Botones de edición hover removidos
-            - Se eliminaron para evitar duplicación con el botón principal "Editar Familia"
-            - Mejora la experiencia de usuario al reducir elementos redundantes
-
-            CÓDIGO REMOVIDO:
-            <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="flex space-x-2">
-                    <a href="{{ route('admin.families.edit', $family) }}"
-                        class="p-2 glass-effect rounded-lg shadow-md hover:bg-indigo-500 hover:text-white transition-all duration-200">
-                        <i class="fas fa-edit text-sm"></i>
-                    </a>
-                </div>
-            </div>
-            --}}
-
             <!-- Contenido de la tarjeta -->
-            <div class="p-6 pt-16 flex-1 flex flex-col">
-                <div class="text-center flex-1">
+            <div class="flex flex-col flex-1 p-4 pt-12 sm:p-6 sm:pt-16">
+                <div class="flex-1 text-center">
                     <!-- Icono principal -->
                     <div
-                        class="mx-auto w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                        <i class="fas fa-layer-group text-white text-2xl"></i>
+                        class="flex items-center justify-center w-12 h-12 mx-auto mb-3 shadow-lg sm:w-16 sm:h-16 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl sm:rounded-2xl sm:mb-4">
+                        <i class="text-lg text-white fas fa-layer-group sm:text-2xl"></i>
                     </div>
 
                     <!-- Nombre de la familia -->
                     <h3
-                        class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-300">
+                        class="mb-2 text-base font-bold text-gray-900 truncate transition-colors duration-300 sm:text-xl group-hover:text-primary-600">
                         {{ $family->name }}
                     </h3>
 
                     <!-- Información adicional -->
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-center justify-center space-x-2">
+                    <div class="space-y-1 text-xs text-gray-600 sm:space-y-2 sm:text-sm">
+                        <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                             <i class="fas fa-sitemap text-secondary-500"></i>
                             <span>{{ $family->categories->count() }} categorías</span>
                         </div>
 
                         @if ($family->created_at)
-                        <div class="flex items-center justify-center space-x-2">
+                        <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                             <i class="fas fa-calendar-plus text-secondary-500"></i>
-                            <span>Creada {{ $family->created_at->diffForHumans() }}</span>
+                            <span class="hidden sm:inline">Creada {{ $family->created_at->diffForHumans() }}</span>
+                            <span class="sm:hidden">{{ $family->created_at->format('d/m/Y') }}</span>
                         </div>
                         @endif
                     </div>
                 </div>
 
                 <!-- Botón de acción -->
-                <div class="mt-auto pt-4">
+                <div class="pt-3 mt-auto sm:pt-4">
                     <a href="{{ route('admin.families.edit', $family) }}"
-                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <i class="fas fa-edit mr-2"></i>
-                        Editar Familia
+                        class="w-full inline-flex items-center justify-center px-3 sm:px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        <i class="mr-1 fas fa-edit sm:mr-2"></i>
+                        <span class="hidden sm:inline">Editar Familia</span>
+                        <span class="sm:hidden">Editar</span>
                     </a>
                 </div>
             </div>
 
             <!-- Indicador de hover -->
             <div
-                class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary-500 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300">
+                class="absolute inset-x-0 bottom-0 h-1 transition-transform duration-300 transform scale-x-0 bg-gradient-to-r from-primary-500 to-secondary-600 group-hover:scale-x-100">
             </div>
         </div>
         @endforeach
@@ -92,91 +79,74 @@ MEJORA UI #4: Paginación simplificada
 </div>
 
 <!-- Vista de tabla -->
-<div id="table-view" class="view-content hidden">
-    <div class="overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
+<div id="table-view" class="hidden view-content">
+    <div class="mx-2 overflow-hidden border border-gray-200 shadow-lg rounded-xl sm:rounded-2xl sm:mx-0">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gradient-to-r from-primary-900 to-secondary-500">
                     <tr>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-hashtag"></i>
-                                <span>ID</span>
-                            </div>
+                        <th scope="col"
+                            class="px-3 py-3 text-xs font-medium tracking-wider text-left text-white uppercase sm:px-6">
+                            ID
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-layer-group"></i>
-                                <span>Nombre</span>
-                            </div>
+                        <th scope="col"
+                            class="px-3 py-3 text-xs font-medium tracking-wider text-left text-white uppercase sm:px-6">
+                            Familia
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-sitemap"></i>
-                                <span>Categorías</span>
-                            </div>
+                        <th scope="col"
+                            class="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase sm:table-cell">
+                            Categorías
                         </th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-calendar"></i>
-                                <span>Fecha de Creación</span>
-                            </div>
+                        <th scope="col"
+                            class="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase lg:table-cell">
+                            Fecha Creación
                         </th>
-                        <th class="px-6 py-4 text-center text-xs font-semibold text-white uppercase tracking-wider">
-                            <div class="flex items-center justify-center space-x-2">
-                                <i class="fas fa-cogs"></i>
-                                <span>Acciones</span>
-                            </div>
+                        <th scope="col"
+                            class="px-3 py-3 text-xs font-medium tracking-wider text-right text-white uppercase sm:px-6">
+                            Acciones
                         </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($families as $family)
-                    <tr class="hover:bg-secondary-50 transition-colors duration-200">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
-                                #{{ $family->id }}
-                            </span>
+                    <tr class="transition-colors duration-200 hover:bg-gray-50">
+                        <td class="px-3 py-4 text-xs font-medium text-gray-900 sm:px-6 whitespace-nowrap sm:text-sm">
+                            #{{ $family->id }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-3 py-4 sm:px-6 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div
-                                    class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-layer-group text-white"></i>
+                                    class="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg sm:h-10 sm:w-10 bg-gradient-to-br from-primary-500 to-secondary-600">
+                                    <i class="text-xs text-white fas fa-layer-group sm:text-sm"></i>
                                 </div>
-                                <div>
-                                    <div class="text-sm font-semibold text-gray-900">{{ $family->name }}</div>
+                                <div class="ml-2 sm:ml-4">
+                                    <div
+                                        class="text-xs font-medium text-gray-900 truncate sm:text-sm max-w-24 sm:max-w-none">
+                                        {{ $family->name }}
+                                    </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                    <i class="fas fa-sitemap mr-2 text-secondary-500"></i>
-                                    {{ $family->categories->count() }}
-                                </span>
-                            </div>
+                        <td class="hidden px-6 py-4 text-sm text-gray-500 sm:table-cell whitespace-nowrap">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
+                                {{ $family->categories->count() }} categorías
+                            </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="hidden px-6 py-4 text-sm text-gray-500 lg:table-cell whitespace-nowrap">
                             @if ($family->created_at)
-                            <div class="flex items-center">
-                                <i class="fas fa-calendar-plus text-indigo-500 mr-2"></i>
-                                {{ $family->created_at->format('d/m/Y') }}
-                                <span class="block text-xs text-gray-400">{{ $family->created_at->diffForHumans()
-                                    }}</span>
-                            </div>
+                            <div class="text-sm text-gray-900">{{ $family->created_at->format('d/m/Y') }}</div>
+                            <div class="text-xs text-gray-500">{{ $family->created_at->format('H:i') }}</div>
+                            @else
+                            <span class="text-gray-400">-</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <div class="flex items-center justify-center space-x-3">
-                                <a href="{{ route('admin.families.edit', $family) }}"
-                                    class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 text-white text-xs font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                                    <i class="fas fa-edit mr-2"></i>
-                                    Editar
-                                </a>
-                            </div>
+                        <td class="px-3 py-4 text-xs font-medium text-right sm:px-6 whitespace-nowrap sm:text-sm">
+                            <a href="{{ route('admin.families.edit', $family) }}"
+                                class="inline-flex items-center px-2 py-1 text-xs font-medium text-white transition-all duration-200 rounded-md shadow-sm sm:px-3 sm:py-2 bg-gradient-to-r from-primary-500 to-secondary-600 hover:from-primary-600 hover:to-secondary-700 hover:shadow-md">
+                                <i class="mr-1 fas fa-edit"></i>
+                                <span class="hidden sm:inline">Editar</span>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -186,16 +156,16 @@ MEJORA UI #4: Paginación simplificada
     </div>
 </div>
 
-{{--
-MEJORA UI #4: Paginación simplificada para familias
-- Se eliminó el texto duplicado "Mostrando X a Y de Z resultados"
-- Anteriormente aparecía tanto manualmente como en el componente links()
-- Ahora solo se muestra la paginación una vez usando el componente estándar de Laravel
-- Consistencia con las mejoras aplicadas en productos, categorías y subcategorías
---}}
-<!-- Paginación -->
+
+</div>
+</div>
+</div>
+
+<!-- Paginación responsive -->
 @if ($families->hasPages())
-<div class="mt-8">
-    {{ $families->links() }}
+<div class="px-2 mt-6 sm:mt-8 sm:px-0">
+    <div class="pagination-container">
+        {{ $families->links() }}
+    </div>
 </div>
 @endif

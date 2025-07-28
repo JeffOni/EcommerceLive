@@ -113,9 +113,15 @@ class PaymentVerificationController extends Controller
         if ($payment->order_id) {
             $order = Order::find($payment->order_id);
             if ($order) {
-                $order->update([
-                    'status' => 2, // Pago verificado
-                ]);
+                // Solo actualizar el estado si la orden está en "Pendiente de Pago"
+                // No sobreescribir estados más avanzados (asignado, en camino, etc.)
+                if ($order->status == 1) { // Solo si está en estado "Pendiente de Pago"
+                    $order->update([
+                        'status' => 2, // Pago verificado
+                    ]);
+                }
+                // Si la orden ya está en un estado más avanzado, no hacer nada
+                // para preservar el progreso (repartidor asignado, en camino, etc.)
             }
         }
 
@@ -189,21 +195,27 @@ class PaymentVerificationController extends Controller
      */
     private function rejectRelatedOrders(Payment $payment, string $reason)
     {
-        // Si el pago tiene una orden asociada, actualizar su estado
+        // Si el pago tiene una orden asociada, verificar su estado antes de cancelar
         if ($payment->order_id) {
             $order = Order::find($payment->order_id);
             if ($order) {
-                $order->update([
-                    'status' => 7, // Cancelado
-                    'notes' => ($order->notes ? $order->notes . ' | ' : '') . 'Pago rechazado: ' . $reason
-                ]);
+                // Solo cancelar si la orden está en estados iniciales
+                // No cancelar órdenes que ya están en proceso avanzado
+                if (in_array($order->status, [1, 2, 3])) { // Pendiente, Pagado, Preparando
+                    $order->update([
+                        'status' => 7, // Cancelado
+                        'notes' => ($order->notes ? $order->notes . ' | ' : '') . 'Pago rechazado: ' . $reason
+                    ]);
+                }
+                // Si la orden ya está asignada, en camino o entregada, no cancelar automáticamente
+                // Se debe manejar manualmente estos casos
             }
         }
 
-        // Buscar órdenes relacionadas huérfanas
+        // Buscar órdenes relacionadas huérfanas solo en estado pendiente
         $orders = Order::where('user_id', $payment->user_id)
             ->where('total', $payment->amount)
-            ->where('status', 1) // Estado pendiente
+            ->where('status', 1) // Solo estado pendiente
             ->get();
 
         foreach ($orders as $order) {
@@ -212,11 +224,11 @@ class PaymentVerificationController extends Controller
                 'status' => 7, // Cancelado
                 'notes' => ($order->notes ? $order->notes . ' | ' : '') . 'Pago rechazado: ' . $reason
             ]);
-
-            // TODO: Enviar notificación al cliente sobre el rechazo
-            // TODO: Permitir que el cliente suba un nuevo comprobante
-            // TODO: Crear log de actividad
         }
+
+        // TODO: Enviar notificación al cliente sobre el rechazo
+        // TODO: Permitir que el cliente suba un nuevo comprobante
+        // TODO: Crear log de actividad
     }
 
     /**

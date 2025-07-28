@@ -29,21 +29,23 @@
             </x-slot>
 
             <!-- Contenedor principal con backdrop blur -->
-            <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
+            <div class="mx-2 sm:mx-4 my-6 sm:my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
                 <!-- Header con gradiente -->
-                <div class="px-8 py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
-                    <div class="flex items-center justify-between">
+                <div class="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
+                    <div class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
                         <div class="flex items-center space-x-3">
-                            <div class="p-3 glass-effect rounded-xl">
-                                <i class="text-xl text-white fas fa-layer-group"></i>
+                            <div class="p-2 sm:p-3 glass-effect rounded-xl flex-shrink-0">
+                                <i class="text-lg sm:text-xl text-white fas fa-layer-group"></i>
                             </div>
-                            <div>
-                                <h2 class="text-2xl font-bold text-white">Gestión de Familias</h2>
-                                <p class="text-sm text-secondary-100">Administra las familias de productos del sistema
+                            <div class="min-w-0 flex-1">
+                                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">Gestión de
+                                    Familias</h2>
+                                <p class="text-xs sm:text-sm text-secondary-100 truncate">Administra las familias de
+                                    productos del sistema
                                 </p>
                             </div>
                         </div>
-                        <div class="text-sm text-white/80">
+                        <div class="text-xs sm:text-sm text-white/80 flex-shrink-0">
                             <i class="mr-1 fas fa-list"></i>
                             {{ $families->total() ?? $families->count() }} familias
                         </div>
@@ -51,33 +53,37 @@
                 </div>
 
                 <!-- Barra de herramientas con controles de vista -->
-                <div class="px-8 py-4 bg-white border-b border-gray-200">
+                <div class="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-white border-b border-gray-200">
                     <div
                         class="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
                         <!-- Controles de vista -->
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm font-medium text-gray-700">Vista:</span>
-                            <div class="flex p-1 bg-gray-100 rounded-lg">
+                        <div class="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+                            <span class="text-xs sm:text-sm font-medium text-gray-700 flex-shrink-0">Vista:</span>
+                            <div class="flex p-1 bg-gray-100 rounded-lg flex-1 sm:flex-initial">
                                 <button onclick="toggleView('cards')" id="cards-btn"
-                                    class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 bg-primary-600 rounded-md shadow-sm view-toggle">
-                                    <i class="mr-2 fas fa-th-large"></i>Tarjetas
+                                    class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white transition-all duration-200 bg-primary-600 rounded-md shadow-sm view-toggle flex-1 sm:flex-initial">
+                                    <i class="mr-1 sm:mr-2 fas fa-th-large"></i><span
+                                        class="hidden sm:inline">Tarjetas</span><span class="sm:hidden">Cards</span>
                                 </button>
                                 <button onclick="toggleView('table')" id="table-btn"
-                                    class="px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-200 rounded-md view-toggle hover:text-gray-900">
-                                    <i class="mr-2 fas fa-table"></i>Tabla
+                                    class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-600 transition-all duration-200 rounded-md view-toggle hover:text-gray-900 flex-1 sm:flex-initial">
+                                    <i class="mr-1 sm:mr-2 fas fa-table"></i><span
+                                        class="hidden sm:inline">Tabla</span><span class="sm:hidden">Table</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Filtros y búsqueda -->
-                        <div class="flex items-center space-x-4">
-                            <div class="relative">
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+                            <div class="relative w-full sm:w-auto">
                                 <input type="text" id="search-input" placeholder="Buscar familias..."
-                                    class="w-64 py-2 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <i class="absolute text-gray-400 fas fa-search left-3 top-3"></i>
+                                    class="w-full sm:w-48 lg:w-64 py-2 pl-8 sm:pl-10 pr-4 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                <i
+                                    class="absolute text-gray-400 fas fa-search left-2 sm:left-3 top-2.5 sm:top-3 text-xs sm:text-sm"></i>
                             </div>
                             <select id="items-per-page"
-                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                                class="px-2 sm:px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 w-full sm:w-auto">
                                 <option value="12">12 por página</option>
                                 <option value="24">24 por página</option>
                                 <option value="48">48 por página</option>

@@ -1,32 +1,36 @@
 <x-admin-layout :breadcrumbs="[['name' => 'Dashboard']]">
 
     <!-- Fondo con gradiente y elementos decorativos -->
-    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50">
         <!-- Elementos decorativos de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-300/20 blur-3xl">
+                class="absolute rounded-full -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-200/30 to-blue-300/20 blur-3xl">
+                class="absolute rounded-full -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
         </div>
 
-        <div class="relative px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="relative px-2 py-4 mx-auto max-w-7xl sm:px-4 sm:py-8 lg:px-8">
 
             <!-- Header -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900">Dashboard Administrativo</h1>
-                        <p class="mt-2 text-gray-600">Resumen general de tu tienda online</p>
+            <div class="mb-6 sm:mb-8">
+                <div class="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                    <div class="min-w-0 flex-1">
+                        <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">Dashboard
+                            Administrativo</h1>
+                        <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Resumen general de tu tienda online
+                        </p>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg">
-                            <img class="object-cover w-8 h-8 rounded-full" src="{{ Auth::user()->profile_photo_url }}"
-                                alt="{{ Auth::user()->name }}" />
-                            <div class="ml-3">
-                                <span class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</span>
+                    <div class="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+                        <div
+                            class="flex items-center px-2 sm:px-4 py-2 bg-white border border-gray-200 rounded-lg min-w-0">
+                            <img class="object-cover w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
+                                src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                            <div class="ml-2 sm:ml-3 min-w-0">
+                                <span class="text-xs sm:text-sm font-medium text-gray-900 truncate block">{{
+                                    Auth::user()->name }}</span>
                             </div>
                         </div>
                     </div>
@@ -34,96 +38,104 @@
             </div>
 
             <!-- Grid de estadísticas principales -->
-            <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-3 mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-6 lg:mb-8">
                 <!-- Total de Órdenes -->
-                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div
+                    class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Total Órdenes</p>
-                            <p class="text-2xl font-bold text-gray-900" id="totalOrders">{{ \App\Models\Order::count()
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Órdenes</p>
+                            <p class="text-lg sm:text-2xl font-bold text-gray-900" id="totalOrders">{{
+                                \App\Models\Order::count()
                                 }}</p>
                             <div class="flex items-center mt-1">
-                                <span class="text-sm text-gray-500">Hoy: {{ \App\Models\Order::whereDate('created_at',
+                                <span class="text-xs sm:text-sm text-gray-500 truncate">Hoy: {{
+                                    \App\Models\Order::whereDate('created_at',
                                     today())->count() }}</span>
                             </div>
                         </div>
-                        <div class="p-3 bg-blue-100 rounded-lg">
-                            <i class="text-xl text-blue-600 fas fa-shopping-cart"></i>
+                        <div class="p-2 sm:p-3 bg-primary-100 rounded-lg flex-shrink-0">
+                            <i class="text-lg sm:text-xl text-primary-600 fas fa-shopping-cart"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ingresos Totales -->
-                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div
+                    class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Ingresos Totales</p>
-                            <p class="text-2xl font-bold text-gray-900">${{
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 truncate">Ingresos Totales</p>
+                            <p class="text-lg sm:text-2xl font-bold text-gray-900 truncate">${{
                                 number_format(\App\Models\Order::where('status', '>=', 2)->sum('total'), 2) }}</p>
                             <div class="flex items-center mt-1">
-                                <span class="text-sm text-gray-500">Hoy: ${{
+                                <span class="text-xs sm:text-sm text-gray-500 truncate">Hoy: ${{
                                     number_format(\App\Models\Order::where('status', '>=', 2)->whereDate('created_at',
                                     today())->sum('total'), 2) }}</span>
                             </div>
                         </div>
-                        <div class="p-3 bg-green-100 rounded-lg">
-                            <i class="text-xl text-green-600 fas fa-dollar-sign"></i>
+                        <div class="p-2 sm:p-3 bg-green-100 rounded-lg flex-shrink-0">
+                            <i class="text-lg sm:text-xl text-green-600 fas fa-dollar-sign"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pagos Pendientes -->
-                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div
+                    class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Pagos Pendientes</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ \App\Models\Payment::where('status',
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 truncate">Pagos Pendientes</p>
+                            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{
+                                \App\Models\Payment::where('status',
                                 'pending')->whereNotNull('receipt_path')->count() }}</p>
                             <div class="flex items-center mt-1">
                                 <a href="{{ route('admin.payments.verification') }}"
-                                    class="text-sm text-blue-600 hover:text-blue-500">
+                                    class="text-xs sm:text-sm text-primary-600 hover:text-primary-500 truncate">
                                     Ver verificaciones
                                 </a>
                             </div>
                         </div>
-                        <div class="p-3 bg-yellow-100 rounded-lg">
-                            <i class="text-xl text-yellow-600 fas fa-clock"></i>
+                        <div class="p-2 sm:p-3 bg-yellow-100 rounded-lg flex-shrink-0">
+                            <i class="text-lg sm:text-xl text-yellow-600 fas fa-clock"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total Clientes -->
-                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div
+                    class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Total Clientes</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ \App\Models\User::whereHas('orders')->count()
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Clientes</p>
+                            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{
+                                \App\Models\User::whereHas('orders')->count()
                                 }}</p>
                             <div class="flex items-center mt-1">
-                                <span class="text-sm text-gray-500">Nuevos hoy: {{
+                                <span class="text-xs sm:text-sm text-gray-500 truncate">Nuevos hoy: {{
                                     \App\Models\User::whereDate('created_at', today())->count() }}</span>
                             </div>
                         </div>
-                        <div class="p-3 bg-purple-100 rounded-lg">
-                            <i class="text-xl text-purple-600 fas fa-users"></i>
+                        <div class="p-2 sm:p-3 bg-secondary-100 rounded-lg flex-shrink-0">
+                            <i class="text-lg sm:text-xl text-secondary-600 fas fa-users"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Órdenes recientes y acciones rápidas -->
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
                 <!-- Órdenes recientes -->
-                <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900">Órdenes Recientes</h3>
+                <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+                    <div class="flex items-center justify-between mb-4 sm:mb-6">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900">Órdenes Recientes</h3>
                         <a href="{{ route('admin.orders.index') }}"
-                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            class="text-xs sm:text-sm font-medium text-primary-600 hover:text-primary-500">
                             Ver todas
                         </a>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-3 sm:space-y-4">
                         @php
                         $recentOrders = \App\Models\Order::with(['user', 'payment'])
                         ->orderBy('created_at', 'desc')
@@ -132,11 +144,13 @@
                         @endphp
 
                         @forelse($recentOrders as $order)
-                        <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-                            <div class="flex-1">
+                        <div class="flex items-center justify-between p-2 sm:p-3 border border-gray-100 rounded-lg">
+                            <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-gray-900">#{{ $order->id }}</span>
-                                    <span class="text-sm font-bold text-gray-900">${{ number_format($order->total, 2)
+                                    <span class="text-xs sm:text-sm font-medium text-gray-900 truncate">#{{ $order->id
+                                        }}</span>
+                                    <span class="text-xs sm:text-sm font-bold text-gray-900 flex-shrink-0">${{
+                                        number_format($order->total, 2)
                                         }}</span>
                                 </div>
                                 <div class="flex items-center justify-between mt-1">

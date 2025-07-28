@@ -32,7 +32,7 @@
         <!-- Header -->
         <div class="pt-8 mb-8 text-center">
             <h1
-                class="mb-2 text-4xl font-bold text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text">
+                class="mb-2 text-4xl font-bold text-transparent bg-gradient-to-r from-primary-900 to-secondary-500bg-clip-text">
                 Editar Repartidor
             </h1>
             <p class="text-lg text-gray-600">Modifica la información de {{ $deliveryDriver->name }}</p>
