@@ -13,6 +13,10 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                'xs': '380px',
+                // => @media (min-width: 380px) { ... }
+            },
             colors: {
                 // Colores principales del logo
                 primary: {

@@ -10,6 +10,59 @@
 
     {{-- add new stac --}}
     @stack('css')
+
+    <!-- Overflow Control Styles -->
+    <style>
+        /* Control global de overflow horizontal */
+        html,
+        body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+        }
+
+        /* Asegurar que todos los contenedores respeten el ancho */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Control específico para breadcrumbs */
+        .breadcrumb-container {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .breadcrumb-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .breadcrumb-scroll::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari */
+        }
+
+        /* Responsive para dispositivos muy pequeños */
+        @media (max-width: 380px) {
+
+            body,
+            html {
+                overflow-x: hidden !important;
+                width: 100%;
+                max-width: 100vw;
+            }
+
+            .breadcrumb-item {
+                flex-shrink: 0;
+                max-width: fit-content;
+            }
+        }
+    </style>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -24,21 +77,21 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased overflow-x-hidden">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 overflow-x-hidden">
         {{-- @livewire('navigation-menu') --}}
 
         @livewire('navigation')
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="bg-white shadow dark:bg-gray-800">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+        <header class="bg-white shadow dark:bg-gray-800">
+            <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
         @endif
 
         <!-- Page Content -->
@@ -65,13 +118,14 @@
 
     {{-- script para mostrar el mensaje de alerta cuando se usa redirect route --}}
     @if (session('swal'))
-        <script>
-            //json enconde sirve par mejorar la seguridad de la aplicacion
+    <script>
+        //json enconde sirve par mejorar la seguridad de la aplicacion
             Swal.fire({!! json_encode(session('swal')) !!}); //json_enconde sirve para convertir un array en un objeto tipo json
-        </script>
+    </script>
     @endif
 
-    {{-- script para mostrar el mensaje de alerta cuando se usa emits o eventos de livewire debe estar por debajo de la importacion de srcipt de livewire --}}
+    {{-- script para mostrar el mensaje de alerta cuando se usa emits o eventos de livewire debe estar por debajo de la
+    importacion de srcipt de livewire --}}
 
     <script>
         Livewire.on('swal', (message) => { //tambien en lugar de message puede ser cualquier nombre

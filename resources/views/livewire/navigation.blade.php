@@ -229,70 +229,190 @@
     - Se usa pointer-events-none en el contenedor flex y pointer-events-auto solo en los elementos interactivos.
     - El evento x-on:click="sidebarOpen = false" en el fondo oscuro permite cerrar el sidebar al hacer clic fuera de él.
     --}}
+    <!-- Sidebar/Menú Hamburguesa Optimizado para 344px -->
     <template x-if="sidebarOpen">
         <div class="fixed inset-0 z-40 flex">
             <!-- Fondo oscuro: cubre toda la pantalla y cierra el sidebar al hacer clic -->
             <div class="absolute inset-0 bg-gray-900/50" x-on:click="sidebarOpen = false"></div>
-            <!-- Contenedor flex para sidebar y panel derecho -->
-            <div class="relative z-50 flex w-full h-full pointer-events-none">
-                <!-- Sidebar principal: pointer-events-auto para permitir interacción -->
-                <div
-                    class="w-screen h-screen transition-all duration-300 bg-white shadow-lg pointer-events-auto md:w-80">
-                    <div class="px-4 py-3 font-semibold text-white bg-primary-900">
-                        <div class="flex items-center justify-between px-2">
-                            <h1 class="text-2xl font-bold text-cream-100">LagoFish</h1>
-                            <button x-on:click="sidebarOpen = !sidebarOpen">
+
+            <!-- Contenedor principal del menú hamburguesa -->
+            <div class="relative z-50 w-full h-full pointer-events-none">
+                <!-- Sidebar principal optimizado para dispositivos pequeños -->
+                <div x-data="{ selectedFamily: null, selectedCategory: null }"
+                    class="w-full max-w-xs xs:max-w-sm sm:max-w-md h-screen transition-all duration-300 bg-white shadow-lg pointer-events-auto overflow-hidden">
+
+                    <!-- Header del sidebar -->
+                    <div class="px-3 xs:px-4 py-3 font-semibold text-white bg-primary-900">
+                        <div class="flex items-center justify-between">
+                            <h1 class="text-lg xs:text-xl sm:text-2xl font-bold text-cream-100 truncate">LagoFish</h1>
+                            <button x-on:click="sidebarOpen = false" class="flex-shrink-0 ml-2">
                                 <i
-                                    class="p-2 text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times text-cream-100 hover:text-coral-300"></i>
+                                    class="p-1 xs:p-2 text-base xs:text-lg transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none fas fa-times text-cream-100 hover:text-coral-300"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="h-[calc(100vh-3.25rem)] overflow-y-auto">
-                        <ul>
-                            @foreach ($families as $family)
-                            <li wire:mouseover="$set('familyId', {{ $family->id }})"
-                                class="flex items-center justify-between px-4 py-3 text-slate-700 transition duration-300 ease-in-out transform hover:bg-secondary-50 border-b border-secondary-100/50">
-                                <a href="{{ route('families.show', $family) }}"
-                                    class="flex items-center justify-between w-full text-slate-700 transition duration-300 ease-in-out transform hover:text-coral-600">
-                                    <span>{{ $family->name }}</span>
-                                    <i class="fa-solid fa-angle-right text-coral-400"></i>
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-                <!-- Panel derecho de categorías y subcategorías: pointer-events-auto para permitir interacción -->
-                <div class="w-80 xl:w-[57rem] pt-[3.25rem] hidden md:block z-30 pointer-events-auto">
-                    <div class="h-[calc(100vh-3.25rem)] overflow-y-auto bg-white shadow-lg px-6 py-8">
-                        <div class="flex items-center justify-between mb-8">
-                            <p class="border-b-[3px] border-coral-500 text-xl pb-1 uppercase font-bold text-slate-700">
-                                {{ $this->familyName }}
-                            </p>
-                            @if ($this->familyId)
-                            <x-link href="{{ route('families.show', $this->familyId) }}" name="Ver Todo" />
-                            @endif
-                        </div>
-                        <ul class="grid grid-cols-1 gap-8 xl:grid-cols-3">
-                            @foreach ($this->categories as $category)
-                            <li wire:mouseover="">
-                                <a href="{{ route('categories.show', $category) }}"
-                                    class="flex items-center justify-between text-coral-600 hover:text-coral-700 font-medium transition-colors">
-                                    {{ $category->name }}
-                                </a>
-                                <ul class="mt-4 space-y-2">
-                                    @foreach ($category->subcategories as $subcategory)
-                                    <li>
-                                        <a href="{{ route('subcategories.show', $subcategory) }}"
-                                            class="text-sm text-gray-700 transition duration-300 ease-in-out transform hover:text-blue-600">
-                                            {{ $subcategory->name }}
+
+                    <!-- Contenido scrolleable del menú -->
+                    <div class="h-[calc(100vh-3.5rem)] overflow-y-auto overflow-x-hidden">
+
+                        <!-- Vista principal: Lista de Familias -->
+                        <div x-show="!selectedFamily" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-x-4"
+                            x-transition:enter-end="opacity-100 transform translate-x-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 transform translate-x-0"
+                            x-transition:leave-end="opacity-0 transform -translate-x-4">
+
+                            <!-- Encabezado de familias -->
+                            <div class="px-3 xs:px-4 py-3 bg-secondary-50 border-b border-secondary-200">
+                                <h2 class="text-sm xs:text-base font-semibold text-slate-700 uppercase tracking-wide">
+                                    <i class="fas fa-list mr-2 text-coral-500"></i>
+                                    Familias de Productos
+                                </h2>
+                            </div>
+
+                            <!-- Lista de familias -->
+                            <ul class="pb-4">
+                                @foreach ($families as $family)
+                                <li class="border-b border-secondary-100/50 last:border-b-0">
+                                    <div
+                                        class="flex items-center justify-between px-3 xs:px-4 py-3 hover:bg-secondary-50 transition-colors duration-200">
+                                        <!-- Enlace directo a la familia -->
+                                        <a href="{{ route('families.show', $family) }}"
+                                            class="flex-1 text-xs xs:text-sm text-slate-700 hover:text-coral-600 transition-colors duration-200 truncate pr-2">
+                                            {{ $family->name }}
                                         </a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                            @endforeach
-                        </ul>
+
+                                        <!-- Botón para ver categorías -->
+                                        <button
+                                            x-on:click="selectedFamily = {{ $family->id }}; $wire.set('familyId', {{ $family->id }})"
+                                            class="flex-shrink-0 p-1 xs:p-2 text-coral-500 hover:text-coral-700 hover:bg-coral-50 rounded-full transition-all duration-200">
+                                            <i class="fas fa-chevron-right text-xs xs:text-sm"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <!-- Vista de Categorías (cuando se selecciona una familia) -->
+                        <div x-show="selectedFamily && !selectedCategory"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-x-4"
+                            x-transition:enter-end="opacity-100 transform translate-x-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 transform translate-x-0"
+                            x-transition:leave-end="opacity-0 transform -translate-x-4">
+
+                            <!-- Header con botón de regreso -->
+                            <div class="px-3 xs:px-4 py-3 bg-secondary-50 border-b border-secondary-200">
+                                <div class="flex items-center">
+                                    <button x-on:click="selectedFamily = null"
+                                        class="mr-2 xs:mr-3 p-1 text-coral-600 hover:text-coral-800 hover:bg-coral-50 rounded-full transition-all duration-200">
+                                        <i class="fas fa-chevron-left text-xs xs:text-sm"></i>
+                                    </button>
+                                    <h2
+                                        class="text-xs xs:text-sm font-semibold text-slate-700 uppercase tracking-wide truncate">
+                                        <i class="fas fa-tags mr-2 text-coral-500"></i>
+                                        <span x-text="'{{ $this->familyName }}'"></span>
+                                    </h2>
+                                </div>
+
+                                <!-- Enlace "Ver Todo" -->
+                                @if ($this->familyId)
+                                <div class="mt-2">
+                                    <a href="{{ route('families.show', $this->familyId) }}"
+                                        class="inline-flex items-center text-xs text-coral-600 hover:text-coral-700 font-medium transition-colors">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        Ver Todos los Productos
+                                    </a>
+                                </div>
+                                @endif
+                            </div>
+
+                            <!-- Lista de categorías -->
+                            <ul class="pb-4">
+                                @foreach ($this->categories as $category)
+                                <li class="border-b border-secondary-100/50 last:border-b-0">
+                                    <div
+                                        class="flex items-center justify-between px-3 xs:px-4 py-3 hover:bg-secondary-50 transition-colors duration-200">
+                                        <!-- Enlace directo a la categoría -->
+                                        <a href="{{ route('categories.show', $category) }}"
+                                            class="flex-1 text-xs xs:text-sm text-slate-700 hover:text-coral-600 transition-colors duration-200 truncate pr-2 font-medium">
+                                            {{ $category->name }}
+                                        </a>
+
+                                        <!-- Botón para ver subcategorías (solo si tiene subcategorías) -->
+                                        @if($category->subcategories->count() > 0)
+                                        <button x-on:click="selectedCategory = {{ $category->id }}"
+                                            class="flex-shrink-0 p-1 xs:p-2 text-coral-500 hover:text-coral-700 hover:bg-coral-50 rounded-full transition-all duration-200">
+                                            <i class="fas fa-chevron-right text-xs xs:text-sm"></i>
+                                        </button>
+                                        @endif
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <!-- Vista de Subcategorías (cuando se selecciona una categoría) -->
+                        <div x-show="selectedFamily && selectedCategory"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform translate-x-4"
+                            x-transition:enter-end="opacity-100 transform translate-x-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 transform translate-x-0"
+                            x-transition:leave-end="opacity-0 transform -translate-x-4">
+
+                            <!-- Header con botón de regreso -->
+                            <div class="px-3 xs:px-4 py-3 bg-secondary-50 border-b border-secondary-200">
+                                <div class="flex items-center">
+                                    <button x-on:click="selectedCategory = null"
+                                        class="mr-2 xs:mr-3 p-1 text-coral-600 hover:text-coral-800 hover:bg-coral-50 rounded-full transition-all duration-200">
+                                        <i class="fas fa-chevron-left text-xs xs:text-sm"></i>
+                                    </button>
+                                    <h2
+                                        class="text-xs xs:text-sm font-semibold text-slate-700 uppercase tracking-wide truncate">
+                                        <i class="fas fa-sitemap mr-2 text-coral-500"></i>
+                                        Subcategorías
+                                    </h2>
+                                </div>
+
+                                <!-- Enlace a la categoría padre -->
+                                <div class="mt-2">
+                                    <template x-for="category in {{ json_encode($this->categories) }}"
+                                        :key="category.id">
+                                        <div x-show="category.id === selectedCategory">
+                                            <a :href="'/categories/' + category.id"
+                                                class="inline-flex items-center text-xs text-coral-600 hover:text-coral-700 font-medium transition-colors">
+                                                <i class="fas fa-eye mr-1"></i>
+                                                <span x-text="'Ver ' + category.name"></span>
+                                            </a>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Lista de subcategorías -->
+                            <ul class="pb-4">
+                                @foreach ($this->categories as $category)
+                                <template x-if="selectedCategory === {{ $category->id }}">
+                                    <div>
+                                        @foreach ($category->subcategories as $subcategory)
+                                        <li class="border-b border-secondary-100/50 last:border-b-0">
+                                            <a href="{{ route('subcategories.show', $subcategory) }}"
+                                                class="block px-3 xs:px-4 py-3 text-xs xs:text-sm text-slate-700 hover:text-coral-600 hover:bg-secondary-50 transition-all duration-200 truncate">
+                                                <i class="fas fa-caret-right mr-2 text-coral-400"></i>
+                                                {{ $subcategory->name }}
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </div>
+                                </template>
+                                @endforeach
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
