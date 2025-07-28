@@ -24,58 +24,36 @@
         </div>
 
         <div class="relative">
-            <!-- Contenedor principal responsive con backdrop blur -->
-            <div
-                class="mx-2 sm:mx-4 my-4 sm:my-8 overflow-hidden shadow-lg sm:shadow-2xl glass-effect rounded-xl sm:rounded-3xl">
-                <!-- Header responsive con gradiente -->
-                <div
-                    class="px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6 bg-gradient-to-r from-primary-600 to-secondary-600">
-                    <div class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-                        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                            <div class="p-2 sm:p-3 glass-effect rounded-lg sm:rounded-xl flex-shrink-0">
-                                <i class="text-lg sm:text-xl text-white fas fa-receipt"></i>
+            <!-- Contenedor principal con backdrop blur -->
+            <div class="mx-4 my-8 overflow-hidden shadow-2xl glass-effect rounded-3xl">
+                <!-- Header con gradiente -->
+                <div class="px-8 py-6 bg-gradient-to-r from-primary-600 to-secondary-600">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 glass-effect rounded-xl">
+                                <i class="text-xl text-white fas fa-receipt"></i>
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">Verificación de
-                                    Pagos</h2>
-                                <p class="text-xs sm:text-sm text-secondary-100 truncate">Revisa y verifica los
-                                    comprobantes de pago</p>
+                            <div>
+                                <h2 class="text-2xl font-bold text-white">Verificación de Pagos</h2>
+                                <p class="text-sm text-secondary-100">Revisa y verifica los comprobantes de pago</p>
                             </div>
                         </div>
-                        <div class="text-xs sm:text-sm text-white/80 flex items-center flex-shrink-0">
+                        <div class="text-sm text-white/80">
                             <i class="mr-1 fas fa-clock"></i>
-                            {{ $payments->total() ?? $payments->count() }} comprobantes
+                            {{ $payments->total() ?? $payments->count() }} comprobantes pendientes
                         </div>
                     </div>
                 </div>
 
                 <!-- Barra de herramientas con filtros -->
-                <div class="px-3 py-3 sm:px-6 sm:py-4 lg:px-8 bg-white border-b border-gray-200">
-                    <div class="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
-                        <!-- Controles de vista responsive -->
-                        <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                            <span class="text-sm font-medium text-gray-700 flex-shrink-0">Vista:</span>
-                            <div class="flex p-1 bg-gray-100 rounded-lg w-full sm:w-auto">
-                                <button onclick="toggleView('cards')" id="cards-btn"
-                                    class="flex-1 sm:flex-none px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-white transition-all duration-200 bg-primary-600 rounded-md shadow-sm view-toggle">
-                                    <i class="mr-1 sm:mr-2 fas fa-th-large text-xs sm:text-sm"></i>
-                                    <span class="hidden sm:inline">Tarjetas</span>
-                                    <span class="sm:hidden">Cards</span>
-                                </button>
-                                <button onclick="toggleView('table')" id="table-btn"
-                                    class="flex-1 sm:flex-none px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 transition-all duration-200 rounded-md view-toggle hover:text-gray-900">
-                                    <i class="mr-1 sm:mr-2 fas fa-table text-xs sm:text-sm"></i>
-                                    <span class="hidden sm:inline">Tabla</span>
-                                    <span class="sm:hidden">Table</span>
-                                </button>
-                            </div>
-                        </div>
-
+                <div class="px-8 py-4 bg-white border-b border-gray-200">
+                    <div
+                        class="flex flex-col items-start justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
                         <!-- Filtros por método y status -->
-                        <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                            <span class="text-sm font-medium text-gray-700 flex-shrink-0">Filtrar por:</span>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm font-medium text-gray-700">Filtrar por:</span>
                             <select id="status-filter"
-                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="pending_verification" {{ request('status', 'pending_verification'
                                     )=='pending_verification' ? 'selected' : '' }}>
                                     🟡 Pendientes
@@ -91,23 +69,26 @@
                                 </option>
                             </select>
                             <select id="method-filter"
-                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="">Todos los métodos</option>
                                 <option value="bank_transfer" {{ request('method')=='bank_transfer' ? 'selected' : ''
-                                    }}>Transferencia</option>
+                                    }}>
+                                    Transferencia Bancaria
+                                </option>
                                 <option value="payphone" {{ request('method')=='payphone' ? 'selected' : '' }}>
-                                    QR PayPhone</option>
+                                    QR PayPhone
+                                </option>
                             </select>
                         </div>
 
-                        <!-- Acciones y configuración responsive -->
-                        <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                        <!-- Acciones rápidas -->
+                        <div class="flex items-center space-x-4">
                             <button onclick="refreshStats()"
-                                class="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                                <i class="fas fa-sync-alt mr-1"></i><span class="hidden sm:inline"> Actualizar</span>
+                                class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-sync-alt mr-1"></i> Actualizar
                             </button>
                             <select id="items-per-page"
-                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="12" {{ request('per_page')=='12' ? 'selected' : '' }}>12 por página
                                 </option>
                                 <option value="24" {{ request('per_page')=='24' ? 'selected' : '' }}>24 por página
@@ -131,52 +112,12 @@
     @push('js')
     <script>
         let currentPaymentId = null;
-        let currentView = 'cards';
-        let isLoading = false;
 
-        // Función para cambiar entre vistas
-        function toggleView(viewType) {
-            // Actualizar la variable global
-            currentView = viewType;
-            
-            // Ocultar todas las vistas
-            document.querySelectorAll('.view-content').forEach(view => {
-                view.classList.add('hidden');
-            });
-
-            // Mostrar la vista seleccionada
-            const targetView = document.getElementById(viewType + '-view');
-            if (targetView) {
-                targetView.classList.remove('hidden');
-            }
-
-            // Actualizar botones
-            document.querySelectorAll('.view-toggle').forEach(btn => {
-                btn.classList.remove('bg-primary-600', 'text-white', 'shadow-sm');
-                btn.classList.add('text-gray-600', 'hover:text-gray-900');
-            });
-
-            const selectedBtn = document.getElementById(viewType + '-btn');
-            if (selectedBtn) {
-                selectedBtn.classList.add('bg-primary-600', 'text-white', 'shadow-sm');
-                selectedBtn.classList.remove('text-gray-600', 'hover:text-gray-900');
-            }
-
-            // Guardar preferencia
-            localStorage.setItem('admin_payments_view', viewType);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Restaurar vista guardada
-            const savedView = localStorage.getItem('admin_payments_view') || 'cards';
-            if (savedView !== 'cards') {
-                toggleView(savedView);
-            }
-
-            // Configurar filtros
-            const statusFilter = document.getElementById('status-filter');
-            const methodFilter = document.getElementById('method-filter');
-            const itemsPerPage = document.getElementById('items-per-page');
+            document.addEventListener('DOMContentLoaded', function() {
+                // Configurar filtros
+                const statusFilter = document.getElementById('status-filter');
+                const methodFilter = document.getElementById('method-filter');
+                const itemsPerPage = document.getElementById('items-per-page');
 
                 if (statusFilter) {
                     statusFilter.addEventListener('change', filterPayments);
@@ -201,8 +142,6 @@
             });
 
             function filterPayments() {
-                if (isLoading) return;
-                
                 const status = document.getElementById('status-filter').value;
                 const method = document.getElementById('method-filter').value;
                 const perPage = document.getElementById('items-per-page').value;
@@ -220,63 +159,23 @@
             }
 
             function loadPaymentsPage(url) {
-                if (isLoading) return;
-                
-                isLoading = true;
-                const container = document.getElementById('payments-content');
-                if (container) {
-                    container.style.opacity = '0.6';
-                }
-
                 fetch(url, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
                             'Accept': 'text/html'
                         }
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.text();
-                    })
+                    .then(response => response.text())
                     .then(html => {
-                        if (container) {
-                            // Extraer solo el contenido del contenedor
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            const newContent = doc.querySelector('#payments-content');
-                            
-                            if (newContent) {
-                                container.innerHTML = newContent.innerHTML;
-                            } else {
-                                container.innerHTML = html;
-                            }
-
-                            // Restaurar vista seleccionada
-                            const savedView = localStorage.getItem('admin_payments_view') || 'cards';
-                            setTimeout(() => toggleView(savedView), 100);
-                            
-                            container.style.opacity = '1';
-                        }
-                        isLoading = false;
+                        document.getElementById('payments-content').innerHTML = html;
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        if (container) {
-                            container.style.opacity = '1';
-                        }
-                        isLoading = false;
-                        
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Error al cargar los comprobantes',
-                                icon: 'error'
-                            });
-                        } else {
-                            alert('Error al cargar los comprobantes');
-                        }
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al cargar los comprobantes',
+                            icon: 'error'
+                        });
                     });
             }
 

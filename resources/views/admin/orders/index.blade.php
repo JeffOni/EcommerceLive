@@ -77,14 +77,11 @@
                             <select id="status-filter"
                                 class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">Todos los estados</option>
-                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Pendiente de Pago
+                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Pendiente</option>
+                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
                                 </option>
-                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Confirmado
-                                </option>
-                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando Pedido
-                                </option>
-                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Asignado a Repartidor
-                                </option>
+                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando</option>
+                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Asignado</option>
                                 <option value="5" {{ request('status')=='5' ? 'selected' : '' }}>En Camino</option>
                                 <option value="6" {{ request('status')=='6' ? 'selected' : '' }}>Entregado</option>
                                 <option value="7" {{ request('status')=='7' ? 'selected' : '' }}>Cancelado</option>
@@ -248,23 +245,23 @@
             
             switch(parseInt(status)) {
                 case 2:
-                    title = '¿Confirmar Pago?';
+                    title = '¿Verificar Pago?';
                     text = 'Confirma que el pago ha sido verificado';
-                    confirmText = 'Sí, confirmar';
+                    confirmText = 'Sí, verificar';
                     break;
                 case 3:
                     title = '¿Marcar como Preparando?';
-                    text = 'La orden pasará al estado "Preparando Pedido"';
+                    text = 'La orden pasará al estado "Preparando"';
                     confirmText = 'Sí, preparar';
                     break;
                 case 5:
-                    title = '¿Poner En Camino?';
-                    text = 'El repartidor iniciará la entrega del pedido';
-                    confirmText = 'Sí, poner en camino';
+                    title = '¿Marcar como En Camino?';
+                    text = 'El repartidor iniciará la entrega';
+                    confirmText = 'Sí, enviar';
                     break;
                 case 6:
                     title = '¿Marcar como Entregado?';
-                    text = 'Confirma que el pedido fue entregado al cliente';
+                    text = 'Confirma que el pedido fue entregado';
                     confirmText = 'Sí, entregar';
                     break;
                 case 7:
@@ -333,18 +330,10 @@
                 availableDrivers = data;
                 select.innerHTML = '<option value="">Seleccionar repartidor...</option>';
                 
-                if (data.length === 0) {
-                    select.innerHTML = '<option value="">No hay repartidores disponibles</option>';
-                    return;
-                }
-                
                 data.forEach(driver => {
                     const option = document.createElement('option');
                     option.value = driver.id;
-                    // Mostrar información adicional del repartidor
-                    const activeShipments = driver.active_shipments_count || 0;
-                    const maxShipments = driver.max_shipments || 10;
-                    option.textContent = `${driver.name} - ${driver.phone} (${activeShipments}/${maxShipments} envíos)`;
+                    option.textContent = `${driver.name} - ${driver.phone}`;
                     select.appendChild(option);
                 });
             })
@@ -356,7 +345,7 @@
 
         function confirmAssignDriver() {
             const driverId = document.getElementById('driver-select').value;
-
+            
             if (!driverId) {
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
@@ -385,27 +374,22 @@
                     delivery_driver_id: driverId
                 })
             })
-            .then(response => {
-                return response.json().then(data => {
-                    if (!response.ok) {
-                        throw new Error(data.message || `Error ${response.status}: ${response.statusText}`);
-                    }
-                    return data;
-                });
-            })
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     closeAssignDriverModal();
-
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    title: '¡Repartidor Asignado!',
-                    text: `${driverName} ha sido asignado al pedido #${currentOrderId}. Ahora puede poner el pedido "En Camino" cuando esté listo.`,
-                    icon: 'success',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            }                    // Recargar contenido para reflejar el estado actualizado
+                    
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: `Repartidor ${driverName} asignado correctamente`,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    
+                    // Recargar contenido
                     filterOrders();
                 } else {
                     throw new Error(data.message || 'Error al asignar repartidor');
@@ -413,28 +397,14 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                let errorMessage = 'No se pudo asignar el repartidor';
-
-                if (error.message.includes('envíos activos')) {
-                    errorMessage = `El repartidor ${driverName} ya tiene el máximo de envíos permitidos. Por favor, selecciona otro repartidor.`;
-                } else if (error.message.includes('no disponible')) {
-                    errorMessage = `El repartidor ${driverName} no está disponible en este momento.`;
-                } else if (error.message !== 'No se pudo asignar el repartidor') {
-                    errorMessage = error.message;
-                }
-
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
-                        title: 'Error al Asignar Repartidor',
-                        text: errorMessage,
-                        icon: 'error',
-                        confirmButtonText: 'Entendido'
-                    }).then(() => {
-                        loadAvailableDrivers();
+                        title: 'Error',
+                        text: 'No se pudo asignar el repartidor',
+                        icon: 'error'
                     });
                 } else {
-                    alert(errorMessage);
-                    loadAvailableDrivers();
+                    alert('Error al asignar el repartidor');
                 }
             });
         }
@@ -543,7 +513,7 @@
             @apply bg-yellow-100 text-yellow-800;
         }
 
-        .status-pagado {
+        .status-verificado {
             @apply bg-blue-100 text-blue-800;
         }
 
@@ -555,7 +525,7 @@
             @apply bg-indigo-100 text-indigo-800;
         }
 
-        .status-enviado {
+        .status-en-camino {
             @apply bg-orange-100 text-orange-800;
         }
 

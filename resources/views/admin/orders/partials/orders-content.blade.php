@@ -21,23 +21,23 @@
                     </div>
                     <span class="status-badge status-{{ strtolower(str_replace(' ', '-', match($order->status) {
                                 1 => 'pendiente',
-                                2 => 'pagado',
-                                3 => 'preparando',
+                                2 => 'verificado',
+                                3 => 'preparando', 
                                 4 => 'asignado',
-                                5 => 'enviado',
+                                5 => 'en-camino',
                                 6 => 'entregado',
                                 7 => 'cancelado',
                                 default => 'pendiente'
                             })) }} text-xs">
                         {{ match($order->status) {
-                        1 => 'Pendiente de Pago',
-                        2 => 'Pago Confirmado',
-                        3 => 'Preparando Pedido',
-                        4 => 'Asignado a Repartidor',
+                        1 => 'Pendiente',
+                        2 => 'Pago Verificado',
+                        3 => 'Preparando',
+                        4 => 'Asignado',
                         5 => 'En Camino',
                         6 => 'Entregado',
                         7 => 'Cancelado',
-                        default => 'Pendiente de Pago'
+                        default => 'Pendiente'
                         } }}
                     </span>
                 </div>
@@ -65,17 +65,22 @@
                         <span class="font-semibold text-green-600">${{ number_format($order->total, 2) }}</span>
                     </div>
                     <div>
-                        <span class="text-gray-500">Pago:</span>
-                        <span
-                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            {{ match($order->payment_method) {
-                            0 => 'Transferencia',
-                            1 => 'QR con DeUna',
-                            2 => 'Efectivo',
-                            default => 'No especificado'
-                            } }}
-                        </span>
+                        <span class="text-gray-500">Fecha:</span>
+                        <span class="font-medium">{{ $order->created_at->format('d/m/Y') }}</span>
                     </div>
+                </div>
+
+                <!-- Método de pago -->
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-credit-card text-gray-400 text-xs"></i>
+                    <span class="text-xs text-gray-600">
+                        {{ match($order->payment_method) {
+                        0 => 'Transferencia',
+                        1 => 'Tarjeta',
+                        2 => 'Efectivo',
+                        default => 'No especificado'
+                        } }}
+                    </span>
                 </div>
 
                 <!-- Acciones -->
@@ -85,15 +90,10 @@
                         <i class="fas fa-eye mr-1"></i><span class="hidden sm:inline">Ver</span>
                     </a>
 
-                    @if($order->status == 1 && in_array($order->payment_method, [0, 1]))
+                    @if($order->status == 1)
                     <button onclick="updateOrderStatus({{ $order->id }}, 2)"
                         class="px-2 py-1.5 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors">
-                        <i class="fas fa-check mr-1"></i><span class="hidden sm:inline">Confirmar Pago</span>
-                    </button>
-                    @elseif($order->status == 1 && $order->payment_method == 2)
-                    <button onclick="openAssignDriverModal({{ $order->id }})"
-                        class="px-2 py-1.5 bg-yellow-600 text-white text-xs font-medium rounded hover:bg-yellow-700 transition-colors">
-                        <i class="fas fa-user-plus mr-1"></i><span class="hidden sm:inline">Asignar Repartidor</span>
+                        <i class="fas fa-check mr-1"></i><span class="hidden sm:inline">Verificar</span>
                     </button>
                     @elseif($order->status == 2)
                     <button onclick="updateOrderStatus({{ $order->id }}, 3)"
@@ -103,16 +103,14 @@
                     @elseif($order->status == 3)
                     <button onclick="openAssignDriverModal({{ $order->id }})"
                         class="px-2 py-1.5 bg-yellow-600 text-white text-xs font-medium rounded hover:bg-yellow-700 transition-colors">
-                        <i class="fas fa-user-plus mr-1"></i><span class="hidden sm:inline">Asignar Repartidor</span>
+                        <i class="fas fa-user-plus mr-1"></i><span class="hidden sm:inline">Asignar</span>
                     </button>
                     @elseif($order->status == 4)
                     <button onclick="updateOrderStatus({{ $order->id }}, 5)"
                         class="px-2 py-1.5 bg-orange-600 text-white text-xs font-medium rounded hover:bg-orange-700 transition-colors">
-                        <i class="fas fa-truck mr-1"></i><span class="hidden sm:inline">En Camino</span>
+                        <i class="fas fa-truck mr-1"></i><span class="hidden sm:inline">Enviar</span>
                     </button>
-                    @endif
-
-                    @if($order->status == 5)
+                    @elseif($order->status == 5)
                     <button onclick="updateOrderStatus({{ $order->id }}, 6)"
                         class="px-2 py-1.5 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors">
                         <i class="fas fa-check-circle mr-1"></i><span class="hidden sm:inline">Entregar</span>
@@ -167,7 +165,7 @@
                         Total
                     </th>
                     <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sm:px-6">
-                        Pago
+                        Fecha
                     </th>
                     <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sm:px-6">
                         Acciones
@@ -189,7 +187,7 @@
                                 <div class="text-xs text-gray-500">
                                     {{ match($order->payment_method) {
                                     0 => 'Transferencia',
-                                    1 => 'QR con DeUna',
+                                    1 => 'Tarjeta',
                                     2 => 'Efectivo',
                                     default => 'No especificado'
                                     } }}
@@ -204,23 +202,23 @@
                     <td class="px-3 py-4 whitespace-nowrap sm:px-6">
                         <span class="status-badge status-{{ strtolower(str_replace(' ', '-', match($order->status) {
                                     1 => 'pendiente',
-                                    2 => 'pagado',
+                                    2 => 'verificado',
                                     3 => 'preparando',
                                     4 => 'asignado',
-                                    5 => 'enviado',
+                                    5 => 'en-camino',
                                     6 => 'entregado',
                                     7 => 'cancelado',
                                     default => 'pendiente'
                                 })) }}">
                             {{ match($order->status) {
-                            1 => 'Pendiente de Pago',
-                            2 => 'Pago Confirmado',
-                            3 => 'Preparando Pedido',
-                            4 => 'Asignado a Repartidor',
+                            1 => 'Pendiente',
+                            2 => 'Pago Verificado',
+                            3 => 'Preparando',
+                            4 => 'Asignado',
                             5 => 'En Camino',
                             6 => 'Entregado',
                             7 => 'Cancelado',
-                            default => 'Pendiente de Pago'
+                            default => 'Pendiente'
                             } }}
                         </span>
                     </td>
@@ -228,15 +226,7 @@
                         ${{ number_format($order->total, 2) }}
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500 sm:px-6">
-                        <div class="font-medium">
-                            {{ match($order->payment_method) {
-                            0 => 'Transferencia',
-                            1 => 'QR con DeUna',
-                            2 => 'Efectivo',
-                            default => 'No especificado'
-                            } }}
-                        </div>
-                        <div class="text-xs">{{ $order->created_at->format('d/m/Y H:i') }}</div>
+                        <div>{{ $order->created_at->format('d/m/Y') }}</div>
                         <div class="text-xs">{{ $order->created_at->format('H:i') }}</div>
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium space-x-1 sm:px-6">
@@ -246,17 +236,11 @@
                             <span class="hidden sm:inline">Ver</span>
                         </a>
 
-                        @if($order->status == 1 && in_array($order->payment_method, [0, 1]))
+                        @if($order->status == 1)
                         <button onclick="updateOrderStatus({{ $order->id }}, 2)"
                             class="inline-flex items-center px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
                             <i class="fas fa-check mr-1"></i>
                             <span class="hidden lg:inline">Verificar</span>
-                        </button>
-                        @elseif($order->status == 1 && $order->payment_method == 2)
-                        <button onclick="openAssignDriverModal({{ $order->id }})"
-                            class="inline-flex items-center px-2 py-1 bg-yellow-600 text-white text-xs rounded hover:bg-yellow-700">
-                            <i class="fas fa-user-plus mr-1"></i>
-                            <span class="hidden lg:inline">Asignar</span>
                         </button>
                         @elseif($order->status == 2)
                         <button onclick="updateOrderStatus({{ $order->id }}, 3)"
@@ -274,11 +258,9 @@
                         <button onclick="updateOrderStatus({{ $order->id }}, 5)"
                             class="inline-flex items-center px-2 py-1 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
                             <i class="fas fa-truck mr-1"></i>
-                            <span class="hidden lg:inline">En Camino</span>
+                            <span class="hidden lg:inline">Enviar</span>
                         </button>
-                        @endif
-
-                        @if($order->status == 5)
+                        @elseif($order->status == 5)
                         <button onclick="updateOrderStatus({{ $order->id }}, 6)"
                             class="inline-flex items-center px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
                             <i class="fas fa-check-circle mr-1"></i>
@@ -369,7 +351,7 @@
             </div>
 
             <div class="mb-4">
-                <p class="text-sm text-gray-600 mb-3">Orden: <span id="modal-order-id" class="font-semibold"></span></p>
+                <p class="text-sm text-gray-600 mb-2">Orden: <span id="modal-order-id" class="font-semibold"></span></p>
                 <label for="driver-select" class="block text-sm font-medium text-gray-700 mb-2">
                     Seleccionar Repartidor:
                 </label>
@@ -377,10 +359,6 @@
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Cargando repartidores...</option>
                 </select>
-                <p class="text-xs text-gray-500 mt-2">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    Se muestra la cantidad de envíos activos de cada repartidor
-                </p>
             </div>
 
             <div class="flex justify-end space-x-3">
