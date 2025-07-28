@@ -13,36 +13,36 @@
         <!-- Elementos decorativos de fondo adaptativos -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-                class="absolute rounded-full -top-20 -right-20 sm:-top-40 sm:-right-40 w-48 h-48 sm:w-96 sm:h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
+                class="absolute w-48 h-48 rounded-full -top-20 -right-20 sm:-top-40 sm:-right-40 sm:w-96 sm:h-96 bg-gradient-to-br from-secondary-200/30 to-primary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute rounded-full -bottom-20 -left-20 sm:-bottom-40 sm:-left-40 w-48 h-48 sm:w-96 sm:h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
+                class="absolute w-48 h-48 rounded-full -bottom-20 -left-20 sm:-bottom-40 sm:-left-40 sm:w-96 sm:h-96 bg-gradient-to-tr from-primary-200/30 to-secondary-300/20 blur-3xl">
             </div>
             <div
-                class="absolute w-32 h-32 sm:w-64 sm:h-64 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
+                class="absolute w-32 h-32 transform -translate-x-1/2 -translate-y-1/2 rounded-full sm:w-64 sm:h-64 top-1/2 left-1/2 bg-gradient-to-r from-secondary-100/40 to-primary-100/40 blur-2xl">
             </div>
         </div>
 
         <div class="relative">
             <!-- Contenedor principal responsive con backdrop blur -->
             <div
-                class="mx-2 sm:mx-4 my-4 sm:my-8 overflow-hidden shadow-lg sm:shadow-2xl glass-effect rounded-xl sm:rounded-3xl">
+                class="mx-2 my-4 overflow-hidden shadow-lg sm:mx-4 sm:my-8 sm:shadow-2xl glass-effect rounded-xl sm:rounded-3xl">
                 <!-- Header responsive con gradiente -->
                 <div
                     class="px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6 bg-gradient-to-r from-primary-900 to-secondary-500">
                     <div class="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-                        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                            <div class="p-2 sm:p-3 glass-effect rounded-lg sm:rounded-xl flex-shrink-0">
-                                <i class="text-lg sm:text-xl text-white fas fa-shopping-cart"></i>
+                        <div class="flex items-center flex-1 min-w-0 space-x-2 sm:space-x-3">
+                            <div class="flex-shrink-0 p-2 rounded-lg sm:p-3 glass-effect sm:rounded-xl">
+                                <i class="text-lg text-white sm:text-xl fas fa-shopping-cart"></i>
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">Gestión de
+                            <div class="flex-1 min-w-0">
+                                <h2 class="text-lg font-bold text-white truncate sm:text-xl lg:text-2xl">Gestión de
                                     Pedidos</h2>
-                                <p class="text-xs sm:text-sm text-secondary-100 truncate">Administra y supervisa todos
+                                <p class="text-xs truncate sm:text-sm text-secondary-100">Administra y supervisa todos
                                     los pedidos</p>
                             </div>
                         </div>
-                        <div class="text-xs sm:text-sm text-white/80 flex items-center flex-shrink-0">
+                        <div class="flex items-center flex-shrink-0 text-xs sm:text-sm text-white/80">
                             <i class="mr-1 fas fa-list"></i>
                             {{ $orders->total() ?? $orders->count() }} pedidos
                         </div>
@@ -50,21 +50,21 @@
                 </div>
 
                 <!-- Barra de herramientas responsive con filtros -->
-                <div class="px-3 py-3 sm:px-6 sm:py-4 lg:px-8 bg-white border-b border-gray-200">
+                <div class="px-3 py-3 bg-white border-b border-gray-200 sm:px-6 sm:py-4 lg:px-8">
                     <div class="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                         <!-- Controles de vista responsive -->
                         <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                            <span class="text-sm font-medium text-gray-700 flex-shrink-0">Vista:</span>
-                            <div class="flex p-1 bg-gray-100 rounded-lg w-full sm:w-auto">
+                            <span class="flex-shrink-0 text-sm font-medium text-gray-700">Vista:</span>
+                            <div class="flex w-full p-1 bg-gray-100 rounded-lg sm:w-auto">
                                 <button onclick="toggleView('cards')" id="cards-btn"
-                                    class="flex-1 sm:flex-none px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-white transition-all duration-200 bg-primary-600 rounded-md shadow-sm view-toggle">
-                                    <i class="mr-1 sm:mr-2 fas fa-th-large text-xs sm:text-sm"></i>
+                                    class="flex-1 px-3 py-2 text-xs font-medium text-white transition-all duration-200 rounded-md shadow-sm sm:flex-none sm:px-4 sm:text-sm bg-primary-600 view-toggle">
+                                    <i class="mr-1 text-xs sm:mr-2 fas fa-th-large sm:text-sm"></i>
                                     <span class="hidden sm:inline">Tarjetas</span>
                                     <span class="sm:hidden">Cards</span>
                                 </button>
                                 <button onclick="toggleView('table')" id="table-btn"
-                                    class="flex-1 sm:flex-none px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 transition-all duration-200 rounded-md view-toggle hover:text-gray-900">
-                                    <i class="mr-1 sm:mr-2 fas fa-table text-xs sm:text-sm"></i>
+                                    class="flex-1 px-3 py-2 text-xs font-medium text-gray-600 transition-all duration-200 rounded-md sm:flex-none sm:px-4 sm:text-sm view-toggle hover:text-gray-900">
+                                    <i class="mr-1 text-xs sm:mr-2 fas fa-table sm:text-sm"></i>
                                     <span class="hidden sm:inline">Tabla</span>
                                     <span class="sm:hidden">Table</span>
                                 </button>
@@ -73,15 +73,18 @@
 
                         <!-- Filtros por estado responsive -->
                         <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                            <span class="text-sm font-medium text-gray-700 flex-shrink-0">Filtrar por:</span>
+                            <span class="flex-shrink-0 text-sm font-medium text-gray-700">Filtrar por:</span>
                             <select id="status-filter"
-                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg sm:w-auto sm:text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">Todos los estados</option>
-                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Pendiente</option>
-                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Verificado
+                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Pendiente de Pago
                                 </option>
-                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando</option>
-                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Asignado</option>
+                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Pago Confirmado
+                                </option>
+                                <option value="3" {{ request('status')=='3' ? 'selected' : '' }}>Preparando Pedido
+                                </option>
+                                <option value="4" {{ request('status')=='4' ? 'selected' : '' }}>Asignado a Repartidor
+                                </option>
                                 <option value="5" {{ request('status')=='5' ? 'selected' : '' }}>En Camino</option>
                                 <option value="6" {{ request('status')=='6' ? 'selected' : '' }}>Entregado</option>
                                 <option value="7" {{ request('status')=='7' ? 'selected' : '' }}>Cancelado</option>
@@ -93,12 +96,12 @@
                             <div class="relative">
                                 <input type="text" id="search-input" placeholder="Buscar pedidos..."
                                     value="{{ request('search') }}"
-                                    class="w-full sm:w-48 lg:w-64 py-2 pl-8 sm:pl-10 pr-4 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    class="w-full py-2 pl-8 pr-4 text-xs border border-gray-300 rounded-lg sm:w-48 lg:w-64 sm:pl-10 sm:text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <i
                                     class="absolute text-gray-400 fas fa-search left-2 sm:left-3 top-2.5 sm:top-3 text-xs sm:text-sm"></i>
                             </div>
                             <select id="items-per-page"
-                                class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg sm:w-auto sm:text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="15" {{ request('per_page')=='15' ? 'selected' : '' }}>15 por página
                                 </option>
                                 <option value="25" {{ request('per_page')=='25' ? 'selected' : '' }}>25 por página
@@ -245,23 +248,23 @@
             
             switch(parseInt(status)) {
                 case 2:
-                    title = '¿Verificar Pago?';
+                    title = '¿Confirmar Pago?';
                     text = 'Confirma que el pago ha sido verificado';
-                    confirmText = 'Sí, verificar';
+                    confirmText = 'Sí, confirmar';
                     break;
                 case 3:
                     title = '¿Marcar como Preparando?';
-                    text = 'La orden pasará al estado "Preparando"';
+                    text = 'La orden pasará al estado "Preparando Pedido"';
                     confirmText = 'Sí, preparar';
                     break;
                 case 5:
-                    title = '¿Marcar como En Camino?';
-                    text = 'El repartidor iniciará la entrega';
-                    confirmText = 'Sí, enviar';
+                    title = '¿Poner En Camino?';
+                    text = 'El repartidor iniciará la entrega del pedido';
+                    confirmText = 'Sí, poner en camino';
                     break;
                 case 6:
                     title = '¿Marcar como Entregado?';
-                    text = 'Confirma que el pedido fue entregado';
+                    text = 'Confirma que el pedido fue entregado al cliente';
                     confirmText = 'Sí, entregar';
                     break;
                 case 7:
@@ -330,10 +333,18 @@
                 availableDrivers = data;
                 select.innerHTML = '<option value="">Seleccionar repartidor...</option>';
                 
+                if (data.length === 0) {
+                    select.innerHTML = '<option value="">No hay repartidores disponibles</option>';
+                    return;
+                }
+                
                 data.forEach(driver => {
                     const option = document.createElement('option');
                     option.value = driver.id;
-                    option.textContent = `${driver.name} - ${driver.phone}`;
+                    // Mostrar información adicional del repartidor
+                    const activeShipments = driver.active_shipments_count || 0;
+                    const maxShipments = driver.max_shipments || 10;
+                    option.textContent = `${driver.name} - ${driver.phone} (${activeShipments}/${maxShipments} envíos)`;
                     select.appendChild(option);
                 });
             })
@@ -345,7 +356,7 @@
 
         function confirmAssignDriver() {
             const driverId = document.getElementById('driver-select').value;
-            
+
             if (!driverId) {
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
@@ -374,22 +385,27 @@
                     delivery_driver_id: driverId
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || `Error ${response.status}: ${response.statusText}`);
+                    }
+                    return data;
+                });
+            })
             .then(data => {
                 if (data.success) {
                     closeAssignDriverModal();
-                    
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            title: '¡Éxito!',
-                            text: `Repartidor ${driverName} asignado correctamente`,
-                            icon: 'success',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    }
-                    
-                    // Recargar contenido
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: '¡Repartidor Asignado!',
+                    text: `${driverName} ha sido asignado al pedido #${currentOrderId}. Ahora puede poner el pedido "En Camino" cuando esté listo.`,
+                    icon: 'success',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }                    // Recargar contenido para reflejar el estado actualizado
                     filterOrders();
                 } else {
                     throw new Error(data.message || 'Error al asignar repartidor');
@@ -397,14 +413,28 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+                let errorMessage = 'No se pudo asignar el repartidor';
+
+                if (error.message.includes('envíos activos')) {
+                    errorMessage = `El repartidor ${driverName} ya tiene el máximo de envíos permitidos. Por favor, selecciona otro repartidor.`;
+                } else if (error.message.includes('no disponible')) {
+                    errorMessage = `El repartidor ${driverName} no está disponible en este momento.`;
+                } else if (error.message !== 'No se pudo asignar el repartidor') {
+                    errorMessage = error.message;
+                }
+
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudo asignar el repartidor',
-                        icon: 'error'
+                        title: 'Error al Asignar Repartidor',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    }).then(() => {
+                        loadAvailableDrivers();
                     });
                 } else {
-                    alert('Error al asignar el repartidor');
+                    alert(errorMessage);
+                    loadAvailableDrivers();
                 }
             });
         }
@@ -513,7 +543,7 @@
             @apply bg-yellow-100 text-yellow-800;
         }
 
-        .status-verificado {
+        .status-pagado {
             @apply bg-blue-100 text-blue-800;
         }
 
@@ -525,7 +555,7 @@
             @apply bg-indigo-100 text-indigo-800;
         }
 
-        .status-en-camino {
+        .status-enviado {
             @apply bg-orange-100 text-orange-800;
         }
 

@@ -5,35 +5,35 @@
         <table class="w-full">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Repartidor
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Contacto
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Vehículo
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Estadísticas
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                         Estado
                     </th>
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                         Acciones
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($drivers as $driver)
-                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                <tr class="transition-colors duration-200 hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
+                            <div class="flex-shrink-0 w-10 h-10">
                                 <div
-                                    class="h-10 w-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
-                                    <span class="text-white font-medium text-sm">
+                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500">
+                                    <span class="text-sm font-medium text-white">
                                         {{ substr($driver->name, 0, 2) }}
                                     </span>
                                 </div>
@@ -46,8 +46,8 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
-                            <div><i class="fas fa-envelope mr-1"></i>{{ $driver->email }}</div>
-                            <div><i class="fas fa-phone mr-1"></i>{{ $driver->phone }}</div>
+                            <div><i class="mr-1 fas fa-envelope"></i>{{ $driver->email }}</div>
+                            <div><i class="mr-1 fas fa-phone"></i>{{ $driver->phone }}</div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -75,14 +75,14 @@
                                 <i class="{{ $vehicleIcon }} mr-1"></i>{{ ucfirst($driver->vehicle_type) }}
                             </span>
                             @if ($driver->vehicle_plate)
-                            <div class="text-xs text-gray-500 mt-1">{{ $driver->vehicle_plate }}</div>
+                            <div class="mt-1 text-xs text-gray-500">{{ $driver->vehicle_plate }}</div>
                             @endif
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
                             <div class="flex items-center">
-                                <i class="fas fa-box mr-1"></i>
+                                <i class="mr-1 fas fa-box"></i>
                                 {{ $driver->total_deliveries }} entregas
                             </div>
                             <div class="flex items-center mt-1">
@@ -99,7 +99,7 @@
                             {{ $driver->status_label }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
                         <div class="flex items-center justify-center space-x-2">
                             <!-- Toggle Estado -->
                             <button onclick="toggleDriverStatus({{ $driver->id }})"
@@ -111,21 +111,21 @@
                             <!-- Editar -->
                             <a href="{{ route('admin.delivery-drivers.edit', $driver) }}"
                                 class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 bg-white border border-gray-300 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                <i class="fas fa-edit mr-1"></i>
+                                <i class="mr-1 fas fa-edit"></i>
                                 Editar
                             </a>
 
                             <!-- Ver Detalles -->
                             <a href="{{ route('admin.delivery-drivers.show', $driver) }}"
                                 class="inline-flex items-center px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                                <i class="fas fa-eye mr-1"></i>
+                                <i class="mr-1 fas fa-eye"></i>
                                 Ver
                             </a>
 
                             <!-- Eliminar -->
                             <button onclick="deleteDriver({{ $driver->id }})"
                                 class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-600 bg-white border border-gray-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                <i class="fas fa-trash mr-1"></i>
+                                <i class="mr-1 fas fa-trash"></i>
                                 Eliminar
                             </button>
                         </div>
@@ -139,8 +139,8 @@
                             <h3 class="mb-2 text-lg font-medium text-gray-900">No hay repartidores</h3>
                             <p class="text-gray-500">No se encontraron repartidores con los filtros aplicados.</p>
                             <a href="{{ route('admin.delivery-drivers.create') }}"
-                                class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700">
-                                <i class="fas fa-plus mr-2"></i>
+                                class="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700">
+                                <i class="mr-2 fas fa-plus"></i>
                                 Agregar Primer Repartidor
                             </a>
                         </div>
@@ -156,14 +156,14 @@
 <div class="lg:hidden">
     <div class="space-y-4">
         @forelse($drivers as $driver)
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm">
             <div class="p-4">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
+                        <div class="flex-shrink-0 w-10 h-10">
                             <div
-                                class="h-10 w-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
-                                <span class="text-white font-medium text-sm">
+                                class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500">
+                                <span class="text-sm font-medium text-white">
                                     {{ substr($driver->name, 0, 2) }}
                                 </span>
                             </div>
@@ -212,15 +212,15 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200">
                     <div class="flex space-x-2">
                         <a href="{{ route('admin.delivery-drivers.show', $driver) }}"
                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50">
-                            <i class="fas fa-eye mr-1"></i>Ver
+                            <i class="mr-1 fas fa-eye"></i>Ver
                         </a>
                         <a href="{{ route('admin.delivery-drivers.edit', $driver) }}"
                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 bg-white border border-gray-300 rounded hover:bg-blue-50">
-                            <i class="fas fa-edit mr-1"></i>Editar
+                            <i class="mr-1 fas fa-edit"></i>Editar
                         </a>
                     </div>
 
@@ -232,20 +232,20 @@
                         </button>
                         <button onclick="deleteDriver({{ $driver->id }})"
                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-600 bg-white border border-gray-300 rounded hover:bg-red-50">
-                            <i class="fas fa-trash mr-1"></i>Eliminar
+                            <i class="mr-1 fas fa-trash"></i>Eliminar
                         </button>
                     </div>
                 </div>
             </div>
         </div>
         @empty
-        <div class="text-center py-12">
+        <div class="py-12 text-center">
             <i class="mb-4 text-6xl text-gray-300 fas fa-truck"></i>
             <h3 class="mb-2 text-lg font-medium text-gray-900">No hay repartidores</h3>
             <p class="text-gray-500">No se encontraron repartidores con los filtros aplicados.</p>
             <a href="{{ route('admin.delivery-drivers.create') }}"
-                class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700">
-                <i class="fas fa-plus mr-2"></i>
+                class="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700">
+                <i class="mr-2 fas fa-plus"></i>
                 Agregar Primer Repartidor
             </a>
         </div>
@@ -255,7 +255,7 @@
 
 <!-- Paginación -->
 @if ($drivers->hasPages())
-<div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+<div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
     {{ $drivers->links() }}
 </div>
 @endif

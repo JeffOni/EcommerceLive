@@ -113,9 +113,15 @@ class PaymentVerificationController extends Controller
         if ($payment->order_id) {
             $order = Order::find($payment->order_id);
             if ($order) {
-                $order->update([
-                    'status' => 2, // Pago verificado
-                ]);
+                // Solo actualizar el estado si la orden está en "Pendiente de Pago"
+                // No sobreescribir estados más avanzados (asignado, en camino, etc.)
+                if ($order->status == 1) { // Solo si está en estado "Pendiente de Pago"
+                    $order->update([
+                        'status' => 2, // Pago verificado
+                    ]);
+                }
+                // Si la orden ya está en un estado más avanzado, no hacer nada
+                // para preservar el progreso (repartidor asignado, en camino, etc.)
             }
         }
 
