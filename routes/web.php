@@ -13,6 +13,7 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\ContactController;
 
 
 // Rutas administrativas para verificación de pagos
@@ -198,4 +199,6 @@ Route::middleware('auth')->group(function () {
 // [FUTURO] Rutas para integración PayPhone y PayPal
 // Route::post('/payments/payphone-gateway', [PaymentController::class, 'payphoneGateway'])->name('payments.payphone-gateway');
 // Route::post('/payments/paypal-gateway', [PaymentController::class, 'paypalGateway'])->name('payments.paypal-gateway');
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 

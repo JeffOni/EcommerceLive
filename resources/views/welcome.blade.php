@@ -405,7 +405,9 @@
                     </p>
                 </div>
 
-                <form id="contactForm" class="max-w-2xl mx-auto space-y-4 sm:space-y-6">
+                <form id="contactForm" action="{{ route('contact.send') }}" method="POST"
+                    class="max-w-2xl mx-auto space-y-4 sm:space-y-6">
+                    @csrf
                     <div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                         <div>
                             <input type="text" name="name" placeholder="Tu nombre completo" required
@@ -578,30 +580,54 @@
                         return;
                     }
                     
-                    // Simulación de envío (aquí puedes agregar la lógica real de envío)
+                    // Envío real del formulario
                     const submitButton = contactForm.querySelector('button[type="submit"]');
                     const originalText = submitButton.innerHTML;
                     submitButton.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i>Enviando...';
                     submitButton.disabled = true;
                     
-                    // Simular envío del formulario
-                    setTimeout(() => {
+                    // Realizar la petición AJAX
+                    fetch('{{ route("contact.send") }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Mensaje enviado!',
+                                    text: data.message,
+                                    confirmButtonColor: '#7c3aed'
+                                });
+                            } else {
+                                alert(data.message);
+                            }
+                            contactForm.reset();
+                        } else {
+                            throw new Error(data.message);
+                        }
+                    })
+                    .catch(error => {
                         if (typeof Swal !== 'undefined') {
                             Swal.fire({
-                                icon: 'success',
-                                title: '¡Mensaje enviado!',
-                                text: 'Hemos recibido tu mensaje. Te responderemos pronto.',
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message || 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.',
                                 confirmButtonColor: '#7c3aed'
                             });
                         } else {
-                            alert('¡Mensaje enviado! Te responderemos pronto.');
+                            alert('Error al enviar el mensaje. Por favor, inténtalo de nuevo.');
                         }
-                        
-                        // Limpiar formulario
-                        contactForm.reset();
+                    })
+                    .finally(() => {
                         submitButton.innerHTML = originalText;
                         submitButton.disabled = false;
-                    }, 2000);
+                    });
                 });
             }
 
