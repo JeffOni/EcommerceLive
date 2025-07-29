@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
 
         $adminUser = User::factory()->create([
             'name' => 'Usuario',
-            'last_name' => 'Prueba',
+            'last_name' => 'Administrador',
             'document_type' => 1, // 1 = Cédula, 2 = Pasaporte, 3 = RUC
             'document_number' => '1234567890',
             'phone' => '0987654321',
-            'email' => 'Admin@example.com',
+            'email' => 'administracion@lagofish.store',
             'password' => bcrypt('secreto123'),
             'email_verified_at' => now(), // Email verificado
         ]);
@@ -48,6 +48,6 @@ class DatabaseSeeder extends Seeder
         // Asignar rol super_admin al usuario recién creado
         $adminUser->assignRole('super_admin');
 
-        Product::factory(50)->create();
+        // Product::factory(50)->create();
     }
 }
