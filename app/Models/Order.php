@@ -109,4 +109,38 @@ class Order extends Model
     {
         return OrderStatus::from($this->status);
     }
+
+    /**
+     * Calcular el progreso del pedido de forma segura
+     */
+    public function getProgressAttribute()
+    {
+        $statusProgress = [
+            1 => 10,  // Pendiente
+            2 => 25,  // Pago Verificado
+            3 => 50,  // Preparando
+            4 => 70,  // Asignado
+            5 => 90,  // En Camino
+            6 => 100, // Entregado
+            7 => 0    // Cancelado
+        ];
+
+        $baseProgress = $statusProgress[$this->status] ?? 0;
+
+        // Si está en "En camino" y tiene envío, calcular progreso basado en estados de envío
+        if ($this->status == 5 && $this->shipment) {
+            $shipmentStatus = $this->shipment->status instanceof \App\Enums\ShipmentStatus ?
+                $this->shipment->status->value : $this->shipment->status;
+
+            return match ($shipmentStatus) {
+                2 => 85,  // ASSIGNED
+                3 => 90,  // PICKED_UP
+                4 => 95,  // IN_TRANSIT
+                5 => 100, // DELIVERED
+                default => $baseProgress
+            };
+        }
+
+        return $baseProgress;
+    }
 }

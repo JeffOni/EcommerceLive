@@ -1,44 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between lg:gap-x-0 gap-x-2">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     Pedido #{{ $order->id }}
                 </h2>
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="mt-1 text-sm text-gray-600">
                     Realizado el {{ $order->created_at->format('d/m/Y H:i') }}
                 </p>
             </div>
             <a href="{{ route('orders.tracking.index') }}"
-                class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-arrow-left mr-2"></i>
+                class="px-4 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-gray-100 rounded-lg hover:bg-gray-200">
+                <i class="mr-2 fas fa-arrow-left"></i>
                 Volver a Mis Pedidos
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <!-- Información principal del pedido -->
-                <div class="lg:col-span-2 space-y-6">
+                <div class="space-y-6 lg:col-span-2">
                     <!-- Estado actual y progreso -->
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+                        <div class="p-6 text-white bg-gradient-to-r from-blue-500 to-purple-600">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold">Estado del Pedido</h3>
                                     <p class="text-blue-100">{{ $order->status_text }}</p>
                                 </div>
-                                <div class="bg-white bg-opacity-20 rounded-full px-4 py-2">
+                                <div class="px-4 py-2 bg-white rounded-full bg-opacity-20">
                                     <span class="text-2xl font-bold">{{ $progress }}%</span>
                                 </div>
                             </div>
 
                             <!-- Barra de progreso -->
                             <div class="mt-4">
-                                <div class="w-full bg-white bg-opacity-20 rounded-full h-3">
-                                    <div class="bg-white h-3 rounded-full transition-all duration-1000 ease-in-out"
+                                <div class="w-full h-3 bg-white rounded-full bg-opacity-20">
+                                    <div class="h-3 transition-all duration-1000 ease-in-out bg-white rounded-full"
                                         style="width: {{ $progress }}%"></div>
                                 </div>
                             </div>
@@ -46,9 +46,9 @@
                     </div>
 
                     <!-- Línea de tiempo del pedido -->
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-6">Seguimiento del Pedido</h3>
+                            <h3 class="mb-6 text-lg font-semibold text-gray-900">Seguimiento del Pedido</h3>
 
                             <div class="relative">
                                 @foreach ($timeline as $index => $event)
@@ -82,12 +82,12 @@
                                             </span>
                                             @endif
                                         </div>
-                                        <p class="text-sm text-gray-600 mt-1">{{ $event['description'] }}</p>
+                                        <p class="mt-1 text-sm text-gray-600">{{ $event['description'] }}</p>
 
                                         @if ($event['status'] === 'current' && $event['title'] === 'En Camino')
-                                        <div class="mt-3 bg-blue-50 rounded-lg p-3">
+                                        <div class="p-3 mt-3 rounded-lg bg-blue-50">
                                             <p class="text-sm text-blue-800">
-                                                <i class="fas fa-info-circle mr-1"></i>
+                                                <i class="mr-1 fas fa-info-circle"></i>
                                                 Tu pedido está en camino. El repartidor se pondrá en contacto
                                                 contigo.
                                             </p>
@@ -101,37 +101,46 @@
                     </div>
 
                     <!-- Productos del pedido -->
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Productos del Pedido</h3>
+                            <h3 class="mb-4 text-lg font-semibold text-gray-900">Productos del Pedido</h3>
 
                             <div class="space-y-4">
-                                @foreach ($order->orderDetails as $detail)
-                                <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                                    @if ($detail->product->cover)
-                                    <img src="{{ Storage::url($detail->product->cover->image_path) }}"
-                                        alt="{{ $detail->product->name }}" class="w-16 h-16 object-cover rounded-lg">
+                                @php
+                                $orderContent = is_string($order->content) ? json_decode($order->content, true) :
+                                $order->content;
+                                $products = $orderContent['products'] ?? [];
+                                @endphp
+                                @forelse ($products as $product)
+                                <div class="flex items-center p-4 space-x-4 border border-gray-200 rounded-lg">
+                                    @if (isset($product['image']) && $product['image'])
+                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                        class="object-cover w-16 h-16 rounded-lg">
                                     @else
-                                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-image text-gray-400"></i>
+                                    <div class="flex items-center justify-center w-16 h-16 bg-gray-200 rounded-lg">
+                                        <i class="text-gray-400 fas fa-image"></i>
                                     </div>
                                     @endif
 
                                     <div class="flex-1">
-                                        <h4 class="font-medium text-gray-900">{{ $detail->product->name }}</h4>
+                                        <h4 class="font-medium text-gray-900">{{ $product['name'] ?? 'Producto' }}</h4>
                                         <p class="text-sm text-gray-600">
-                                            Cantidad: {{ $detail->quantity }} ×
-                                            ${{ number_format($detail->price, 2) }}
+                                            Cantidad: {{ $product['qty'] ?? 1 }} ×
+                                            ${{ number_format($product['price'] ?? 0, 2) }}
                                         </p>
                                     </div>
 
                                     <div class="text-right">
                                         <p class="font-semibold text-gray-900">
-                                            ${{ number_format($detail->quantity * $detail->price, 2) }}
+                                            ${{ number_format(($product['qty'] ?? 1) * ($product['price'] ?? 0), 2) }}
                                         </p>
                                     </div>
                                 </div>
-                                @endforeach
+                                @empty
+                                <div class="p-4 text-center text-gray-500">
+                                    No hay productos en esta orden.
+                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -141,14 +150,14 @@
                 <div class="space-y-6">
                     <!-- Información del envío -->
                     @if ($order->shipment)
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información de Envío</h3>
+                            <h3 class="mb-4 text-lg font-semibold text-gray-900">Información de Envío</h3>
 
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span class="text-sm text-gray-600">Número de seguimiento:</span>
-                                    <span class="text-sm font-mono text-blue-600">{{ $order->shipment->tracking_number
+                                    <span class="font-mono text-sm text-blue-600">{{ $order->shipment->tracking_number
                                         }}</span>
                                 </div>
 
@@ -162,15 +171,15 @@
                                 @endif
 
                                 @if ($order->shipment->deliveryDriver)
-                                <div class="border-t pt-3 mt-3">
-                                    <h4 class="text-sm font-medium text-gray-900 mb-2">Repartidor Asignado</h4>
-                                    <div class="bg-blue-50 rounded-lg p-3">
+                                <div class="pt-3 mt-3 border-t">
+                                    <h4 class="mb-2 text-sm font-medium text-gray-900">Repartidor Asignado</h4>
+                                    <div class="p-3 rounded-lg bg-blue-50">
                                         <p class="text-sm font-medium text-blue-900">
                                             {{ $order->shipment->deliveryDriver->name }}</p>
                                         <p class="text-xs text-blue-600">
                                             {{ $order->shipment->deliveryDriver->phone }}</p>
                                         @if ($order->shipment->deliveryDriver->vehicle_info)
-                                        <p class="text-xs text-blue-600 mt-1">
+                                        <p class="mt-1 text-xs text-blue-600">
                                             {{ $order->shipment->deliveryDriver->vehicle_info }}</p>
                                         @endif
                                     </div>
@@ -182,9 +191,9 @@
                     @endif
 
                     <!-- Resumen del pedido -->
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Resumen del Pedido</h3>
+                            <h3 class="mb-4 text-lg font-semibold text-gray-900">Resumen del Pedido</h3>
 
                             <div class="space-y-3">
                                 <div class="flex justify-between">
@@ -206,7 +215,7 @@
                                 </div>
                                 @endif
 
-                                <div class="border-t pt-3">
+                                <div class="pt-3 border-t">
                                     <div class="flex justify-between">
                                         <span class="text-base font-semibold text-gray-900">Total:</span>
                                         <span class="text-base font-semibold text-gray-900">${{
@@ -218,11 +227,11 @@
                     </div>
 
                     <!-- Dirección de entrega -->
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Dirección de Entrega</h3>
+                            <h3 class="mb-4 text-lg font-semibold text-gray-900">Dirección de Entrega</h3>
 
-                            <div class="text-sm text-gray-600 space-y-1">
+                            <div class="space-y-1 text-sm text-gray-600">
                                 <p class="font-medium text-gray-900">
                                     {{ $order->shipping_address['receiver_full_name'] ??
                                     ($order->shipping_address['name'] ?? $order->user->name) }}
@@ -250,15 +259,15 @@
                                 @if ($order->shipping_address['receiver_phone'] ?? ($order->shipping_address['phone'] ??
                                 null))
                                 <p class="pt-2">
-                                    <i class="fas fa-phone mr-1"></i>
+                                    <i class="mr-1 fas fa-phone"></i>
                                     {{ $order->shipping_address['receiver_phone'] ?? $order->shipping_address['phone']
                                     }}
                                 </p>
                                 @endif
                                 @if (isset($order->shipping_address['reference']) &&
                                 $order->shipping_address['reference'])
-                                <p class="text-gray-500 text-xs mt-2">
-                                    <i class="fas fa-info-circle mr-1"></i>
+                                <p class="mt-2 text-xs text-gray-500">
+                                    <i class="mr-1 fas fa-info-circle"></i>
                                     Ref: {{ $order->shipping_address['reference'] }}
                                 </p>
                                 @endif
@@ -271,15 +280,15 @@
                         @if (($order->status instanceof \App\Enums\OrderStatus && $order->status->value >= 2) ||
                         (is_int($order->status) && $order->status >= 2))
                         <a href="{{ route('orders.invoice', $order->id) }}" target="_blank"
-                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 block">
-                            <i class="fas fa-file-pdf mr-2"></i>
+                            class="block w-full px-4 py-3 font-medium text-center text-white transition-all duration-200 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                            <i class="mr-2 fas fa-file-pdf"></i>
                             Descargar Factura
                         </a>
                         @endif
 
                         <button onclick="refreshOrderStatus()"
-                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors duration-200">
-                            <i class="fas fa-sync-alt mr-2"></i>
+                            class="w-full px-4 py-3 font-medium text-gray-700 transition-colors duration-200 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            <i class="mr-2 fas fa-sync-alt"></i>
                             Actualizar Estado
                         </button>
                     </div>
@@ -295,7 +304,7 @@
             const originalText = button.innerHTML;
 
             // Mostrar loading
-            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Actualizando...';
+            button.innerHTML = '<i class="mr-2 fas fa-spinner fa-spin"></i>Actualizando...';
             button.disabled = true;
 
             fetch(`{{ route('orders.tracking.status', $order->id) }}`)

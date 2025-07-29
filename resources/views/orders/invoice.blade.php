@@ -5,6 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura #{{ $order->id }}</title>
+    @php
+    $logoPath = public_path('img/logo.png');
+    $logoBase64 = '';
+
+    if (file_exists($logoPath)) {
+    try {
+    $logoBase64 = base64_encode(file_get_contents($logoPath));
+    } catch (Exception $e) {
+    $logoBase64 = '';
+    }
+    }
+    @endphp
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,19 +26,46 @@
         }
 
         .header {
-            border-bottom: 2px solid #0066cc;
+            border-bottom: 3px solid #1e40af;
             padding-bottom: 20px;
             margin-bottom: 30px;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
         }
 
         .company-info {
             float: left;
-            width: 50%;
+            width: 65%;
+        }
+
+        .company-logo {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 8px;
+            margin-right: 15px;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 80px;
+            font-size: 32px;
+            color: #1e40af;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
         .invoice-info {
             float: right;
-            width: 50%;
+            width: 30%;
             text-align: right;
         }
 
@@ -41,10 +80,12 @@
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            color: #0066cc;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+            color: #1e40af;
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 8px;
             margin-bottom: 15px;
+            background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, transparent 100%);
+            padding-left: 10px;
         }
 
         .customer-info,
@@ -61,7 +102,7 @@
         }
 
         .products-table th {
-            background-color: #0066cc;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
             color: white;
             padding: 12px;
             text-align: left;
@@ -72,10 +113,32 @@
             padding: 10px 12px;
             border-bottom: 1px solid #eee;
             font-size: 13px;
+            vertical-align: top;
         }
 
         .products-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f8fafc;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 10px;
+            float: left;
+            border: 1px solid #e5e7eb;
+        }
+
+        .product-details {
+            overflow: hidden;
+            min-height: 50px;
+        }
+
+        .product-details strong {
+            display: block;
+            margin-bottom: 4px;
+            line-height: 1.3;
         }
 
         .totals {
@@ -94,8 +157,10 @@
         .total-row.grand-total {
             font-weight: bold;
             font-size: 16px;
-            border-bottom: 2px solid #0066cc;
-            color: #0066cc;
+            border-bottom: 2px solid #1e40af;
+            color: #1e40af;
+            background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, transparent 100%);
+            padding: 12px 8px;
         }
 
         .status-badge {
@@ -108,28 +173,28 @@
         }
 
         .status-entregado {
-            background-color: #d4edda;
-            color: #155724;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
         }
 
         .status-en-camino {
-            background-color: #d1ecf1;
-            color: #0c5460;
+            background: linear-gradient(135deg, #1e40af, #7c3aed);
+            color: white;
         }
 
         .status-preparando {
-            background-color: #f3e2f3;
-            color: #6f42c1;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
         }
 
         .status-verificado {
-            background-color: #cce5ff;
-            color: #004085;
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            color: white;
         }
 
         .status-pendiente {
-            background-color: #fff3cd;
-            color: #856404;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
         }
 
         .footer {
@@ -137,15 +202,15 @@
             text-align: center;
             font-size: 12px;
             color: #666;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #1e40af;
             padding-top: 20px;
         }
 
         .tracking-info {
-            background-color: #e7f3ff;
+            background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
             padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #0066cc;
+            border-radius: 8px;
+            border-left: 4px solid #1e40af;
         }
     </style>
 </head>
@@ -154,16 +219,28 @@
     <!-- Header -->
     <div class="header">
         <div class="company-info">
-            <h1 style="margin: 0; color: #0066cc;">Pescadería Tienda Online</h1>
-            <p style="margin: 5px 0 0 0; color: #666;">
-                Productos frescos del mar<br>
-                Email: info@pescaderia.com<br>
-                Teléfono: (02) 234-5678
-            </p>
+            <div class="company-logo">
+                @if($logoBase64)
+                <img src="data:image/png;base64,{{ $logoBase64 }}" alt="Lago Fish Logo"
+                    style="width: 100%; height: 100%; object-fit: contain;">
+                @else
+                <span style="color: #1e40af; font-size: 24px; font-weight: bold;">LF</span>
+                @endif
+            </div>
+            <div style="display: inline-block; vertical-align: middle;">
+                <h1 style="margin: 0; color: white; font-size: 28px; font-weight: bold;">Lago Fish</h1>
+                <p style="margin: 2px 0 0 0; color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.4;">
+                    <strong>El Novio y el Pez Frescos Deben Ser</strong><br>
+                    RUC: 0992345678001<br>
+                    Dirección: Manta - Ecuador<br>
+                    Email: servicioalcliente@lagofish.store<br>
+                    WhatsApp: +593 99 980 5450
+                </p>
+            </div>
         </div>
         <div class="invoice-info">
-            <h2 style="margin: 0; color: #333;">FACTURA</h2>
-            <p style="margin: 5px 0 0 0;">
+            <h2 style="margin: 0; color: white; font-size: 24px;">FACTURA</h2>
+            <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9);">
                 <strong>Número:</strong> #{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}<br>
                 <strong>Fecha:</strong> {{ $order->created_at->format('d/m/Y') }}<br>
                 <strong>Estado:</strong>
@@ -218,8 +295,8 @@
             @endif
 
             <div
-                style="background-color: #fef3c7; padding: 8px; margin: 8px 0; border-left: 4px solid #f59e0b; border-radius: 4px;">
-                <small style="color: #92400e;"><strong>Nota:</strong> Este pedido será entregado a un tercero diferente
+                style="background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%); padding: 12px; margin: 8px 0; border-left: 4px solid #1e40af; border-radius: 8px;">
+                <small style="color: #1e40af;"><strong>Nota:</strong> Este pedido será entregado a un tercero diferente
                     al titular de la cuenta.</small>
             </div>
             @endif
@@ -278,8 +355,9 @@
 
             <!-- Dirección completa formateada (si existe) -->
             @if (isset($order->shipping_address['full_address']) && $order->shipping_address['full_address'])
-            <div style="margin-top: 10px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #007bff;">
-                <strong>Dirección completa:</strong>
+            <div
+                style="margin-top: 10px; padding: 12px; background: linear-gradient(90deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%); border-left: 4px solid #1e40af; border-radius: 8px;">
+                <strong style="color: #1e40af;">Dirección completa:</strong>
                 {{ is_array($order->shipping_address['full_address']) ? implode(', ',
                 $order->shipping_address['full_address']) : $order->shipping_address['full_address'] }}
             </div>
@@ -324,34 +402,58 @@
                 </tr>
             </thead>
             <tbody>
-                @if (isset($order->content) && is_array($order->content))
-                @foreach ($order->content as $item)
+                @php
+                $orderContent = is_string($order->content) ? json_decode($order->content, true) : $order->content;
+                $products = [];
+
+                if (isset($orderContent['products']) && is_array($orderContent['products'])) {
+                $products = $orderContent['products'];
+                } elseif (is_array($order->content)) {
+                $products = $order->content;
+                }
+                @endphp
+
+                @forelse ($products as $item)
                 <tr>
                     <td>
-                        <strong>{{ is_array($item['name'] ?? '') ? implode(' ', $item['name']) : $item['name'] ??
-                            'Producto' }}</strong>
-                        @if (isset($item['options']) && !empty($item['options']))
-                        <br><small style="color: #666;">
-                            @foreach ($item['options'] as $key => $value)
-                            {{ is_array($key) ? implode(' ', $key) : ucfirst($key) }}:
-                            {{ is_array($value) ? implode(', ', $value) : $value }}
-                            @endforeach
-                        </small>
-                        @endif
+                        <div class="product-details">
+                            @if (isset($item['image']) && $item['image'] && !empty(trim($item['image'])))
+                            @php
+                            $imagePath = public_path('storage/' . ltrim($item['image'], '/storage/'));
+                            $imageBase64 = '';
+                            if (file_exists($imagePath)) {
+                            try {
+                            $imageBase64 = base64_encode(file_get_contents($imagePath));
+                            } catch (Exception $e) {
+                            $imageBase64 = '';
+                            }
+                            }
+                            @endphp
+                            @if($imageBase64)
+                            <img src="data:image/jpeg;base64,{{ $imageBase64 }}" alt="Producto" class="product-image">
+                            @endif
+                            @endif
+
+                            <strong>{{ $item['name'] ?? 'Producto' }}</strong>
+
+                            @if (isset($item['sku']) && !empty($item['sku']) && $item['sku'] != 'N/A')
+                            <br><small style="color: #666;">SKU: {{ $item['sku'] }}</small>
+                            @endif
+                        </div>
                     </td>
                     <td style="text-align: center;">{{ $item['qty'] ?? 1 }}</td>
                     <td style="text-align: right;">${{ number_format($item['price'] ?? 0, 2) }}</td>
                     <td style="text-align: right;">
-                        ${{ number_format(($item['price'] ?? 0) * ($item['qty'] ?? 1), 2) }}</td>
-                </tr>
-                @endforeach
-                @else
-                <tr>
-                    <td colspan="4" style="text-align: center; color: #666;">
-                        Información de productos no disponible
+                        ${{ number_format(($item['price'] ?? 0) * ($item['qty'] ?? 1), 2) }}
                     </td>
                 </tr>
-                @endif
+                @empty
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #666; padding: 20px;">
+                        No hay productos en esta orden
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -361,13 +463,21 @@
     <div class="totals">
         @php
         $subtotal = 0;
-        if (isset($order->content) && is_array($order->content)) {
-        foreach ($order->content as $item) {
+        $orderContent = is_string($order->content) ? json_decode($order->content, true) : $order->content;
+        $products = [];
+
+        if (isset($orderContent['products']) && is_array($orderContent['products'])) {
+        $products = $orderContent['products'];
+        } elseif (is_array($order->content)) {
+        $products = $order->content;
+        }
+
+        foreach ($products as $item) {
         $subtotal += ($item['price'] ?? 0) * ($item['qty'] ?? 1);
         }
-        }
-        $shipping = 5.0; // Costo de envío fijo
-        $discount = 0; // Descuentos si aplican
+
+        $shipping = $order->shipping_cost ?? 5.0;
+        $discount = $order->discount ?? 0;
         @endphp
 
         <div class="total-row">
@@ -411,13 +521,28 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>
-            <strong>Pescadería Tienda Online</strong><br>
+        <div style="margin-bottom: 15px;">
+            <div
+                style="display: inline-block; width: 40px; height: 40px; background: white; border-radius: 6px; text-align: center; margin-right: 10px; padding: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                @if($logoBase64)
+                <img src="data:image/png;base64,{{ $logoBase64 }}" alt="Lago Fish"
+                    style="width: 100%; height: 100%; object-fit: contain;">
+                @else
+                <span style="color: #1e40af; font-size: 16px; font-weight: bold; line-height: 34px;">LF</span>
+                @endif
+            </div>
+            <strong style="color: #1e40af; font-size: 16px;">Lago Fish</strong>
+        </div>
+        <p style="color: #666; margin: 10px 0; text-align: center;">
             Esta factura fue generada automáticamente el {{ now()->format('d/m/Y H:i') }}<br>
-            Si tienes alguna pregunta sobre tu pedido, contáctanos en info@pescaderia.com
+            Si tienes alguna pregunta sobre tu pedido, contáctanos en <strong
+                style="color: #1e40af;">servicioalcliente@lagofish.store</strong><br>
+            <span style="font-size: 11px;">Teléfono: (04) 234-5678 | WhatsApp: +593 99 123 4567</span>
         </p>
-        <p style="margin-top: 20px; font-size: 10px;">
-            Documento generado digitalmente - No requiere firma física
+        <p style="margin-top: 20px; font-size: 10px; color: #999; text-align: center;">
+            Documento generado digitalmente - No requiere firma física<br>
+            <span style="color: #1e40af;">Lago Fish - RUC: 0992345678001 - Av. de los Mariscos 456, Guayaquil -
+                Ecuador</span>
         </p>
     </div>
 </body>
