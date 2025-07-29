@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Mis Pedidos') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <!-- Header con estadísticas -->
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-6">
-                <div class="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+            <div class="mb-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
+                <div class="p-6 text-white bg-gradient-to-r from-blue-500 to-purple-600">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-semibold">Mis Pedidos</h3>
                             <p class="text-blue-100">Consulta el estado de todos tus pedidos</p>
                         </div>
-                        <div class="bg-white bg-opacity-20 rounded-lg px-4 py-2">
+                        <div class="px-4 py-2 bg-white rounded-lg bg-opacity-20">
                             <span class="text-2xl font-bold">{{ $orders->total() }}</span>
                             <p class="text-sm text-blue-100">Total de pedidos</p>
                         </div>
@@ -24,13 +24,13 @@
             </div>
 
             <!-- Lista de pedidos -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @forelse($orders as $order)
                 <div
-                    class="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
+                    class="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
                     <!-- Header del pedido -->
-                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
-                        <div class="flex justify-between items-start">
+                    <div class="px-6 py-4 border-b bg-gradient-to-r from-gray-50 to-gray-100">
+                        <div class="flex items-start justify-between">
                             <div>
                                 <h4 class="text-lg font-semibold text-gray-900">
                                     Pedido #{{ $order->id }}
@@ -57,7 +57,7 @@
                     <!-- Contenido del pedido -->
                     <div class="p-6">
                         <!-- Información básica -->
-                        <div class="space-y-3 mb-4">
+                        <div class="mb-4 space-y-3">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">Total:</span>
                                 <span class="font-semibold text-gray-900">${{ number_format($order->total, 2) }}</span>
@@ -76,13 +76,13 @@
 
                         <!-- Barra de progreso -->
                         <div class="mb-4">
-                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                            <div class="flex justify-between mb-1 text-xs text-gray-600">
                                 <span>Progreso</span>
-                                <span>{{ $this->calculateProgress($order) }}%</span>
+                                <span>{{ $order->progress_percentage }}%</span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
-                                    style="width: {{ $this->calculateProgress($order) }}%"></div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full">
+                                <div class="h-2 transition-all duration-500 rounded-full bg-gradient-to-r from-blue-500 to-purple-600"
+                                    style="width: {{ $order->progress_percentage }}%"></div>
                             </div>
                         </div>
 
@@ -90,10 +90,10 @@
                         @if ($order->shipment && $order->shipment->deliveryDriver && (($order->status instanceof
                         \App\Enums\OrderStatus && $order->status->value >= 4) || (is_int($order->status) &&
                         $order->status >= 4)))
-                        <div class="bg-blue-50 rounded-lg p-3 mb-4">
+                        <div class="p-3 mb-4 rounded-lg bg-blue-50">
                             <div class="flex items-center">
-                                <div class="bg-blue-100 rounded-full p-2 mr-3">
-                                    <i class="fas fa-user text-blue-600"></i>
+                                <div class="p-2 mr-3 bg-blue-100 rounded-full">
+                                    <i class="text-blue-600 fas fa-user"></i>
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-blue-900">
@@ -111,7 +111,7 @@
                         @php
                         $status = \App\Enums\OrderStatus::from($order->status);
                         @endphp
-                        <div class="mt-2 flex items-center space-x-2">
+                        <div class="flex items-center mt-2 space-x-2">
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $status->color() }}-100 text-{{ $status->color() }}-800">
                                 <i class="fas {{ $status->icon() }} mr-1"></i>
@@ -120,14 +120,14 @@
                             <span class="text-xs text-gray-500">{{ $status->description() }}</span>
                         </div>
                         <!-- Seguimiento visual del proceso -->
-                        <div class="mt-2 flex items-center space-x-1">
+                        <div class="flex items-center mt-2 space-x-1">
                             @foreach(\App\Enums\OrderStatus::activeStates() as $step)
                             <span
                                 class="w-3 h-3 rounded-full border-2 @if($order->status >= $step->value) border-{{ $step->color() }}-500 bg-{{ $step->color() }}-400 @else border-gray-300 bg-gray-100 @endif"></span>
                             @endforeach
                         </div>
                         <!-- Acciones -->
-                        <div class="mt-4 flex space-x-2">
+                        <div class="flex mt-4 space-x-2">
                             <a href="{{ route('orders.tracking.show', $order) }}"
                                 class="text-blue-600 hover:underline">Ver Detalles</a>
                             <a href="{{ route('orders.invoice', $order) }}"
@@ -136,9 +136,9 @@
                     </div>
 
                     <!-- Footer con última actualización -->
-                    <div class="bg-gray-50 px-6 py-3">
+                    <div class="px-6 py-3 bg-gray-50">
                         <p class="text-xs text-gray-500">
-                            <i class="fas fa-clock mr-1"></i>
+                            <i class="mr-1 fas fa-clock"></i>
                             Última actualización: {{ $order->updated_at->diffForHumans() }}
                         </p>
                     </div>
@@ -146,15 +146,15 @@
                 @empty
                 <!-- Estado vacío -->
                 <div class="col-span-full">
-                    <div class="bg-white rounded-lg shadow-lg p-12 text-center">
-                        <div class="bg-gray-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                            <i class="fas fa-shopping-bag text-gray-400 text-3xl"></i>
+                    <div class="p-12 text-center bg-white rounded-lg shadow-lg">
+                        <div class="flex items-center justify-center w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full">
+                            <i class="text-3xl text-gray-400 fas fa-shopping-bag"></i>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">No tienes pedidos aún</h3>
-                        <p class="text-gray-600 mb-6">¡Explora nuestros productos y realiza tu primera compra!</p>
+                        <h3 class="mb-2 text-xl font-semibold text-gray-900">No tienes pedidos aún</h3>
+                        <p class="mb-6 text-gray-600">¡Explora nuestros productos y realiza tu primera compra!</p>
                         <a href="{{ route('products.index') }}"
-                            class="inline-flex items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200">
-                            <i class="fas fa-shopping-cart mr-2"></i>
+                            class="inline-flex items-center px-6 py-3 font-medium text-white transition-all duration-200 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                            <i class="mr-2 fas fa-shopping-cart"></i>
                             Explorar Productos
                         </a>
                     </div>
@@ -170,22 +170,4 @@
             @endif
         </div>
     </div>
-
-    @php
-    // Helper function para calcular el progreso
-    function calculateProgress($order)
-    {
-    $statusProgress = [
-    1 => 10, // Pendiente
-    2 => 25, // Pago Verificado
-    3 => 50, // Preparando
-    4 => 70, // Asignado
-    5 => 90, // En Camino
-    6 => 100, // Entregado
-    7 => 0, // Cancelado
-    ];
-    return $statusProgress[($order->status instanceof \App\Enums\OrderStatus) ? $order->status->value : $order->status]
-    ?? 0;
-    }
-    @endphp
 </x-app-layout>

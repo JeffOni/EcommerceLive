@@ -109,4 +109,22 @@ class Order extends Model
     {
         return OrderStatus::from($this->status);
     }
+
+    /**
+     * Calcular el porcentaje de progreso del pedido
+     */
+    public function getProgressPercentageAttribute(): int
+    {
+        $statusProgress = [
+            1 => 10, // Pendiente
+            2 => 25, // Pago Verificado
+            3 => 50, // Preparando
+            4 => 70, // Asignado
+            5 => 90, // En Camino
+            6 => 100, // Entregado
+            7 => 0, // Cancelado
+        ];
+
+        return $statusProgress[$this->status] ?? 0;
+    }
 }
