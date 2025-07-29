@@ -24,10 +24,10 @@
             </div>
 
             <!-- Lista de pedidos -->
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="grid items-stretch grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @forelse($orders as $order)
                 <div
-                    class="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+                    class="flex flex-col h-full overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
                     <!-- Header del pedido -->
                     <div class="px-6 py-4 border-b bg-gradient-to-r from-gray-50 to-gray-100">
                         <div class="flex items-start justify-between">
@@ -55,7 +55,7 @@
                     </div>
 
                     <!-- Contenido del pedido -->
-                    <div class="p-6">
+                    <div class="flex-1 p-6">
                         <!-- Información básica -->
                         <div class="mb-4 space-y-3">
                             <div class="flex justify-between text-sm">
@@ -136,7 +136,7 @@
                     </div>
 
                     <!-- Footer con última actualización -->
-                    <div class="px-6 py-3 bg-gray-50">
+                    <div class="px-6 py-3 mt-auto border-t bg-gray-50">
                         <p class="text-xs text-gray-500">
                             <i class="mr-1 fas fa-clock"></i>
                             Última actualización: {{ $order->updated_at->diffForHumans() }}
