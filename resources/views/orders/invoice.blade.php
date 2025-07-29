@@ -19,54 +19,65 @@
     @endphp
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: DejaVu Sans, sans-serif;
             margin: 0;
             padding: 20px;
             color: #333;
         }
 
         .header {
-            border-bottom: 3px solid #1e40af;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #1e40af;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header-table td {
+            vertical-align: top;
+            padding: 5px;
         }
 
         .company-info {
-            float: left;
-            width: 65%;
+            text-align: left;
+            width: 70%;
         }
 
         .company-logo {
-            display: inline-block;
             width: 80px;
             height: 80px;
-            background: white;
-            border-radius: 8px;
-            margin-right: 15px;
-            vertical-align: middle;
-            text-align: center;
-            line-height: 80px;
-            font-size: 32px;
-            color: #1e40af;
-            font-weight: bold;
-            overflow: hidden;
+            margin-bottom: 10px;
         }
 
-        .company-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
+        .company-text h1 {
+            font-size: 18px;
+            margin: 0;
+            color: #1e40af;
+        }
+
+        .company-text p {
+            margin: 2px 0;
+            font-size: 12px;
         }
 
         .invoice-info {
-            float: right;
-            width: 30%;
             text-align: right;
+            width: 30%;
+        }
+
+        .invoice-info h2 {
+            font-size: 16px;
+            margin: 0;
+            color: #1e40af;
+        }
+
+        .invoice-info p {
+            margin: 2px 0;
+            font-size: 12px;
         }
 
         .clear {
@@ -212,52 +223,60 @@
             border-radius: 8px;
             border-left: 4px solid #1e40af;
         }
+
+        /* DomPDF specific fixes */
+        * {
+            font-family: DejaVu Sans, sans-serif !important;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: bold !important;
+        }
+
+        p,
+        span,
+        div {
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+        }
+
+        .company-text h1 {
+            font-size: 26px !important;
+            font-weight: bold !important;
+        }
+
+        .invoice-info h2 {
+            font-size: 22px !important;
+            font-weight: bold !important;
+        }
     </style>
 </head>
 
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="company-info">
-            <div class="company-logo">
-                @if($logoBase64)
-                <img src="data:image/png;base64,{{ $logoBase64 }}" alt="Lago Fish Logo"
-                    style="width: 100%; height: 100%; object-fit: contain;">
-                @else
-                <span style="color: #1e40af; font-size: 24px; font-weight: bold;">LF</span>
-                @endif
-            </div>
-            <div style="display: inline-block; vertical-align: middle;">
-                <h1 style="margin: 0; color: white; font-size: 28px; font-weight: bold;">Lago Fish</h1>
-                <p style="margin: 2px 0 0 0; color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.4;">
-                    <strong>El Novio y el Pez Frescos Deben Ser</strong><br>
-                    RUC: 0992345678001<br>
-                    Dirección: Manta - Ecuador<br>
-                    Email: servicioalcliente@lagofish.store<br>
-                    WhatsApp: +593 99 980 5450
-                </p>
-            </div>
-        </div>
-        <div class="invoice-info">
-            <h2 style="margin: 0; color: white; font-size: 24px;">FACTURA</h2>
-            <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9);">
-                <strong>Número:</strong> #{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}<br>
-                <strong>Fecha:</strong> {{ $order->created_at->format('d/m/Y') }}<br>
-                <strong>Estado:</strong>
-                <span class="status-badge {{ $order->status == 6
-                        ? 'status-entregado'
-                        : ($order->status == 5
-                            ? 'status-en-camino'
-                            : ($order->status == 3
-                                ? 'status-preparando'
-                                : ($order->status == 2
-                                    ? 'status-verificado'
-                                    : 'status-pendiente'))) }}">
-                    {{ $order->status_label }}
-                </span>
-            </p>
-        </div>
-        <div class="clear"></div>
+        <table class="header-table">
+            <tr>
+                <td class="company-info">
+                    <img class="company-logo" src="data:image/png;base64,{{ $logoBase64 }}" alt="Logo">
+                    <div class="company-text">
+                        <h1>LAGO FISH</h1>
+                        <p><strong>RUC:</strong> 0992345678001</p>
+                        <p><strong>Dirección:</strong> Manta - Ecuador</p>
+                        <p><strong>Email:</strong> servicioalcliente@lagofish.store</p>
+                        <p><strong>WhatsApp:</strong> +593 99 980 5450</p>
+                    </div>
+                </td>
+                <td class="invoice-info">
+                    <h2>FACTURA</h2>
+                    <p><strong>Número:</strong> #{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</p>
+                    <p><strong>Fecha:</strong> {{ $order->created_at->format('d/m/Y') }}</p>
+                    <p><strong>Estado:</strong> {{ ucfirst($order->status_label) }}</p>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <!-- Información del Cliente -->
@@ -537,11 +556,11 @@
             Esta factura fue generada automáticamente el {{ now()->format('d/m/Y H:i') }}<br>
             Si tienes alguna pregunta sobre tu pedido, contáctanos en <strong
                 style="color: #1e40af;">servicioalcliente@lagofish.store</strong><br>
-            <span style="font-size: 11px;">Teléfono: (04) 234-5678 | WhatsApp: +593 99 123 4567</span>
+            <span style="font-size: 11px;">WhatsApp: +593 99 980 5450</span>
         </p>
         <p style="margin-top: 20px; font-size: 10px; color: #999; text-align: center;">
             Documento generado digitalmente - No requiere firma física<br>
-            <span style="color: #1e40af;">Lago Fish - RUC: 0992345678001 - Av. de los Mariscos 456, Guayaquil -
+            <span style="color: #1e40af;">Lago Fish - RUC: 0992345678001 - Manta -
                 Ecuador</span>
         </p>
     </div>
