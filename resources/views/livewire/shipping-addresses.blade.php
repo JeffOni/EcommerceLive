@@ -21,8 +21,8 @@ ESTRUCTURA:
 @version 2.0 - Mejorado con patrón visual consistente
 --}}
 
-<!-- Fondo moderno con gradiente y elementos decorativos responsive -->
-<div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
+<!-- Contenedor responsive sin altura fija -->
+<div class="relative overflow-hidden rounded-lg bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100">
     {{-- Elementos decorativos de fondo optimizados --}}
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -39,22 +39,22 @@ ESTRUCTURA:
         </div>
     </div>
 
-    <div class="relative px-2 xs:px-4 py-4 xs:py-6 sm:py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div class="relative px-2 py-4 mx-auto xs:px-4 xs:py-6 sm:py-8 max-w-7xl sm:px-6 lg:px-8">
         {{-- Header principal responsive --}}
-        <div class="mb-6 xs:mb-8 sm:mb-12 text-center">
+        <div class="mb-6 text-center xs:mb-8 sm:mb-12">
             <div
-                class="inline-flex items-center justify-center w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 mb-3 xs:mb-4 shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl xs:rounded-2xl">
-                <i class="text-lg xs:text-xl sm:text-2xl text-white fas fa-map-marker-alt"></i>
+                class="inline-flex items-center justify-center w-12 h-12 mb-3 shadow-lg xs:w-14 xs:h-14 sm:w-16 sm:h-16 xs:mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl xs:rounded-2xl">
+                <i class="text-lg text-white xs:text-xl sm:text-2xl fas fa-map-marker-alt"></i>
             </div>
             <h1
-                class="mb-2 xs:mb-3 text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text leading-tight">
+                class="mb-2 text-2xl font-bold leading-tight text-transparent xs:mb-3 xs:text-3xl sm:text-4xl lg:text-5xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text">
                 <span class="hidden sm:inline">Direcciones de Envío</span>
                 <span class="sm:hidden">Direcciones</span>
             </h1>
             <div
-                class="inline-flex items-center px-3 xs:px-4 py-2 border rounded-full shadow-md glass-effect border-white/40">
-                <i class="mr-1 xs:mr-2 text-indigo-500 fas fa-home text-sm xs:text-base"></i>
-                <span class="font-medium text-gray-700 text-xs xs:text-sm">
+                class="inline-flex items-center px-3 py-2 border rounded-full shadow-md xs:px-4 glass-effect border-white/40">
+                <i class="mr-1 text-sm text-indigo-500 xs:mr-2 fas fa-home xs:text-base"></i>
+                <span class="text-xs font-medium text-gray-700 xs:text-sm">
                     {{ $addresses->count() }} {{ $addresses->count() === 1 ? 'dirección' : 'direcciones' }} configuradas
                 </span>
             </div>
@@ -64,19 +64,19 @@ ESTRUCTURA:
         <div
             class="overflow-hidden border shadow-lg xs:shadow-xl sm:shadow-2xl glass-effect rounded-2xl xs:rounded-3xl">
             {{-- Header con gradiente responsive --}}
-            <div class="px-3 xs:px-6 sm:px-8 py-3 xs:py-4 sm:py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
-                <div class="flex items-center justify-between flex-wrap gap-3">
-                    <div class="flex items-center space-x-2 xs:space-x-3 min-w-0 flex-1">
-                        <div class="p-2 xs:p-3 glass-effect rounded-lg xs:rounded-xl flex-shrink-0">
-                            <i class="text-base xs:text-lg sm:text-xl text-white fas fa-map-marker-alt"></i>
+            <div class="px-3 py-3 xs:px-6 sm:px-8 xs:py-4 sm:py-6 bg-gradient-to-r from-indigo-600 to-purple-600">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center flex-1 min-w-0 space-x-2 xs:space-x-3">
+                        <div class="flex-shrink-0 p-2 rounded-lg xs:p-3 glass-effect xs:rounded-xl">
+                            <i class="text-base text-white xs:text-lg sm:text-xl fas fa-map-marker-alt"></i>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <h2 class="text-sm xs:text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
+                        <div class="flex-1 min-w-0">
+                            <h2 class="text-sm font-bold text-white truncate xs:text-lg sm:text-xl lg:text-2xl">
                                 <span class="hidden sm:inline">Gestión de Direcciones</span>
                                 <span class="sm:hidden xs:inline">Direcciones</span>
                                 <span class="xs:hidden">Dir.</span>
                             </h2>
-                            <p class="text-xs xs:text-sm text-indigo-100 truncate">
+                            <p class="text-xs text-indigo-100 truncate xs:text-sm">
                                 <span class="hidden xs:inline">Administra tus direcciones de envío de forma
                                     sencilla</span>
                                 <span class="xs:hidden">Administra direcciones</span>
@@ -86,7 +86,7 @@ ESTRUCTURA:
                     @if (!$newAddress && !$editingAddress)
                     <button wire:click="openNewAddress"
                         class="inline-flex items-center px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 text-xs xs:text-sm font-medium text-white transition-all duration-200 border glass-effect rounded-lg xs:rounded-xl hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 flex-shrink-0">
-                        <i class="mr-1 xs:mr-2 fas fa-plus text-xs xs:text-sm"></i>
+                        <i class="mr-1 text-xs xs:mr-2 fas fa-plus xs:text-sm"></i>
                         <span class="hidden sm:inline">Nueva Dirección</span>
                         <span class="sm:hidden xs:inline">Nueva</span>
                         <span class="xs:hidden">+</span>
@@ -1341,9 +1341,8 @@ ESTRUCTURA:
     - Sin validaciones typeof innecesarias (SweetAlert garantizado)
     - Sin console.log de debug (código limpio para producción)
     - Patrón idéntico al admin para consistencia
-    - Usa @push('js') que es el stack correcto del layout
+    - Usa script interno para cumplir con Livewire
     --}}
-    @push('js')
     <script>
         // Escuchar eventos SweetAlert emitidos por Livewire
             window.addEventListener('swal', event => {
@@ -1371,4 +1370,4 @@ ESTRUCTURA:
                 });
             }
     </script>
-    @endpush
+</div>

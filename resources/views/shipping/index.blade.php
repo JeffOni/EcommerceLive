@@ -1,19 +1,19 @@
 <x-app-layout>
     <!-- Contenedor principal optimizado para 344px -->
-    <x-container class="grid mt-4 xs:mt-6 sm:mt-8">
+    <x-container class="px-4 mt-4 xs:mt-6 sm:mt-8 xs:px-0">
         <div class="grid grid-cols-1 gap-4 xs:gap-6 lg:grid-cols-3">
             <!-- Sección principal del formulario de envío - responsive -->
-            <div class="order-2 lg:order-1 lg:col-span-2">
+            <div class="order-1 lg:order-1 lg:col-span-2">
                 @livewire('shipping-addresses')
             </div>
 
             <!-- Resumen del pedido - responsive -->
-            <div class="order-1 lg:order-2 lg:col-span-1">
+            <div class="order-2 lg:order-2 lg:col-span-1">
                 <div
                     class="sticky overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg xs:rounded-xl xs:shadow-xl top-4 xs:top-6 lg:top-8">
                     <!-- Header del resumen responsive -->
                     <div
-                        class="px-3 py-3 text-white xs:px-4 sm:px-6 xs:py-4 bg-gradient-to-r from-green-600 to-emerald-600">
+                        class="px-3 py-3 text-white xs:px-4 sm:px-6 xs:py-4 bg-gradient-to-r from-primary-900 to-secondary-500">
                         <div class="flex items-center space-x-2 xs:space-x-3">
                             <div class="p-1.5 xs:p-2 rounded-lg bg-white/20 flex-shrink-0">
                                 <i class="text-sm text-white xs:text-base sm:text-lg fas fa-receipt"></i>
@@ -97,7 +97,7 @@
 
                         <!-- Total final responsive -->
                         <div
-                            class="relative p-3 overflow-hidden text-white rounded-lg shadow-lg xs:p-4 sm:p-6 xs:shadow-xl bg-gradient-to-r from-green-600 to-emerald-600">
+                            class="relative p-3 overflow-hidden text-white rounded-lg shadow-lg xs:p-4 sm:p-6 xs:shadow-xl bg-gradient-to-r from-primary-900 to-secondary-500">
                             <div class="relative flex items-center justify-between">
                                 <div class="flex items-center flex-1 min-w-0 space-x-2 xs:space-x-3">
                                     <div
