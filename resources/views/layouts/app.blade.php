@@ -75,6 +75,8 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 </head>
 
 <body class="font-sans antialiased overflow-x-hidden">
