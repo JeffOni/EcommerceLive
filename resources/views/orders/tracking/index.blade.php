@@ -78,11 +78,11 @@
                         <div class="mb-4">
                             <div class="flex justify-between text-xs text-gray-600 mb-1">
                                 <span>Progreso</span>
-                                <span>{{ $order->progress }}%</span>
+                                <span>{{ $this->calculateProgress($order) }}%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
                                 <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
-                                    style="width: {{ $order->progress }}%"></div>
+                                    style="width: {{ $this->calculateProgress($order) }}%"></div>
                             </div>
                         </div>
 
@@ -121,14 +121,7 @@
                         </div>
                         <!-- Seguimiento visual del proceso -->
                         <div class="mt-2 flex items-center space-x-1">
-                            @php
-                            try {
-                            $activeStates = \App\Enums\OrderStatus::activeStates();
-                            } catch (\Exception $e) {
-                            $activeStates = [];
-                            }
-                            @endphp
-                            @foreach($activeStates as $step)
+                            @foreach(\App\Enums\OrderStatus::activeStates() as $step)
                             <span
                                 class="w-3 h-3 rounded-full border-2 @if($order->status >= $step->value) border-{{ $step->color() }}-500 bg-{{ $step->color() }}-400 @else border-gray-300 bg-gray-100 @endif"></span>
                             @endforeach
@@ -177,4 +170,22 @@
             @endif
         </div>
     </div>
+
+    @php
+    // Helper function para calcular el progreso
+    function calculateProgress($order)
+    {
+    $statusProgress = [
+    1 => 10, // Pendiente
+    2 => 25, // Pago Verificado
+    3 => 50, // Preparando
+    4 => 70, // Asignado
+    5 => 90, // En Camino
+    6 => 100, // Entregado
+    7 => 0, // Cancelado
+    ];
+    return $statusProgress[($order->status instanceof \App\Enums\OrderStatus) ? $order->status->value : $order->status]
+    ?? 0;
+    }
+    @endphp
 </x-app-layout>
