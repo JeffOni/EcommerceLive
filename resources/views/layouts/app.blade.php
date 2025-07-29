@@ -76,7 +76,10 @@
     <!-- Styles -->
     @livewireStyles
 
+    <!-- Favicon and App Icons -->
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
 </head>
 
 <body class="font-sans antialiased overflow-x-hidden">
