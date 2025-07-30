@@ -6,18 +6,7 @@
             will-change: transform;
         }
 
-        .produ {
-                {
-                -- Products Grid --
-            }
-        }
 
-        @if($products->isEmpty()) <div class="text-center py-16 bg-cream-50/50 rounded-2xl border border-secondary-200/50"><div class="w-24 h-24 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-box-open text-4xl text-secondary-500"></i></div><h3 class="text-2xl font-bold text-primary-800 mb-4">No hay productos disponibles</h3><p class="text-secondary-600 mb-8">No se encontraron productos que coincidan con tus criterios de búsqueda.</p><a href="{{ route('products.index') }}"
-
-        class="inline-flex items-center bg-gradient-to-r from-coral-500 to-coral-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-coral-600 hover:to-coral-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"><i class="fas fa-refresh mr-2"></i>Ver Todos los Productos </a>ver {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(68, 88, 144, 0.25);
-        }
 
         .filter-btn {
             transition: all 0.3s ease;
@@ -102,12 +91,12 @@
     </style>
     @endpush
 
-    <div class="hero-gradient text-white py-16 relative overflow-hidden">
+    <div class="relative py-16 overflow-hidden text-white hero-gradient">
         <div class="absolute inset-0 bg-black/10"></div>
         <x-container class="relative z-10">
             <div class="text-center">
-                <h1 class="text-4xl lg:text-5xl font-bold mb-4 drop-shadow-lg">Catálogo de Productos</h1>
-                <p class="text-xl text-white/90 max-w-2xl mx-auto drop-shadow">
+                <h1 class="mb-4 text-4xl font-bold lg:text-5xl drop-shadow-lg">Catálogo de Productos</h1>
+                <p class="max-w-2xl mx-auto text-xl text-white/90 drop-shadow">
                     Descubre nuestra amplia selección de productos de alta calidad
                 </p>
             </div>
@@ -116,10 +105,10 @@
 
     <x-container class="py-12">
         {{-- Filters Section --}}
-        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-8 border border-secondary-200/50">
+        <div class="p-6 mb-8 border shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl border-secondary-200/50">
             <div class="flex flex-wrap items-center gap-4 mb-6">
-                <h2 class="text-lg font-semibold text-primary-800 flex items-center">
-                    <i class="fas fa-filter mr-2 text-coral-500"></i>
+                <h2 class="flex items-center text-lg font-semibold text-primary-800">
+                    <i class="mr-2 fas fa-filter text-coral-500"></i>
                     Filtrar por:
                 </h2>
                 <button
@@ -130,31 +119,31 @@
                 <button
                     class="filter-btn {{ request('filter') == 'bestsellers' ? 'active' : '' }} px-6 py-2 rounded-full border border-secondary-300 hover:border-coral-500 transition-all duration-300 {{ request('filter') == 'bestsellers' ? 'bg-coral-500 text-white border-coral-500' : 'text-primary-700 hover:text-coral-600' }}"
                     onclick="applyFilter('bestsellers')">
-                    <i class="fas fa-star mr-1"></i>
+                    <i class="mr-1 fas fa-star"></i>
                     Más Vendidos
                 </button>
                 <button
                     class="filter-btn {{ request('filter') == 'offers' ? 'active' : '' }} px-6 py-2 rounded-full border border-secondary-300 hover:border-coral-500 transition-all duration-300 {{ request('filter') == 'offers' ? 'bg-coral-500 text-white border-coral-500' : 'text-primary-700 hover:text-coral-600' }}"
                     onclick="applyFilter('offers')">
-                    <i class="fas fa-tag mr-1"></i>
+                    <i class="mr-1 fas fa-tag"></i>
                     Ofertas
                 </button>
                 <button
                     class="filter-btn {{ request('filter') == 'new' ? 'active' : '' }} px-6 py-2 rounded-full border border-secondary-300 hover:border-coral-500 transition-all duration-300 {{ request('filter') == 'new' ? 'bg-coral-500 text-white border-coral-500' : 'text-primary-700 hover:text-coral-600' }}"
                     onclick="applyFilter('new')">
-                    <i class="fas fa-sparkles mr-1"></i>
+                    <i class="mr-1 fas fa-sparkles"></i>
                     Nuevos
                 </button>
             </div>
 
             <div class="flex flex-wrap items-center gap-6">
                 <div class="flex items-center gap-2">
-                    <label class="text-sm font-medium text-primary-700 flex items-center">
-                        <i class="fas fa-sort mr-1 text-coral-500"></i>
+                    <label class="flex items-center text-sm font-medium text-primary-700">
+                        <i class="mr-1 fas fa-sort text-coral-500"></i>
                         Ordenar por:
                     </label>
                     <select
-                        class="border border-secondary-300 rounded-lg px-3 py-2 text-primary-700 focus:ring-2 focus:ring-coral-400 focus:border-coral-400 transition-colors"
+                        class="px-3 py-2 transition-colors border rounded-lg border-secondary-300 text-primary-700 focus:ring-2 focus:ring-coral-400 focus:border-coral-400"
                         onchange="applySort(this.value)">
                         <option value="">Relevancia</option>
                         <option value="price_low" {{ request('sort')=='price_low' ? 'selected' : '' }}>Precio: Menor a
@@ -167,12 +156,12 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <label class="text-sm font-medium text-primary-700 flex items-center">
-                        <i class="fas fa-eye mr-1 text-coral-500"></i>
+                    <label class="flex items-center text-sm font-medium text-primary-700">
+                        <i class="mr-1 fas fa-eye text-coral-500"></i>
                         Mostrar:
                     </label>
                     <select
-                        class="border border-secondary-300 rounded-lg px-3 py-2 text-primary-700 focus:ring-2 focus:ring-coral-400 focus:border-coral-400 transition-colors"
+                        class="px-3 py-2 transition-colors border rounded-lg border-secondary-300 text-primary-700 focus:ring-2 focus:ring-coral-400 focus:border-coral-400"
                         onchange="applyPerPage(this.value)">
                         <option value="12" {{ request('per_page', 12)==12 ? 'selected' : '' }}>12 productos</option>
                         <option value="24" {{ request('per_page')==24 ? 'selected' : '' }}>24 productos</option>
@@ -184,63 +173,63 @@
 
         {{-- Products Grid --}}
         @if($products->isEmpty())
-        <div class="text-center py-16 bg-cream-50/50 rounded-2xl border border-secondary-200/50">
-            <div class="w-24 h-24 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-box-open text-4xl text-secondary-500"></i>
+        <div class="py-16 text-center border bg-cream-50/50 rounded-2xl border-secondary-200/50">
+            <div class="flex items-center justify-center w-24 h-24 mx-auto mb-6 rounded-full bg-secondary-100">
+                <i class="text-4xl fas fa-box-open text-secondary-500"></i>
             </div>
-            <h3 class="text-2xl font-bold text-primary-800 mb-4">No hay productos disponibles</h3>
-            <p class="text-secondary-600 mb-8">No se encontraron productos que coincidan con tus criterios de búsqueda.
+            <h3 class="mb-4 text-2xl font-bold text-primary-800">No hay productos disponibles</h3>
+            <p class="mb-8 text-secondary-600">No se encontraron productos que coincidan con tus criterios de búsqueda.
             </p>
-            <a href="{{ route('welcome') }}"
-                class="inline-flex items-center bg-gradient-to-r from-coral-500 to-coral-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-coral-600 hover:to-coral-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                <i class="fas fa-home mr-2"></i>Volver al Inicio
+            <a href="{{ route('welcome.index') }}"
+                class="inline-flex items-center px-8 py-3 font-semibold text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-coral-500 to-coral-600 rounded-xl hover:from-coral-600 hover:to-coral-700 hover:shadow-xl hover:-translate-y-1">
+                <i class="mr-2 fas fa-home"></i>Volver al Inicio
             </a>
         </div>
         @else
         <div class="product-grid">
             @foreach($products as $product)
             <article
-                class="product-card group bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-secondary-200/50 hover:border-coral-300/50 transition-all duration-300">
+                class="overflow-hidden transition-all duration-300 border shadow-lg product-card group bg-white/95 backdrop-blur-sm rounded-2xl border-secondary-200/50 hover:border-coral-300/50">
                 <div class="relative overflow-hidden">
                     {{-- Usamos el accessor image que ya existe en el modelo --}}
                     <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                        class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                        class="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
                         onerror="this.src='https://via.placeholder.com/300x256/e5e7eb/9ca3af?text=Sin+Imagen'"
                         loading="lazy">
 
                     {{-- Badge de stock y ofertas --}}
                     @if($product->is_on_valid_offer)
                     <div
-                        class="absolute top-4 left-4 bg-coral-500 text-white px-3 py-1 rounded-full text-sm font-semibold offer-badge shadow-lg">
-                        <i class="fas fa-fire mr-1"></i>{{ $product->discount_percentage }}% OFF
+                        class="absolute px-3 py-1 text-sm font-semibold text-white rounded-full shadow-lg top-4 left-4 bg-coral-500 offer-badge">
+                        <i class="mr-1 fas fa-fire"></i>{{ $product->discount_percentage }}% OFF
                     </div>
                     @elseif($product->hasAvailableStock())
                     <div
-                        class="absolute top-4 left-4 bg-secondary-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                        <i class="fas fa-check mr-1"></i>Disponible
+                        class="absolute px-3 py-1 text-sm font-semibold text-white rounded-full shadow-lg top-4 left-4 bg-secondary-500">
+                        <i class="mr-1 fas fa-check"></i>Disponible
                     </div>
                     @else
                     <div
-                        class="absolute top-4 left-4 bg-slate-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                        <i class="fas fa-times mr-1"></i>Agotado
+                        class="absolute px-3 py-1 text-sm font-semibold text-white rounded-full shadow-lg top-4 left-4 bg-slate-500">
+                        <i class="mr-1 fas fa-times"></i>Agotado
                     </div>
                     @endif
 
                     {{-- Wishlist button --}}
-                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div class="absolute transition-all duration-300 opacity-0 top-4 right-4 group-hover:opacity-100">
                         <button
-                            class="w-10 h-10 bg-cream-50/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-cream-100 transition-all duration-200 hover:scale-110 border border-secondary-200/50">
+                            class="flex items-center justify-center w-10 h-10 transition-all duration-200 border rounded-full shadow-lg bg-cream-50/90 backdrop-blur-sm hover:bg-cream-100 hover:scale-110 border-secondary-200/50">
                             <i
-                                class="fas fa-heart text-slate-600 hover:text-coral-500 transition-colors duration-200"></i>
+                                class="transition-colors duration-200 fas fa-heart text-slate-600 hover:text-coral-500"></i>
                         </button>
                     </div>
 
                     {{-- Quick view overlay --}}
                     <div
-                        class="absolute inset-0 bg-primary-900/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
+                        class="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0 bg-primary-900/60 group-hover:opacity-100 backdrop-blur-sm">
                         <a href="{{ route('products.show', $product) }}"
-                            class="bg-cream-50 text-slate-800 px-6 py-3 rounded-full font-semibold hover:bg-cream-100 transition-all duration-200 transform scale-90 group-hover:scale-100 shadow-lg border border-secondary-200">
-                            <i class="fas fa-eye mr-2 text-coral-500"></i>Vista Rápida
+                            class="px-6 py-3 font-semibold transition-all duration-200 transform scale-90 border rounded-full shadow-lg bg-cream-50 text-slate-800 hover:bg-cream-100 group-hover:scale-100 border-secondary-200">
+                            <i class="mr-2 fas fa-eye text-coral-500"></i>Vista Rápida
                         </a>
                     </div>
                 </div>
@@ -249,20 +238,20 @@
                     {{-- Category badge --}}
                     <div class="mb-3">
                         <span
-                            class="text-sm text-coral-600 font-medium bg-coral-50 px-3 py-1 rounded-full border border-coral-200/50">
+                            class="px-3 py-1 text-sm font-medium border rounded-full text-coral-600 bg-coral-50 border-coral-200/50">
                             {{ $product->subcategory->category->family->name ?? 'Producto' }}
                         </span>
                     </div>
 
                     {{-- Product name --}}
                     <h3
-                        class="text-lg font-bold text-slate-800 mb-3 line-clamp-2 group-hover:text-coral-600 transition-colors duration-200">
+                        class="mb-3 text-lg font-bold transition-colors duration-200 text-slate-800 line-clamp-2 group-hover:text-coral-600">
                         {{ $product->name }}
                     </h3>
 
                     {{-- Description --}}
                     @if($product->description)
-                    <p class="text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                    <p class="mb-4 text-sm leading-relaxed text-slate-600 line-clamp-2">
                         {{ Str::limit($product->description, 80) }}
                     </p>
                     @endif
@@ -275,37 +264,37 @@
                                 ${{ number_format($product->current_price, 2) }}
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-lg text-slate-500 line-through">
+                                <span class="text-lg line-through text-slate-500">
                                     ${{ number_format($product->price, 2) }}
                                 </span>
-                                <span class="bg-coral-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                <span class="px-2 py-1 text-xs font-semibold text-white rounded-full bg-coral-500">
                                     -${{ number_format($product->savings_amount, 2) }}
                                 </span>
                             </div>
                         </div>
                         @else
                         <div
-                            class="text-2xl font-bold bg-gradient-to-r from-primary-700 to-coral-500 bg-clip-text text-transparent">
+                            class="text-2xl font-bold text-transparent bg-gradient-to-r from-primary-700 to-coral-500 bg-clip-text">
                             ${{ number_format($product->price, 2) }}
                         </div>
                         @endif
 
                         <div class="flex items-center text-coral-400">
-                            @for($i = 1; $i <= 5; $i++) <i class="fas fa-star text-sm"></i>
+                            @for($i = 1; $i <= 5; $i++) <i class="text-sm fas fa-star"></i>
                                 @endfor
-                                <span class="text-slate-500 text-sm ml-2">(4.8)</span>
+                                <span class="ml-2 text-sm text-slate-500">(4.8)</span>
                         </div>
                     </div>
 
                     {{-- Stock info --}}
                     @if($product->hasAvailableStock())
-                    <div class="flex items-center text-secondary-600 text-sm mb-4">
-                        <i class="fas fa-box mr-2"></i>
+                    <div class="flex items-center mb-4 text-sm text-secondary-600">
+                        <i class="mr-2 fas fa-box"></i>
                         <span>{{ $product->getAvailableStock() }} en stock</span>
                     </div>
                     @else
-                    <div class="flex items-center text-coral-600 text-sm mb-4">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <div class="flex items-center mb-4 text-sm text-coral-600">
+                        <i class="mr-2 fas fa-exclamation-triangle"></i>
                         <span>Producto agotado</span>
                     </div>
                     @endif
@@ -313,8 +302,8 @@
                     {{-- Action buttons --}}
                     <div class="flex gap-3">
                         <a href="{{ route('products.show', $product) }}"
-                            class="flex-1 bg-gradient-to-r from-primary-700 to-coral-500 text-white text-center py-3 px-4 rounded-xl font-semibold hover:from-primary-800 hover:to-coral-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                            <i class="fas fa-eye mr-2"></i>Ver Detalles
+                            class="flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 transform shadow-lg bg-gradient-to-r from-primary-700 to-coral-500 rounded-xl hover:from-primary-800 hover:to-coral-600 hover:shadow-xl hover:scale-105">
+                            <i class="mr-2 fas fa-eye"></i>Ver Detalles
                         </a>
                         <livewire:quick-add-to-cart :product="$product" :key="'index-cart-'.$product->id" />
                     </div>
