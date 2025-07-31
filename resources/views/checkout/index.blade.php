@@ -394,8 +394,10 @@
         <!-- Modal Transferencia -->
         <div x-show="showTransferModal"
             class="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black bg-opacity-50 xs:p-4" x-cloak>
-            <div class="w-full max-w-xs bg-white rounded-lg xs:max-w-sm sm:max-w-md">
-                <div class="flex items-center justify-between p-3 pb-0 mb-3 xs:mb-4 xs:p-4 sm:p-6">
+            <div
+                class="w-full max-w-xs bg-white rounded-lg xs:max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+                <!-- Header fijo -->
+                <div class="flex items-center justify-between p-3 border-b border-gray-200 xs:p-4 sm:p-6 flex-shrink-0">
                     <h3 class="text-sm font-bold xs:text-base sm:text-lg">
                         <span class="hidden xs:inline">Subir Comprobante de Transferencia</span>
                         <span class="xs:hidden">Comprobante</span>
@@ -404,42 +406,57 @@
                         <i class="text-sm fa-solid fa-times xs:text-base"></i>
                     </button>
                 </div>
-                <form enctype="multipart/form-data" @submit.prevent="submitTransferReceipt"
-                    class="p-3 pt-0 xs:p-4 sm:p-6">
-                    @csrf
-                    <div class="space-y-3 xs:space-y-4">
-                        <div class="p-2 rounded-md xs:p-3 sm:p-4 bg-blue-50">
-                            <h4 class="text-xs font-semibold text-blue-900 xs:text-sm">
-                                <span class="hidden xs:inline">Datos para transferencia:</span>
-                                <span class="xs:hidden">Transferir a:</span>
-                            </h4>
-                            <p class="text-xs text-blue-800 xs:text-sm">Banco: Banco Pichincha</p>
-                            <p class="text-xs text-blue-800 xs:text-sm">Cuenta: 2206960920</p>
-                            <p class="text-xs text-blue-800 xs:text-sm">Tipo: Ahorros</p>
-                            <p class="text-xs text-blue-800 xs:text-sm">Nombre: Evelyn Michelle Guaman Anchundia</p>
-                            <p class="text-xs text-blue-800 xs:text-sm">CI: 1726232448
-                            <p class="text-xs text-blue-800 xs:text-sm">Monto: <span
-                                    x-text="'$' + total.toFixed(2)"></span></p>
-                            <p class="text-xs text-blue-800 xs:text-sm">Referencia: <span x-text="orderNumber"></span>
-                            </p>
-                            <div class="pt-1 mt-1 border-t border-blue-200 xs:pt-2 xs:mt-2">
-                                <p class="text-xs text-blue-700">Desglose:</p>
-                                <p class="text-xs text-blue-700">• Subtotal: $<span x-text="subtotal.toFixed(2)"></span>
-                                </p>
-                                <p class="text-xs text-blue-700">• Impuestos (15%): $<span
-                                        x-text="(subtotal * 0.15).toFixed(2)"></span></p>
-                                <p class="text-xs text-blue-700">• Envío: $<span x-text="shipping.toFixed(2)"></span>
-                                </p>
+
+                <!-- Contenido scrolleable -->
+                <div class="flex-1 overflow-y-auto">
+                    <form enctype="multipart/form-data" @submit.prevent="submitTransferReceipt"
+                        class="p-3 xs:p-4 sm:p-6">
+                        @csrf
+                        <div class="space-y-3 xs:space-y-4">
+                            <div class="p-2 rounded-md xs:p-3 sm:p-4 bg-blue-50">
+                                <h4 class="text-xs font-semibold text-blue-900 xs:text-sm mb-2">
+                                    <span class="hidden xs:inline">Datos para transferencia:</span>
+                                    <span class="xs:hidden">Transferir a:</span>
+                                </h4>
+                                <div class="text-xs text-blue-800 xs:text-sm space-y-1">
+                                    <!-- Layout en una columna para móviles, dos columnas para pantallas grandes -->
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-1">
+                                        <p>Banco: Banco Pichincha</p>
+                                        <p>Cuenta: 2206960920 (Ahorros)</p>
+                                        <p>Nombre: Evelyn Michelle Guaman Anchundia</p>
+                                        <p>CI: 1726232448</p>
+                                        <p>Monto: <span x-text="'$' + total.toFixed(2)"></span></p>
+                                        <p>Referencia: <span x-text="orderNumber"></span></p>
+                                    </div>
+                                </div>
+
+                                <!-- Desglose colapsible -->
+                                <div x-data="{ showBreakdown: false }" class="mt-2">
+                                    <button type="button" @click="showBreakdown = !showBreakdown"
+                                        class="text-xs text-blue-700 underline">
+                                        <span x-show="!showBreakdown">Ver desglose</span>
+                                        <span x-show="showBreakdown">Ocultar desglose</span>
+                                    </button>
+                                    <div x-show="showBreakdown" x-collapse
+                                        class="pt-1 mt-1 border-t border-blue-200 text-xs text-blue-700">
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-1">
+                                            <p>• Subtotal: $<span x-text="subtotal.toFixed(2)"></span></p>
+                                            <p>• Impuestos (15%): $<span x-text="(subtotal * 0.15).toFixed(2)"></span>
+                                            </p>
+                                            <p class="lg:col-span-2">• Envío: $<span
+                                                    x-text="shipping.toFixed(2)"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1 text-xs font-medium text-gray-700 xs:mb-2 xs:text-sm">
-                                <span class="hidden xs:inline">Subir comprobante de transferencia:</span>
-                                <span class="xs:hidden">Comprobante:</span>
-                            </label>
-                            <div x-data="{ imagePreview: null }" class="space-y-2 xs:space-y-3">
-                                <input type="file" name="receipt_file" accept="image/*,application/pdf" required
-                                    @change="
+                            <div>
+                                <label class="block mb-1 text-xs font-medium text-gray-700 xs:mb-2 xs:text-sm">
+                                    <span class="hidden xs:inline">Subir comprobante:</span>
+                                    <span class="xs:hidden">Comprobante:</span>
+                                </label>
+                                <div x-data="{ imagePreview: null }" class="space-y-2">
+                                    <input type="file" name="receipt_file" accept="image/*,application/pdf" required
+                                        @change="
                                         const file = $event.target.files[0];
                                         if (file) {
                                             if (file.type.startsWith('image/')) {
@@ -453,63 +470,62 @@
                                             imagePreview = null;
                                         }
                                     "
-                                    class="block w-full text-xs text-gray-500 xs:text-sm file:mr-2 xs:file:mr-4 file:py-1 xs:file:py-2 file:px-2 xs:file:px-4 file:rounded-full file:border-0 file:text-xs xs:file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                        class="block w-full text-xs text-gray-500 xs:text-sm file:mr-2 xs:file:mr-4 file:py-1 xs:file:py-2 file:px-2 xs:file:px-4 file:rounded-full file:border-0 file:text-xs xs:file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
 
-                                <!-- Vista previa -->
-                                <div x-show="imagePreview" class="mt-2 xs:mt-3" x-cloak>
-                                    <label class="block mb-1 text-xs font-medium text-gray-600">Vista previa:</label>
-                                    <div class="relative p-1 border-2 border-gray-300 border-dashed rounded-lg xs:p-2">
-                                        <template x-if="imagePreview === 'pdf'">
-                                            <div
-                                                class="flex items-center justify-center h-16 rounded xs:h-20 sm:h-24 bg-red-50">
-                                                <div class="text-center">
-                                                    <i
-                                                        class="mb-1 text-lg text-red-500 xs:text-xl sm:text-2xl fa-solid fa-file-pdf"></i>
-                                                    <p class="text-xs text-red-600">PDF seleccionado</p>
+                                    <!-- Vista previa compacta -->
+                                    <div x-show="imagePreview" class="mt-2" x-cloak>
+                                        <div class="relative p-1 border-2 border-gray-300 border-dashed rounded-lg">
+                                            <template x-if="imagePreview === 'pdf'">
+                                                <div class="flex items-center justify-center h-12 rounded bg-red-50">
+                                                    <div class="text-center">
+                                                        <i class="mb-1 text-lg text-red-500 fa-solid fa-file-pdf"></i>
+                                                        <p class="text-xs text-red-600">PDF</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </template>
-                                        <template x-if="imagePreview && imagePreview !== 'pdf'">
-                                            <img :src="imagePreview" alt="Vista previa"
-                                                class="object-cover w-full h-16 rounded xs:h-20 sm:h-24">
-                                        </template>
-                                        <button type="button"
-                                            @click="imagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
-                                            class="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full xs:w-5 xs:h-5 top-1 right-1 hover:bg-red-600">
-                                            ×
-                                        </button>
+                                            </template>
+                                            <template x-if="imagePreview && imagePreview !== 'pdf'">
+                                                <img :src="imagePreview" alt="Vista previa"
+                                                    class="object-cover w-full h-12 rounded">
+                                            </template>
+                                            <button type="button"
+                                                @click="imagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
+                                                class="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full top-1 right-1 hover:bg-red-600">
+                                                ×
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 xs:text-sm">Comentarios
+                                    (opcional)</label>
+                                <textarea name="comments" rows="2" placeholder="Comentarios sobre la transferencia..."
+                                    class="block w-full px-2 py-1 mt-1 text-xs border border-gray-300 rounded-md xs:px-3 xs:py-2 xs:text-sm focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 xs:text-sm">Comentarios
-                                (opcional)</label>
-                            <textarea name="comments" rows="2" xs:rows="3"
-                                placeholder="Comentarios sobre la transferencia..."
-                                class="block w-full px-2 py-1 mt-1 text-xs border border-gray-300 rounded-md xs:px-3 xs:py-2 xs:text-sm focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
-                        </div>
-                    </div>
-                    <div class="flex mt-4 space-x-2 xs:mt-6 xs:space-x-3">
-                        <button type="button" @click="showTransferModal = false"
-                            class="flex-1 px-2 py-2 text-xs text-gray-700 transition bg-gray-300 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-gray-400">
-                            Cancelar
-                        </button>
-                        <button type="submit" :disabled="transferSubmitting"
-                            :class="transferSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
-                            class="flex-1 px-2 py-2 text-xs text-white transition bg-green-600 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-green-700 disabled:opacity-50">
-                            <span x-show="!transferSubmitting">
-                                <span class="hidden xs:inline">Enviar Comprobante</span>
-                                <span class="xs:hidden">Enviar</span>
-                            </span>
-                            <span x-show="transferSubmitting" class="flex items-center justify-center">
-                                <div
-                                    class="w-3 h-3 mr-1 border-2 border-white border-dashed rounded-full xs:w-4 xs:h-4 animate-spin xs:mr-2">
-                                </div>
-                                Enviando...
-                            </span>
-                        </button>
-                    </div>
+                </div>
+
+                <!-- Footer fijo -->
+                <div class="flex p-3 space-x-2 border-t border-gray-200 xs:p-4 xs:space-x-3 flex-shrink-0">
+                    <button type="button" @click="showTransferModal = false"
+                        class="flex-1 px-2 py-2 text-xs text-gray-700 transition bg-gray-300 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-gray-400">
+                        Cancelar
+                    </button>
+                    <button type="submit" :disabled="transferSubmitting"
+                        :class="transferSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
+                        class="flex-1 px-2 py-2 text-xs text-white transition bg-green-600 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-green-700 disabled:opacity-50">
+                        <span x-show="!transferSubmitting">
+                            <span class="hidden xs:inline">Enviar</span>
+                            <span class="xs:hidden">OK</span>
+                        </span>
+                        <span x-show="transferSubmitting" class="flex items-center justify-center">
+                            <div
+                                class="w-3 h-3 mr-1 border-2 border-white border-dashed rounded-full xs:w-4 xs:h-4 animate-spin xs:mr-2">
+                            </div>
+                            Enviando...
+                        </span>
+                    </button>
+                </div>
                 </form>
             </div>
         </div>
@@ -517,8 +533,10 @@
         <!-- Modal QR De Una -->
         <div x-show="showQrModal"
             class="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black bg-opacity-50 xs:p-4" x-cloak>
-            <div class="w-full max-w-xs bg-white rounded-lg xs:max-w-sm sm:max-w-md">
-                <div class="flex items-center justify-between p-3 pb-0 mb-3 xs:mb-4 xs:p-4 sm:p-6">
+            <div
+                class="w-full max-w-xs bg-white rounded-lg xs:max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+                <!-- Header fijo -->
+                <div class="flex items-center justify-between p-3 border-b border-gray-200 xs:p-4 sm:p-6 flex-shrink-0">
                     <h3 class="text-sm font-bold xs:text-base sm:text-lg">
                         <span class="hidden xs:inline">Confirmar Pago con QR</span>
                         <span class="xs:hidden">Pago QR</span>
@@ -527,27 +545,47 @@
                         <i class="text-sm fa-solid fa-times xs:text-base"></i>
                     </button>
                 </div>
-                <form enctype="multipart/form-data" @submit.prevent="submitQrReceipt" class="p-3 pt-0 xs:p-4 sm:p-6">
-                    @csrf
-                    <div class="space-y-4">
-                        <div class="text-center">
-                            <img src="{{ asset('img/qr-pichincha.png') }}" alt="QR De Una"
-                                class="w-32 h-32 mx-auto mb-2">
-                            <p class="text-sm text-gray-600">Monto: <span class="font-bold"
-                                    x-text="'$' + total.toFixed(2)"></span></p>
-                            <div class="p-2 mt-2 text-xs text-gray-600 rounded bg-gray-50">
-                                <p>Subtotal: $<span x-text="subtotal.toFixed(2)"></span></p>
-                                <p>Impuestos (15%): $<span x-text="(subtotal * 0.15).toFixed(2)"></span></p>
-                                <p>Envío: $<span x-text="shipping.toFixed(2)"></span></p>
+
+                <!-- Contenido scrolleable -->
+                <div class="flex-1 overflow-y-auto">
+                    <form enctype="multipart/form-data" @submit.prevent="submitQrReceipt" class="p-3 xs:p-4 sm:p-6">
+                        @csrf
+                        <div class="space-y-3 xs:space-y-4">
+                            <!-- QR Code compacto -->
+                            <div class="text-center">
+                                <img src="{{ asset('img/qr-pichincha.png') }}" alt="QR De Una"
+                                    class="w-24 h-24 mx-auto mb-2 xs:w-32 xs:h-32">
+                                <p class="text-sm font-bold text-gray-900">
+                                    Monto: <span x-text="'$' + total.toFixed(2)"></span>
+                                </p>
+
+                                <!-- Desglose colapsible -->
+                                <div x-data="{ showBreakdown: false }" class="mt-2">
+                                    <button type="button" @click="showBreakdown = !showBreakdown"
+                                        class="text-xs text-blue-700 underline">
+                                        <span x-show="!showBreakdown">Ver desglose</span>
+                                        <span x-show="showBreakdown">Ocultar desglose</span>
+                                    </button>
+                                    <div x-show="showBreakdown" x-collapse
+                                        class="p-2 mt-2 text-xs text-gray-600 rounded bg-gray-50">
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-1">
+                                            <p>Subtotal: $<span x-text="subtotal.toFixed(2)"></span></p>
+                                            <p>Impuestos (15%): $<span x-text="(subtotal * 0.15).toFixed(2)"></span></p>
+                                            <p class="lg:col-span-2">Envío: $<span x-text="shipping.toFixed(2)"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-700">
-                                Subir captura de pantalla del pago:
-                            </label>
-                            <div x-data="{ qrImagePreview: null }" class="space-y-3">
-                                <input type="file" name="receipt_file" accept="image/*,application/pdf" required
-                                    @change="
+                            <!-- Upload de comprobante -->
+                            <div>
+                                <label class="block mb-2 text-xs font-medium text-gray-700 xs:text-sm">
+                                    <span class="hidden xs:inline">Subir captura del pago:</span>
+                                    <span class="xs:hidden">Subir captura:</span>
+                                </label>
+                                <div x-data="{ qrImagePreview: null }" class="space-y-2">
+                                    <input type="file" name="receipt_file" accept="image/*,application/pdf" required
+                                        @change="
                                         const file = $event.target.files[0];
                                         if (file) {
                                             if (file.type.startsWith('image/')) {
@@ -561,56 +599,66 @@
                                             qrImagePreview = null;
                                         }
                                     "
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                        class="block w-full text-xs text-gray-500 xs:text-sm file:mr-2 xs:file:mr-4 file:py-1 xs:file:py-2 file:px-2 xs:file:px-4 file:rounded-full file:border-0 file:text-xs xs:file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
 
-                                <!-- Vista previa QR -->
-                                <div x-show="qrImagePreview" class="mt-3" x-cloak>
-                                    <label class="block mb-1 text-xs font-medium text-gray-600">Vista previa:</label>
-                                    <div class="relative p-2 border-2 border-purple-300 border-dashed rounded-lg">
-                                        <template x-if="qrImagePreview === 'pdf'">
-                                            <div class="flex items-center justify-center h-24 rounded bg-purple-50">
-                                                <div class="text-center">
-                                                    <i class="mb-1 text-2xl text-purple-500 fa-solid fa-file-pdf"></i>
-                                                    <p class="text-xs text-purple-600">Archivo PDF seleccionado</p>
+                                    <!-- Vista previa QR compacta -->
+                                    <div x-show="qrImagePreview" class="mt-2" x-cloak>
+                                        <div class="relative p-1 border-2 border-purple-300 border-dashed rounded-lg">
+                                            <template x-if="qrImagePreview === 'pdf'">
+                                                <div class="flex items-center justify-center h-12 rounded bg-purple-50">
+                                                    <div class="text-center">
+                                                        <i
+                                                            class="mb-1 text-lg text-purple-500 fa-solid fa-file-pdf"></i>
+                                                        <p class="text-xs text-purple-600">PDF</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </template>
-                                        <template x-if="qrImagePreview && qrImagePreview !== 'pdf'">
-                                            <img :src="qrImagePreview" alt="Vista previa QR"
-                                                class="object-cover w-full h-24 rounded">
-                                        </template>
-                                        <button type="button"
-                                            @click="qrImagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
-                                            class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full top-1 right-1 hover:bg-red-600">
-                                            ×
-                                        </button>
+                                            </template>
+                                            <template x-if="qrImagePreview && qrImagePreview !== 'pdf'">
+                                                <img :src="qrImagePreview" alt="Vista previa QR"
+                                                    class="object-cover w-full h-12 rounded">
+                                            </template>
+                                            <button type="button"
+                                                @click="qrImagePreview = null; $el.parentElement.parentElement.querySelector('input[type=file]').value = ''"
+                                                class="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-500 rounded-full top-1 right-1 hover:bg-red-600">
+                                                ×
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Número de transacción -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 xs:text-sm">
+                                    <span class="hidden xs:inline">Número de transacción (opcional)</span>
+                                    <span class="xs:hidden">N° transacción (opcional)</span>
+                                </label>
+                                <input type="text" name="transaction_number" placeholder="Número de transacción"
+                                    class="block w-full px-2 py-1 mt-1 text-xs border border-gray-300 rounded-md xs:px-3 xs:py-2 xs:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Número de transacción
-                                (opcional)</label>
-                            <input type="text" name="transaction_number" placeholder="Número de transacción De Una"
-                                class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        </div>
-                    </div>
-                    <div class="flex mt-6 space-x-3">
-                        <button type="button" @click="showQrModal = false"
-                            class="flex-1 px-4 py-2 text-gray-700 transition bg-gray-300 rounded-md hover:bg-gray-400">
-                            Cancelar
-                        </button>
-                        <button type="submit" :disabled="qrSubmitting"
-                            :class="qrSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
-                            class="flex-1 px-4 py-2 text-white transition bg-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50">
-                            <span x-show="!qrSubmitting">Confirmar Pago</span>
-                            <span x-show="qrSubmitting" class="flex items-center justify-center">
-                                <div class="w-4 h-4 mr-2 border-2 border-white border-dashed rounded-full animate-spin">
-                                </div>
-                                Confirmando...
-                            </span>
-                        </button>
-                    </div>
+                </div>
+
+                <!-- Footer fijo -->
+                <div class="flex p-3 space-x-2 border-t border-gray-200 xs:p-4 xs:space-x-3 flex-shrink-0">
+                    <button type="button" @click="showQrModal = false"
+                        class="flex-1 px-2 py-2 text-xs text-gray-700 transition bg-gray-300 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-gray-400">
+                        Cancelar
+                    </button>
+                    <button type="submit" :disabled="qrSubmitting"
+                        :class="qrSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
+                        class="flex-1 px-2 py-2 text-xs text-white transition bg-purple-600 rounded-md xs:px-3 sm:px-4 xs:text-sm hover:bg-purple-700 disabled:opacity-50">
+                        <span x-show="!qrSubmitting">
+                            <span class="hidden xs:inline">Confirmar</span>
+                            <span class="xs:hidden">OK</span>
+                        </span>
+                        <span x-show="qrSubmitting" class="flex items-center justify-center">
+                            <div
+                                class="w-3 h-3 mr-1 border-2 border-white border-dashed rounded-full xs:w-4 xs:h-4 animate-spin xs:mr-2">
+                            </div>
+                            Confirmando...
+                        </span>
+                    </button>
+                </div>
                 </form>
             </div>
         </div>
